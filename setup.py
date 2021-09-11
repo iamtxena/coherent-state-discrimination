@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 import os
 import re
 
-PACKAGE = "boilerplate-library"
+PACKAGE = "csd"
 
 
 # Returns the qibo version
@@ -30,12 +30,12 @@ with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="qili-boilerplate",
+    name="csd",
     version=get_version(),
-    description="A template repository to create a Qilimanjaro Python library",
-    author="Qilimanjaro team",
-    author_email="info@qilimanjaro.tech",
-    url="https://github.com/qilimanjaro-tech/library-boilerplate",
+    description="Repository to held the work for the coherent state discrimination",
+    author="Matteo Rosati, Sayan Goswami, Albert Solana",
+    author_email="matt.rosati@gmail.com, sayan.goswami.106@gmail.com, iamtxena@gmail.com",
+    url="https://github.com/iamtxena/coherent-state-discrimination",
     packages=find_packages("src"),
     package_dir={"": "src"},
     package_data={"": ["*.out"]},
