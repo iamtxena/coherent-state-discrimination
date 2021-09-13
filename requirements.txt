@@ -7,3 +7,6 @@ pycodestyle
 pyflakes
 toml
 typing-extensions
+pennylane
+pennylane-sf
+torch
