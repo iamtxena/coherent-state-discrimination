@@ -9,4 +9,4 @@ toml
 typing-extensions
 pennylane
 pennylane-sf
-torch
+strawberryfields
