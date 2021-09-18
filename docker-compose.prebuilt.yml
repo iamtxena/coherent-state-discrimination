@@ -1,11 +1,11 @@
 version: "3.9"
 services:
-  csd-prebuilt:
+  csd-prebuilt-new:
     build:
       context: .
       dockerfile: Dockerfile.prebuilt
     ports:
-      - "8888:8888"
+      - "9999:9999"
     volumes:
       - .:/home/jovyan/csd
-    container_name: csd-prebuilt
+    container_name: csd-prebuilt-new

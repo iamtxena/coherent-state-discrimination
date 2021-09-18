@@ -4,7 +4,7 @@ services:
     build:
       context: .
     ports:
-      - "8888:8888"
+      - "2021:2021"
     volumes:
       - .:/usr/src/csd
     container_name: csd
