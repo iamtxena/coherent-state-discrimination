@@ -65,4 +65,4 @@ USER docker
 RUN conda init bash
 RUN pip install -e .
 
-CMD ["jupyter", "notebook", "--no-browser", "--ip=0.0.0.0", "--port=2021"]
+CMD ["jupyter", "notebook", "--no-browser", "--ip=0.0.0.0", "--port=8989"]
