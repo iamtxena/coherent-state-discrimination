@@ -1,33 +1,35 @@
 import numpy as np
 import strawberryfields as sf
 
-# Used for displacement.
-displacement = 0.5
-
-def single_layer():
+def single_layer(params):
     # Creates a single mode quantum "program".
     # https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.Program.html
     prog = sf.Program(1)
 
+    # Instantiate the Gaussian backend.
+    # https://strawberryfields.readthedocs.io/en/stable/introduction/circuits.html
+    eng = sf.Engine("gaussian")
+
     with prog.context as q:
-        # Phase space displacement gate.
-        # https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.ops.Dgate.html
-        sf.ops.Dgate(0.0, 0.0) | q[0]
+        # Phase space squeezing gate.
+        # https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.ops.Sgate.html
+        sf.ops.Sgate(params["displacement_magnitude"])  | q[0]
 
-        # Measures whether a mode contain zero or nonzero photons.
+        # Measures whether a mode contains zero or nonzero photons.
         # https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.ops.MeasureThreshold.html
-        sf.ops.MeasureThreshold()       | q[0]
+        sf.ops.MeasureThreshold()                       | q[0]
 
-    return eng.run(prog)
+    return eng.run(prog, shots=100)
 
 
 if __name__ == "__main__":
-    # Instantiate the Gaussian backend.
-    # https://strawberryfields.readthedocs.io/en/stable/introduction/circuits.html
-    eng = sf.Engine('gaussian')
+    # Parameters
+    params = {
+        "displacement_magnitude": 0.5
+    }
 
     # Execute the single layer of the quantum "program".
-    result = single_layer()
+    result = single_layer(params=params)
 
     # Obtain results.
     print(result.samples)
