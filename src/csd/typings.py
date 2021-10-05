@@ -1,4 +1,5 @@
 from typing import TypedDict
+import enum
 
 
 class CSDConfiguration(TypedDict):
@@ -7,3 +8,10 @@ class CSDConfiguration(TypedDict):
     learning_rate: float
     batch_size: int
     threshold: float
+
+
+class Backends(enum.Enum):
+    FOCK = 'fock'
+    GAUSSIAN = 'gaussian'
+    BOSONIC = 'bosonic'
+    TENSORFLOW = 'tf'

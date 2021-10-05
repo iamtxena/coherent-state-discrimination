@@ -2,7 +2,7 @@
 # data.py
 """ Data to used alongside the test suite """
 
-from csd.typings import CSDConfiguration
+from csd.typings import CSDConfiguration, Backends
 
 csd_test_configurations = [
     {
@@ -22,3 +22,10 @@ csd_configurations = [CSDConfiguration({
     'threshold': config['threshold']
 })
     for config in csd_test_configurations]
+
+backends = [
+    Backends.FOCK,
+    Backends.GAUSSIAN,
+    Backends.BOSONIC,
+    Backends.TENSORFLOW,
+]

@@ -2,8 +2,9 @@
 
 import pytest
 from csd import CSD
-from csd.typings import CSDConfiguration
-from .data import csd_test_configurations, csd_configurations
+from csd.typings import CSDConfiguration, Backends
+from csd.config import logger
+from .data import csd_test_configurations, csd_configurations, backends
 
 
 @pytest.mark.parametrize("csd_test_configuration", csd_test_configurations)
@@ -20,10 +21,18 @@ def test_csd_construction(csd_test_configuration: dict):
 
 
 @pytest.mark.parametrize("csd_configuration", csd_configurations)
-def test_csd_single_layer(csd_configuration: CSDConfiguration):
+@pytest.mark.parametrize("backend", backends)
+def test_csd_single_layer(csd_configuration: CSDConfiguration, backend: Backends):
     csd = CSD(csd_config=csd_configuration)
-    result = csd.single_layer()
+    logger.info(f'using backend: {backend}')
+    if backend is Backends.BOSONIC:
+        with pytest.raises(Exception) as execinfo:
+            csd.single_layer(backend)
+        assert str(execinfo.value) == "The operation MeasureFock cannot be used with the compiler 'bosonic'."
+    else:
+        result = csd.single_layer(backend)
 
-    assert result is not None
-    assert result.state is not None
-    assert result.state.fock_prob([0]) != 1
+        assert result is not None
+        assert result.state is not None
+        logger.info(f'Fock Probability: {result.state.fock_prob([0])}')
+        assert result.state.fock_prob([0]) > 0.99
