@@ -2,7 +2,10 @@ from abc import ABC
 from csd.typings import CSDConfiguration, Backends
 from typeguard import typechecked
 import strawberryfields as sf
+from strawberryfields.api import Result
+from strawberryfields.backends import BaseState
 from typing import cast
+import numpy as np
 
 
 class CSD(ABC):
@@ -17,7 +20,7 @@ class CSD(ABC):
         self._threshold = csd_config.get('threshold')
         self._result = None
 
-    def single_layer(self, backend: Backends = Backends.FOCK) -> sf.api.Result:
+    def single_layer(self, backend: Backends = Backends.FOCK) -> Result:
         """ Creates a single mode quantum "program".
             https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.Program.html
         """
@@ -43,15 +46,15 @@ class CSD(ABC):
     def show_result(self) -> dict:
         if self._result is None:
             raise ValueError("Circuit not executed yet.")
-        sf_result = cast(sf.api.Result, self._result)
-        sf_state = sf_result.state
+        sf_result = cast(Result, self._result)
+        sf_state = cast(BaseState, sf_result.state)
 
         return {
             'result': str(sf_result),
             'state': str(sf_state),
             'trace': sf_state.trace(),
             'density_matrix': sf_state.dm(),
-            'dm_shape': sf_state.dm().shape,
+            'dm_shape': cast(np.ndarray, sf_state.dm()).shape,
             'samples': sf_result.samples,
             'first_sample': sf_result.samples[0],
             'fock_probability': sf_state.fock_prob([0])
