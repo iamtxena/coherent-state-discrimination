@@ -15,3 +15,11 @@ class Backends(enum.Enum):
     GAUSSIAN = 'gaussian'
     BOSONIC = 'bosonic'
     TENSORFLOW = 'tf'
+
+
+class RunConfiguration(TypedDict):
+    alpha: float
+    displacement_magnitude: float
+    backend: Backends
+    number_qumodes: int
+    number_layers: int

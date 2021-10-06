@@ -2,7 +2,8 @@
 # data.py
 """ Data to used alongside the test suite """
 
-from csd.typings import CSDConfiguration, Backends
+import numpy as np
+from csd.typings import CSDConfiguration, Backends, RunConfiguration
 
 csd_test_configurations = [
     {
@@ -28,4 +29,23 @@ backends = [
     Backends.GAUSSIAN,
     Backends.BOSONIC,
     Backends.TENSORFLOW,
+]
+
+valid_backends = [
+    Backends.FOCK,
+    Backends.GAUSSIAN,
+    Backends.TENSORFLOW,
+]
+
+alphas = np.arange(0.4, 1.4, 0.1)
+betas = np.arange(0.0, 1.0, 0.1)
+
+csd_run_configurations = [
+    RunConfiguration({
+        'alpha': 0.5,
+        'displacement_magnitude': 0.1,
+        'backend': Backends.FOCK,
+        'number_qumodes': 1,
+        'number_layers': 1
+    })
 ]
