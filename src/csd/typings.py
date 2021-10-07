@@ -17,9 +17,16 @@ class Backends(enum.Enum):
     TENSORFLOW = 'tf'
 
 
-class RunConfiguration(TypedDict):
+class MeasuringTypes(enum.Enum):
+    SAMPLING = 'sampling'
+    PROBABILITIES = 'probabilities'
+
+
+class RunConfiguration(TypedDict, total=False):
     alpha: float
     displacement_magnitude: float
     backend: Backends
     number_qumodes: int
     number_layers: int
+    measuring_type: MeasuringTypes
+    shots: int
