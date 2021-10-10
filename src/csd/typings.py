@@ -1,5 +1,17 @@
-from typing import TypedDict
+from typing import TypedDict, List, Union
 import enum
+
+from tensorflow.python.framework.ops import EagerTensor
+
+
+class CodewordProbabilities(TypedDict):
+    prob_a: float
+    prob_minus_a: float
+
+
+class PhotodetectorProbabilities(TypedDict):
+    prob_click: List[Union[float, EagerTensor]]
+    prob_no_click: List[Union[float, EagerTensor]]
 
 
 class CSDConfiguration(TypedDict):
@@ -30,3 +42,5 @@ class RunConfiguration(TypedDict, total=False):
     number_layers: int
     measuring_type: MeasuringTypes
     shots: int
+    codeword_size: int
+    cutoff_dim: int
