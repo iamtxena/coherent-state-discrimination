@@ -34,9 +34,13 @@ class MeasuringTypes(enum.Enum):
     PROBABILITIES = 'probabilities'
 
 
+class RunParameters(TypedDict):
+    betas: List[float]
+
+
 class RunConfiguration(TypedDict, total=False):
-    alpha: float
-    displacement_magnitude: float
+    alphas: List[float]
+    params: RunParameters
     backend: Backends
     number_qumodes: int
     number_layers: int
@@ -44,3 +48,10 @@ class RunConfiguration(TypedDict, total=False):
     shots: int
     codeword_size: int
     cutoff_dim: int
+
+
+class ResultExecution(TypedDict):
+    alpha: float
+    codeword: List[float]
+    betas: List[float]
+    p_err: List[Union[float, EagerTensor]]

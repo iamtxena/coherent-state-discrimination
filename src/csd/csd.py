@@ -1,15 +1,15 @@
 from abc import ABC
 from csd.typings import (CSDConfiguration,
-                         Backends,
                          RunConfiguration,
                          MeasuringTypes,
                          CodewordProbabilities,
-                         PhotodetectorProbabilities)
+                         PhotodetectorProbabilities,
+                         ResultExecution)
 from typeguard import typechecked
 import strawberryfields as sf
 from strawberryfields.api import Result
 from strawberryfields.backends import BaseState
-from typing import Optional, Union, cast, List
+from typing import Union, cast, List
 import numpy as np
 import random
 from csd.config import logger
@@ -21,6 +21,7 @@ class CSD(ABC):
     A = 1
     MINUS_A = -1
     DEFAULT_CUTOFF_DIMENSION = 5
+    DEFAULT_ALPHA = 0.7
 
     @typechecked
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
@@ -54,8 +55,11 @@ class CSD(ABC):
 
     def _compute_photodetector_probabilities(self,
                                              engine: sf.Engine,
-                                             codeword: List[float]) -> PhotodetectorProbabilities:
-        no_click_probabilities = [self._run_one_layer_checking_measuring_type(engine=engine, alpha=letter)
+                                             codeword: List[float],
+                                             params: List[float]) -> PhotodetectorProbabilities:
+        no_click_probabilities = [self._run_one_layer_checking_measuring_type(engine=engine,
+                                                                              letter=letter,
+                                                                              params=params)
                                   for letter in codeword]
         return {
             'prob_click': list(1 - np.array(no_click_probabilities)),
@@ -64,39 +68,19 @@ class CSD(ABC):
 
     def _compute_error_probability(self,
                                    codeword: List[float],
+                                   alpha: float,
                                    codeword_prob: CodewordProbabilities,
                                    photodetector_prob: PhotodetectorProbabilities) -> float:
 
-        p_errors = [(codeword_prob['prob_a'] * photodetector_prob['prob_click'][codeword_index] +
-                    codeword_prob['prob_minus_a'] * photodetector_prob['prob_no_click'][codeword_index])
-                    for codeword_index, _ in enumerate(codeword)]
+        p_errors = [(codeword_prob['prob_a'] * photodetector_prob['prob_click'][codeword_index]) if letter == alpha
+                    else (codeword_prob['prob_minus_a'] * photodetector_prob['prob_no_click'][codeword_index])
+                    for codeword_index, letter in enumerate(codeword)]
 
         return sum(p_errors) / len(codeword)
 
-    def single_layer(self, backend: Backends = Backends.FOCK) -> Result:
-        """ Creates a single mode quantum "program".
-            https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.Program.html
-        """
-
-        prog = sf.Program(1)
-
-        # Instantiate the Gaussian backend.
-        # https://strawberryfields.readthedocs.io/en/stable/introduction/circuits.html
-        eng = sf.Engine(backend=backend.value, backend_options={"cutoff_dim": 5})
-
-        with prog.context as q:
-            # Phase space squeezing gate.
-            # https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.ops.Sgate.html
-            sf.ops.Dgate(self._displacement_magnitude) | q[0]
-
-            # Measures whether a mode contains zero or nonzero photons.
-            # https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.ops.MeasureThreshold.html
-            sf.ops.MeasureFock() | q[0]
-
-        self._result = eng.run(prog)
-        return self._result
-
-    def _run_one_layer_probabilities(self, engine: sf.Engine, alpha: float) -> Union[float, EagerTensor]:
+    def _run_one_layer_probabilities(self, engine: sf.Engine,
+                                     letter: float,
+                                     params: List[float]) -> Union[float, EagerTensor]:
         """Run a one layer experiment
 
         Args:
@@ -110,17 +94,22 @@ class CSD(ABC):
         if self._circuit is None:
             raise ValueError("Circuit MUST be created first")
 
-        self._result = self._run_engine(engine=engine, alpha=alpha)
+        self._result = self._run_engine(engine=engine, letter=letter, params=params)
         return cast(Result, self._result).state.fock_prob([0])
 
     def _run_engine_and_compute_probability_0_photons(self,
                                                       engine: sf.Engine,
                                                       shots: int,
-                                                      alpha: float) -> Union[float, EagerTensor]:
-        return sum([1 for read_value in [self._run_engine(engine=engine, alpha=alpha).samples[0][0]
+                                                      letter: float,
+                                                      params: List[float]) -> Union[float, EagerTensor]:
+        return sum([1 for read_value in [self._run_engine(engine=engine,
+                                                          letter=letter,
+                                                          params=params).samples[0][0]
                                          for _ in range(0, shots)] if read_value == 0]) / shots
 
-    def _run_engine(self, engine: sf.Engine, alpha: float) -> Result:
+    def _run_engine(self, engine: sf.Engine,
+                    letter: float,
+                    params: List[float]) -> Result:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
@@ -129,12 +118,15 @@ class CSD(ABC):
             engine.reset()
 
         self._result = engine.run(self._circuit, args={
-            "displacement_magnitude": self._run_configuration['displacement_magnitude'],
-            "alpha": alpha
+            "alpha": letter,  # current alpha value from generated codeword
+            "beta": params[0],  # beta
         })
         return self._result
 
-    def _run_one_layer_sampling(self, engine: sf.Engine, alpha: float) -> Union[float, EagerTensor]:
+    def _run_one_layer_sampling(self,
+                                engine: sf.Engine,
+                                letter: float,
+                                params: List[float]) -> Union[float, EagerTensor]:
         """Run a one layer experiment doing MeasureFock and performing samplint with nshots
 
         Args:
@@ -154,7 +146,8 @@ class CSD(ABC):
         return self._run_engine_and_compute_probability_0_photons(
             engine=engine,
             shots=self._run_configuration['shots'],
-            alpha=alpha)
+            letter=letter,
+            params=params)
 
     def _create_circuit(self) -> sf.Program:
         """Creates a circuit to run an experiment based on configuration parameters
@@ -167,11 +160,11 @@ class CSD(ABC):
 
         prog = sf.Program(self._run_configuration['number_qumodes'])
         alpha = prog.params("alpha")
-        displacement_magnitude = prog.params("displacement_magnitude")
+        beta = prog.params("beta")
 
         with prog.context as q:
             sf.ops.Dgate(alpha, 0.0) | q[0]
-            sf.ops.Dgate(displacement_magnitude, 0.0) | q[0]
+            sf.ops.Dgate(beta, 0.0) | q[0]
             if self._run_configuration['measuring_type'] is MeasuringTypes.SAMPLING:
                 sf.ops.MeasureFock() | q[0]
 
@@ -179,60 +172,28 @@ class CSD(ABC):
 
     def _run_one_layer_checking_measuring_type(self,
                                                engine: sf.Engine,
-                                               alpha: float) -> Union[float, EagerTensor]:
+                                               letter: float,
+                                               params: List[float]) -> Union[float, EagerTensor]:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
         if self._run_configuration['measuring_type'] is MeasuringTypes.SAMPLING:
-            return self._run_one_layer_sampling(engine=engine, alpha=alpha)
-        return self._run_one_layer_probabilities(engine=engine, alpha=alpha)
+            return self._run_one_layer_sampling(engine=engine, letter=letter, params=params)
+        return self._run_one_layer_probabilities(engine=engine, letter=letter, params=params)
 
-    @typechecked
-    def _create_codeword_run_circuit_and_compute_average_error_probability(
-            self,
-            codeword_size: Optional[Union[int, None]] = 10,
-            alpha_value: Optional[Union[float, None]] = 0.7) -> Union[float, EagerTensor]:
-        """Runs an experiment with an already created circuit and
-            returns the post-processed probability of getting |0> state
+    def _one_combination_execution(self, alpha: float, params: List[float]) -> Union[float, EagerTensor]:
+        photodetector_probabilities = self._compute_photodetector_probabilities(engine=self._engine,
+                                                                                codeword=self._codeword,
+                                                                                params=params)
 
-        Returns:
-            float: probability of getting |0> state
-        """
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-        if self._circuit is None:
-            raise ValueError("Circuit MUST be created first")
-        if codeword_size is None:
-            codeword_size = 10
-        if alpha_value is None:
-            alpha_value = 0.7
-
-        codeword = self._create_random_codeword(codeword_size, alpha_value)
-        codeword_probabilities = self._compute_a_minus_a_probabilities(codeword, alpha_value)
-
-        logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
-                     f"codeword: {codeword} "
-                     f"beta: {self._run_configuration['displacement_magnitude']}"
-                     " with measuring_type: "
-                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
-
-        cutoff_dim = (self._run_configuration['cutoff_dim']
-                      if 'cutoff_dim' in self._run_configuration
-                      else self.DEFAULT_CUTOFF_DIMENSION)
-
-        engine = sf.Engine(backend=self._run_configuration['backend'].value,
-                           backend_options={"cutoff_dim": cutoff_dim})
-
-        photodetector_probabilities = self._compute_photodetector_probabilities(engine=engine,
-                                                                                codeword=codeword)
-
-        return self._compute_error_probability(codeword=codeword,
-                                               codeword_prob=codeword_probabilities,
+        return self._compute_error_probability(codeword=self._codeword,
+                                               alpha=alpha,
+                                               codeword_prob=self._codeword_probabilities,
                                                photodetector_prob=photodetector_probabilities)
 
     @typechecked
-    def execute(self, configuration: RunConfiguration) -> Union[float, EagerTensor]:
-        """Run an experiment with the given configuration
+    def execute(self, configuration: RunConfiguration) -> List[ResultExecution]:
+        """Run an experiment for the same codeword with the given configuration
 
         Args:
             configuration (RunConfiguration): Specific experiment configuration
@@ -242,12 +203,41 @@ class CSD(ABC):
         """
         if configuration['number_layers'] != 1 or configuration['number_qumodes'] != 1:
             raise ValueError('Experiment only available for ONE qumode and ONE layer')
-
         self._run_configuration = configuration
         self._circuit = self._create_circuit()
-        return self._create_codeword_run_circuit_and_compute_average_error_probability(
-            codeword_size=configuration['codeword_size'] if 'codeword_size' in configuration else None,
-            alpha_value=configuration['alpha'] if 'alpha' in configuration else None)
+
+        cutoff_dim = (self._run_configuration['cutoff_dim']
+                      if 'cutoff_dim' in self._run_configuration
+                      else self.DEFAULT_CUTOFF_DIMENSION)
+
+        self._engine = sf.Engine(backend=self._run_configuration['backend'].value,
+                                 backend_options={"cutoff_dim": cutoff_dim})
+
+        codeword_size = configuration['codeword_size'] if 'codeword_size' in configuration else None
+        alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
+
+        results = []
+
+        for alpha in alphas:
+            self._codeword = self._create_random_codeword(codeword_size, alpha)
+            self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
+            result: ResultExecution = {
+                'alpha': alpha,
+                'codeword': self._codeword,
+                'betas': configuration['params']['betas'],
+                'p_err': []
+            }
+
+            logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
+                         " with measuring_type: "
+                         f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
+
+            for beta in configuration['params']['betas']:
+                result['p_err'].append(self._one_combination_execution(alpha=alpha, params=[beta]))
+
+            results.append(result)
+
+        return results
 
     def show_result(self) -> dict:
         if self._result is None:
