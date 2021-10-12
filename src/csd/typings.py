@@ -34,13 +34,8 @@ class MeasuringTypes(enum.Enum):
     PROBABILITIES = 'probabilities'
 
 
-class RunParameters(TypedDict):
-    betas: List[float]
-
-
 class RunConfiguration(TypedDict, total=False):
     alphas: List[float]
-    params: RunParameters
     backend: Backends
     number_qumodes: int
     number_layers: int
@@ -50,8 +45,13 @@ class RunConfiguration(TypedDict, total=False):
     cutoff_dim: int
 
 
+class OptimizationResult(TypedDict):
+    optimized_parameters: List[Union[float, EagerTensor]]
+    current_p_err: float
+
+
 class ResultExecution(TypedDict):
-    alpha: float
-    codeword: List[float]
-    betas: List[float]
+    alphas: List[float]
+    opt_betas: List[float]
     p_err: List[Union[float, EagerTensor]]
+    p_succ: List[Union[float, EagerTensor]]

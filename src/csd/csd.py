@@ -4,7 +4,8 @@ from csd.typings import (CSDConfiguration,
                          MeasuringTypes,
                          CodewordProbabilities,
                          PhotodetectorProbabilities,
-                         ResultExecution)
+                         ResultExecution,
+                         OptimizationResult)
 from typeguard import typechecked
 import strawberryfields as sf
 from strawberryfields.api import Result
@@ -14,6 +15,7 @@ import numpy as np
 import random
 from csd.config import logger
 from tensorflow.python.framework.ops import EagerTensor
+from scipy import optimize
 
 
 class CSD(ABC):
@@ -66,11 +68,11 @@ class CSD(ABC):
             'prob_no_click': no_click_probabilities
         }
 
-    def _compute_error_probability(self,
-                                   codeword: List[float],
-                                   alpha: float,
-                                   codeword_prob: CodewordProbabilities,
-                                   photodetector_prob: PhotodetectorProbabilities) -> float:
+    def _compute_average_error_probability(self,
+                                           codeword: List[float],
+                                           alpha: float,
+                                           codeword_prob: CodewordProbabilities,
+                                           photodetector_prob: PhotodetectorProbabilities) -> float:
 
         p_errors = [(codeword_prob['prob_a'] * photodetector_prob['prob_click'][codeword_index]) if letter == alpha
                     else (codeword_prob['prob_minus_a'] * photodetector_prob['prob_no_click'][codeword_index])
@@ -181,18 +183,29 @@ class CSD(ABC):
             return self._run_one_layer_sampling(engine=engine, letter=letter, params=params)
         return self._run_one_layer_probabilities(engine=engine, letter=letter, params=params)
 
-    def _one_combination_execution(self, alpha: float, params: List[float]) -> Union[float, EagerTensor]:
+    def _cost_function(self, params: List[float], alpha: float) -> Union[float, EagerTensor]:
         photodetector_probabilities = self._compute_photodetector_probabilities(engine=self._engine,
                                                                                 codeword=self._codeword,
                                                                                 params=params)
 
-        return self._compute_error_probability(codeword=self._codeword,
-                                               alpha=alpha,
-                                               codeword_prob=self._codeword_probabilities,
-                                               photodetector_prob=photodetector_probabilities)
+        self._current_p_err = self._compute_average_error_probability(codeword=self._codeword,
+                                                                      alpha=alpha,
+                                                                      codeword_prob=self._codeword_probabilities,
+                                                                      photodetector_prob=photodetector_probabilities)
+        return self._current_p_err
+
+    def _optimize(self, alpha: float) -> OptimizationResult:
+        return {
+            'optimized_parameters': optimize.minimize(self._cost_function,
+                                                      [0],
+                                                      args=(alpha, ),
+                                                      method='BFGS',
+                                                      tol=1e-6).x,
+            'current_p_err': self._current_p_err,
+        }
 
     @typechecked
-    def execute(self, configuration: RunConfiguration) -> List[ResultExecution]:
+    def execute(self, configuration: RunConfiguration) -> ResultExecution:
         """Run an experiment for the same codeword with the given configuration
 
         Args:
@@ -216,28 +229,29 @@ class CSD(ABC):
         codeword_size = configuration['codeword_size'] if 'codeword_size' in configuration else None
         alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
 
-        results = []
+        result: ResultExecution = {
+            'alphas': [],
+            'opt_betas': [],
+            'p_err': [],
+            'p_succ': [],
+        }
+
+        logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
+                     " with measuring_type: "
+                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
 
         for alpha in alphas:
             self._codeword = self._create_random_codeword(codeword_size, alpha)
             self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
-            result: ResultExecution = {
-                'alpha': alpha,
-                'codeword': self._codeword,
-                'betas': configuration['params']['betas'],
-                'p_err': []
-            }
 
-            logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
-                         " with measuring_type: "
-                         f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
+            optimization_result = self._optimize(alpha=alpha)
 
-            for beta in configuration['params']['betas']:
-                result['p_err'].append(self._one_combination_execution(alpha=alpha, params=[beta]))
+            result['alphas'].append(np.round(alpha, 2))
+            result['opt_betas'].append(optimization_result['optimized_parameters'][0])
+            result['p_err'].append(optimization_result['current_p_err'])
+            result['p_succ'].append(1 - optimization_result['current_p_err'])
 
-            results.append(result)
-
-        return results
+        return result
 
     def show_result(self) -> dict:
         if self._result is None:
