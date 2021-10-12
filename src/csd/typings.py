@@ -52,6 +52,7 @@ class OptimizationResult(TypedDict):
 
 class ResultExecution(TypedDict):
     alphas: List[float]
+    codewords: List[List[float]]
     opt_betas: List[float]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]

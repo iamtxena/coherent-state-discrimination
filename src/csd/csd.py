@@ -9,7 +9,7 @@ from typeguard import typechecked
 import strawberryfields as sf
 from strawberryfields.api import Result
 from strawberryfields.backends import BaseState
-from typing import Union, cast, List
+from typing import Optional, Union, cast, List
 import numpy as np
 import random
 from csd.config import logger
@@ -25,6 +25,7 @@ class CSD(ABC):
     MINUS_A = -1
     DEFAULT_CUTOFF_DIMENSION = 5
     DEFAULT_ALPHA = 0.7
+    DEFAULT_CODEWORD_SIZE = 10
 
     @typechecked
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
@@ -35,6 +36,9 @@ class CSD(ABC):
             self._batch_size = csd_config.get('batch_size')
             self._threshold = csd_config.get('threshold')
         self._result = None
+        self._probability_results: List[ResultExecution] = []
+        self._sampling_results: List[ResultExecution] = []
+        self._plot: Union[Plot, None] = None
         self._circuit = None
         self._run_configuration: Union[RunConfiguration, None] = None
         self._alphas: Union[List[float], None] = None
@@ -219,12 +223,14 @@ class CSD(ABC):
         self._engine = sf.Engine(backend=self._run_configuration['backend'].value,
                                  backend_options={"cutoff_dim": cutoff_dim})
 
-        codeword_size = configuration['codeword_size'] if 'codeword_size' in configuration else None
+        codeword_size = (configuration['codeword_size'] if 'codeword_size' in configuration
+                         else self.DEFAULT_CODEWORD_SIZE)
         alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
         self._alphas = alphas
 
         result: ResultExecution = {
             'alphas': [],
+            'codewords': [],
             'opt_betas': [],
             'p_err': [],
             'p_succ': [],
@@ -244,13 +250,18 @@ class CSD(ABC):
 
         return result
 
-    def _execute_for_one_alpha(self, codeword_size, result, optimization, alpha):
+    def _execute_for_one_alpha(self,
+                               codeword_size: int,
+                               result: ResultExecution,
+                               optimization: Optimize,
+                               alpha: float) -> None:
         self._codeword = self._create_random_codeword(codeword_size, alpha)
         self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
-        logger.debug(f'Optimizing for alpha: {alpha}')
+        logger.debug(f'Optimizing for alpha: {np.round(alpha, 2)} with codeword: {self._codeword}')
         optimized_parameters = optimization.optimize(alpha=alpha, cost_function=self._cost_function)
 
         result['alphas'].append(np.round(alpha, 2))
+        result['codewords'].append(self._codeword)
         result['opt_betas'].append(optimized_parameters[0])
         result['p_err'].append(self._current_p_err)
         result['p_succ'].append(1 - self._current_p_err)
@@ -279,7 +290,10 @@ class CSD(ABC):
 
     @typechecked
     @timing
-    def execute_all_backends_and_measuring_types(self, alphas: List[float]) -> List[ResultExecution]:
+    def execute_all_backends_and_measuring_types(
+            self,
+            alphas: List[float],
+            measuring_types: Optional[List[MeasuringTypes]] = [MeasuringTypes.PROBABILITIES]) -> List[ResultExecution]:
         """Execute the experiment for all backends and measuring types
 
         Args:
@@ -288,23 +302,29 @@ class CSD(ABC):
         Returns:
             List[ResultExecution]: List of the Result Executions
         """
-        result_probs = self._execute_with_given_backends(alphas=alphas,
-                                                         backends=[
-                                                             Backends.FOCK,
-                                                             Backends.GAUSSIAN,
-                                                             Backends.TENSORFLOW,
-                                                         ],
-                                                         measuring_type=MeasuringTypes.PROBABILITIES)
+        if measuring_types is None:
+            measuring_types = [MeasuringTypes.PROBABILITIES]
 
-        result_samplings = self._execute_with_given_backends(alphas=alphas,
-                                                             backends=[
-                                                                 Backends.FOCK,
-                                                                 Backends.TENSORFLOW,
-                                                             ],
-                                                             measuring_type=MeasuringTypes.SAMPLING)
-        self._result_probs = result_probs
-        self._result_samplings = result_samplings
-        return result_probs + result_samplings
+        required_probability_execution = measuring_types.count(MeasuringTypes.PROBABILITIES) > 0
+        required_sampling_execution = measuring_types.count(MeasuringTypes.SAMPLING) > 0
+
+        if required_probability_execution:
+            self._probability_results = self._execute_with_given_backends(alphas=alphas,
+                                                                          backends=[
+                                                                              Backends.FOCK,
+                                                                              Backends.GAUSSIAN,
+                                                                              Backends.TENSORFLOW,
+                                                                          ],
+                                                                          measuring_type=MeasuringTypes.PROBABILITIES)
+
+        if required_sampling_execution:
+            self._sampling_results += self._execute_with_given_backends(alphas=alphas,
+                                                                        backends=[
+                                                                            Backends.FOCK,
+                                                                            Backends.TENSORFLOW,
+                                                                        ],
+                                                                        measuring_type=MeasuringTypes.SAMPLING)
+        return self._probability_results + self._sampling_results
 
     def _execute_with_given_backends(self,
                                      alphas: List[float],
@@ -324,15 +344,35 @@ class CSD(ABC):
 
     @typechecked
     @timing
-    def plot_success_probabilities(self) -> None:
-        if self._alphas is None:
+    def plot_success_probabilities(self,
+                                   alphas: Optional[Union[List[float], None]] = None,
+                                   measuring_types: Optional[Union[List[MeasuringTypes], None]] = None) -> None:
+        if self._alphas is None and alphas is None:
             raise ValueError("alphas not set. You must execute the optimization first.")
-        if self._result_probs is None:
-            raise ValueError("result from probabilities not set.")
-        if self._result_samplings is None:
-            raise ValueError("result from samplings not set")
-        self._plot = Plot(alphas=self._alphas, executions=(self._result_probs + self._result_samplings))
-        self._plot.plot_success_probabilities()
+        if self._alphas is None:
+            self._alphas = alphas
+        if self._plot is None:
+            self._plot = Plot(alphas=self._alphas)
+        if measuring_types is None:
+            self._plot.plot_success_probabilities()
+            return None
+
+        if self._probability_results == [] and self._sampling_results == []:
+            raise ValueError("results not set.")
+
+        required_probability_execution = measuring_types.count(MeasuringTypes.PROBABILITIES) > 0
+        required_sampling_execution = measuring_types.count(MeasuringTypes.SAMPLING) > 0
+
+        if required_probability_execution and required_sampling_execution:
+            self._plot.plot_success_probabilities(executions=self._probability_results + self._sampling_results)
+            return None
+        if required_probability_execution:
+            self._plot.plot_success_probabilities(executions=self._probability_results)
+            return None
+        if required_sampling_execution:
+            self._plot.plot_success_probabilities(executions=self._sampling_results)
+            return None
+        raise ValueError('Value not expected')
 
     def show_result(self) -> dict:
         if self._result is None:
