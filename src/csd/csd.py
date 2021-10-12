@@ -1,5 +1,5 @@
 from abc import ABC
-from csd.typings import (CSDConfiguration,
+from csd.typings import (Backends, CSDConfiguration,
                          RunConfiguration,
                          MeasuringTypes,
                          CodewordProbabilities,
@@ -15,6 +15,8 @@ import random
 from csd.config import logger
 from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
+from csd.plot import Plot
+from csd.util import timing
 
 
 class CSD(ABC):
@@ -35,6 +37,7 @@ class CSD(ABC):
         self._result = None
         self._circuit = None
         self._run_configuration: Union[RunConfiguration, None] = None
+        self._alphas: Union[List[float], None] = None
 
     def _create_codeword(self, letters: List[float], codeword_size=10) -> List[float]:
         return [random.choice(letters) for _ in range(codeword_size)]
@@ -194,6 +197,7 @@ class CSD(ABC):
         return float(self._current_p_err)
 
     @typechecked
+    @timing
     def execute(self, configuration: RunConfiguration) -> ResultExecution:
         """Run an experiment for the same codeword with the given configuration
 
@@ -217,12 +221,17 @@ class CSD(ABC):
 
         codeword_size = configuration['codeword_size'] if 'codeword_size' in configuration else None
         alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
+        self._alphas = alphas
 
         result: ResultExecution = {
             'alphas': [],
             'opt_betas': [],
             'p_err': [],
             'p_succ': [],
+            'backend': self._run_configuration['backend'].value,
+            'measuring_type': self._run_configuration['measuring_type'].value,
+            'plot_label': self._set_plot_label(backend=self._run_configuration['backend'],
+                                               measuring_type=self._run_configuration['measuring_type'])
         }
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
@@ -231,17 +240,99 @@ class CSD(ABC):
 
         optimization = Optimize()
         for alpha in alphas:
-            self._codeword = self._create_random_codeword(codeword_size, alpha)
-            self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
-            logger.debug(f'Optimizing for alpha: {alpha}')
-            optimized_parameters = optimization.optimize(alpha=alpha, cost_function=self._cost_function)
-
-            result['alphas'].append(np.round(alpha, 2))
-            result['opt_betas'].append(optimized_parameters[0])
-            result['p_err'].append(self._current_p_err)
-            result['p_succ'].append(1 - self._current_p_err)
+            self._execute_for_one_alpha(codeword_size, result, optimization, alpha)
 
         return result
+
+    def _execute_for_one_alpha(self, codeword_size, result, optimization, alpha):
+        self._codeword = self._create_random_codeword(codeword_size, alpha)
+        self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
+        logger.debug(f'Optimizing for alpha: {alpha}')
+        optimized_parameters = optimization.optimize(alpha=alpha, cost_function=self._cost_function)
+
+        result['alphas'].append(np.round(alpha, 2))
+        result['opt_betas'].append(optimized_parameters[0])
+        result['p_err'].append(self._current_p_err)
+        result['p_succ'].append(1 - self._current_p_err)
+
+    def _set_plot_label(self, backend: Backends, measuring_type: MeasuringTypes) -> str:
+        """Set the label for the success probability plot
+
+        Args:
+            backend (Backends): Current experiment backend
+            measuring_type (MeasuringTypes): Current experiment measuring type
+
+        Returns:
+            str: the determined label
+        """
+        if backend is Backends.FOCK and measuring_type is MeasuringTypes.PROBABILITIES:
+            return "pFockProb(a)"
+        if backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.PROBABILITIES:
+            return "pGausProb(a)"
+        if backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.PROBABILITIES:
+            return "pTFProb(a)"
+        if backend is Backends.FOCK and measuring_type is MeasuringTypes.SAMPLING:
+            return "pFockSampl(a)"
+        if backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.SAMPLING:
+            return "pTFSampl(a)"
+        raise ValueError(f"Values not supported. backend: {backend.value} and measuring_type: {measuring_type.value}")
+
+    @typechecked
+    @timing
+    def execute_all_backends_and_measuring_types(self, alphas: List[float]) -> List[ResultExecution]:
+        """Execute the experiment for all backends and measuring types
+
+        Args:
+            alphas (List[float]): List of input alpha values to generate codewords and run the experiments
+
+        Returns:
+            List[ResultExecution]: List of the Result Executions
+        """
+        result_probs = self._execute_with_given_backends(alphas=alphas,
+                                                         backends=[
+                                                             Backends.FOCK,
+                                                             Backends.GAUSSIAN,
+                                                             Backends.TENSORFLOW,
+                                                         ],
+                                                         measuring_type=MeasuringTypes.PROBABILITIES)
+
+        result_samplings = self._execute_with_given_backends(alphas=alphas,
+                                                             backends=[
+                                                                 Backends.FOCK,
+                                                                 Backends.TENSORFLOW,
+                                                             ],
+                                                             measuring_type=MeasuringTypes.SAMPLING)
+        self._result_probs = result_probs
+        self._result_samplings = result_samplings
+        return result_probs + result_samplings
+
+    def _execute_with_given_backends(self,
+                                     alphas: List[float],
+                                     backends: List[Backends],
+                                     measuring_type: MeasuringTypes) -> List[ResultExecution]:
+
+        return [self.execute(configuration=RunConfiguration({
+            'alphas': alphas,
+            'backend': backend,
+            'number_qumodes': 1,
+            'number_layers': 1,
+            'measuring_type': measuring_type,
+            'shots': 10,
+            'codeword_size': 10,
+            'cutoff_dim': 2,
+        })) for backend in backends]
+
+    @typechecked
+    @timing
+    def plot_success_probabilities(self) -> None:
+        if self._alphas is None:
+            raise ValueError("alphas not set. You must execute the optimization first.")
+        if self._result_probs is None:
+            raise ValueError("result from probabilities not set.")
+        if self._result_samplings is None:
+            raise ValueError("result from samplings not set")
+        self._plot = Plot(alphas=self._alphas, executions=(self._result_probs + self._result_samplings))
+        self._plot.plot_success_probabilities()
 
     def show_result(self) -> dict:
         if self._result is None:

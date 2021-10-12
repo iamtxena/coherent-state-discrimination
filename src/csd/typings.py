@@ -55,3 +55,6 @@ class ResultExecution(TypedDict):
     opt_betas: List[float]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]
+    backend: str
+    measuring_type: str
+    plot_label: str
