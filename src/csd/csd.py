@@ -191,7 +191,7 @@ class CSD(ABC):
                                                                       alpha=alpha,
                                                                       codeword_prob=self._codeword_probabilities,
                                                                       photodetector_prob=photodetector_probabilities)
-        return self._current_p_err
+        return float(self._current_p_err)
 
     @typechecked
     def execute(self, configuration: RunConfiguration) -> ResultExecution:
@@ -233,7 +233,7 @@ class CSD(ABC):
         for alpha in alphas:
             self._codeword = self._create_random_codeword(codeword_size, alpha)
             self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
-
+            logger.debug(f'Optimizing for alpha: {alpha}')
             optimized_parameters = optimization.optimize(alpha=alpha, cost_function=self._cost_function)
 
             result['alphas'].append(np.round(alpha, 2))
