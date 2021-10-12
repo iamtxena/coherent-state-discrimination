@@ -4,8 +4,7 @@ from csd.typings import (CSDConfiguration,
                          MeasuringTypes,
                          CodewordProbabilities,
                          PhotodetectorProbabilities,
-                         ResultExecution,
-                         OptimizationResult)
+                         ResultExecution)
 from typeguard import typechecked
 import strawberryfields as sf
 from strawberryfields.api import Result
@@ -15,7 +14,7 @@ import numpy as np
 import random
 from csd.config import logger
 from tensorflow.python.framework.ops import EagerTensor
-from scipy import optimize
+from csd.optimize import Optimize
 
 
 class CSD(ABC):
@@ -194,16 +193,6 @@ class CSD(ABC):
                                                                       photodetector_prob=photodetector_probabilities)
         return self._current_p_err
 
-    def _optimize(self, alpha: float) -> OptimizationResult:
-        return {
-            'optimized_parameters': optimize.minimize(self._cost_function,
-                                                      [0],
-                                                      args=(alpha, ),
-                                                      method='BFGS',
-                                                      tol=1e-6).x,
-            'current_p_err': self._current_p_err,
-        }
-
     @typechecked
     def execute(self, configuration: RunConfiguration) -> ResultExecution:
         """Run an experiment for the same codeword with the given configuration
@@ -240,16 +229,17 @@ class CSD(ABC):
                      " with measuring_type: "
                      f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
 
+        optimization = Optimize()
         for alpha in alphas:
             self._codeword = self._create_random_codeword(codeword_size, alpha)
             self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
 
-            optimization_result = self._optimize(alpha=alpha)
+            optimized_parameters = optimization.optimize(alpha=alpha, cost_function=self._cost_function)
 
             result['alphas'].append(np.round(alpha, 2))
-            result['opt_betas'].append(optimization_result['optimized_parameters'][0])
-            result['p_err'].append(optimization_result['current_p_err'])
-            result['p_succ'].append(1 - optimization_result['current_p_err'])
+            result['opt_betas'].append(optimized_parameters[0])
+            result['p_err'].append(self._current_p_err)
+            result['p_succ'].append(1 - self._current_p_err)
 
         return result
 
