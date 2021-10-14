@@ -14,12 +14,15 @@ class PhotodetectorProbabilities(TypedDict):
     prob_no_click: List[Union[float, EagerTensor]]
 
 
-class CSDConfiguration(TypedDict):
+class CSDConfiguration(TypedDict, total=False):
     displacement_magnitude: float
     steps: int
     learning_rate: float
     batch_size: int
     threshold: float
+    shots: int
+    codeword_size: int
+    cutoff_dim: int
 
 
 class Backends(enum.Enum):

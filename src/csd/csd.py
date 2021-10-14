@@ -20,21 +20,28 @@ from csd.util import timing
 
 
 class CSD(ABC):
-    NUM_SHOTS = 100
     A = 1
     MINUS_A = -1
-    DEFAULT_CUTOFF_DIMENSION = 5
+    DEFAULT_NUM_SHOTS = 100
+    DEFAULT_CUTOFF_DIMENSION = 2
     DEFAULT_ALPHA = 0.7
     DEFAULT_CODEWORD_SIZE = 10
 
     @typechecked
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
+        self._shots = self.DEFAULT_NUM_SHOTS
+        self._codeword_size = self.DEFAULT_CODEWORD_SIZE
+        self._cutoff_dim = self.DEFAULT_CUTOFF_DIMENSION
+
         if csd_config is not None:
             self._displacement_magnitude = csd_config.get('displacement_magnitude')
             self._steps = csd_config.get('steps')
             self._learning_rate = csd_config.get('learning_rate')
             self._batch_size = csd_config.get('batch_size')
             self._threshold = csd_config.get('threshold')
+            self._shots = csd_config.get('shots', self.DEFAULT_NUM_SHOTS)
+            self._codeword_size = csd_config.get('codeword_size', self.DEFAULT_CODEWORD_SIZE)
+            self._cutoff_dim = csd_config.get('cutoff_dim', self.DEFAULT_CUTOFF_DIMENSION)
         self._result = None
         self._probability_results: List[ResultExecution] = []
         self._sampling_results: List[ResultExecution] = []
@@ -242,7 +249,8 @@ class CSD(ABC):
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
                      " with measuring_type: "
-                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
+                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}"
+                     f" and cutoff_dim: {self._cutoff_dim}")
 
         optimization = Optimize()
         for alpha in alphas:
@@ -313,7 +321,7 @@ class CSD(ABC):
                                                                           backends=[
                                                                               Backends.FOCK,
                                                                               Backends.GAUSSIAN,
-                                                                              Backends.TENSORFLOW,
+                                                                              # Backends.TENSORFLOW,
                                                                           ],
                                                                           measuring_type=MeasuringTypes.PROBABILITIES)
 
@@ -321,7 +329,7 @@ class CSD(ABC):
             self._sampling_results += self._execute_with_given_backends(alphas=alphas,
                                                                         backends=[
                                                                             Backends.FOCK,
-                                                                            Backends.TENSORFLOW,
+                                                                            # Backends.TENSORFLOW,
                                                                         ],
                                                                         measuring_type=MeasuringTypes.SAMPLING)
         return self._probability_results + self._sampling_results
@@ -337,9 +345,9 @@ class CSD(ABC):
             'number_qumodes': 1,
             'number_layers': 1,
             'measuring_type': measuring_type,
-            'shots': 10,
-            'codeword_size': 10,
-            'cutoff_dim': 2,
+            'shots': self._shots,
+            'codeword_size': self._codeword_size,
+            'cutoff_dim': self._cutoff_dim,
         })) for backend in backends]
 
     @typechecked
