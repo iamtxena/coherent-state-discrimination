@@ -26,8 +26,8 @@ class CSD(ABC):
     DEFAULT_CUTOFF_DIMENSION = 2
     DEFAULT_ALPHA = 0.7
     DEFAULT_CODEWORD_SIZE = 10
+    DEFAULT_STEPS: int = 500
 
-    @typechecked
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
         self._shots = self.DEFAULT_NUM_SHOTS
         self._codeword_size = self.DEFAULT_CODEWORD_SIZE
@@ -72,14 +72,29 @@ class CSD(ABC):
                                              engine: sf.Engine,
                                              codeword: List[float],
                                              params: List[float]) -> PhotodetectorProbabilities:
-        no_click_probabilities = [self._run_one_layer_checking_measuring_type(engine=engine,
-                                                                              letter=letter,
-                                                                              params=params)
-                                  for letter in codeword]
+        no_click_probabilities = self._compute_no_click_probabilities(engine, codeword, params)
+
         return {
             'prob_click': list(1 - np.array(no_click_probabilities)),
-            'prob_no_click': no_click_probabilities
+            'prob_no_click': list(no_click_probabilities)
         }
+
+    def _compute_no_click_probabilities(self,
+                                        engine: sf.Engine,
+                                        codeword: List[float],
+                                        params: List[float]) -> List[Union[float, EagerTensor]]:
+        if engine.backend_name == Backends.TENSORFLOW.value:
+            result_probs = self._run_one_layer_checking_measuring_type(engine=engine,
+                                                                       letter_or_codeword=codeword,
+                                                                       params=params)
+            if isinstance(result_probs, EagerTensor):
+                return result_probs
+            return result_probs if isinstance(result_probs, List) else [result_probs]
+
+        return [cast(float, self._run_one_layer_checking_measuring_type(engine=engine,
+                                                                        letter_or_codeword=letter,
+                                                                        params=params))
+                for letter in codeword]
 
     def _compute_average_error_probability(self,
                                            codeword: List[float],
@@ -94,8 +109,9 @@ class CSD(ABC):
         return sum(p_errors) / len(codeword)
 
     def _run_one_layer_probabilities(self, engine: sf.Engine,
-                                     letter: float,
-                                     params: List[float]) -> Union[float, EagerTensor]:
+                                     letter_or_codeword: Union[float, List[float]],
+                                     params: List[float]) -> Union[Union[float, EagerTensor],
+                                                                   List[Union[float, EagerTensor]]]:
         """Run a one layer experiment
 
         Args:
@@ -109,21 +125,23 @@ class CSD(ABC):
         if self._circuit is None:
             raise ValueError("Circuit MUST be created first")
 
-        self._result = self._run_engine(engine=engine, letter=letter, params=params)
+        self._result = self._run_engine(engine=engine, letter_or_codeword=letter_or_codeword, params=params)
         return cast(Result, self._result).state.fock_prob([0])
 
     def _run_engine_and_compute_probability_0_photons(self,
                                                       engine: sf.Engine,
                                                       shots: int,
-                                                      letter: float,
-                                                      params: List[float]) -> Union[float, EagerTensor]:
+                                                      letter_or_codeword: Union[float, List[float]],
+                                                      params: List[float]) -> Union[Union[float, EagerTensor],
+                                                                                    List[Union[float, EagerTensor]]]:
+        # !!! TODO: use shots and get all samples, not just the first sample
         return sum([1 for read_value in [self._run_engine(engine=engine,
-                                                          letter=letter,
+                                                          letter_or_codeword=letter_or_codeword,
                                                           params=params).samples[0][0]
                                          for _ in range(0, shots)] if read_value == 0]) / shots
 
     def _run_engine(self, engine: sf.Engine,
-                    letter: float,
+                    letter_or_codeword: Union[float, List[float]],
                     params: List[float]) -> Result:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
@@ -133,15 +151,18 @@ class CSD(ABC):
             engine.reset()
 
         self._result = engine.run(self._circuit, args={
-            "alpha": letter,  # current alpha value from generated codeword
+            # current alpha value from generated codeword or
+            # the codeword when using tf with batches
+            "alpha": letter_or_codeword,
             "beta": params[0],  # beta
         })
         return self._result
 
     def _run_one_layer_sampling(self,
                                 engine: sf.Engine,
-                                letter: float,
-                                params: List[float]) -> Union[float, EagerTensor]:
+                                letter_or_codeword: Union[float, List[float]],
+                                params: List[float]) -> Union[Union[float, EagerTensor],
+                                                              List[Union[float, EagerTensor]]]:
         """Run a one layer experiment doing MeasureFock and performing samplint with nshots
 
         Args:
@@ -161,7 +182,7 @@ class CSD(ABC):
         return self._run_engine_and_compute_probability_0_photons(
             engine=engine,
             shots=self._run_configuration['shots'],
-            letter=letter,
+            letter_or_codeword=letter_or_codeword,
             params=params)
 
     def _create_circuit(self) -> sf.Program:
@@ -187,25 +208,32 @@ class CSD(ABC):
 
     def _run_one_layer_checking_measuring_type(self,
                                                engine: sf.Engine,
-                                               letter: float,
-                                               params: List[float]) -> Union[float, EagerTensor]:
+                                               letter_or_codeword: Union[float, List[float]],
+                                               params: List[float]) -> Union[Union[float, EagerTensor],
+                                                                             List[Union[float, EagerTensor]]]:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
         if self._run_configuration['measuring_type'] is MeasuringTypes.SAMPLING:
-            return self._run_one_layer_sampling(engine=engine, letter=letter, params=params)
-        return self._run_one_layer_probabilities(engine=engine, letter=letter, params=params)
+            return self._run_one_layer_sampling(engine=engine, letter_or_codeword=letter_or_codeword, params=params)
+        return self._run_one_layer_probabilities(engine=engine, letter_or_codeword=letter_or_codeword, params=params)
 
     def _cost_function(self, params: List[float], alpha: float) -> Union[float, EagerTensor]:
         photodetector_probabilities = self._compute_photodetector_probabilities(engine=self._engine,
                                                                                 codeword=self._codeword,
                                                                                 params=params)
 
-        self._current_p_err = self._compute_average_error_probability(codeword=self._codeword,
-                                                                      alpha=alpha,
-                                                                      codeword_prob=self._codeword_probabilities,
-                                                                      photodetector_prob=photodetector_probabilities)
-        return float(self._current_p_err)
+        p_err = self._compute_average_error_probability(codeword=self._codeword,
+                                                        alpha=alpha,
+                                                        codeword_prob=self._codeword_probabilities,
+                                                        photodetector_prob=photodetector_probabilities)
+        self._current_p_err = self._save_current_p_error(p_err)
+        return p_err
+
+    def _save_current_p_error(self, p_err: Union[float, EagerTensor]) -> float:
+        if isinstance(p_err, EagerTensor):
+            return float(p_err.numpy())
+        return p_err
 
     @typechecked
     @timing
@@ -220,20 +248,25 @@ class CSD(ABC):
         """
         if configuration['number_layers'] != 1 or configuration['number_qumodes'] != 1:
             raise ValueError('Experiment only available for ONE qumode and ONE layer')
-        self._run_configuration = configuration
+        self._run_configuration = configuration.copy()
+
+        backend_is_tf = self._run_configuration['backend'] == Backends.TENSORFLOW
         self._circuit = self._create_circuit()
+
+        codeword_size = (configuration['codeword_size'] if 'codeword_size' in configuration
+                         else self.DEFAULT_CODEWORD_SIZE)
+        alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
+        self._alphas = alphas
 
         cutoff_dim = (self._run_configuration['cutoff_dim']
                       if 'cutoff_dim' in self._run_configuration
                       else self.DEFAULT_CUTOFF_DIMENSION)
 
         self._engine = sf.Engine(backend=self._run_configuration['backend'].value,
-                                 backend_options={"cutoff_dim": cutoff_dim})
-
-        codeword_size = (configuration['codeword_size'] if 'codeword_size' in configuration
-                         else self.DEFAULT_CODEWORD_SIZE)
-        alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
-        self._alphas = alphas
+                                 backend_options={
+                                     "cutoff_dim": cutoff_dim,
+                                     "batch_size": codeword_size if backend_is_tf else None
+        })
 
         result: ResultExecution = {
             'alphas': [],
@@ -252,27 +285,45 @@ class CSD(ABC):
                      f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}"
                      f" and cutoff_dim: {self._cutoff_dim}")
 
-        optimization = Optimize()
+        optimization = Optimize(backend=self._run_configuration['backend'])
+        learning_steps = self._set_learning_steps(backend_is_tf)
+
         for alpha in alphas:
-            self._execute_for_one_alpha(codeword_size, result, optimization, alpha)
+            for step in range(learning_steps):
+                optimized_parameters = self._execute_for_one_alpha(codeword_size=codeword_size,
+                                                                   optimization=optimization,
+                                                                   alpha=alpha)
+
+                if backend_is_tf and (step + 1) % 10 == 0:
+                    print("Learned displacement value at step {}: {}".format(
+                        step + 1, optimized_parameters[0]))
+
+            logger.debug(f'Optimized for alpha: {np.round(alpha, 2)} with codeword: {self._codeword}'
+                         f' beta: {optimized_parameters[0]}')
+            result['alphas'].append(np.round(alpha, 2))
+            result['codewords'].append(self._codeword)
+            result['opt_betas'].append(optimized_parameters[0])
+            result['p_err'].append(self._current_p_err)
+            result['p_succ'].append(1 - self._current_p_err)
 
         return result
 
+    def _set_learning_steps(self, backend_is_tf) -> int:
+        if self._run_configuration is None:
+            raise ValueError("Run configuration not specified")
+
+        if backend_is_tf:
+            return self._run_configuration['steps'] if 'steps' in self._run_configuration else self.DEFAULT_STEPS
+        return 1
+
     def _execute_for_one_alpha(self,
                                codeword_size: int,
-                               result: ResultExecution,
                                optimization: Optimize,
-                               alpha: float) -> None:
+                               alpha: float) -> List[float]:
+
         self._codeword = self._create_random_codeword(codeword_size, alpha)
         self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
-        logger.debug(f'Optimizing for alpha: {np.round(alpha, 2)} with codeword: {self._codeword}')
-        optimized_parameters = optimization.optimize(alpha=alpha, cost_function=self._cost_function)
-
-        result['alphas'].append(np.round(alpha, 2))
-        result['codewords'].append(self._codeword)
-        result['opt_betas'].append(optimized_parameters[0])
-        result['p_err'].append(self._current_p_err)
-        result['p_succ'].append(1 - self._current_p_err)
+        return optimization.optimize(alpha=alpha, cost_function=self._cost_function)
 
     def _set_plot_label(self, backend: Backends, measuring_type: MeasuringTypes) -> str:
         """Set the label for the success probability plot
@@ -321,7 +372,7 @@ class CSD(ABC):
                                                                           backends=[
                                                                               Backends.FOCK,
                                                                               Backends.GAUSSIAN,
-                                                                              # Backends.TENSORFLOW,
+                                                                              Backends.TENSORFLOW,
                                                                           ],
                                                                           measuring_type=MeasuringTypes.PROBABILITIES)
 
@@ -329,7 +380,7 @@ class CSD(ABC):
             self._sampling_results += self._execute_with_given_backends(alphas=alphas,
                                                                         backends=[
                                                                             Backends.FOCK,
-                                                                            # Backends.TENSORFLOW,
+                                                                            Backends.TENSORFLOW,
                                                                         ],
                                                                         measuring_type=MeasuringTypes.SAMPLING)
         return self._probability_results + self._sampling_results

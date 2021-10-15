@@ -46,6 +46,7 @@ class RunConfiguration(TypedDict, total=False):
     shots: int
     codeword_size: int
     cutoff_dim: int
+    steps: int
 
 
 class OptimizationResult(TypedDict):
