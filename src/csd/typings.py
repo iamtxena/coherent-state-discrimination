@@ -16,6 +16,7 @@ class CSDConfiguration(TypedDict, total=False):
     batch_size: int
     shots: int
     cutoff_dim: int
+    batch: List[float]
 
 
 class Backends(enum.Enum):
@@ -40,6 +41,7 @@ class RunConfiguration(TypedDict, total=False):
     batch_size: int
     cutoff_dim: int
     steps: int
+    batch: List[float]
 
 
 class OptimizationResult(TypedDict):
@@ -50,7 +52,7 @@ class OptimizationResult(TypedDict):
 class ResultExecution(TypedDict):
     alphas: List[float]
     batches: List[List[float]]
-    opt_betas: List[float]
+    opt_betas: Union[List[float], EagerTensor]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]
     backend: str
