@@ -268,16 +268,19 @@ class CSD(ABC):
         result = self._init_result()
 
         for sample_alpha in self._alphas:
-            self._alpha_value = sample_alpha
-            logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)}')
-
-            for step in range(learning_steps):
-                optimized_parameters = self._execute_for_one_alpha_and_step(batch_size=self._batch_size,
-                                                                            optimization=optimization)
-                self._print_displacement(step, optimized_parameters)
-            self._update_result(result, optimized_parameters)
-
+            self._execute_for_one_alpha(learning_steps, optimization, result, sample_alpha)
         return result
+
+    @timing
+    def _execute_for_one_alpha(self, learning_steps, optimization, result, sample_alpha):
+        self._alpha_value = sample_alpha
+        logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)}')
+
+        for step in range(learning_steps):
+            optimized_parameters = self._execute_for_one_alpha_and_step(batch_size=self._batch_size,
+                                                                        optimization=optimization)
+            self._print_displacement(step, optimized_parameters)
+        self._update_result(result, optimized_parameters)
 
     def _print_displacement(self, step, optimized_parameters):
         if self._backend_is_tf() and (step + 1) % 100 == 0:
@@ -369,6 +372,9 @@ class CSD(ABC):
     def execute_all_backends_and_measuring_types(
             self,
             alphas: List[float],
+            backends: List[Backends] = [Backends.FOCK,
+                                        Backends.GAUSSIAN,
+                                        Backends.TENSORFLOW],
             measuring_types: Optional[List[MeasuringTypes]] = [MeasuringTypes.PROBABILITIES]) -> List[ResultExecution]:
         """Execute the experiment for all backends and measuring types
 
@@ -386,20 +392,12 @@ class CSD(ABC):
 
         if required_probability_execution:
             self._probability_results = self._execute_with_given_backends(alphas=alphas,
-                                                                          backends=[
-                                                                              # Backends.FOCK,
-                                                                              # Backends.GAUSSIAN,
-                                                                              Backends.TENSORFLOW,
-                                                                          ],
+                                                                          backends=backends,
                                                                           measuring_type=MeasuringTypes.PROBABILITIES)
 
         if required_sampling_execution:
             self._sampling_results += self._execute_with_given_backends(alphas=alphas,
-                                                                        backends=[
-                                                                            Backends.FOCK,
-                                                                            Backends.GAUSSIAN
-                                                                            # Backends.TENSORFLOW,
-                                                                        ],
+                                                                        backends=backends,
                                                                         measuring_type=MeasuringTypes.SAMPLING)
         return self._probability_results + self._sampling_results
 
