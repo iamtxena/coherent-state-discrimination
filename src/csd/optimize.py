@@ -1,8 +1,7 @@
 from abc import ABC
 from typing import Callable, List, Union, Optional
-# from scipy.optimize import minimize
+from scipy.optimize import minimize
 import tensorflow as tf
-from csd.util import timing
 from csd.typings import Backends
 
 
@@ -14,16 +13,14 @@ class Optimize(ABC):
         if self._backends is Backends.TENSORFLOW:
             self._opt = tf.keras.optimizers.Adam(learning_rate=0.01)
 
-    @timing
     def optimize(self, alpha: float, cost_function: Callable) -> List[float]:
         if self._backends is Backends.TENSORFLOW:
             return self._optimize_tensorflow(alpha=alpha, cost_function=cost_function)
-        # return minimize(cost_function,
-        #                 [0],
-        #                 args=(alpha, ),
-        #                 method='BFGS',
-        #                 tol=1e-6).x
-        raise NotImplementedError()
+        return minimize(cost_function,
+                        [0],
+                        args=(alpha, ),
+                        method='BFGS',
+                        tol=1e-6).x
 
     def _optimize_tensorflow(self, alpha: float, cost_function: Callable) -> List[float]:
         if self._opt is None:
@@ -34,5 +31,4 @@ class Optimize(ABC):
             loss = cost_function([beta], alpha)
         gradients = tape.gradient(loss, [beta])
         self._opt.apply_gradients(zip(gradients, [beta]))
-
         return [float(beta.numpy())]

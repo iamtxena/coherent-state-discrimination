@@ -2,7 +2,6 @@ from abc import ABC
 from csd.typings import (Backends, CSDConfiguration,
                          RunConfiguration,
                          MeasuringTypes,
-                         CodewordProbabilities,
                          PhotodetectorProbabilities,
                          ResultExecution)
 from typeguard import typechecked
@@ -25,22 +24,23 @@ class CSD(ABC):
     DEFAULT_NUM_SHOTS = 100
     DEFAULT_CUTOFF_DIMENSION = 2
     DEFAULT_ALPHA = 0.7
-    DEFAULT_CODEWORD_SIZE = 10
-    DEFAULT_STEPS: int = 500
+    DEFAULT_BATCH_SIZE = 10
+    DEFAULT_STEPS: int = 100
+    DEFAULT_LEARNING_RATE: float = 0.1
 
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
         self._shots = self.DEFAULT_NUM_SHOTS
-        self._codeword_size = self.DEFAULT_CODEWORD_SIZE
+        self._batch_size = self.DEFAULT_BATCH_SIZE
         self._cutoff_dim = self.DEFAULT_CUTOFF_DIMENSION
+        self._steps = self.DEFAULT_STEPS
+        self._learning_rate = self.DEFAULT_LEARNING_RATE
 
         if csd_config is not None:
-            self._displacement_magnitude = csd_config.get('displacement_magnitude')
-            self._steps = csd_config.get('steps')
-            self._learning_rate = csd_config.get('learning_rate')
-            self._batch_size = csd_config.get('batch_size')
-            self._threshold = csd_config.get('threshold')
+            self._beta = csd_config.get('beta', 0.1)
+            self._steps = csd_config.get('steps', self.DEFAULT_STEPS)
+            self._learning_rate = csd_config.get('learning_rate', self.DEFAULT_LEARNING_RATE)
+            self._batch_size = csd_config.get('batch_size', self.DEFAULT_BATCH_SIZE)
             self._shots = csd_config.get('shots', self.DEFAULT_NUM_SHOTS)
-            self._codeword_size = csd_config.get('codeword_size', self.DEFAULT_CODEWORD_SIZE)
             self._cutoff_dim = csd_config.get('cutoff_dim', self.DEFAULT_CUTOFF_DIMENSION)
         self._result = None
         self._probability_results: List[ResultExecution] = []
@@ -50,30 +50,21 @@ class CSD(ABC):
         self._run_configuration: Union[RunConfiguration, None] = None
         self._alphas: Union[List[float], None] = None
 
-    def _create_codeword(self, letters: List[float], codeword_size=10) -> List[float]:
-        return [random.choice(letters) for _ in range(codeword_size)]
+    def _create_batch(self, samples: List[float], batch_size=10) -> List[float]:
+        return [random.choice(samples) for _ in range(batch_size)]
 
-    def _create_input_codeword(self, codeword: List[float], alpha_value: float) -> List[float]:
-        return list(alpha_value * np.array(codeword))
+    def _create_input_batch(self, batch: List[float], alpha_value: float) -> List[float]:
+        return list(alpha_value * np.array(batch))
 
-    def _create_random_codeword(self, codeword_size=10, alpha_value: float = 0.7) -> List[float]:
-        base_codeword = self._create_codeword(letters=[self.A, self.MINUS_A], codeword_size=codeword_size)
-        return self._create_input_codeword(codeword=base_codeword, alpha_value=alpha_value)
-
-    def _compute_a_minus_a_probabilities(self, codeword: List[float], alpha_value: float) -> CodewordProbabilities:
-        # prob_a should be 0.5 with larger codewords
-        prob_a = codeword.count(alpha_value) / len(codeword)
-        return {
-            'prob_a': prob_a,
-            'prob_minus_a': 1 - prob_a
-        }
+    def _create_random_batch(self, batch_size=10, alpha_value: float = 0.7) -> List[float]:
+        base_batch = self._create_batch(samples=[self.A, self.MINUS_A], batch_size=batch_size)
+        return self._create_input_batch(batch=base_batch, alpha_value=alpha_value)
 
     def _compute_photodetector_probabilities(self,
                                              engine: sf.Engine,
-                                             codeword: List[float],
+                                             batch: List[float],
                                              params: List[float]) -> PhotodetectorProbabilities:
-        no_click_probabilities = self._compute_no_click_probabilities(engine, codeword, params)
-
+        no_click_probabilities = self._compute_no_click_probabilities(engine, batch, params)
         return {
             'prob_click': list(1 - np.array(no_click_probabilities)),
             'prob_no_click': list(no_click_probabilities)
@@ -81,35 +72,34 @@ class CSD(ABC):
 
     def _compute_no_click_probabilities(self,
                                         engine: sf.Engine,
-                                        codeword: List[float],
+                                        batch: List[float],
                                         params: List[float]) -> List[Union[float, EagerTensor]]:
         if engine.backend_name == Backends.TENSORFLOW.value:
             result_probs = self._run_one_layer_checking_measuring_type(engine=engine,
-                                                                       letter_or_codeword=codeword,
+                                                                       sample_or_batch=batch,
                                                                        params=params)
             if isinstance(result_probs, EagerTensor):
                 return result_probs
             return result_probs if isinstance(result_probs, List) else [result_probs]
 
         return [cast(float, self._run_one_layer_checking_measuring_type(engine=engine,
-                                                                        letter_or_codeword=letter,
+                                                                        sample_or_batch=sample,
                                                                         params=params))
-                for letter in codeword]
+                for sample in batch]
 
     def _compute_average_error_probability(self,
-                                           codeword: List[float],
+                                           batch: List[float],
                                            alpha: float,
-                                           codeword_prob: CodewordProbabilities,
                                            photodetector_prob: PhotodetectorProbabilities) -> float:
 
-        p_errors = [(codeword_prob['prob_a'] * photodetector_prob['prob_click'][codeword_index]) if letter == alpha
-                    else (codeword_prob['prob_minus_a'] * photodetector_prob['prob_no_click'][codeword_index])
-                    for codeword_index, letter in enumerate(codeword)]
+        p_errors = [photodetector_prob['prob_click'][batch_index] if sample == alpha
+                    else photodetector_prob['prob_no_click'][batch_index]
+                    for batch_index, sample in enumerate(batch)]
 
-        return sum(p_errors) / len(codeword)
+        return sum(p_errors) / len(batch)
 
     def _run_one_layer_probabilities(self, engine: sf.Engine,
-                                     letter_or_codeword: Union[float, List[float]],
+                                     sample_or_batch: Union[float, List[float]],
                                      params: List[float]) -> Union[Union[float, EagerTensor],
                                                                    List[Union[float, EagerTensor]]]:
         """Run a one layer experiment
@@ -125,24 +115,32 @@ class CSD(ABC):
         if self._circuit is None:
             raise ValueError("Circuit MUST be created first")
 
-        self._result = self._run_engine(engine=engine, letter_or_codeword=letter_or_codeword, params=params)
+        self._result = self._run_engine(engine=engine, sample_or_batch=sample_or_batch, params=params)
         return cast(Result, self._result).state.fock_prob([0])
 
     def _run_engine_and_compute_probability_0_photons(self,
                                                       engine: sf.Engine,
                                                       shots: int,
-                                                      letter_or_codeword: Union[float, List[float]],
+                                                      sample_or_batch: Union[float, List[float]],
                                                       params: List[float]) -> Union[Union[float, EagerTensor],
                                                                                     List[Union[float, EagerTensor]]]:
-        # !!! TODO: use shots and get all samples, not just the first sample
+        if engine.backend_name == Backends.GAUSSIAN.value:
+            return sum([1 for read_value in self._run_engine(engine=engine,
+                                                             sample_or_batch=sample_or_batch,
+                                                             params=params,
+                                                             shots=shots).samples
+                        if read_value[0] == 0]) / shots
+
         return sum([1 for read_value in [self._run_engine(engine=engine,
-                                                          letter_or_codeword=letter_or_codeword,
+                                                          sample_or_batch=sample_or_batch,
                                                           params=params).samples[0][0]
                                          for _ in range(0, shots)] if read_value == 0]) / shots
 
-    def _run_engine(self, engine: sf.Engine,
-                    letter_or_codeword: Union[float, List[float]],
-                    params: List[float]) -> Result:
+    def _run_engine(self,
+                    engine: sf.Engine,
+                    sample_or_batch: Union[float, List[float]],
+                    params: List[float],
+                    shots: int = 1) -> Result:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
@@ -150,17 +148,19 @@ class CSD(ABC):
         if engine.run_progs:
             engine.reset()
 
-        self._result = engine.run(self._circuit, args={
-            # current alpha value from generated codeword or
-            # the codeword when using tf with batches
-            "alpha": letter_or_codeword,
-            "beta": params[0],  # beta
-        })
+        self._result = engine.run(self._circuit,
+                                  args={
+                                      # current alpha value from generated batch or
+                                      # the batch when using tf with batches
+                                      "alpha": sample_or_batch,
+                                      "beta": params[0],  # beta
+                                  },
+                                  shots=shots)
         return self._result
 
     def _run_one_layer_sampling(self,
                                 engine: sf.Engine,
-                                letter_or_codeword: Union[float, List[float]],
+                                sample_or_batch: Union[float, List[float]],
                                 params: List[float]) -> Union[Union[float, EagerTensor],
                                                               List[Union[float, EagerTensor]]]:
         """Run a one layer experiment doing MeasureFock and performing samplint with nshots
@@ -175,14 +175,14 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
         if self._circuit is None:
             raise ValueError("Circuit MUST be created first")
-        if 'shots' not in self._run_configuration:
-            logger.debug(f'Using default number of shots: {self.NUM_SHOTS}')
-            self._run_configuration['shots'] = self.NUM_SHOTS
+        if 'shots' in self._run_configuration:
+            # logger.debug(f"Using configuration number of shots: {self._run_configuration['shots']}")
+            self._shots = self._run_configuration['shots']
 
         return self._run_engine_and_compute_probability_0_photons(
             engine=engine,
-            shots=self._run_configuration['shots'],
-            letter_or_codeword=letter_or_codeword,
+            shots=self._shots,
+            sample_or_batch=sample_or_batch,
             params=params)
 
     def _create_circuit(self) -> sf.Program:
@@ -208,24 +208,23 @@ class CSD(ABC):
 
     def _run_one_layer_checking_measuring_type(self,
                                                engine: sf.Engine,
-                                               letter_or_codeword: Union[float, List[float]],
+                                               sample_or_batch: Union[float, List[float]],
                                                params: List[float]) -> Union[Union[float, EagerTensor],
                                                                              List[Union[float, EagerTensor]]]:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
         if self._run_configuration['measuring_type'] is MeasuringTypes.SAMPLING:
-            return self._run_one_layer_sampling(engine=engine, letter_or_codeword=letter_or_codeword, params=params)
-        return self._run_one_layer_probabilities(engine=engine, letter_or_codeword=letter_or_codeword, params=params)
+            return self._run_one_layer_sampling(engine=engine, sample_or_batch=sample_or_batch, params=params)
+        return self._run_one_layer_probabilities(engine=engine, sample_or_batch=sample_or_batch, params=params)
 
     def _cost_function(self, params: List[float], alpha: float) -> Union[float, EagerTensor]:
         photodetector_probabilities = self._compute_photodetector_probabilities(engine=self._engine,
-                                                                                codeword=self._codeword,
+                                                                                batch=self._batch,
                                                                                 params=params)
 
-        p_err = self._compute_average_error_probability(codeword=self._codeword,
+        p_err = self._compute_average_error_probability(batch=self._batch,
                                                         alpha=alpha,
-                                                        codeword_prob=self._codeword_probabilities,
                                                         photodetector_prob=photodetector_probabilities)
         self._current_p_err = self._save_current_p_error(p_err)
         return p_err
@@ -236,9 +235,9 @@ class CSD(ABC):
         return p_err
 
     @typechecked
-    @timing
+    @ timing
     def execute(self, configuration: RunConfiguration) -> ResultExecution:
-        """Run an experiment for the same codeword with the given configuration
+        """Run an experiment for the same batch with the given configuration
 
         Args:
             configuration (RunConfiguration): Specific experiment configuration
@@ -253,24 +252,24 @@ class CSD(ABC):
         backend_is_tf = self._run_configuration['backend'] == Backends.TENSORFLOW
         self._circuit = self._create_circuit()
 
-        codeword_size = (configuration['codeword_size'] if 'codeword_size' in configuration
-                         else self.DEFAULT_CODEWORD_SIZE)
+        self._batch_size = (configuration['batch_size'] if 'batch_size' in configuration
+                            else self._batch_size)
         alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
         self._alphas = alphas
 
         cutoff_dim = (self._run_configuration['cutoff_dim']
                       if 'cutoff_dim' in self._run_configuration
-                      else self.DEFAULT_CUTOFF_DIMENSION)
+                      else self._cutoff_dim)
 
         self._engine = sf.Engine(backend=self._run_configuration['backend'].value,
                                  backend_options={
                                      "cutoff_dim": cutoff_dim,
-                                     "batch_size": codeword_size if backend_is_tf else None
+                                     "batch_size": self._batch_size if backend_is_tf else None
         })
 
         result: ResultExecution = {
             'alphas': [],
-            'codewords': [],
+            'batches': [],
             'opt_betas': [],
             'p_err': [],
             'p_succ': [],
@@ -289,19 +288,21 @@ class CSD(ABC):
         learning_steps = self._set_learning_steps(backend_is_tf)
 
         for alpha in alphas:
-            for step in range(learning_steps):
-                optimized_parameters = self._execute_for_one_alpha(codeword_size=codeword_size,
+            logger.debug(f'Optimizing for alpha: {np.round(alpha, 2)}')
+
+            for step in range(0, learning_steps):
+                optimized_parameters = self._execute_for_one_alpha(batch_size=self._batch_size,
                                                                    optimization=optimization,
                                                                    alpha=alpha)
 
-                if backend_is_tf and (step + 1) % 10 == 0:
-                    print("Learned displacement value at step {}: {}".format(
+                if backend_is_tf and (step + 1) % 100 == 0:
+                    logger.debug("Learned displacement value at step {}: {}".format(
                         step + 1, optimized_parameters[0]))
 
-            logger.debug(f'Optimized for alpha: {np.round(alpha, 2)} with codeword: {self._codeword}'
+            logger.debug(f'Optimized for alpha: {np.round(alpha, 2)}'  # with batch: {self._batch}'
                          f' beta: {optimized_parameters[0]}')
             result['alphas'].append(np.round(alpha, 2))
-            result['codewords'].append(self._codeword)
+            result['batches'].append(self._batch)
             result['opt_betas'].append(optimized_parameters[0])
             result['p_err'].append(self._current_p_err)
             result['p_succ'].append(1 - self._current_p_err)
@@ -313,16 +314,18 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
 
         if backend_is_tf:
-            return self._run_configuration['steps'] if 'steps' in self._run_configuration else self.DEFAULT_STEPS
+            steps = (self._steps if self._steps is not None and 'steps' not in self._run_configuration
+                     else self._steps)
+            return self._run_configuration['steps'] if 'steps' in self._run_configuration else steps
         return 1
 
+    @timing
     def _execute_for_one_alpha(self,
-                               codeword_size: int,
+                               batch_size: int,
                                optimization: Optimize,
                                alpha: float) -> List[float]:
 
-        self._codeword = self._create_random_codeword(codeword_size, alpha)
-        self._codeword_probabilities = self._compute_a_minus_a_probabilities(self._codeword, alpha)
+        self._batch = self._create_random_batch(batch_size, alpha)
         return optimization.optimize(alpha=alpha, cost_function=self._cost_function)
 
     def _set_plot_label(self, backend: Backends, measuring_type: MeasuringTypes) -> str:
@@ -345,6 +348,8 @@ class CSD(ABC):
             return "pFockSampl(a)"
         if backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.SAMPLING:
             return "pTFSampl(a)"
+        if backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.SAMPLING:
+            return "pGausSampl(a)"
         raise ValueError(f"Values not supported. backend: {backend.value} and measuring_type: {measuring_type.value}")
 
     @typechecked
@@ -356,7 +361,7 @@ class CSD(ABC):
         """Execute the experiment for all backends and measuring types
 
         Args:
-            alphas (List[float]): List of input alpha values to generate codewords and run the experiments
+            alphas (List[float]): List of input alpha values to generate batches and run the experiments
 
         Returns:
             List[ResultExecution]: List of the Result Executions
@@ -371,8 +376,8 @@ class CSD(ABC):
             self._probability_results = self._execute_with_given_backends(alphas=alphas,
                                                                           backends=[
                                                                               Backends.FOCK,
-                                                                              Backends.GAUSSIAN,
-                                                                              Backends.TENSORFLOW,
+                                                                              # Backends.GAUSSIAN,
+                                                                              # Backends.TENSORFLOW,
                                                                           ],
                                                                           measuring_type=MeasuringTypes.PROBABILITIES)
 
@@ -380,7 +385,8 @@ class CSD(ABC):
             self._sampling_results += self._execute_with_given_backends(alphas=alphas,
                                                                         backends=[
                                                                             Backends.FOCK,
-                                                                            Backends.TENSORFLOW,
+                                                                            Backends.GAUSSIAN
+                                                                            # Backends.TENSORFLOW,
                                                                         ],
                                                                         measuring_type=MeasuringTypes.SAMPLING)
         return self._probability_results + self._sampling_results
@@ -397,12 +403,11 @@ class CSD(ABC):
             'number_layers': 1,
             'measuring_type': measuring_type,
             'shots': self._shots,
-            'codeword_size': self._codeword_size,
+            'batch_size': self._batch_size,
             'cutoff_dim': self._cutoff_dim,
         })) for backend in backends]
 
     @typechecked
-    @timing
     def plot_success_probabilities(self,
                                    alphas: Optional[Union[List[float], None]] = None,
                                    measuring_types: Optional[Union[List[MeasuringTypes], None]] = None) -> None:

@@ -3,9 +3,10 @@
 from abc import ABC
 from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
-from typeguard import typechecked
+# from typeguard import typechecked
 from csd.ideal_probabilities import IdealProbabilities
 from csd.typings import ResultExecution
+from datetime import datetime
 
 
 class Plot(ABC):
@@ -13,7 +14,7 @@ class Plot(ABC):
 
     """
 
-    @typechecked
+    # @typechecked
     def __init__(self, alphas: List[float] = None):
         if alphas is None:
             raise ValueError("alphas not set.")
@@ -21,8 +22,9 @@ class Plot(ABC):
         self._alphas = alphas
 
     def plot_success_probabilities(self,
-                                   executions: Optional[List[ResultExecution]] = None) -> None:
-        _, axes = plt.subplots(figsize=[10, 7])
+                                   executions: Optional[List[ResultExecution]] = None,
+                                   save_plot: Optional[bool] = False) -> None:
+        fig, axes = plt.subplots(figsize=[10, 7])
 
         executions_probs_labels = [self._ideal_probabilities.p_homos,
                                    self._ideal_probabilities.p_ken_op,
@@ -36,6 +38,10 @@ class Plot(ABC):
                                              probs_labels=executions_probs_labels)
         plt.legend(bbox_to_anchor=(1, 1), loc="upper left")
         plt.show()
+
+        # save plot to file
+        if save_plot:
+            fig.savefig(f'plot_{datetime.now().isoformat()}.png')
 
     def _plot_probs_and_label_into_axis(self,
                                         axes: plt.Axes,
