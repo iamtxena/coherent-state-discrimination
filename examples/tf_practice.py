@@ -8,71 +8,75 @@ import strawberryfields as sf
 import tensorflow as tf
 
 ALPHA = 0.7
-STEPS = 500
+STEPS = 200
 BATCH_SIZE = 10
+# ALPHAS = list(np.arange(0.05, 1.5, 0.05))
+# ALPHAS = [0.6, 0.7]
+# ALPHAS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
+ALPHAS = [0.1, 0.2]
 
 
 def orig_tf() -> None:
-    tf_displacement_magnitude = tf.Variable(0.1)
-    opt = tf.keras.optimizers.Adam(learning_rate=0.01)
-    steps = STEPS
+    for sample_alpha in ALPHAS:
+        tf_displacement_magnitude = tf.Variable(0.1)
+        opt = tf.keras.optimizers.Adam(learning_rate=0.01)
+        steps = STEPS
 
-    batch_size = BATCH_SIZE
-    threshold = 0.5
+        batch_size = BATCH_SIZE
+        threshold = 0.5
 
-    for step in range(steps):
-        batch = [1 if random.random() > threshold else -1 for _ in range(batch_size)]
-        alpha_val = ALPHA * np.array(batch)
-        # alpha_val = BATCH_ALPHA
+        for step in range(steps):
+            batch = [1 if random.random() > threshold else -1 for _ in range(batch_size)]
+            alpha_val = sample_alpha * np.array(batch)
 
-        eng = sf.Engine(backend="tf", backend_options={
-            "cutoff_dim": 7,
-            "batch_size": len(alpha_val),
-        })
-
-        circuit = sf.Program(1)
-
-        displacement_magnitude = circuit.params("displacement_magnitude")
-
-        alpha = circuit.params("alpha")
-
-        with circuit.context as q:
-            sf.ops.Dgate(alpha, 0.0) | q[0]
-            sf.ops.Dgate(displacement_magnitude, 0.0) | q[0]
-
-        with tf.GradientTape() as tape:
-            results = eng.run(circuit, args={
-                "displacement_magnitude": tf_displacement_magnitude,
-                "alpha": alpha_val
+            eng = sf.Engine(backend="tf", backend_options={
+                "cutoff_dim": 7,
+                "batch_size": len(alpha_val),
             })
 
-            # get the probability of |0>
-            p_zero = results.state.fock_prob([0])
+            circuit = sf.Program(1)
 
-            # get the porbability of anything by |0>
-            p_one = 1 - p_zero
+            displacement_magnitude = circuit.params("displacement_magnitude")
 
-            loss = 0.0
+            alpha = circuit.params("alpha")
 
-            for i, mult in enumerate(batch):
-                if mult == 1:
-                    loss += p_one[i]
-                else:
-                    loss += p_zero[i]
+            with circuit.context as q:
+                sf.ops.Dgate(alpha, 0.0) | q[0]
+                sf.ops.Dgate(displacement_magnitude, 0.0) | q[0]
 
-            loss /= len(batch)
+            with tf.GradientTape() as tape:
+                results = eng.run(circuit, args={
+                    "displacement_magnitude": tf_displacement_magnitude,
+                    "alpha": alpha_val
+                })
 
-        gradients = tape.gradient(loss, [tf_displacement_magnitude])
-        opt.apply_gradients(zip(gradients, [tf_displacement_magnitude]))
+                # get the probability of |0>
+                p_zero = results.state.fock_prob([0])
 
-        if (step + 1) % 10 == 0:
-            print("Learned displacement value at step {}: {}".format(step + 1, tf_displacement_magnitude.numpy()))
-    logger.info(f'beta optimized: {tf_displacement_magnitude.numpy()} and loss: {loss}')
+                # get the porbability of anything by |0>
+                p_one = 1 - p_zero
+
+                loss = 0.0
+
+                for i, mult in enumerate(batch):
+                    if mult == 1:
+                        loss += p_one[i]
+                    else:
+                        loss += p_zero[i]
+
+                loss /= len(batch)
+
+            gradients = tape.gradient(loss, [tf_displacement_magnitude])
+            opt.apply_gradients(zip(gradients, [tf_displacement_magnitude]))
+
+            if (step + 1) % 100 == 0:
+                print("Learned displacement value at step {}: {}".format(step + 1, tf_displacement_magnitude.numpy()))
+        logger.info(f'beta optimized: {tf_displacement_magnitude.numpy()} and p_succ: {1-loss}')
 
 
 def test_tf() -> None:
     # alphas = list(np.arange(0.05, 1.5, 0.05))
-    alphas = [0.0, 0.7, 1.3]
+    alphas = ALPHAS
 
     csd_configuration = CSDConfiguration({
         'cutoff_dim': 7,
@@ -150,8 +154,9 @@ def test_tf_2() -> None:
 
 
 if __name__ == '__main__':
-    # orig_tf()
     test_tf()
+    orig_tf()
+
     # test_gaus_sampling()
     # test_sampling()
     # test_tf_2()

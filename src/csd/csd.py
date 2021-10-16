@@ -16,6 +16,8 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
 from csd.plot import Plot
 from csd.util import timing
+# import tensorflow as tf
+# from .optimizers.tf import SingleTF
 
 
 class CSD(ABC):
@@ -34,7 +36,6 @@ class CSD(ABC):
         self._cutoff_dim = self.DEFAULT_CUTOFF_DIMENSION
         self._steps = self.DEFAULT_STEPS
         self._learning_rate = self.DEFAULT_LEARNING_RATE
-        self._batch: List[float] = []
 
         if csd_config is not None:
             self._beta = csd_config.get('beta', 0.1)
@@ -121,12 +122,13 @@ class CSD(ABC):
         self._result = self._run_engine(engine=engine, sample_or_batch=sample_or_batch, params=params)
         return cast(Result, self._result).state.fock_prob([0])
 
-    def _run_engine_and_compute_probability_0_photons(self,
-                                                      engine: sf.Engine,
-                                                      shots: int,
-                                                      sample_or_batch: Union[float, List[float]],
-                                                      params: List[float]) -> Union[Union[float, EagerTensor],
-                                                                                    List[Union[float, EagerTensor]]]:
+    def _run_engine_and_compute_probability_0_photons(
+        self,
+        engine: sf.Engine,
+        shots: int,
+        sample_or_batch: Union[float, List[float]],
+        params: List[float]) -> Union[Union[float, EagerTensor],
+                                      List[Union[float, EagerTensor]]]:
         if engine.backend_name == Backends.GAUSSIAN.value:
             return sum([1 for read_value in self._run_engine(engine=engine,
                                                              sample_or_batch=sample_or_batch,
@@ -248,25 +250,51 @@ class CSD(ABC):
         if configuration['number_layers'] != 1 or configuration['number_qumodes'] != 1:
             raise ValueError('Experiment only available for ONE qumode and ONE layer')
         self._run_configuration = configuration.copy()
-
-        backend_is_tf = self._run_configuration['backend'] == Backends.TENSORFLOW
-        self._circuit = self._create_circuit()
-
         self._batch_size = (configuration['batch_size'] if 'batch_size' in configuration
                             else self._batch_size)
-        alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
-        self._alphas = alphas
+        self._alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
 
-        cutoff_dim = (self._run_configuration['cutoff_dim']
-                      if 'cutoff_dim' in self._run_configuration
-                      else self._cutoff_dim)
+        self._circuit = self._create_circuit()
+        self._engine = self._create_engine()
 
-        self._engine = sf.Engine(backend=self._run_configuration['backend'].value,
-                                 backend_options={
-                                     "cutoff_dim": cutoff_dim,
-                                     "batch_size": self._batch_size if backend_is_tf else None
-        })
+        learning_steps = self._set_learning_steps()
+        optimization = Optimize(backend=self._run_configuration['backend'])
 
+        logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
+                     " with measuring_type: "
+                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}"
+                     f" and cutoff_dim: {self._cutoff_dim}")
+
+        result = self._init_result()
+
+        for sample_alpha in self._alphas:
+            self._alpha_value = sample_alpha
+            logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)}')
+
+            for step in range(learning_steps):
+                optimized_parameters = self._execute_for_one_alpha_and_step(batch_size=self._batch_size,
+                                                                            optimization=optimization)
+                self._print_displacement(step, optimized_parameters)
+            self._update_result(result, optimized_parameters)
+
+        return result
+
+    def _print_displacement(self, step, optimized_parameters):
+        if self._backend_is_tf() and (step + 1) % 100 == 0:
+            logger.debug("Learned displacement value at step {}: {}".format(
+                step + 1, optimized_parameters))
+
+    def _update_result(self, result, optimized_parameters):
+        logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)}'
+                     f' beta: {optimized_parameters}'
+                     f' p_succ: {1 - self._current_p_err}')
+        result['alphas'].append(np.round(self._alpha_value, 2))
+        result['batches'].append(self._batch)
+        result['opt_betas'].append(cast(float, optimized_parameters))
+        result['p_err'].append(self._current_p_err)
+        result['p_succ'].append(1 - self._current_p_err)
+
+    def _init_result(self):
         result: ResultExecution = {
             'alphas': [],
             'batches': [],
@@ -279,62 +307,39 @@ class CSD(ABC):
                                                measuring_type=self._run_configuration['measuring_type'])
         }
 
-        logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
-                     " with measuring_type: "
-                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}"
-                     f" and cutoff_dim: {self._cutoff_dim}")
-
-        for alpha in alphas:
-            self._alpha_value = alpha
-            logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)}')
-
-            optimization = Optimize(backend=self._run_configuration['backend'])
-            learning_steps = self._set_learning_steps(backend_is_tf)
-
-            for step in range(0, learning_steps):
-                optimized_parameters = self._execute_for_one_alpha(batch_size=self._batch_size,
-                                                                   optimization=optimization)
-
-                if backend_is_tf and (step + 1) % 100 == 0:
-                    logger.debug("Learned displacement value at step {}: {}".format(
-                        step + 1, optimized_parameters[0]))
-
-            logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)}'
-                         f' beta: {optimized_parameters[0]}'
-                         f' p_succ: {1 - self._current_p_err}')
-            result['alphas'].append(np.round(self._alpha_value, 2))
-            result['batches'].append(self._batch)
-            result['opt_betas'].append(optimized_parameters[0])
-            result['p_err'].append(self._current_p_err)
-            result['p_succ'].append(1 - self._current_p_err)
-
         return result
 
-    def _set_learning_steps(self, backend_is_tf) -> int:
+    def _create_engine(self) -> sf.Engine:
+        if self._run_configuration is None:
+            raise ValueError("Run configuration not specified")
+        cutoff_dim = (self._run_configuration['cutoff_dim']
+                      if 'cutoff_dim' in self._run_configuration
+                      else self._cutoff_dim)
+        return sf.Engine(backend=self._run_configuration['backend'].value,
+                         backend_options={
+            "cutoff_dim": cutoff_dim,
+            "batch_size": self._batch_size if self._backend_is_tf() else None
+        })
+
+    def _backend_is_tf(self):
+        return self._run_configuration['backend'] == Backends.TENSORFLOW
+
+    def _set_learning_steps(self) -> int:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
-        if backend_is_tf:
+        if self._backend_is_tf():
             steps = (self._steps if self._steps is not None and 'steps' not in self._run_configuration
                      else self._steps)
             return self._run_configuration['steps'] if 'steps' in self._run_configuration else steps
         return 1
 
-    def _execute_for_one_alpha(self,
-                               batch_size: int,
-                               optimization: Optimize) -> Union[EagerTensor, List[float]]:
+    def _execute_for_one_alpha_and_step(self,
+                                        batch_size: int,
+                                        optimization: Optimize) -> float:
 
-        self._batch = self._set_batch(batch_size)
-        return optimization.optimize(cost_function=self._cost_function)
-
-    def _set_batch(self, batch_size: int) -> List[float]:
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-        if self._batch != [] and 'batch' not in self._run_configuration:
-            return self._batch
-        if 'batch' in self._run_configuration:
-            return self._run_configuration['batch']
-        return self._create_random_batch(batch_size=batch_size, alpha_value=self._alpha_value)
+        self._batch = self._create_random_batch(batch_size=batch_size, alpha_value=self._alpha_value)
+        return optimization.optimize(cost_function=self._cost_function)[0]
 
     def _set_plot_label(self, backend: Backends, measuring_type: MeasuringTypes) -> str:
         """Set the label for the success probability plot
