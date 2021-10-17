@@ -41,7 +41,6 @@ class CSD(ABC):
         self._architecture = self._set_architecture(self._architecture).copy()
 
     def _set_values_from_config(self, csd_config):
-        self._beta = csd_config.get('beta', 0.1)
         self._steps = csd_config.get('steps', self.DEFAULT_STEPS)
         self._learning_rate = csd_config.get('learning_rate', self.DEFAULT_LEARNING_RATE)
         self._batch_size = csd_config.get('batch_size', self.DEFAULT_BATCH_SIZE)
@@ -247,21 +246,21 @@ class CSD(ABC):
         for step in range(learning_steps):
             optimized_parameters = self._execute_for_one_alpha_and_step(batch_size=self._batch_size,
                                                                         optimization=optimization)
-            self._print_displacement(step, optimized_parameters)
+            self._print_opimized_parameters(step, optimized_parameters)
         self._update_result(result, optimized_parameters)
 
-    def _print_displacement(self, step, optimized_parameters):
+    def _print_opimized_parameters(self, step, optimized_parameters):
         if self._backend_is_tf() and (step + 1) % 100 == 0:
-            logger.debug("Learned displacement value at step {}: {}".format(
+            logger.debug("Learned parameters value at step {}: {}".format(
                 step + 1, optimized_parameters))
 
     def _update_result(self, result, optimized_parameters):
         logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)}'
-                     f' beta: {optimized_parameters}'
+                     f' parameters: {optimized_parameters}'
                      f' p_succ: {1 - self._current_p_err}')
         result['alphas'].append(np.round(self._alpha_value, 2))
         result['batches'].append(self._batch)
-        result['opt_betas'].append(cast(float, optimized_parameters))
+        result['opt_params'].append(cast(float, optimized_parameters))
         result['p_err'].append(self._current_p_err)
         result['p_succ'].append(1 - self._current_p_err)
 
@@ -269,7 +268,7 @@ class CSD(ABC):
         result: ResultExecution = {
             'alphas': [],
             'batches': [],
-            'opt_betas': [],
+            'opt_params': [],
             'p_err': [],
             'p_succ': [],
             'backend': self._run_configuration['backend'].value,
@@ -307,10 +306,12 @@ class CSD(ABC):
 
     def _execute_for_one_alpha_and_step(self,
                                         batch_size: int,
-                                        optimization: Optimize) -> float:
+                                        optimization: Optimize) -> List[float]:
 
         self._batch = self._create_random_batch(batch_size=batch_size, alpha_value=self._alpha_value)
-        return optimization.optimize(cost_function=self._cost_function)[0]
+        optimized_result = optimization.optimize(cost_function=self._cost_function)
+        # logger.debug(f'optimized_result: {optimized_result}')
+        return optimized_result
 
     def _set_plot_label(self, backend: Backends, measuring_type: MeasuringTypes) -> str:
         """Set the label for the success probability plot

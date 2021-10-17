@@ -25,7 +25,6 @@ class Architecture(TypedDict, total=False):
 
 
 class CSDConfiguration(TypedDict, total=False):
-    beta: float
     steps: int
     learning_rate: float
     batch_size: int
@@ -68,7 +67,7 @@ class OptimizationResult(TypedDict):
 class ResultExecution(TypedDict):
     alphas: List[float]
     batches: List[List[float]]
-    opt_betas: Union[List[float], EagerTensor]
+    opt_params: List[Union[List[float], EagerTensor]]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]
     backend: str

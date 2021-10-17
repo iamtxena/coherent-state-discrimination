@@ -7,12 +7,12 @@ from .optimizers.scipy import ScipyOptimizer
 
 class Optimize(ABC):
 
-    def __init__(self, backend: Optional[Union[Backends, None]] = None):
+    def __init__(self, backend: Optional[Union[Backends, None]] = None, nparams: int = 1):
         self._backends: Union[Backends, None] = backend
         self._optimizer: Union[TFOptimizer, ScipyOptimizer, None] = None
 
         if self._backends is Backends.TENSORFLOW:
-            self._optimizer = TFOptimizer()
+            self._optimizer = TFOptimizer(nparams=nparams)
         if self._backends is Backends.FOCK or self._backends is Backends.GAUSSIAN:
             self._optimizer = ScipyOptimizer()
 

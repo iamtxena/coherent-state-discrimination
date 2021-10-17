@@ -5,7 +5,7 @@ from strawberryfields.api import Result
 from tensorflow.python.framework.ops import EagerTensor
 from typeguard import typechecked
 from csd.typings import Backends, BackendOptions, EngineRunOptions, MeasuringTypes
-from typing import Optional, Union, cast
+from typing import Optional, Union
 from .circuit import Circuit
 from nptyping import NDArray
 import numpy as np
@@ -57,6 +57,7 @@ class Engine(ABC):
         Returns:
             float: probability of getting |0> state
         """
+        options['shots'] = 0
         return self._run_circuit(circuit=circuit, options=options).state.fock_prob([0])
 
     def _run_circuit(self,
@@ -77,8 +78,8 @@ class Engine(ABC):
     def _parse_circuit_parameters(self,
                                   circuit: Circuit,
                                   options: EngineRunOptions) -> dict:
-        alpha_list = cast(list, (options['sample_or_batch']
-                                 if type(options['sample_or_batch']) is list
-                                 else [options['sample_or_batch']]))
-        all_values = np.concatenate((alpha_list, options['params']))
+        all_values = []
+        all_values.append(options['sample_or_batch'])
+        [all_values.append(param) for param in options['params']]
+
         return {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}
