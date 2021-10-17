@@ -1,7 +1,9 @@
 from functools import wraps
 from time import time
+from typing import Optional
 from csd.config import logger
 import numpy as np
+import pickle
 
 SECONDS_PER_MINUTE = 60
 MINUTES_PER_HOUR = 60
@@ -39,3 +41,15 @@ def timing(f):
         logger.debug(f'{f.__name__}, took: {set_friendly_time(time_interval=te-ts)}')
         return result
     return wrap
+
+
+def save_object_to_disk(obj, name: str, path: Optional[str] = "") -> None:
+    """ save result to a file """
+    with open(f'./{path}{name}.pkl', 'wb') as file:
+        pickle.dump(obj, file, pickle.HIGHEST_PROTOCOL)
+
+
+def load_object_from_file(name: str, path: Optional[str] = ""):
+    """ load object from a file """
+    with open(f'./{path}{name}.pkl', 'rb') as file:
+        return pickle.load(file)
