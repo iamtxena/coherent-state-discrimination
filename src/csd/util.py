@@ -4,6 +4,8 @@ from typing import Optional
 from csd.config import logger
 import numpy as np
 import pickle
+from datetime import datetime
+import re
 
 SECONDS_PER_MINUTE = 60
 MINUTES_PER_HOUR = 60
@@ -20,7 +22,9 @@ def set_friendly_time(time_interval: float) -> str:
 
     friendly_time = ''
 
-    if hours:
+    if hours == 1:
+        friendly_time += f'{hours} hour, '
+    if hours > 1:
         friendly_time += f'{hours} hours, '
     if minutes == 1:
         friendly_time += f'{minutes} minute and '
@@ -43,13 +47,35 @@ def timing(f):
     return wrap
 
 
-def save_object_to_disk(obj, name: str, path: Optional[str] = "") -> None:
+def save_object_to_disk(obj: object, name: Optional[str] = None, path: Optional[str] = "") -> None:
     """ save result to a file """
-    with open(f'./{path}{name}.pkl', 'wb') as file:
+    object_name = name if name is not None else f'{type(obj).__name__}_{set_current_time()}'
+    fixed_path = _fix_path(path)
+
+    with open(f'{fixed_path}{object_name}.pkl', 'wb') as file:
         pickle.dump(obj, file, pickle.HIGHEST_PROTOCOL)
+
+
+def _fix_path(path: str = None) -> str:
+    if path is None or path == '':
+        return './'
+    fixed_path = path
+    if not fixed_path.endswith('/'):
+        fixed_path += '/'
+    if re.match('^[a-zA-Z]', fixed_path):
+        fixed_path = f'./{fixed_path}'
+    return fixed_path
 
 
 def load_object_from_file(name: str, path: Optional[str] = ""):
     """ load object from a file """
-    with open(f'./{path}{name}.pkl', 'rb') as file:
+    fixed_path = _fix_path(path)
+    with open(f'{fixed_path}{name}.pkl', 'rb') as file:
         return pickle.load(file)
+
+
+def set_current_time() -> str:
+    """ Return the current time as string
+        with the following format 'YYYYMMDD_HHMMSS'
+    """
+    return datetime.now().strftime("%Y%m%d_%H%M%S")

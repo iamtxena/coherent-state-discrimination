@@ -3,7 +3,8 @@ from csd.typings import (Backends, CSDConfiguration,
                          RunConfiguration,
                          MeasuringTypes,
                          PhotodetectorProbabilities,
-                         ResultExecution)
+                         ResultExecution,
+                         Architecture)
 # from typeguard import typechecked
 import strawberryfields as sf
 from strawberryfields.api import Result
@@ -15,7 +16,7 @@ from csd.config import logger
 from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
 from csd.plot import Plot
-from csd.util import timing
+from csd.util import timing, save_object_to_disk
 
 
 class CSD(ABC):
@@ -29,20 +30,34 @@ class CSD(ABC):
     DEFAULT_LEARNING_RATE: float = 0.1
 
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
+        self._set_default_values()
+
+        if csd_config is not None:
+            self._set_values_from_config(csd_config)
+
+        self._set_default_values_after_config()
+
+    def _set_default_values_after_config(self):
+        self._architecture = self._set_architecture(self._architecture).copy()
+
+    def _set_values_from_config(self, csd_config):
+        self._beta = csd_config.get('beta', 0.1)
+        self._steps = csd_config.get('steps', self.DEFAULT_STEPS)
+        self._learning_rate = csd_config.get('learning_rate', self.DEFAULT_LEARNING_RATE)
+        self._batch_size = csd_config.get('batch_size', self.DEFAULT_BATCH_SIZE)
+        self._shots = csd_config.get('shots', self.DEFAULT_NUM_SHOTS)
+        self._cutoff_dim = csd_config.get('cutoff_dim', self.DEFAULT_CUTOFF_DIMENSION)
+        self._batch = csd_config.get('batch', [])
+        self._architecture = self._set_architecture(csd_config.get('architecture')).copy()
+        self._save_results = csd_config.get('save_results', False)
+        self._save_plots = csd_config.get('save_plots', False)
+
+    def _set_default_values(self):
         self._shots = self.DEFAULT_NUM_SHOTS
         self._batch_size = self.DEFAULT_BATCH_SIZE
         self._cutoff_dim = self.DEFAULT_CUTOFF_DIMENSION
         self._steps = self.DEFAULT_STEPS
         self._learning_rate = self.DEFAULT_LEARNING_RATE
-
-        if csd_config is not None:
-            self._beta = csd_config.get('beta', 0.1)
-            self._steps = csd_config.get('steps', self.DEFAULT_STEPS)
-            self._learning_rate = csd_config.get('learning_rate', self.DEFAULT_LEARNING_RATE)
-            self._batch_size = csd_config.get('batch_size', self.DEFAULT_BATCH_SIZE)
-            self._shots = csd_config.get('shots', self.DEFAULT_NUM_SHOTS)
-            self._cutoff_dim = csd_config.get('cutoff_dim', self.DEFAULT_CUTOFF_DIMENSION)
-            self._batch = csd_config.get('batch', [])
         self._result = None
         self._probability_results: List[ResultExecution] = []
         self._sampling_results: List[ResultExecution] = []
@@ -50,6 +65,33 @@ class CSD(ABC):
         self._circuit = None
         self._run_configuration: Union[RunConfiguration, None] = None
         self._alphas: Union[List[float], None] = None
+        self._save_results = False
+        self._save_plots = False
+
+    def _set_architecture(self, architecture: Optional[Architecture] = None) -> Architecture:
+        tmp_architecture = self._default_architecture()
+        if architecture is None:
+            return tmp_architecture
+        if 'number_qumodes' in architecture:
+            tmp_architecture['number_qumodes'] = architecture['number_qumodes']
+        if 'number_layers' in architecture:
+            tmp_architecture['number_layers'] = architecture['number_layers']
+        if 'displacement' in architecture:
+            tmp_architecture['displacement'] = architecture['displacement']
+        if 'squeezing' in architecture:
+            tmp_architecture['squeezing'] = architecture['squeezing']
+        if 'interferometer' in architecture:
+            tmp_architecture['interferometer'] = architecture['interferometer']
+        return tmp_architecture
+
+    def _default_architecture(self) -> Architecture:
+        return {
+            'number_qumodes': 1,
+            'number_layers': 1,
+            'displacement': True,
+            'squeezing': False,
+            'interferometer': False
+        }
 
     def _create_batch(self, samples: List[float], batch_size=10) -> List[float]:
         return [random.choice(samples) for _ in range(batch_size)]
@@ -195,8 +237,10 @@ class CSD(ABC):
         """
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
+        if not self._architecture:
+            raise ValueError('No architecture specified')
 
-        prog = sf.Program(self._run_configuration['number_qumodes'])
+        prog = sf.Program(self._architecture['number_qumodes'])
         alpha = prog.params("alpha")
         beta = prog.params("beta")
 
@@ -245,7 +289,9 @@ class CSD(ABC):
         Returns:
             float: probability of getting |0> state
         """
-        if configuration['number_layers'] != 1 or configuration['number_qumodes'] != 1:
+        if not self._architecture:
+            raise ValueError('No architecture specified')
+        if self._architecture['number_layers'] != 1 or self._architecture['number_qumodes'] != 1:
             raise ValueError('Experiment only available for ONE qumode and ONE layer')
         self._run_configuration = configuration.copy()
         self._batch_size = (configuration['batch_size'] if 'batch_size' in configuration
@@ -267,7 +313,23 @@ class CSD(ABC):
 
         for sample_alpha in self._alphas:
             self._execute_for_one_alpha(learning_steps, optimization, result, sample_alpha)
+
+        self._save_results_to_file(result)
+        self._save_plot_to_file(result)
+
         return result
+
+    def _save_plot_to_file(self, result):
+        if self._save_plots:
+            if self._plot is None:
+                self._plot = Plot(alphas=self._alphas)
+            logger.info("Save plot to file")
+            self._plot.plot_success_probabilities(executions=[result], save_plot=True)
+
+    def _save_results_to_file(self, result):
+        if self._save_results:
+            logger.info("Save results to file")
+            save_object_to_disk(obj=result, path='results')
 
     @timing
     def _execute_for_one_alpha(self, learning_steps, optimization, result, sample_alpha):
@@ -407,8 +469,6 @@ class CSD(ABC):
         return [self.execute(configuration=RunConfiguration({
             'alphas': alphas,
             'backend': backend,
-            'number_qumodes': 1,
-            'number_layers': 1,
             'measuring_type': measuring_type,
             'shots': self._shots,
             'batch_size': self._batch_size,

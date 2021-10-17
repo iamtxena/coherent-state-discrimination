@@ -9,6 +9,14 @@ class PhotodetectorProbabilities(TypedDict):
     prob_no_click: List[Union[float, EagerTensor]]
 
 
+class Architecture(TypedDict, total=False):
+    number_qumodes: int
+    number_layers: int
+    displacement: bool
+    squeezing: bool
+    interferometer: bool
+
+
 class CSDConfiguration(TypedDict, total=False):
     beta: float
     steps: int
@@ -17,6 +25,9 @@ class CSDConfiguration(TypedDict, total=False):
     shots: int
     cutoff_dim: int
     batch: List[float]
+    save_results: bool
+    save_plots: bool
+    architecture: Architecture
 
 
 class Backends(enum.Enum):
@@ -34,8 +45,6 @@ class MeasuringTypes(enum.Enum):
 class RunConfiguration(TypedDict, total=False):
     alphas: List[float]
     backend: Backends
-    number_qumodes: int
-    number_layers: int
     measuring_type: MeasuringTypes
     shots: int
     batch_size: int

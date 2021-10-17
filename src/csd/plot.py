@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # from typeguard import typechecked
 from csd.ideal_probabilities import IdealProbabilities
 from csd.typings import ResultExecution
-from datetime import datetime
+from csd.util import set_current_time, _fix_path
 
 
 class Plot(ABC):
@@ -37,11 +37,13 @@ class Plot(ABC):
         self._plot_probs_and_label_into_axis(axes=axes,
                                              probs_labels=executions_probs_labels)
         plt.legend(bbox_to_anchor=(1, 1), loc="upper left")
-        plt.show()
+        if not save_plot:
+            plt.show()
 
         # save plot to file
         if save_plot:
-            fig.savefig(f'plot_{datetime.now().isoformat()}.png')
+            fixed_path = _fix_path('results')
+            fig.savefig(f'{fixed_path}plot_{set_current_time()}.png')
 
     def _plot_probs_and_label_into_axis(self,
                                         axes: plt.Axes,
