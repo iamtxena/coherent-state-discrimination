@@ -62,15 +62,15 @@ def execute_sampling_tf_backend(alphas: List[float], csd: CSD) -> None:
 if __name__ == '__main__':
     alphas = list(np.arange(0.05, 1.55, 0.05))
     csd = CSD(csd_config=CSDConfiguration({
-        'steps': 100,
+        'steps': 500,
         'cutoff_dim': 10,
-        'batch_size': 10,
+        'batch_size': 1000,
         'architecture': {
             'displacement': True,
-            'squeezing': False,
+            'squeezing': True,
         },
         'save_results': False,
-        'save_plots': False
+        'save_plots': True
     }))
     # execute_probabilities_fock_backend(alphas=alphas, csd=csd)
     # execute_probabilities_gaussian_backend(alphas=alphas, csd=csd)

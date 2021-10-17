@@ -14,7 +14,7 @@ class Optimize(ABC):
         if self._backends is Backends.TENSORFLOW:
             self._optimizer = TFOptimizer(nparams=nparams)
         if self._backends is Backends.FOCK or self._backends is Backends.GAUSSIAN:
-            self._optimizer = ScipyOptimizer()
+            self._optimizer = ScipyOptimizer(nparams=nparams)
 
     def optimize(self, cost_function: Callable) -> List[float]:
         if self._optimizer is None:

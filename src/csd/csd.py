@@ -209,7 +209,8 @@ class CSD(ABC):
         self._engine = self._create_engine()
 
         learning_steps = self._set_learning_steps()
-        optimization = Optimize(backend=self._run_configuration['backend'])
+        optimization = Optimize(backend=self._run_configuration['backend'],
+                                nparams=1 if not self._architecture['squeezing'] else 2)
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
                      " with measuring_type: "
