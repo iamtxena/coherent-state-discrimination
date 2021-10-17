@@ -1,5 +1,7 @@
-from typing import TypedDict, List, Union
+from typing import TypedDict, Union, List
 import enum
+import numpy as np
+from nptyping import NDArray
 
 from tensorflow.python.framework.ops import EagerTensor
 
@@ -7,13 +9,6 @@ from tensorflow.python.framework.ops import EagerTensor
 class BackendOptions(TypedDict, total=False):
     cutoff_dim: int
     batch_size: Union[int, None]
-
-
-class EngineRunOptions(TypedDict):
-    params: List[Union[float, EagerTensor]]
-    sample_or_batch: Union[Union[float, EagerTensor],
-                           Union[List[float], List[EagerTensor]]]
-    shots: int
 
 
 class PhotodetectorProbabilities(TypedDict):
@@ -79,3 +74,12 @@ class ResultExecution(TypedDict):
     backend: str
     measuring_type: str
     plot_label: str
+
+
+class EngineRunOptions(TypedDict):
+    params: Union[List[Union[float, EagerTensor]],
+                  NDArray[np.float]]
+    sample_or_batch: Union[Union[float, EagerTensor],
+                           Union[List[float], List[EagerTensor]]]
+    shots: int
+    measuring_type: MeasuringTypes

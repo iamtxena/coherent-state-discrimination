@@ -2,10 +2,13 @@
 from abc import ABC
 import strawberryfields as sf
 from strawberryfields.api import Result
+from tensorflow.python.framework.ops import EagerTensor
 from typeguard import typechecked
-from csd.typings import Backends, BackendOptions, EngineRunOptions
-from typing import Optional, cast
+from csd.typings import Backends, BackendOptions, EngineRunOptions, MeasuringTypes
+from typing import Optional, Union, cast
 from .circuit import Circuit
+from nptyping import NDArray
+import numpy as np
 
 
 class Engine(ABC):
@@ -19,10 +22,46 @@ class Engine(ABC):
         self._engine = sf.Engine(backend=self._backend.value,
                                  backend_options=options)
 
-    @typechecked
-    def run(self,
+    @property
+    def backend_name(self) -> str:
+        return self._engine.backend_name
+
+    def run_circuit_checking_measuring_type(
+            self,
             circuit: Circuit,
-            options: EngineRunOptions) -> Result:
+            options: EngineRunOptions) -> Union[list[float], EagerTensor, NDArray[np.float]]:
+        if options['measuring_type'] is MeasuringTypes.SAMPLING:
+            return self._run_circuit_sampling(circuit=circuit, options=options)
+        return self._run_circuit_probabilities(circuit=circuit, options=options)
+
+    def _run_circuit_sampling(self,
+                              circuit: Circuit,
+                              options: EngineRunOptions) -> Union[list[float], EagerTensor, NDArray[np.float]]:
+        """Run a circuit experiment doing MeasureFock and performing samplint with nshots
+
+        Returns:
+            float: probability of getting |0> state
+        """
+        if self._engine.backend_name == Backends.GAUSSIAN.value:
+            return sum([1 for read_value in self._run_circuit(circuit=circuit, options=options).samples
+                        if read_value[0] == 0]) / options['shots']
+
+        return sum([1 for read_value in [self._run_circuit(circuit=circuit, options=options).samples[0][0]
+                                         for _ in range(options['shots'])] if read_value == 0]) / options['shots']
+
+    def _run_circuit_probabilities(self,
+                                   circuit: Circuit,
+                                   options: EngineRunOptions) -> Union[list[float], EagerTensor, NDArray[np.float]]:
+        """Run a circuit experiment computing the fock probability
+
+        Returns:
+            float: probability of getting |0> state
+        """
+        return self._run_circuit(circuit=circuit, options=options).state.fock_prob([0])
+
+    def _run_circuit(self,
+                     circuit: Circuit,
+                     options: EngineRunOptions) -> Result:
         """ Run an experiment using the engine with the passed options
         """
         # reset the engine if it has already been executed
@@ -41,6 +80,5 @@ class Engine(ABC):
         alpha_list = cast(list, (options['sample_or_batch']
                                  if type(options['sample_or_batch']) is list
                                  else [options['sample_or_batch']]))
-        all_values = alpha_list + options['params']
-
-        return {name: value for (name, value) in zip(circuit.parameters, all_values)}
+        all_values = np.concatenate((alpha_list, options['params']))
+        return {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}

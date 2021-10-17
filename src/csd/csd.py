@@ -1,12 +1,12 @@
 from abc import ABC
-from csd.typings import (Backends, CSDConfiguration,
+from csd.circuit import Circuit
+from csd.engine import Engine
+from csd.typings import (Backends, CSDConfiguration, EngineRunOptions,
                          RunConfiguration,
                          MeasuringTypes,
                          PhotodetectorProbabilities,
                          ResultExecution,
                          Architecture)
-# from typeguard import typechecked
-import strawberryfields as sf
 from strawberryfields.api import Result
 from strawberryfields.backends import BaseState
 from typing import Optional, Union, cast, List
@@ -62,7 +62,7 @@ class CSD(ABC):
         self._probability_results: List[ResultExecution] = []
         self._sampling_results: List[ResultExecution] = []
         self._plot: Union[Plot, None] = None
-        self._circuit = None
+        self._circuit: Union[Circuit, None] = None
         self._run_configuration: Union[RunConfiguration, None] = None
         self._alphas: Union[List[float], None] = None
         self._save_results = False
@@ -104,10 +104,9 @@ class CSD(ABC):
         return self._create_input_batch(batch=base_batch, alpha_value=alpha_value)
 
     def _compute_photodetector_probabilities(self,
-                                             engine: sf.Engine,
                                              batch: List[float],
                                              params: List[float]) -> PhotodetectorProbabilities:
-        no_click_probabilities = self._compute_no_click_probabilities(engine, batch, params)
+        no_click_probabilities = self._compute_no_click_probabilities(batch, params)
         if isinstance(no_click_probabilities, EagerTensor):
             return {
                 'prob_click': 1 - no_click_probabilities,
@@ -119,18 +118,35 @@ class CSD(ABC):
         }
 
     def _compute_no_click_probabilities(self,
-                                        engine: sf.Engine,
                                         batch: List[float],
                                         params: List[float]) -> Union[List[float], EagerTensor]:
-        if engine.backend_name == Backends.TENSORFLOW.value:
-            return self._run_one_layer_checking_measuring_type(engine=engine,
-                                                               sample_or_batch=batch,
-                                                               params=params)
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
+        if self._run_configuration is None:
+            raise ValueError("Run configuration not specified")
 
-        return [cast(float, self._run_one_layer_checking_measuring_type(engine=engine,
-                                                                        sample_or_batch=sample,
-                                                                        params=params))
-                for sample in batch]
+        if 'shots' in self._run_configuration:
+            self._shots = self._run_configuration['shots']
+
+        if self._engine.backend_name == Backends.TENSORFLOW.value:
+            return self._engine.run_circuit_checking_measuring_type(
+                circuit=self._circuit,
+                options=EngineRunOptions(
+                    params=params,
+                    sample_or_batch=batch,
+                    shots=self._shots,
+                    measuring_type=self._run_configuration['measuring_type']
+                ))
+
+        return [cast(float, self._engine.run_circuit_checking_measuring_type(
+            circuit=self._circuit,
+            options=EngineRunOptions(
+                params=params,
+                sample_or_batch=sample,
+                shots=self._shots,
+                measuring_type=self._run_configuration['measuring_type']
+            )))
+            for sample in batch]
 
     def _compute_average_error_probability(self,
                                            batch: List[float],
@@ -142,131 +158,23 @@ class CSD(ABC):
 
         return sum(p_errors) / len(batch)
 
-    def _run_one_layer_probabilities(self, engine: sf.Engine,
-                                     sample_or_batch: Union[float, List[float]],
-                                     params: List[float]) -> Union[Union[float, EagerTensor],
-                                                                   List[Union[float, EagerTensor]]]:
-        """Run a one layer experiment
-
-        Args:
-            engine (sf.Engine): Strawberry fields already instantiated engine
-
-        Returns:
-            float: probability of getting |0> state
-        """
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-        if self._circuit is None:
-            raise ValueError("Circuit MUST be created first")
-
-        self._result = self._run_engine(engine=engine, sample_or_batch=sample_or_batch, params=params)
-        return cast(Result, self._result).state.fock_prob([0])
-
-    def _run_engine_and_compute_probability_0_photons(
-        self,
-        engine: sf.Engine,
-        shots: int,
-        sample_or_batch: Union[float, List[float]],
-        params: List[float]) -> Union[Union[float, EagerTensor],
-                                      List[Union[float, EagerTensor]]]:
-        if engine.backend_name == Backends.GAUSSIAN.value:
-            return sum([1 for read_value in self._run_engine(engine=engine,
-                                                             sample_or_batch=sample_or_batch,
-                                                             params=params,
-                                                             shots=shots).samples
-                        if read_value[0] == 0]) / shots
-
-        return sum([1 for read_value in [self._run_engine(engine=engine,
-                                                          sample_or_batch=sample_or_batch,
-                                                          params=params).samples[0][0]
-                                         for _ in range(0, shots)] if read_value == 0]) / shots
-
-    def _run_engine(self,
-                    engine: sf.Engine,
-                    sample_or_batch: Union[float, List[float]],
-                    params: List[float],
-                    shots: int = 1) -> Result:
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-
-        # reset the engine if it has already been executed
-        if engine.run_progs:
-            engine.reset()
-
-        self._result = engine.run(self._circuit,
-                                  args={
-                                      # current alpha value from generated batch or
-                                      # the batch when using tf with batches
-                                      "alpha": sample_or_batch,
-                                      "beta": params[0],  # beta
-                                  },
-                                  shots=shots)
-        return self._result
-
-    def _run_one_layer_sampling(self,
-                                engine: sf.Engine,
-                                sample_or_batch: Union[float, List[float]],
-                                params: List[float]) -> Union[Union[float, EagerTensor],
-                                                              List[Union[float, EagerTensor]]]:
-        """Run a one layer experiment doing MeasureFock and performing samplint with nshots
-
-        Args:
-            engine (sf.Engine): Strawberry fields already instantiated engine
-
-        Returns:
-            float: probability of getting |0> state
-        """
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-        if self._circuit is None:
-            raise ValueError("Circuit MUST be created first")
-        if 'shots' in self._run_configuration:
-            self._shots = self._run_configuration['shots']
-
-        return self._run_engine_and_compute_probability_0_photons(
-            engine=engine,
-            shots=self._shots,
-            sample_or_batch=sample_or_batch,
-            params=params)
-
-    def _create_circuit(self) -> sf.Program:
+    def _create_circuit(self) -> Circuit:
         """Creates a circuit to run an experiment based on configuration parameters
 
         Returns:
             sf.Program: the created circuit
         """
+
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
         if not self._architecture:
             raise ValueError('No architecture specified')
 
-        prog = sf.Program(self._architecture['number_qumodes'])
-        alpha = prog.params("alpha")
-        beta = prog.params("beta")
-
-        with prog.context as q:
-            sf.ops.Dgate(alpha, 0.0) | q[0]
-            sf.ops.Dgate(beta, 0.0) | q[0]
-            if self._run_configuration['measuring_type'] is MeasuringTypes.SAMPLING:
-                sf.ops.MeasureFock() | q[0]
-
-        return prog
-
-    def _run_one_layer_checking_measuring_type(self,
-                                               engine: sf.Engine,
-                                               sample_or_batch: Union[float, List[float]],
-                                               params: List[float]) -> Union[Union[float, EagerTensor],
-                                                                             List[Union[float, EagerTensor]]]:
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-
-        if self._run_configuration['measuring_type'] is MeasuringTypes.SAMPLING:
-            return self._run_one_layer_sampling(engine=engine, sample_or_batch=sample_or_batch, params=params)
-        return self._run_one_layer_probabilities(engine=engine, sample_or_batch=sample_or_batch, params=params)
+        return Circuit(architecture=self._architecture,
+                       measuring_type=self._run_configuration['measuring_type'])
 
     def _cost_function(self, params: List[float]) -> Union[float, EagerTensor]:
-        photodetector_probabilities = self._compute_photodetector_probabilities(engine=self._engine,
-                                                                                batch=self._batch,
+        photodetector_probabilities = self._compute_photodetector_probabilities(batch=self._batch,
                                                                                 params=params)
 
         p_err = self._compute_average_error_probability(batch=self._batch,
@@ -372,14 +280,14 @@ class CSD(ABC):
 
         return result
 
-    def _create_engine(self) -> sf.Engine:
+    def _create_engine(self) -> Engine:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
+
         cutoff_dim = (self._run_configuration['cutoff_dim']
                       if 'cutoff_dim' in self._run_configuration
                       else self._cutoff_dim)
-        return sf.Engine(backend=self._run_configuration['backend'].value,
-                         backend_options={
+        return Engine(backend=self._run_configuration['backend'], options={
             "cutoff_dim": cutoff_dim,
             "batch_size": self._batch_size if self._backend_is_tf() else None
         })
