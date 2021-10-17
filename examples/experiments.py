@@ -2,8 +2,10 @@ from typing import List
 from csd import CSD
 from csd.typings import MeasuringTypes, CSDConfiguration, Backends
 import numpy as np
+from csd.util import timing
 
 
+@timing
 def execute_probabilities_fock_backend(alphas: List[float], csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         alphas=alphas,
@@ -12,6 +14,7 @@ def execute_probabilities_fock_backend(alphas: List[float], csd: CSD) -> None:
     )
 
 
+@timing
 def execute_probabilities_gaussian_backend(alphas: List[float], csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         alphas=alphas,
@@ -20,6 +23,7 @@ def execute_probabilities_gaussian_backend(alphas: List[float], csd: CSD) -> Non
     )
 
 
+@timing
 def execute_probabilities_tf_backend(alphas: List[float], csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         alphas=alphas,
@@ -28,6 +32,7 @@ def execute_probabilities_tf_backend(alphas: List[float], csd: CSD) -> None:
     )
 
 
+@timing
 def execute_sampling_fock_backend(alphas: List[float], csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         alphas=alphas,
@@ -36,6 +41,7 @@ def execute_sampling_fock_backend(alphas: List[float], csd: CSD) -> None:
     )
 
 
+@timing
 def execute_sampling_gaussian_backend(alphas: List[float], csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         alphas=alphas,
@@ -44,6 +50,7 @@ def execute_sampling_gaussian_backend(alphas: List[float], csd: CSD) -> None:
     )
 
 
+@timing
 def execute_sampling_tf_backend(alphas: List[float], csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         alphas=alphas,
@@ -67,7 +74,7 @@ if __name__ == '__main__':
     }))
     execute_probabilities_fock_backend(alphas=alphas, csd=csd)
     execute_probabilities_gaussian_backend(alphas=alphas, csd=csd)
-    execute_probabilities_tf_backend(alphas=alphas, csd=csd)
+    # execute_probabilities_tf_backend(alphas=alphas, csd=csd)
     execute_sampling_fock_backend(alphas=alphas, csd=csd)
     execute_sampling_gaussian_backend(alphas=alphas, csd=csd)
-    execute_sampling_tf_backend(alphas=alphas, csd=csd)
+    # execute_sampling_tf_backend(alphas=alphas, csd=csd)
