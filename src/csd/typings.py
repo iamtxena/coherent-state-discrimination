@@ -4,6 +4,18 @@ import enum
 from tensorflow.python.framework.ops import EagerTensor
 
 
+class BackendOptions(TypedDict, total=False):
+    cutoff_dim: int
+    batch_size: Union[int, None]
+
+
+class EngineRunOptions(TypedDict):
+    params: List[Union[float, EagerTensor]]
+    sample_or_batch: Union[Union[float, EagerTensor],
+                           Union[List[float], List[EagerTensor]]]
+    shots: int
+
+
 class PhotodetectorProbabilities(TypedDict):
     prob_click: List[Union[float, EagerTensor]]
     prob_no_click: List[Union[float, EagerTensor]]
