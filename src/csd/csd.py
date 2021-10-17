@@ -16,8 +16,6 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
 from csd.plot import Plot
 from csd.util import timing
-# import tensorflow as tf
-# from .optimizers.tf import SingleTF
 
 
 class CSD(ABC):
