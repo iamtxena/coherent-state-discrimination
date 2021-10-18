@@ -72,9 +72,9 @@ if __name__ == '__main__':
         'save_results': False,
         'save_plots': True
     }))
-    # execute_probabilities_fock_backend(alphas=alphas, csd=csd)
-    # execute_probabilities_gaussian_backend(alphas=alphas, csd=csd)
-    execute_probabilities_tf_backend(alphas=alphas, csd=csd)
+    execute_probabilities_fock_backend(alphas=alphas, csd=csd)
+    execute_probabilities_gaussian_backend(alphas=alphas, csd=csd)
+    # execute_probabilities_tf_backend(alphas=alphas, csd=csd)
     # execute_sampling_fock_backend(alphas=alphas, csd=csd)
     # execute_sampling_gaussian_backend(alphas=alphas, csd=csd)
     # execute_sampling_tf_backend(alphas=alphas, csd=csd)

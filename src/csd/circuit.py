@@ -18,14 +18,15 @@ class Circuit(ABC):
         if architecture['displacement']:
             beta = self._prog.params("beta")
         if architecture['squeezing']:
-            gamma = self._prog.params("gamma")
+            r = self._prog.params("r")
+            phi_r = self._prog.params("phi_r")
 
         with self._prog.context as q:
             sf.ops.Dgate(alpha, 0.0) | q[0]
             if architecture['displacement']:
                 sf.ops.Dgate(beta, 0.0) | q[0]
             if architecture['squeezing']:
-                sf.ops.Sgate(gamma, 0.0) | q[0]
+                sf.ops.Sgate(r, phi_r) | q[0]
             if measuring_type is MeasuringTypes.SAMPLING:
                 sf.ops.MeasureFock() | q[0]
 
