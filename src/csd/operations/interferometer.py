@@ -36,7 +36,7 @@ class Interferometer(ABC):
             theta (tensor_like): size :math:`(M(M-1)/2,)` tensor of transmittivity angles :math:`\theta`
             phi (tensor_like): size :math:`(M(M-1)/2,)` tensor of phase angles :math:`\phi`
             varphi (tensor_like): size :math:`(M,)` tensor of rotation angles :math:`\varphi`
-            number_modes (int): wires that the interferometer acts on.
+            number_modes (int): wires that the interferometer acts on
             context: (sf.Program): circuit context
         """
         modes = list(range(number_modes))
