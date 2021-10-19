@@ -11,22 +11,22 @@ from strawberryfields.api import Result
 from strawberryfields.backends import BaseState
 from typing import Optional, Union, cast, List
 import numpy as np
-import random
 from csd.config import logger
 from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
 from csd.plot import Plot
 from csd.util import timing, save_object_to_disk
+from csd.batch import Batch
 
 
 class CSD(ABC):
-    A = 1
-    MINUS_A = -1
-    DEFAULT_NUM_SHOTS = 100
-    DEFAULT_CUTOFF_DIMENSION = 2
+
+    DEFAULT_NUM_SHOTS = 1000
+    DEFAULT_CUTOFF_DIMENSION = 10
     DEFAULT_ALPHA = 0.7
-    DEFAULT_BATCH_SIZE = 10
-    DEFAULT_STEPS: int = 100
+    DEFAULT_BATCH_SIZE = 1
+    DEFAULT_WORD_SIZE = 10
+    DEFAULT_STEPS = 500
     DEFAULT_LEARNING_RATE: float = 0.1
 
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
@@ -39,68 +39,60 @@ class CSD(ABC):
 
     def _set_default_values_after_config(self):
         self._architecture = self._set_architecture(self._architecture).copy()
+        self._batches = self._create_batches_for_alphas()
 
     def _set_values_from_config(self, csd_config):
+        self._alphas = csd_config.get('alphas', [self.DEFAULT_ALPHA])
         self._steps = csd_config.get('steps', self.DEFAULT_STEPS)
         self._learning_rate = csd_config.get('learning_rate', self.DEFAULT_LEARNING_RATE)
         self._batch_size = csd_config.get('batch_size', self.DEFAULT_BATCH_SIZE)
         self._shots = csd_config.get('shots', self.DEFAULT_NUM_SHOTS)
         self._cutoff_dim = csd_config.get('cutoff_dim', self.DEFAULT_CUTOFF_DIMENSION)
-        self._batch = csd_config.get('batch', [])
-        self._architecture = self._set_architecture(csd_config.get('architecture')).copy()
         self._save_results = csd_config.get('save_results', False)
         self._save_plots = csd_config.get('save_plots', False)
+        self._architecture = self._set_architecture(csd_config.get('architecture')).copy()
 
     def _set_default_values(self):
-        self._shots = self.DEFAULT_NUM_SHOTS
-        self._batch_size = self.DEFAULT_BATCH_SIZE
-        self._cutoff_dim = self.DEFAULT_CUTOFF_DIMENSION
+        self._alphas: List[float] = []
         self._steps = self.DEFAULT_STEPS
         self._learning_rate = self.DEFAULT_LEARNING_RATE
+        self._batch_size = self.DEFAULT_BATCH_SIZE
+        self._shots = self.DEFAULT_NUM_SHOTS
+        self._cutoff_dim = self.DEFAULT_CUTOFF_DIMENSION
+        self._save_results = False
+        self._save_plots = False
+
+        self._batches: List[Batch] = []
         self._result = None
         self._probability_results: List[ResultExecution] = []
         self._sampling_results: List[ResultExecution] = []
         self._plot: Union[Plot, None] = None
         self._circuit: Union[Circuit, None] = None
         self._run_configuration: Union[RunConfiguration, None] = None
-        self._alphas: Union[List[float], None] = None
-        self._save_results = False
-        self._save_plots = False
 
     def _set_architecture(self, architecture: Optional[Architecture] = None) -> Architecture:
         tmp_architecture = self._default_architecture()
         if architecture is None:
             return tmp_architecture
-        if 'number_qumodes' in architecture:
-            tmp_architecture['number_qumodes'] = architecture['number_qumodes']
+        if 'number_modes' in architecture:
+            tmp_architecture['number_modes'] = architecture['number_modes']
         if 'number_layers' in architecture:
             tmp_architecture['number_layers'] = architecture['number_layers']
-        if 'displacement' in architecture:
-            tmp_architecture['displacement'] = architecture['displacement']
         if 'squeezing' in architecture:
             tmp_architecture['squeezing'] = architecture['squeezing']
-        if 'interferometer' in architecture:
-            tmp_architecture['interferometer'] = architecture['interferometer']
+
         return tmp_architecture
 
     def _default_architecture(self) -> Architecture:
         return {
-            'number_qumodes': 1,
+            'number_modes': 1,
             'number_layers': 1,
-            'displacement': True,
             'squeezing': False,
-            'interferometer': False
         }
 
-    def _create_batch(self, samples: List[float], batch_size=10) -> List[float]:
-        return [random.choice(samples) for _ in range(batch_size)]
-
-    def _create_input_batch(self, batch: List[float], alpha_value: float) -> List[float]:
-        return list(alpha_value * np.array(batch))
-
-    def _create_random_batch(self, batch_size=10, alpha_value: float = 0.7) -> List[float]:
-        base_batch = self._create_batch(samples=[self.A, self.MINUS_A], batch_size=batch_size)
-        return self._create_input_batch(batch=base_batch, alpha_value=alpha_value)
+    def _create_batches_for_alphas(self) -> List[Batch]:
+        return [Batch(size=self._batch_size, word_size=self._architecture['number_modes'], alpha_value=alpha)
+                for alpha in self._alphas]
 
     def _compute_photodetector_probabilities(self,
                                              batch: List[float],
@@ -163,11 +155,8 @@ class CSD(ABC):
         Returns:
             sf.Program: the created circuit
         """
-
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
-        if not self._architecture:
-            raise ValueError('No architecture specified')
 
         return Circuit(architecture=self._architecture,
                        measuring_type=self._run_configuration['measuring_type'])
@@ -196,31 +185,24 @@ class CSD(ABC):
         Returns:
             float: probability of getting |0> state
         """
-        if not self._architecture:
-            raise ValueError('No architecture specified')
-        if self._architecture['number_layers'] != 1 or self._architecture['number_qumodes'] != 1:
-            raise ValueError('Experiment only available for ONE qumode and ONE layer')
+        if not configuration:
+            raise ValueError('No configuration specified')
         self._run_configuration = configuration.copy()
-        self._batch_size = (configuration['batch_size'] if 'batch_size' in configuration
-                            else self._batch_size)
-        self._alphas = configuration['alphas'] if 'alphas' in configuration else [self.DEFAULT_ALPHA]
 
         self._circuit = self._create_circuit()
         self._engine = self._create_engine()
 
-        learning_steps = self._set_learning_steps()
         optimization = Optimize(backend=self._run_configuration['backend'],
-                                nparams=1 if not self._architecture['squeezing'] else 3)
+                                nparams=self._circuit.free_parameters)
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
                      " with measuring_type: "
-                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}"
-                     f" and cutoff_dim: {self._cutoff_dim}")
+                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
 
         result = self._init_result()
 
         for sample_alpha in self._alphas:
-            self._execute_for_one_alpha(learning_steps, optimization, result, sample_alpha)
+            self._execute_for_one_alpha(optimization, result, sample_alpha)
 
         self._save_results_to_file(result)
         self._save_plot_to_file(result)
@@ -240,9 +222,10 @@ class CSD(ABC):
             save_object_to_disk(obj=result, path='results')
 
     @timing
-    def _execute_for_one_alpha(self, learning_steps, optimization, result, sample_alpha):
+    def _execute_for_one_alpha(self, optimization, result, sample_alpha):
         self._alpha_value = sample_alpha
         logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)}')
+        learning_steps = self._set_learning_steps()
 
         for step in range(learning_steps):
             optimized_parameters = self._execute_for_one_alpha_and_step(batch_size=self._batch_size,
@@ -296,13 +279,8 @@ class CSD(ABC):
         return self._run_configuration['backend'] == Backends.TENSORFLOW
 
     def _set_learning_steps(self) -> int:
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-
         if self._backend_is_tf():
-            steps = (self._steps if self._steps is not None and 'steps' not in self._run_configuration
-                     else self._steps)
-            return self._run_configuration['steps'] if 'steps' in self._run_configuration else steps
+            return self._steps
         return 1
 
     def _execute_for_one_alpha_and_step(self,
@@ -341,7 +319,6 @@ class CSD(ABC):
     @timing
     def execute_all_backends_and_measuring_types(
             self,
-            alphas: List[float],
             backends: List[Backends] = [Backends.FOCK,
                                         Backends.GAUSSIAN,
                                         Backends.TENSORFLOW],
@@ -361,28 +338,21 @@ class CSD(ABC):
         required_sampling_execution = measuring_types.count(MeasuringTypes.SAMPLING) > 0
 
         if required_probability_execution:
-            self._probability_results = self._execute_with_given_backends(alphas=alphas,
-                                                                          backends=backends,
+            self._probability_results = self._execute_with_given_backends(backends=backends,
                                                                           measuring_type=MeasuringTypes.PROBABILITIES)
 
         if required_sampling_execution:
-            self._sampling_results += self._execute_with_given_backends(alphas=alphas,
-                                                                        backends=backends,
+            self._sampling_results += self._execute_with_given_backends(backends=backends,
                                                                         measuring_type=MeasuringTypes.SAMPLING)
         return self._probability_results + self._sampling_results
 
     def _execute_with_given_backends(self,
-                                     alphas: List[float],
                                      backends: List[Backends],
                                      measuring_type: MeasuringTypes) -> List[ResultExecution]:
 
         return [self.execute(configuration=RunConfiguration({
-            'alphas': alphas,
             'backend': backend,
             'measuring_type': measuring_type,
-            'shots': self._shots,
-            'batch_size': self._batch_size,
-            'cutoff_dim': self._cutoff_dim,
         })) for backend in backends]
 
     def plot_success_probabilities(self,

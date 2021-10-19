@@ -5,6 +5,7 @@ from typing import List, Union
 from typeguard import typechecked
 import strawberryfields as sf
 from tensorflow.python.framework.ops import EagerTensor
+from strawberryfields.parameters import FreeParameter
 
 
 class Interferometer(ABC):
@@ -25,9 +26,9 @@ class Interferometer(ABC):
 
     @typechecked
     def __init__(self,
-                 theta: List[Union[float, EagerTensor]],
-                 phi: List[Union[float, EagerTensor]],
-                 varphi: List[Union[float, EagerTensor]],
+                 theta: List[Union[float, EagerTensor, FreeParameter]],
+                 phi: List[Union[float, EagerTensor, FreeParameter]],
+                 varphi: List[Union[float, EagerTensor, FreeParameter]],
                  number_modes: int,
                  context) -> None:
         """ Creates an Interferometer to the specified circuit (program context)

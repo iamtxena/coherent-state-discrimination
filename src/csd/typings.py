@@ -17,20 +17,18 @@ class PhotodetectorProbabilities(TypedDict):
 
 
 class Architecture(TypedDict, total=False):
-    number_qumodes: int
+    number_modes: int
     number_layers: int
-    displacement: bool
     squeezing: bool
-    interferometer: bool
 
 
 class CSDConfiguration(TypedDict, total=False):
+    alphas: List[float]
     steps: int
     learning_rate: float
     batch_size: int
     shots: int
     cutoff_dim: int
-    batch: List[float]
     save_results: bool
     save_plots: bool
     architecture: Architecture
@@ -49,14 +47,8 @@ class MeasuringTypes(enum.Enum):
 
 
 class RunConfiguration(TypedDict, total=False):
-    alphas: List[float]
     backend: Backends
     measuring_type: MeasuringTypes
-    shots: int
-    batch_size: int
-    cutoff_dim: int
-    steps: int
-    batch: List[float]
 
 
 class OptimizationResult(TypedDict):

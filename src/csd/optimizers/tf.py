@@ -7,7 +7,7 @@ class TFOptimizer(ABC):
 
     def __init__(self, nparams: int = 1):
         self._opt = tf.keras.optimizers.Adam(learning_rate=0.01)
-        self._params = [tf.Variable(1.1) for _ in range(nparams)]
+        self._params = [tf.Variable(0.1) for _ in range(nparams)]
 
     def optimize(self, cost_function: Callable) -> List[float]:
         if self._opt is None:

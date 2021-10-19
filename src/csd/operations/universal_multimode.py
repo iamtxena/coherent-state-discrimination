@@ -1,6 +1,7 @@
 # universal_multimode.py
 from abc import ABC
 from typing import List, Union
+from strawberryfields.parameters import FreeParameter
 from typeguard import typechecked
 import strawberryfields as sf
 from tensorflow.python.framework.ops import EagerTensor
@@ -27,15 +28,15 @@ class UniversalMultimode(ABC):
 
     @typechecked
     def __init__(self,
-                 theta_1: List[Union[float, EagerTensor]],
-                 phi_1: List[Union[float, EagerTensor]],
-                 varphi_1: List[Union[float, EagerTensor]],
-                 r: List[Union[float, EagerTensor]],
-                 phi_r: List[Union[float, EagerTensor]],
-                 theta_2: List[Union[float, EagerTensor]],
-                 phi_2: List[Union[float, EagerTensor]],
-                 varphi_2: List[Union[float, EagerTensor]],
-                 a: List[Union[float, EagerTensor]],
+                 theta_1: List[Union[float, EagerTensor, FreeParameter]],
+                 phi_1: List[Union[float, EagerTensor, FreeParameter]],
+                 varphi_1: List[Union[float, EagerTensor, FreeParameter]],
+                 r: List[Union[float, EagerTensor, FreeParameter]],
+                 phi_r: List[Union[float, EagerTensor, FreeParameter]],
+                 theta_2: List[Union[float, EagerTensor, FreeParameter]],
+                 phi_2: List[Union[float, EagerTensor, FreeParameter]],
+                 varphi_2: List[Union[float, EagerTensor, FreeParameter]],
+                 a: List[Union[float, EagerTensor, FreeParameter]],
                  number_modes: int,
                  context,
                  squeezing: bool = True) -> None:
