@@ -39,3 +39,6 @@ class CodeWord():
     @property
     def alpha(self) -> float:
         return self._alpha_value
+
+    def to_list(self) -> List[float]:
+        return self.word

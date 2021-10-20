@@ -5,6 +5,9 @@ from nptyping import NDArray
 
 from tensorflow.python.framework.ops import EagerTensor
 
+from csd.batch import Batch
+from csd.codeword import CodeWord
+
 
 class BackendOptions(TypedDict, total=False):
     cutoff_dim: int
@@ -70,7 +73,6 @@ class ResultExecution(TypedDict):
 class EngineRunOptions(TypedDict):
     params: Union[List[Union[float, EagerTensor]],
                   NDArray[np.float]]
-    sample_or_batch: Union[Union[float, EagerTensor],
-                           Union[List[float], List[EagerTensor]]]
+    batch_or_codeword: Union[Batch, CodeWord]
     shots: int
     measuring_type: MeasuringTypes

@@ -16,6 +16,7 @@ class Batch():
         self._batch: List[CodeWord] = self._create_batch_with_random_word(batch_size=size,
                                                                           word_size=word_size,
                                                                           alpha_value=self._alpha_value)
+        self._batch_length = len(self._batch)
 
     def _create_batch_with_random_word(self, batch_size: int, word_size: int, alpha_value: float) -> List[CodeWord]:
         return [CodeWord(size=word_size, alpha_value=alpha_value) for _ in range(batch_size)]
@@ -25,5 +26,16 @@ class Batch():
         return [codeword.word for codeword in self._batch]
 
     @property
+    def codewords(self) -> List[CodeWord]:
+        return self._batch
+
+    @property
     def alpha(self) -> float:
         return self._alpha_value
+
+    @property
+    def size(self) -> int:
+        return self._batch_length
+
+    def to_list(self) -> List[List[float]]:
+        return self.batch

@@ -7,7 +7,6 @@ from csd.util import timing
 @timing
 def execute_probabilities_fock_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
-        alphas=alphas,
         backends=[Backends.FOCK],
         measuring_types=[MeasuringTypes.PROBABILITIES]
     )
@@ -16,7 +15,6 @@ def execute_probabilities_fock_backend(csd: CSD) -> None:
 @timing
 def execute_probabilities_gaussian_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
-        alphas=alphas,
         backends=[Backends.GAUSSIAN],
         measuring_types=[MeasuringTypes.PROBABILITIES]
     )
@@ -25,7 +23,6 @@ def execute_probabilities_gaussian_backend(csd: CSD) -> None:
 @timing
 def execute_probabilities_tf_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
-        alphas=alphas,
         backends=[Backends.TENSORFLOW],
         measuring_types=[MeasuringTypes.PROBABILITIES]
     )
@@ -34,7 +31,6 @@ def execute_probabilities_tf_backend(csd: CSD) -> None:
 @timing
 def execute_sampling_fock_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
-        alphas=alphas,
         backends=[Backends.FOCK],
         measuring_types=[MeasuringTypes.SAMPLING]
     )
@@ -43,7 +39,6 @@ def execute_sampling_fock_backend(csd: CSD) -> None:
 @timing
 def execute_sampling_gaussian_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
-        alphas=alphas,
         backends=[Backends.GAUSSIAN],
         measuring_types=[MeasuringTypes.SAMPLING]
     )
@@ -52,7 +47,6 @@ def execute_sampling_gaussian_backend(csd: CSD) -> None:
 @timing
 def execute_sampling_tf_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
-        alphas=alphas,
         backends=[Backends.TENSORFLOW],
         measuring_types=[MeasuringTypes.SAMPLING]
     )
@@ -66,10 +60,11 @@ if __name__ == '__main__':
         'cutoff_dim': 10,
         'batch_size': 1000,
         'architecture': {
-            'displacement': True,
-            'squeezing': True,
+            'number_modes': 1,
+            'number_layers': 1,
+            'squeezing': False,
         },
-        'save_results': False,
+        'save_results': True,
         'save_plots': True
     }))
     execute_probabilities_fock_backend(csd=csd)

@@ -79,7 +79,7 @@ class Engine(ABC):
                                   circuit: Circuit,
                                   options: EngineRunOptions) -> dict:
         all_values = []
-        all_values.append(options['sample_or_batch'])
+        all_values.append(options['batch_or_codeword'].to_list())
         [all_values.append(param) for param in options['params']]
 
         return {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}

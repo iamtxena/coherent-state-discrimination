@@ -89,3 +89,7 @@ class Circuit(ABC):
             int: Number of free parameters to optimize
         """
         return self._free_parameters
+
+    @property
+    def parameters(self) -> dict:
+        return self._prog.free_params

@@ -39,7 +39,6 @@ class CSD(ABC):
 
     def _set_default_values_after_config(self):
         self._architecture = self._set_architecture(self._architecture).copy()
-        self._batches = self._create_batches_for_alphas()
 
     def _set_values_from_config(self, csd_config):
         self._alphas = csd_config.get('alphas', [self.DEFAULT_ALPHA])
@@ -62,7 +61,7 @@ class CSD(ABC):
         self._save_results = False
         self._save_plots = False
 
-        self._batches: List[Batch] = []
+        self._current_batch: Union[Batch, None] = None
         self._result = None
         self._probability_results: List[ResultExecution] = []
         self._sampling_results: List[ResultExecution] = []
@@ -90,12 +89,11 @@ class CSD(ABC):
             'squeezing': False,
         }
 
-    def _create_batches_for_alphas(self) -> List[Batch]:
-        return [Batch(size=self._batch_size, word_size=self._architecture['number_modes'], alpha_value=alpha)
-                for alpha in self._alphas]
+    def _create_batch_for_alpha(self, alpha_value: float) -> Batch:
+        return Batch(size=self._batch_size, word_size=self._architecture['number_modes'], alpha_value=alpha_value)
 
     def _compute_photodetector_probabilities(self,
-                                             batch: List[float],
+                                             batch: Batch,
                                              params: List[float]) -> PhotodetectorProbabilities:
         no_click_probabilities = self._compute_no_click_probabilities(batch, params)
         if isinstance(no_click_probabilities, EagerTensor):
@@ -109,7 +107,7 @@ class CSD(ABC):
         }
 
     def _compute_no_click_probabilities(self,
-                                        batch: List[float],
+                                        batch: Batch,
                                         params: List[float]) -> Union[List[float], EagerTensor]:
         if self._circuit is None:
             raise ValueError("Circuit must be initialized")
@@ -124,7 +122,7 @@ class CSD(ABC):
                 circuit=self._circuit,
                 options=EngineRunOptions(
                     params=params,
-                    sample_or_batch=batch,
+                    batch_or_codeword=batch,
                     shots=self._shots,
                     measuring_type=self._run_configuration['measuring_type']
                 ))
@@ -133,21 +131,21 @@ class CSD(ABC):
             circuit=self._circuit,
             options=EngineRunOptions(
                 params=params,
-                sample_or_batch=sample,
+                batch_or_codeword=codeword,
                 shots=self._shots,
                 measuring_type=self._run_configuration['measuring_type']
             )))
-            for sample in batch]
+            for codeword in batch.codewords]
 
     def _compute_average_error_probability(self,
-                                           batch: List[float],
+                                           batch: Batch,
                                            photodetector_prob: PhotodetectorProbabilities) -> float:
 
-        p_errors = [photodetector_prob['prob_click'][batch_index] if sample == self._alpha_value
-                    else photodetector_prob['prob_no_click'][batch_index]
-                    for batch_index, sample in enumerate(batch)]
+        p_errors = [photodetector_prob['prob_click'][word_index] if codeword == self._alpha_value
+                    else photodetector_prob['prob_no_click'][word_index]
+                    for word_index, codeword in enumerate(batch.codewords)]
 
-        return sum(p_errors) / len(batch)
+        return sum(p_errors) / batch.size
 
     def _create_circuit(self) -> Circuit:
         """Creates a circuit to run an experiment based on configuration parameters
@@ -162,10 +160,10 @@ class CSD(ABC):
                        measuring_type=self._run_configuration['measuring_type'])
 
     def _cost_function(self, params: List[float]) -> Union[float, EagerTensor]:
-        photodetector_probabilities = self._compute_photodetector_probabilities(batch=self._batch,
+        photodetector_probabilities = self._compute_photodetector_probabilities(batch=self._current_batch,
                                                                                 params=params)
 
-        p_err = self._compute_average_error_probability(batch=self._batch,
+        p_err = self._compute_average_error_probability(batch=self._current_batch,
                                                         photodetector_prob=photodetector_probabilities)
         self._current_p_err = self._save_current_p_error(p_err)
         return p_err
@@ -201,7 +199,7 @@ class CSD(ABC):
 
         result = self._init_result()
 
-        for sample_alpha in self._alphas:
+        for sample_alpha, batch in zip(self._alphas, self._batches):
             self._execute_for_one_alpha(optimization, result, sample_alpha)
 
         self._save_results_to_file(result)
@@ -224,13 +222,16 @@ class CSD(ABC):
     @timing
     def _execute_for_one_alpha(self, optimization, result, sample_alpha):
         self._alpha_value = sample_alpha
+        self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value)
+
         logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)}')
+
         learning_steps = self._set_learning_steps()
 
         for step in range(learning_steps):
-            optimized_parameters = self._execute_for_one_alpha_and_step(batch_size=self._batch_size,
-                                                                        optimization=optimization)
+            optimized_parameters = optimization.optimize(cost_function=self._cost_function)
             self._print_opimized_parameters(step, optimized_parameters)
+
         self._update_result(result, optimized_parameters)
 
     def _print_opimized_parameters(self, step, optimized_parameters):
@@ -282,15 +283,6 @@ class CSD(ABC):
         if self._backend_is_tf():
             return self._steps
         return 1
-
-    def _execute_for_one_alpha_and_step(self,
-                                        batch_size: int,
-                                        optimization: Optimize) -> List[float]:
-
-        self._batch = self._create_random_batch(batch_size=batch_size, alpha_value=self._alpha_value)
-        optimized_result = optimization.optimize(cost_function=self._cost_function)
-        # logger.debug(f'optimized_result: {optimized_result}')
-        return optimized_result
 
     def _set_plot_label(self, backend: Backends, measuring_type: MeasuringTypes) -> str:
         """Set the label for the success probability plot
