@@ -1,12 +1,12 @@
 from abc import ABC
 from csd.circuit import Circuit
 from csd.engine import Engine
-from csd.typings import (Backends, CSDConfiguration, EngineRunOptions,
-                         RunConfiguration,
-                         MeasuringTypes,
-                         PhotodetectorProbabilities,
-                         ResultExecution,
-                         Architecture)
+from csd.typings.typing import (Backends,
+                                CSDConfiguration,
+                                RunConfiguration,
+                                MeasuringTypes,
+                                ResultExecution,
+                                Architecture)
 from strawberryfields.api import Result
 from strawberryfields.backends import BaseState
 from typing import Optional, Union, cast, List
@@ -15,8 +15,10 @@ from csd.config import logger
 from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
 from csd.plot import Plot
+from csd.typings.cost_function import CostFunctionOptions
 from csd.util import timing, save_object_to_disk
 from csd.batch import Batch
+from .cost_function import CostFunction
 
 
 class CSD(ABC):
@@ -92,61 +94,6 @@ class CSD(ABC):
     def _create_batch_for_alpha(self, alpha_value: float) -> Batch:
         return Batch(size=self._batch_size, word_size=self._architecture['number_modes'], alpha_value=alpha_value)
 
-    def _compute_photodetector_probabilities(self,
-                                             batch: Batch,
-                                             params: List[float]) -> PhotodetectorProbabilities:
-        no_click_probabilities = self._compute_no_click_probabilities(batch, params)
-        if isinstance(no_click_probabilities, EagerTensor):
-            return {
-                'prob_click': 1 - no_click_probabilities,
-                'prob_no_click': no_click_probabilities
-            }
-        return {
-            'prob_click': list(1 - np.array(no_click_probabilities)),
-            'prob_no_click': list(no_click_probabilities)
-        }
-
-    def _compute_no_click_probabilities(self,
-                                        batch: Batch,
-                                        params: List[float]) -> Union[List[float], EagerTensor]:
-        if self._circuit is None:
-            raise ValueError("Circuit must be initialized")
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-
-        if 'shots' in self._run_configuration:
-            self._shots = self._run_configuration['shots']
-
-        if self._engine.backend_name == Backends.TENSORFLOW.value:
-            return self._engine.run_circuit_checking_measuring_type(
-                circuit=self._circuit,
-                options=EngineRunOptions(
-                    params=params,
-                    batch_or_codeword=batch,
-                    shots=self._shots,
-                    measuring_type=self._run_configuration['measuring_type']
-                ))
-
-        return [cast(float, self._engine.run_circuit_checking_measuring_type(
-            circuit=self._circuit,
-            options=EngineRunOptions(
-                params=params,
-                batch_or_codeword=codeword,
-                shots=self._shots,
-                measuring_type=self._run_configuration['measuring_type']
-            )))
-            for codeword in batch.codewords]
-
-    def _compute_average_error_probability(self,
-                                           batch: Batch,
-                                           photodetector_prob: PhotodetectorProbabilities) -> float:
-
-        p_errors = [photodetector_prob['prob_click'][word_index] if codeword == self._alpha_value
-                    else photodetector_prob['prob_no_click'][word_index]
-                    for word_index, codeword in enumerate(batch.codewords)]
-
-        return sum(p_errors) / batch.size
-
     def _create_circuit(self) -> Circuit:
         """Creates a circuit to run an experiment based on configuration parameters
 
@@ -160,13 +107,27 @@ class CSD(ABC):
                        measuring_type=self._run_configuration['measuring_type'])
 
     def _cost_function(self, params: List[float]) -> Union[float, EagerTensor]:
-        photodetector_probabilities = self._compute_photodetector_probabilities(batch=self._current_batch,
-                                                                                params=params)
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
+        if self._run_configuration is None:
+            raise ValueError("Run configuration not specified")
 
-        p_err = self._compute_average_error_probability(batch=self._current_batch,
-                                                        photodetector_prob=photodetector_probabilities)
-        self._current_p_err = self._save_current_p_error(p_err)
-        return p_err
+        if 'shots' in self._run_configuration:
+            self._shots = self._run_configuration['shots']
+
+        cost_function = CostFunction(batch=self._current_batch,
+                                     params=params,
+                                     options=CostFunctionOptions(
+                                         engine=self._engine,
+                                         circuit=self._circuit,
+                                         backend_name=self._engine.backend_name,
+                                         measuring_type=self._run_configuration['measuring_type'],
+                                         shots=self._shots))
+
+        self._current_p_err = self._save_current_p_error(
+            cost_function.run_and_compute_batch_error_probabilities())
+
+        return self._current_p_err
 
     def _save_current_p_error(self, p_err: Union[float, EagerTensor]) -> float:
         if isinstance(p_err, EagerTensor):
@@ -199,7 +160,7 @@ class CSD(ABC):
 
         result = self._init_result()
 
-        for sample_alpha, batch in zip(self._alphas, self._batches):
+        for sample_alpha in self._alphas:
             self._execute_for_one_alpha(optimization, result, sample_alpha)
 
         self._save_results_to_file(result)
@@ -244,7 +205,7 @@ class CSD(ABC):
                      f' parameters: {optimized_parameters}'
                      f' p_succ: {1 - self._current_p_err}')
         result['alphas'].append(np.round(self._alpha_value, 2))
-        result['batches'].append(self._batch)
+        result['batches'].append(self._current_batch)
         result['opt_params'].append(cast(float, optimized_parameters))
         result['p_err'].append(self._current_p_err)
         result['p_succ'].append(1 - self._current_p_err)

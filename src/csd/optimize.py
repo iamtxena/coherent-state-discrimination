@@ -1,6 +1,6 @@
 from abc import ABC
 from typing import Callable, List, Union, Optional
-from csd.typings import Backends
+from csd.typings.typing import Backends
 from .optimizers.tf import TFOptimizer
 from .optimizers.scipy import ScipyOptimizer
 

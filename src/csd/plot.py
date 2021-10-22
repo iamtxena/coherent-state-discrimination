@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
 # from typeguard import typechecked
 from csd.ideal_probabilities import IdealProbabilities
-from csd.typings import ResultExecution
+from csd.typings.typing import ResultExecution
 from csd.util import set_current_time, _fix_path
 
 

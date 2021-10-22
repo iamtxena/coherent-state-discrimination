@@ -1,5 +1,5 @@
 from csd import CSD  # noqa: E402
-from csd.typings import CSDConfiguration, Backends
+from csd.typings.typing import CSDConfiguration, Backends
 from csd.config import logger
 
 

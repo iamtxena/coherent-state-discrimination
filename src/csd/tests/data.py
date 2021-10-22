@@ -3,7 +3,7 @@
 """ Data to used alongside the test suite """
 
 import numpy as np
-from csd.typings import CSDConfiguration, Backends, RunConfiguration
+from csd.typings.typing import CSDConfiguration, Backends, RunConfiguration
 
 csd_test_configurations = [
     {

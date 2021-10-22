@@ -14,11 +14,6 @@ class BackendOptions(TypedDict, total=False):
     batch_size: Union[int, None]
 
 
-class PhotodetectorProbabilities(TypedDict):
-    prob_click: List[Union[float, EagerTensor]]
-    prob_no_click: List[Union[float, EagerTensor]]
-
-
 class Architecture(TypedDict, total=False):
     number_modes: int
     number_layers: int

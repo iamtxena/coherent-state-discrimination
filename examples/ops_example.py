@@ -32,8 +32,8 @@ def convert_word_to_fock_prob_indices(word: List[str], cutoff_dim: int) -> List[
 def get_fock_prob_indices_from_modes(number_modes: int, cutoff_dimension: int) -> List[List[int]]:
     if number_modes > cutoff_dimension:
         raise ValueError("cutoff dimension MUST be equal or greater than modes")
-    values = ["a", "-a"]
-    words = [p for p in itertools.product(values, repeat=number_modes)]
+    letters = ["a", "-a"]
+    words = [p for p in itertools.product(letters, repeat=number_modes)]
     print(words)
     return [convert_word_to_fock_prob_indices(word=word, cutoff_dim=cutoff_dimension) for word in words]
 
@@ -62,9 +62,6 @@ def create_circuit():
     params.append(beta)
     params.append(r)
     params.append(phi_r)
-    print(params)
-    print(params[0])
-    print(type(params[0]))
 
     cutoff_dim = 10
     eng = sf.Engine(backend="fock", backend_options={"cutoff_dim": cutoff_dim})

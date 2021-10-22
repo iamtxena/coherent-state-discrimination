@@ -1,5 +1,5 @@
 from csd import CSD
-from csd.typings import MeasuringTypes, RunConfiguration, CSDConfiguration, Backends
+from csd.typings.typing import MeasuringTypes, RunConfiguration, CSDConfiguration, Backends
 from csd.config import logger
 import numpy as np
 import json

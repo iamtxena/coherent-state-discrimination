@@ -40,5 +40,29 @@ class CodeWord():
     def alpha(self) -> float:
         return self._alpha_value
 
+    @property
+    def size(self) -> int:
+        return len(self._word)
+
+    @property
+    def number_alphas(self) -> int:
+        return self._word.count(self.alpha)
+
     def to_list(self) -> List[float]:
         return self.word
+
+    @property
+    def zero_list(self) -> List[float]:
+        """ Returns a list of 0 where there is alpha_value
+            leaving the rest the same
+
+        Returns:
+            List[float]: the generated list
+        """
+        return [0 if letter == self.alpha else letter for letter in self.word]
+
+    @property
+    def minus_indices(self) -> List[int]:
+        """ Returns a list of indices where there is -alpha_values
+        """
+        return np.where(np.array(self.word) != self.alpha)[0]

@@ -1,5 +1,5 @@
 from csd import CSD
-from csd.typings import MeasuringTypes, CSDConfiguration, Backends
+from csd.typings.typing import MeasuringTypes, CSDConfiguration, Backends
 import numpy as np
 from csd.util import timing
 

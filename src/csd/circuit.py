@@ -5,7 +5,7 @@ from typing import List, Union
 from strawberryfields.parameters import FreeParameter
 from tensorflow.python.framework.ops import EagerTensor
 from csd.operations.universal_multimode import UniversalMultimode
-from csd.typings import Architecture, MeasuringTypes
+from csd.typings.typing import Architecture, MeasuringTypes
 import strawberryfields as sf
 from typeguard import typechecked
 

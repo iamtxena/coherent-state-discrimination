@@ -2,7 +2,7 @@
 
 import pytest
 from csd import CSD
-from csd.typings import CSDConfiguration, Backends, RunConfiguration
+from csd.typings.typing import CSDConfiguration, Backends, RunConfiguration
 from csd.config import logger
 from .data import (csd_test_configurations,
                    csd_configurations,
