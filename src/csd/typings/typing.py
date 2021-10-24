@@ -1,11 +1,11 @@
-from typing import TypedDict, Union, List
+from typing import NamedTuple, TypedDict, Union, List
 import enum
 import numpy as np
 from nptyping import NDArray
+import json
 
 from tensorflow.python.framework.ops import EagerTensor
 
-from csd.batch import Batch
 from csd.codeword import CodeWord
 
 
@@ -68,6 +68,34 @@ class ResultExecution(TypedDict):
 class EngineRunOptions(TypedDict):
     params: Union[List[Union[float, EagerTensor]],
                   NDArray[np.float]]
-    batch_or_codeword: Union[Batch, CodeWord]
+    codeword: CodeWord
     shots: int
     measuring_type: MeasuringTypes
+
+
+class CodeWordSuccessProbability(NamedTuple):
+    codeword: CodeWord
+    success_probability: Union[float, EagerTensor]
+
+    def __str__(self) -> str:
+        return json.dumps({
+            "codeword": self.codeword.word,
+            "psucc": self.success_probability
+        })
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
+class CodeWordIndices(NamedTuple):
+    codeword: CodeWord
+    indices: List[List[int]]
+
+    def __str__(self) -> str:
+        return json.dumps({
+            "codeword": self.codeword.word,
+            "indices": self.indices
+        })
+
+    def __repr__(self) -> str:
+        return self.__str__()

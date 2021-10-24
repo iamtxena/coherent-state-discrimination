@@ -30,6 +30,10 @@ class Batch():
         return self._batch
 
     @property
+    def one_codeword(self) -> CodeWord:
+        return self._batch[0]
+
+    @property
     def alpha(self) -> float:
         return self._alpha_value
 

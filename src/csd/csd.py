@@ -111,9 +111,8 @@ class CSD(ABC):
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
-
-        if 'shots' in self._run_configuration:
-            self._shots = self._run_configuration['shots']
+        if self._current_batch is None:
+            raise ValueError("Current Batch must be initialized")
 
         cost_function = CostFunction(batch=self._current_batch,
                                      params=params,
@@ -125,7 +124,7 @@ class CSD(ABC):
                                          shots=self._shots))
 
         self._current_p_err = self._save_current_p_error(
-            cost_function.run_and_compute_batch_error_probabilities())
+            cost_function.run_and_compute_average_batch_error_probability())
 
         return self._current_p_err
 
@@ -146,27 +145,34 @@ class CSD(ABC):
         """
         if not configuration:
             raise ValueError('No configuration specified')
-        self._run_configuration = configuration.copy()
 
+        self._run_configuration = configuration.copy()
         self._circuit = self._create_circuit()
         self._engine = self._create_engine()
-
-        optimization = Optimize(backend=self._run_configuration['backend'],
-                                nparams=self._circuit.free_parameters)
+        optimization = self._create_optimization()
+        result = self._init_result()
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
                      " with measuring_type: "
                      f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
 
-        result = self._init_result()
-
         for sample_alpha in self._alphas:
-            self._execute_for_one_alpha(optimization, result, sample_alpha)
+            self._execute_for_one_alpha(optimization=optimization,
+                                        result=result,
+                                        sample_alpha=sample_alpha)
 
         self._save_results_to_file(result)
         self._save_plot_to_file(result)
 
         return result
+
+    def _create_optimization(self) -> Optimize:
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
+        if self._run_configuration is None:
+            raise ValueError("Run configuration not specified")
+        return Optimize(backend=self._run_configuration['backend'],
+                        nparams=self._circuit.free_parameters)
 
     def _save_plot_to_file(self, result):
         if self._save_plots:
@@ -181,7 +187,7 @@ class CSD(ABC):
             save_object_to_disk(obj=result, path='results')
 
     @timing
-    def _execute_for_one_alpha(self, optimization, result, sample_alpha):
+    def _execute_for_one_alpha(self, optimization: Optimize, result: ResultExecution, sample_alpha: float) -> None:
         self._alpha_value = sample_alpha
         self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value)
 
@@ -191,22 +197,22 @@ class CSD(ABC):
 
         for step in range(learning_steps):
             optimized_parameters = optimization.optimize(cost_function=self._cost_function)
-            self._print_opimized_parameters(step, optimized_parameters)
+            self._print_optimized_parameters_for_tf_backend_only(step, optimized_parameters)
 
-        self._update_result(result, optimized_parameters)
+        self._update_result(result=result, optimized_parameters=optimized_parameters)
 
-    def _print_opimized_parameters(self, step, optimized_parameters):
+    def _print_optimized_parameters_for_tf_backend_only(self, step, optimized_parameters):
         if self._backend_is_tf() and (step + 1) % 100 == 0:
             logger.debug("Learned parameters value at step {}: {}".format(
                 step + 1, optimized_parameters))
 
-    def _update_result(self, result, optimized_parameters):
+    def _update_result(self, result: ResultExecution, optimized_parameters: List[float]):
         logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)}'
                      f' parameters: {optimized_parameters}'
                      f' p_succ: {1 - self._current_p_err}')
         result['alphas'].append(np.round(self._alpha_value, 2))
-        result['batches'].append(self._current_batch)
-        result['opt_params'].append(cast(float, optimized_parameters))
+        # result['batches'].append(self._current_batch.batch)
+        result['opt_params'].append(list(optimized_parameters))
         result['p_err'].append(self._current_p_err)
         result['p_succ'].append(1 - self._current_p_err)
 
@@ -229,11 +235,8 @@ class CSD(ABC):
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
-        cutoff_dim = (self._run_configuration['cutoff_dim']
-                      if 'cutoff_dim' in self._run_configuration
-                      else self._cutoff_dim)
         return Engine(backend=self._run_configuration['backend'], options={
-            "cutoff_dim": cutoff_dim,
+            "cutoff_dim": self._cutoff_dim,
             "batch_size": self._batch_size if self._backend_is_tf() else None
         })
 
