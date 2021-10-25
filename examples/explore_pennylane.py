@@ -3,6 +3,9 @@ import numpy as np
 import tensorflow as tf
 
 
+N_ITER = 1_000
+BATCH_SIZE = 100
+
 cutoff = 5
 n_modes = 2
 n_layers = 1
@@ -52,11 +55,32 @@ def node(inputs, theta_1, phi_1, varphi_1, r, phi_r, theta_2, phi_2, varphi_2, a
     return [qml.expval(qml.FockStateProjector(wires=w)) for w in range(n_modes)]
 
 
+def generate_training_data(n_datapoints):
+    x_data, y_data = [], []
+
+    for _ in range(n_datapoints):
+        t_data = np.random.choice([0, 1], size=n_modes)
+        index = int("".join(map(str, t_data)), base=2)
+        onehot = np.zeros(2 ** n_modes)
+        onehot[index] = 1
+
+        x_data.append(t_data * 2 - 1)
+        y_data.append(onehot)
+
+    return np.array(x_data), np.array(y_data)
+
+
 if __name__ == "__main__":
     qlayer = qml.qnn.KerasLayer(node, weight_shapes, output_dim=n_modes)
-    model = tf.keras.models.Sequential([qlayer])
+    clayer = tf.keras.layers.Dense(2 ** n_modes)
+
+    model = tf.keras.models.Sequential([qlayer, clayer])
 
     opt = tf.keras.optimizers.SGD(learning_rate=0.2)
     model.compile(opt, loss="mae", metrics=["accuracy"])
+
+    for iteration in range(N_ITER):
+        X_batch, y_batch = generate_training_data(BATCH_SIZE)
+        model.fit(X_batch, y_batch, epochs=5)
 
     print(model.summary())
