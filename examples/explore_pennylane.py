@@ -9,7 +9,7 @@ BATCH_SIZE = 100
 cutoff = 5
 n_modes = 2
 n_layers = 1
-k = n_modes * (n_modes - 1) / 2
+k = int(n_modes * (n_modes - 1) / 2)
 
 weight_shapes = {
     "theta_1" : (n_layers, k),
@@ -71,16 +71,17 @@ def generate_training_data(n_datapoints):
 
 
 if __name__ == "__main__":
-    qlayer = qml.qnn.KerasLayer(node, weight_shapes, output_dim=n_modes)
-    clayer = tf.keras.layers.Dense(2 ** n_modes)
+    q_layer = qml.qnn.KerasLayer(node, weight_shapes, output_dim=int(n_modes))
+    c_layer_out = tf.keras.layers.Dense(int(2 ** n_modes), activation=tf.keras.activations.softmax)
 
-    model = tf.keras.models.Sequential([qlayer, clayer])
+    model = tf.keras.models.Sequential([q_layer, c_layer_out])
 
-    opt = tf.keras.optimizers.SGD(learning_rate=0.2)
+    opt = tf.keras.optimizers.Adam(learning_rate=0.2)
     model.compile(opt, loss="mae", metrics=["accuracy"])
 
     for iteration in range(N_ITER):
         X_batch, y_batch = generate_training_data(BATCH_SIZE)
-        model.fit(X_batch, y_batch, epochs=5)
+        breakpoint()
+        model.fit(X_batch, y_batch, epochs=5, batch_size=BATCH_SIZE)
 
     print(model.summary())
