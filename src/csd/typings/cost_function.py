@@ -11,3 +11,4 @@ class CostFunctionOptions(NamedTuple):
     backend_name: str
     measuring_type: MeasuringTypes
     shots: int
+    plays: int

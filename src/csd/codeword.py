@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import List, Optional
 import random
 import numpy as np
+import json
 
 A = 1
 MINUS_A = -1
@@ -34,6 +35,12 @@ class CodeWord():
                             alpha_value: float = DEFAULT_ALPHA_VALUE) -> List[float]:
         base_word = self._create_word(samples=[A, MINUS_A], word_size=word_size)
         return self._create_input_word(word=base_word, alpha_value=alpha_value)
+
+    def __str__(self) -> str:
+        return json.dumps(self.word)
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
     @property
     def word(self) -> List[float]:

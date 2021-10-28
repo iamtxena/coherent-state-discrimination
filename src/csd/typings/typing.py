@@ -3,6 +3,7 @@ import enum
 import numpy as np
 from nptyping import NDArray
 import json
+from dataclasses import dataclass
 
 from tensorflow.python.framework.ops import EagerTensor
 
@@ -26,6 +27,7 @@ class CSDConfiguration(TypedDict, total=False):
     learning_rate: float
     batch_size: int
     shots: int
+    plays: int
     cutoff_dim: int
     save_results: bool
     save_plots: bool
@@ -56,7 +58,7 @@ class OptimizationResult(TypedDict):
 
 class ResultExecution(TypedDict):
     alphas: List[float]
-    batches: List[List[float]]
+    batches: List[List[CodeWord]]
     opt_params: List[Union[List[float], EagerTensor]]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]
@@ -73,7 +75,8 @@ class EngineRunOptions(TypedDict):
     measuring_type: MeasuringTypes
 
 
-class CodeWordSuccessProbability(NamedTuple):
+@dataclass
+class CodeWordSuccessProbability():
     codeword: CodeWord
     success_probability: Union[float, EagerTensor]
 

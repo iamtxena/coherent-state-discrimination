@@ -30,6 +30,7 @@ class CSD(ABC):
     DEFAULT_WORD_SIZE = 10
     DEFAULT_STEPS = 500
     DEFAULT_LEARNING_RATE: float = 0.1
+    DEFAULT_PLAYS = 100
 
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
         self._set_default_values()
@@ -48,6 +49,7 @@ class CSD(ABC):
         self._learning_rate = csd_config.get('learning_rate', self.DEFAULT_LEARNING_RATE)
         self._batch_size = csd_config.get('batch_size', self.DEFAULT_BATCH_SIZE)
         self._shots = csd_config.get('shots', self.DEFAULT_NUM_SHOTS)
+        self._plays = csd_config.get('plays', self.DEFAULT_PLAYS)
         self._cutoff_dim = csd_config.get('cutoff_dim', self.DEFAULT_CUTOFF_DIMENSION)
         self._save_results = csd_config.get('save_results', False)
         self._save_plots = csd_config.get('save_plots', False)
@@ -59,6 +61,7 @@ class CSD(ABC):
         self._learning_rate = self.DEFAULT_LEARNING_RATE
         self._batch_size = self.DEFAULT_BATCH_SIZE
         self._shots = self.DEFAULT_NUM_SHOTS
+        self._plays = self.DEFAULT_PLAYS
         self._cutoff_dim = self.DEFAULT_CUTOFF_DIMENSION
         self._save_results = False
         self._save_plots = False
@@ -121,11 +124,12 @@ class CSD(ABC):
                                          circuit=self._circuit,
                                          backend_name=self._engine.backend_name,
                                          measuring_type=self._run_configuration['measuring_type'],
-                                         shots=self._shots))
+                                         shots=self._shots,
+                                         plays=self._plays))
 
         self._current_p_err = self._save_current_p_error(
             cost_function.run_and_compute_average_batch_error_probability())
-
+        # logger.debug(f"average error: {self._current_p_err} for params: {params}")
         return self._current_p_err
 
     def _save_current_p_error(self, p_err: Union[float, EagerTensor]) -> float:
@@ -211,7 +215,7 @@ class CSD(ABC):
                      f' parameters: {optimized_parameters}'
                      f' p_succ: {1 - self._current_p_err}')
         result['alphas'].append(np.round(self._alpha_value, 2))
-        # result['batches'].append(self._current_batch.batch)
+        # result['batches'].append([])  # self._current_batch.codewords if self._current_batch is not None else [])
         result['opt_params'].append(list(optimized_parameters))
         result['p_err'].append(self._current_p_err)
         result['p_succ'].append(1 - self._current_p_err)

@@ -6,7 +6,8 @@ from strawberryfields.backends import BaseState
 # from tensorflow.python.framework.ops import EagerTensor
 from typeguard import typechecked
 from csd.codeword import CodeWord
-from csd.typings.typing import Backends, BackendOptions, CodeWordIndices, CodeWordSuccessProbability, EngineRunOptions
+from csd.typings.typing import (Backends, BackendOptions, CodeWordIndices,
+                                CodeWordSuccessProbability, EngineRunOptions, MeasuringTypes)
 from csd.circuit import Circuit
 from typing import List, Optional
 import itertools
@@ -31,29 +32,44 @@ class Engine(ABC):
     def backend_name(self) -> str:
         return self._engine.backend_name
 
+    def _max_probability_codeword(
+            self,
+            codewords_sucess_probabilities: List[CodeWordSuccessProbability]) -> CodeWordSuccessProbability:
+        max_codeword_success_probability = codewords_sucess_probabilities[0]
+
+        for codeword_success_probability in codewords_sucess_probabilities:
+            if codeword_success_probability.success_probability > max_codeword_success_probability.success_probability:
+                max_codeword_success_probability = codeword_success_probability
+        # logger.debug(f"Max probability: {max_codeword_success_probability}")
+        return max_codeword_success_probability
+
     def run_circuit_checking_measuring_type(
             self,
             circuit: Circuit,
-            options: EngineRunOptions) -> List[CodeWordSuccessProbability]:
+            options: EngineRunOptions) -> CodeWordSuccessProbability:
 
-        # if options['measuring_type'] is MeasuringTypes.SAMPLING:
-        #     return self._run_circuit_sampling(circuit=circuit, options=options)
-        return self._run_circuit_probabilities(circuit=circuit, options=options)
+        if options['measuring_type'] is MeasuringTypes.SAMPLING:
+            codewords_sucess_probabilities = self._run_circuit_sampling(circuit=circuit, options=options)
+        else:
+            codewords_sucess_probabilities = self._run_circuit_probabilities(circuit=circuit, options=options)
+        # logger.debug(codewords_sucess_probabilities)
+        return self._max_probability_codeword(codewords_sucess_probabilities=codewords_sucess_probabilities)
 
-    # def _run_circuit_sampling(self,
-    #                           circuit: Circuit,
-    #                           options: EngineRunOptions) -> Union[float, EagerTensor, np.float]:
-    #     """Run a circuit experiment doing MeasureFock and performing samplint with nshots
-
-    #     Returns:
-    #         float: probability of getting |0> state
-    #     """
-    #     if self._engine.backend_name == Backends.GAUSSIAN.value:
-    #         return sum([1 for read_value in self._run_circuit(circuit=circuit, options=options).samples
-    #                     if read_value[0] == 0]) / options['shots']
-
-    #     return sum([1 for read_value in [self._run_circuit(circuit=circuit, options=options).samples[0][0]
-    #                                      for _ in range(options['shots'])] if read_value == 0]) / options['shots']
+    def _run_circuit_sampling(self,
+                              circuit: Circuit,
+                              options: EngineRunOptions) -> List[CodeWordSuccessProbability]:
+        """Run a circuit experiment doing MeasureFock and performing samplint with nshots
+        """
+        # if self._engine.backend_name == Backends.GAUSSIAN.value:
+        #     return sum([1 for read_value in self._run_circuit(circuit=circuit, options=options).samples
+        #                 if read_value[0] == 0]) / options['shots']
+        shots = options['shots']
+        options['shots'] = 1
+        zero_prob = sum([1 for read_value in [self._run_circuit(circuit=circuit, options=options).samples[0][0]
+                                              for _ in range(shots)] if read_value == 0]) / shots
+        codewords = self._generate_all_codewords(codeword=options['codeword'])
+        return [CodeWordSuccessProbability(codeword=codewords[0], success_probability=zero_prob),
+                CodeWordSuccessProbability(codeword=codewords[1], success_probability=1 - zero_prob)]
 
     def _run_circuit_probabilities(self,
                                    circuit: Circuit,
@@ -69,14 +85,19 @@ class Engine(ABC):
     def _get_fock_prob_indices_from_modes(self, codeword: CodeWord, cutoff_dimension: int) -> List[CodeWordIndices]:
         if codeword.size > cutoff_dimension:
             raise ValueError("cutoff dimension MUST be equal or greater than modes")
-        letters = [codeword.alpha, -codeword.alpha]
-        words = [p for p in itertools.product(letters, repeat=codeword.size)]
+        codewords = self._generate_all_codewords(codeword)
 
-        return [CodeWordIndices(codeword=CodeWord(size=len(word), alpha_value=codeword.alpha, word=list(word)),
+        return [CodeWordIndices(codeword=codeword,
                                 indices=self._convert_word_to_fock_prob_indices(
-                                    codeword=CodeWord(size=len(word), alpha_value=codeword.alpha, word=list(word)),
+                                    codeword=codeword,
                                     cutoff_dim=cutoff_dimension))
-                for word in words]
+                for codeword in codewords]
+
+    def _generate_all_codewords(self, codeword: CodeWord) -> List[CodeWord]:
+        letters = [codeword.alpha, -codeword.alpha]
+        codewords = [CodeWord(size=len(word), alpha_value=codeword.alpha, word=list(word))
+                     for word in itertools.product(letters, repeat=codeword.size)]
+        return codewords
 
     def _compute_fock_probabilities_for_all_codewords(self,
                                                       state: BaseState,
@@ -84,12 +105,17 @@ class Engine(ABC):
                                                       cutoff_dim: int) -> List[CodeWordSuccessProbability]:
         all_codewords_indices = self._get_fock_prob_indices_from_modes(
             codeword=codeword, cutoff_dimension=cutoff_dim)
+        # logger.debug(f"codewords indices: {all_codewords_indices}")
         codewords_success_probabilities = [
             CodeWordSuccessProbability(codeword=codeword_indices.codeword,
                                        success_probability=self._compute_fock_prob_one_word(
                                            state=state,
                                            fock_prob_indices_one_word=codeword_indices.indices))
             for codeword_indices in all_codewords_indices]
+        # logger.debug(f"Success probabilities: {codewords_success_probabilities}")
+        # only_probs = [codeword_succes_prob.success_probability
+        # for codeword_succes_prob in codewords_success_probabilities]
+        # logger.debug(f"sum of all probs: {sum(only_probs)}")
         return codewords_success_probabilities
 
     def _run_circuit(self,
