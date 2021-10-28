@@ -3,8 +3,11 @@ import numpy as np
 import tensorflow as tf
 
 
-N_ITER = 1_000
-BATCH_SIZE = 100
+N_ITER = 10
+N_EPOCHS = 50
+BATCH_SIZE = 1_000
+
+tf.keras.backend.set_floatx('float64')
 
 cutoff = 5
 n_modes = 2
@@ -47,12 +50,12 @@ def node(inputs, theta_1, phi_1, varphi_1, r, phi_r, theta_2, phi_2, varphi_2, a
     k (tensor_like): shape (L, M) tensor of kerr parameters for pennylane.ops.Kerr operations. <= should be 0.
     wires (Iterable): wires that the template acts on.
     """
-    k = np.zeros(n_layers, n_modes) # Kerr parameters
+    k = np.zeros((n_layers, n_modes)) # Kerr parameters
 
     qml.templates.DisplacementEmbedding(inputs, wires=range(n_modes), method='amplitude', c=0.0)
     qml.templates.layers.CVNeuralNetLayers(theta_1, phi_1, varphi_1, r, phi_r, theta_2, phi_2, varphi_2, a, phi_a, k, wires=range(n_modes))
 
-    return [qml.expval(qml.FockStateProjector(wires=w)) for w in range(n_modes)]
+    return [qml.expval(qml.FockStateProjector(np.array([0]), wires=w)) for w in range(n_modes)]
 
 
 def generate_training_data(n_datapoints):
@@ -80,8 +83,8 @@ if __name__ == "__main__":
     model.compile(opt, loss="mae", metrics=["accuracy"])
 
     for iteration in range(N_ITER):
+        print(f"Iteration {iteration + 1} of {N_ITER}.")
         X_batch, y_batch = generate_training_data(BATCH_SIZE)
-        breakpoint()
-        model.fit(X_batch, y_batch, epochs=5, batch_size=BATCH_SIZE)
+        model.fit(X_batch, y_batch, epochs=N_EPOCHS, batch_size=BATCH_SIZE)
 
     print(model.summary())
