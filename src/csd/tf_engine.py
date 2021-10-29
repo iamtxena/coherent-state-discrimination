@@ -8,7 +8,7 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.typings.typing import (BatchSuccessProbability, CodeWordSuccessProbability, TFEngineRunOptions)
 from csd.circuit import Circuit
 from typing import List
-from csd.config import logger
+# from csd.config import logger
 
 
 class TFEngine(Engine):
@@ -98,8 +98,8 @@ class TFEngine(Engine):
             self,
             index_codeword: int,
             success_probabilities_indices: List[EagerTensor]) -> EagerTensor:
-        return tf.constant([sum([success_probability.numpy()[index_codeword]
-                                 for success_probability in success_probabilities_indices])])
+        return sum([tf.gather(success_probability, indices=[index_codeword])
+                    for success_probability in success_probabilities_indices])
 
     def _run_tf_circuit(self,
                         circuit: Circuit,
@@ -120,14 +120,10 @@ class TFEngine(Engine):
                                      circuit: Circuit,
                                      options: TFEngineRunOptions) -> dict:
         all_values = options['batch'].letters
-        logger.debug(all_values)
-        logger.debug(options['params'])
         for param in options['params']:
             all_values.append(param)
 
-        one_codeword_params = {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}
-        logger.debug(one_codeword_params)
-        return one_codeword_params
+        return {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}
 
     def _compute_tf_fock_prob_one_codeword_indices(self,
                                                    state: FockStateTF,

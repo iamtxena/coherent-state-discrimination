@@ -24,13 +24,14 @@ class CostFunction(ABC):
         if self._options.backend_name == Backends.TENSORFLOW.value:
             if not isinstance(self._options.engine, TFEngine):
                 raise ValueError("TF Backend can only run on TFEngine.")
-            return self._options.engine.run_tf_circuit_checking_measuring_type(
+            result = self._options.engine.run_tf_circuit_checking_measuring_type(
                 circuit=self._options.circuit,
                 options=TFEngineRunOptions(
                     params=self._params,
                     batch=self._batch,
                     shots=self._options.shots,
                     measuring_type=self._options.measuring_type))
+            return result
         return [self._options.engine.run_circuit_checking_measuring_type(
             circuit=self._options.circuit,
             options=EngineRunOptions(
@@ -43,6 +44,7 @@ class CostFunction(ABC):
     def _compute_one_play_average_batch_success_probability(
             self,
             codeword_guesses: List[CodeWordSuccessProbability]) -> Union[float, EagerTensor]:
+
         success_probability_from_guesses = [
             codeword_success_prob.success_probability
             if batch_codeword == codeword_success_prob.codeword else 1 - codeword_success_prob.success_probability
