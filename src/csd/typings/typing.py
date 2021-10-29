@@ -6,6 +6,7 @@ import json
 from dataclasses import dataclass
 
 from tensorflow.python.framework.ops import EagerTensor
+from csd.batch import Batch
 
 from csd.codeword import CodeWord
 
@@ -75,6 +76,13 @@ class EngineRunOptions(TypedDict):
     measuring_type: MeasuringTypes
 
 
+class TFEngineRunOptions(TypedDict):
+    params: List[List[EagerTensor]]
+    batch: Batch
+    shots: int
+    measuring_type: MeasuringTypes
+
+
 @dataclass
 class CodeWordSuccessProbability():
     codeword: CodeWord
@@ -83,7 +91,9 @@ class CodeWordSuccessProbability():
     def __str__(self) -> str:
         return json.dumps({
             "codeword": self.codeword.word,
-            "psucc": self.success_probability
+            "psucc": (self.success_probability
+                      if isinstance(self.success_probability, float)
+                      else list(self.success_probability.numpy()))
         })
 
     def __repr__(self) -> str:
@@ -98,6 +108,21 @@ class CodeWordIndices(NamedTuple):
         return json.dumps({
             "codeword": self.codeword.word,
             "indices": self.indices
+        })
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
+@dataclass
+class BatchSuccessProbability():
+    codeword_indices: CodeWordIndices
+    success_probability: List[EagerTensor]
+
+    def __str__(self) -> str:
+        return json.dumps({
+            "codeword_indices": self.codeword_indices.__str__(),
+            "psucc": self.success_probability
         })
 
     def __repr__(self) -> str:

@@ -43,3 +43,13 @@ class Batch():
 
     def to_list(self) -> List[List[float]]:
         return self.batch
+
+    @property
+    def letters(self) -> List[List[float]]:
+        word_size = self.one_codeword.size
+        letters: List[List[float]] = [[] for _ in range(word_size)]
+
+        for codeword in self._batch:
+            for index, letter in enumerate(codeword.word):
+                letters[index].append(letter)
+        return letters

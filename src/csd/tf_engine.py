@@ -1,0 +1,135 @@
+# engine.py
+from csd.batch import Batch
+from .engine import Engine
+from strawberryfields.api import Result
+from strawberryfields.backends.tfbackend.states import FockStateTF
+import tensorflow as tf
+from tensorflow.python.framework.ops import EagerTensor
+from csd.typings.typing import (BatchSuccessProbability, CodeWordSuccessProbability, TFEngineRunOptions)
+from csd.circuit import Circuit
+from typing import List
+from csd.config import logger
+
+
+class TFEngine(Engine):
+    """ Tensor Flow Engine class
+
+    """
+
+    def run_tf_circuit_checking_measuring_type(
+            self,
+            circuit: Circuit,
+            options: TFEngineRunOptions) -> List[CodeWordSuccessProbability]:
+
+        # if options['measuring_type'] is MeasuringTypes.SAMPLING:
+        #     codewords_sucess_probabilities = self._run_circuit_sampling(circuit=circuit, options=options)
+        # else:
+        batch_sucess_probabilities = self._run_tf_circuit_probabilities(circuit=circuit, options=options)
+        # logger.debug(codewords_sucess_probabilities)
+        return [self._max_probability_codeword(codewords_sucess_probabilities=codewords_sucess_probabilities)
+                for codewords_sucess_probabilities in batch_sucess_probabilities]
+
+    def _run_tf_circuit_probabilities(self,
+                                      circuit: Circuit,
+                                      options: TFEngineRunOptions) -> List[List[CodeWordSuccessProbability]]:
+        """Run a circuit experiment computing the fock probability
+        """
+        options['shots'] = 0
+        result = self._run_tf_circuit(circuit=circuit, options=options)
+        return self._compute_tf_fock_probabilities_for_all_codewords(state=result.state,
+                                                                     batch=options['batch'],
+                                                                     cutoff_dim=self._cutoff_dim)
+
+    # def _run_tf_circuit_sampling(self,
+    #                              circuit: Circuit,
+    #                              options: EngineRunOptions) -> List[CodeWordSuccessProbability]:
+    #     """Run a circuit experiment doing MeasureFock and performing samplint with nshots
+    #     """
+    #     # if self._engine.backend_name == Backends.GAUSSIAN.value:
+    #     #     return sum([1 for read_value in self._run_circuit(circuit=circuit, options=options).samples
+    #     #                 if read_value[0] == 0]) / options['shots']
+    #     shots = options['shots']
+    #     options['shots'] = 1
+    #     zero_prob = sum([1 for read_value in [self._run_circuit(circuit=circuit, options=options).samples[0][0]
+    #                                           for _ in range(shots)] if read_value == 0]) / shots
+    #     codewords = self._generate_all_codewords(codeword=options['codeword'])
+    #     return [CodeWordSuccessProbability(codeword=codewords[0], success_probability=zero_prob),
+    #             CodeWordSuccessProbability(codeword=codewords[1], success_probability=1 - zero_prob)]
+
+    def _compute_tf_fock_probabilities_for_all_codewords(self,
+                                                         state: FockStateTF,
+                                                         batch: Batch,
+                                                         cutoff_dim: int) -> List[List[CodeWordSuccessProbability]]:
+        all_codewords_indices = self._get_fock_prob_indices_from_modes(
+            codeword=batch.one_codeword, cutoff_dimension=cutoff_dim)
+
+        success_probabilities_batches = [
+            BatchSuccessProbability(codeword_indices=codeword_indices,
+                                    success_probability=self._compute_tf_fock_prob_one_codeword_indices(
+                                        state=state,
+                                        fock_prob_indices_one_word=codeword_indices.indices))
+            for codeword_indices in all_codewords_indices]
+
+        return self._compute_codewords_success_probabilities(
+            batch=batch,
+            success_probabilities_batches=success_probabilities_batches)
+
+    def _compute_codewords_success_probabilities(
+            self,
+            batch: Batch,
+            success_probabilities_batches: List[BatchSuccessProbability]) -> List[List[CodeWordSuccessProbability]]:
+        return [self._compute_one_batch_codewords_success_probabilities(
+            index_codeword=index_codeword,
+            success_probabilities_batches=success_probabilities_batches)
+            for index_codeword in range(batch.size)]
+
+    def _compute_one_batch_codewords_success_probabilities(
+            self,
+            index_codeword: int,
+            success_probabilities_batches: List[BatchSuccessProbability]) -> List[CodeWordSuccessProbability]:
+        return [CodeWordSuccessProbability(
+            codeword=batch_sucess_probabilities.codeword_indices.codeword,
+            success_probability=self._compute_one_codeword_success_probability(
+                index_codeword=index_codeword,
+                success_probabilities_indices=batch_sucess_probabilities.success_probability))
+                for batch_sucess_probabilities in success_probabilities_batches]
+
+    def _compute_one_codeword_success_probability(
+            self,
+            index_codeword: int,
+            success_probabilities_indices: List[EagerTensor]) -> EagerTensor:
+        return tf.constant([sum([success_probability.numpy()[index_codeword]
+                                 for success_probability in success_probabilities_indices])])
+
+    def _run_tf_circuit(self,
+                        circuit: Circuit,
+                        options: TFEngineRunOptions) -> Result:
+        """ Run an experiment using the engine with the passed options
+        """
+        # reset the engine if it has already been executed
+        if self._engine.run_progs:
+            self._engine.reset()
+
+        return self._engine.run(program=circuit.circuit,
+                                args=self._parse_tf_circuit_parameters(
+                                    circuit=circuit,
+                                    options=options),
+                                shots=options['shots'])
+
+    def _parse_tf_circuit_parameters(self,
+                                     circuit: Circuit,
+                                     options: TFEngineRunOptions) -> dict:
+        all_values = options['batch'].letters
+        logger.debug(all_values)
+        logger.debug(options['params'])
+        for param in options['params']:
+            all_values.append(param)
+
+        one_codeword_params = {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}
+        logger.debug(one_codeword_params)
+        return one_codeword_params
+
+    def _compute_tf_fock_prob_one_codeword_indices(self,
+                                                   state: FockStateTF,
+                                                   fock_prob_indices_one_word: List[List[int]]) -> List[EagerTensor]:
+        return [state.fock_prob(fock_prob_indices) for fock_prob_indices in fock_prob_indices_one_word]

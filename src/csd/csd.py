@@ -1,6 +1,7 @@
 from abc import ABC
 from csd.circuit import Circuit
 from csd.engine import Engine
+from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends,
                                 CSDConfiguration,
                                 RunConfiguration,
@@ -127,10 +128,10 @@ class CSD(ABC):
                                          shots=self._shots,
                                          plays=self._plays))
 
-        self._current_p_err = self._save_current_p_error(
-            cost_function.run_and_compute_average_batch_error_probability())
+        loss = cost_function.run_and_compute_average_batch_error_probability()
+        self._current_p_err = self._save_current_p_error(p_err=loss)
         # logger.debug(f"average error: {self._current_p_err} for params: {params}")
-        return self._current_p_err
+        return loss
 
     def _save_current_p_error(self, p_err: Union[float, EagerTensor]) -> float:
         if isinstance(p_err, EagerTensor):
@@ -235,13 +236,17 @@ class CSD(ABC):
 
         return result
 
-    def _create_engine(self) -> Engine:
+    def _create_engine(self) -> Union[Engine, TFEngine]:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
+        if self._backend_is_tf():
+            return TFEngine(backend=self._run_configuration['backend'], options={
+                "cutoff_dim": self._cutoff_dim,
+                "batch_size": self._batch_size
+            })
         return Engine(backend=self._run_configuration['backend'], options={
-            "cutoff_dim": self._cutoff_dim,
-            "batch_size": self._batch_size if self._backend_is_tf() else None
+            "cutoff_dim": self._cutoff_dim
         })
 
     def _backend_is_tf(self):
