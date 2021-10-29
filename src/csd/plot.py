@@ -33,10 +33,15 @@ class Plot(ABC):
         if executions is not None:
             executions_probs_labels += [(execution['p_succ'], execution['plot_label'])
                                         for execution in executions]
+            plt.title(executions[0]['plot_title'])
 
         self._plot_probs_and_label_into_axis(axes=axes,
                                              probs_labels=executions_probs_labels)
         plt.legend(bbox_to_anchor=(1, 1), loc="upper left")
+        plt.suptitle('Simulation results', fontsize=24, y=1)
+        plt.xlabel('alpha values')
+        plt.ylabel('Average Success Probabilities')
+
         if not save_plot:
             plt.show()
 

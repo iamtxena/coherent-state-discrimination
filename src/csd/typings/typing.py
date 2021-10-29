@@ -66,6 +66,7 @@ class ResultExecution(TypedDict):
     backend: str
     measuring_type: str
     plot_label: str
+    plot_title: str
 
 
 class EngineRunOptions(TypedDict):

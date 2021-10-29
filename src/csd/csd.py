@@ -8,8 +8,6 @@ from csd.typings.typing import (Backends,
                                 MeasuringTypes,
                                 ResultExecution,
                                 Architecture)
-from strawberryfields.api import Result
-from strawberryfields.backends import BaseState
 from typing import Optional, Union, cast, List
 import numpy as np
 from csd.config import logger
@@ -231,7 +229,12 @@ class CSD(ABC):
             'backend': self._run_configuration['backend'].value,
             'measuring_type': self._run_configuration['measuring_type'].value,
             'plot_label': self._set_plot_label(backend=self._run_configuration['backend'],
-                                               measuring_type=self._run_configuration['measuring_type'])
+                                               measuring_type=self._run_configuration['measuring_type']),
+            'plot_title': self._set_plot_title(batch_size=self._batch_size,
+                                               plays=self._plays,
+                                               modes=self._architecture['number_modes'],
+                                               layers=self._architecture['number_layers'],
+                                               squeezing=self._architecture['squeezing'])
         }
 
         return result
@@ -280,6 +283,19 @@ class CSD(ABC):
         if backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.SAMPLING:
             return "pGausSampl(a)"
         raise ValueError(f"Values not supported. backend: {backend.value} and measuring_type: {measuring_type.value}")
+
+    def _set_plot_title(self,
+                        batch_size: int,
+                        plays: int,
+                        modes: int,
+                        layers: int,
+                        squeezing: bool) -> str:
+        if self._run_configuration is None:
+            raise ValueError("Run configuration not specified")
+
+        return (f"backend:{self._run_configuration['backend'].value}, "
+                f"measuring:{self._run_configuration['measuring_type'].value}, \n"
+                f"batch size:{batch_size}, plays:{plays}, modes:{modes}, layers,{layers}, squeezing:{squeezing}")
 
     @timing
     def execute_all_backends_and_measuring_types(
@@ -349,20 +365,3 @@ class CSD(ABC):
             self._plot.plot_success_probabilities(executions=self._sampling_results)
             return None
         raise ValueError('Value not expected')
-
-    def show_result(self) -> dict:
-        if self._result is None:
-            raise ValueError("Circuit not executed yet.")
-        sf_result = cast(Result, self._result)
-        sf_state = cast(BaseState, sf_result.state)
-
-        return {
-            'result': str(sf_result),
-            'state': str(sf_state),
-            'trace': sf_state.trace(),
-            'density_matrix': sf_state.dm(),
-            'dm_shape': cast(np.ndarray, sf_state.dm()).shape,
-            'samples': sf_result.samples,
-            'first_sample': sf_result.samples[0],
-            'fock_probability': sf_state.fock_prob([0])
-        }
