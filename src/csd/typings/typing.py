@@ -77,7 +77,7 @@ class EngineRunOptions(TypedDict):
 
 
 class TFEngineRunOptions(TypedDict):
-    params: List[List[EagerTensor]]
+    params: List[EagerTensor]
     batch: Batch
     shots: int
     measuring_type: MeasuringTypes
