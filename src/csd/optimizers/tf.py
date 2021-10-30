@@ -2,8 +2,6 @@ from abc import ABC
 from typing import Callable, List
 import tensorflow as tf
 
-from csd.util import timing
-
 
 class TFOptimizer(ABC):
 
@@ -11,7 +9,6 @@ class TFOptimizer(ABC):
         self._opt = tf.keras.optimizers.Adam(learning_rate=0.01)
         self._params = [tf.Variable(0.1) for _ in range(nparams)]
 
-    @timing
     def optimize(self, cost_function: Callable) -> List[float]:
         if self._opt is None:
             raise ValueError("opt not initialized")
