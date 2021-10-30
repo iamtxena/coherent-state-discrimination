@@ -57,6 +57,12 @@ class OptimizationResult(TypedDict):
     current_p_err: float
 
 
+class OneProcessResultExecution(TypedDict):
+    opt_params: List[Union[List[float], EagerTensor]]
+    p_err: List[Union[float, EagerTensor]]
+    p_succ: List[Union[float, EagerTensor]]
+
+
 class ResultExecution(TypedDict):
     alphas: List[float]
     batches: List[List[CodeWord]]

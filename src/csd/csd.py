@@ -159,11 +159,13 @@ class CSD(ABC):
                      " with measuring_type: "
                      f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
 
-        for sample_alpha in self._alphas:
-            self._execute_for_one_alpha(optimization=optimization,
-                                        result=result,
-                                        sample_alpha=sample_alpha)
+        return self._single_process_optimization(optimization, result)
 
+    def _single_process_optimization(self, optimization, result):
+        for sample_alpha in self._alphas:
+            optimized_parameters = self._execute_for_one_alpha(optimization=optimization,
+                                                               sample_alpha=sample_alpha)
+            self._update_result(result=result, optimized_parameters=optimized_parameters)
         self._save_results_to_file(result)
         self._save_plot_to_file(result)
 
@@ -190,7 +192,7 @@ class CSD(ABC):
             save_object_to_disk(obj=result, path='results')
 
     @timing
-    def _execute_for_one_alpha(self, optimization: Optimize, result: ResultExecution, sample_alpha: float) -> None:
+    def _execute_for_one_alpha(self, optimization: Optimize, sample_alpha: float) -> List[float]:
         self._alpha_value = sample_alpha
         self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value)
 
@@ -201,8 +203,7 @@ class CSD(ABC):
         for step in range(learning_steps):
             optimized_parameters = optimization.optimize(cost_function=self._cost_function)
             self._print_optimized_parameters_for_tf_backend_only(step, optimized_parameters)
-
-        self._update_result(result=result, optimized_parameters=optimized_parameters)
+        return optimized_parameters
 
     def _print_optimized_parameters_for_tf_backend_only(self, step, optimized_parameters):
         if self._backend_is_tf() and (step + 1) % 100 == 0:

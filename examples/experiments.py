@@ -2,7 +2,7 @@ from csd import CSD
 from csd.typings.typing import MeasuringTypes, CSDConfiguration, Backends
 import numpy as np
 from csd.util import timing
-import json
+# import json
 
 
 @timing
@@ -65,7 +65,7 @@ if __name__ == '__main__':
         'learning_rate': 0.1,
         'batch_size': 100,
         'shots': 100,
-        'plays': 10,
+        'plays': 1,
         'cutoff_dim': 10,
         'architecture': {
             'number_modes': 1,
@@ -73,11 +73,12 @@ if __name__ == '__main__':
             'squeezing': False,
         },
         'save_results': False,
-        'save_plots': True
+        'save_plots': True,
+        'multiprocessing': True
     }))
-    # execute_probabilities_fock_backend(csd=csd)
+    execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    execute_probabilities_tf_backend(csd=csd)
+    # execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
     # execute_sampling_tf_backend(csd=csd)
