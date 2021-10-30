@@ -6,6 +6,7 @@ from csd.typings.typing import (MeasuringTypes, CSDConfiguration, Backends,
                                 OneProcessResultExecution, ResultExecution, RunConfiguration)
 import numpy as np
 from csd.util import timing
+import os
 # from csd.config import logger
 
 
@@ -173,11 +174,11 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
 
-    pool = Pool(processes=cpu_count() - 1)
-    execution_results = pool.map(func=uncurry_launch_execution,
-                                 iterable=_build_iterator(multiprocess_configuration,
-                                                          backend,
-                                                          measuring_type))
+    pool = Pool(processes=cpu_count())
+    execution_results = pool.map_async(func=uncurry_launch_execution,
+                                       iterable=_build_iterator(multiprocess_configuration,
+                                                                backend,
+                                                                measuring_type)).get()
 
     result = create_full_execution_result(backend=backend,
                                           measuring_type=measuring_type,
@@ -218,13 +219,24 @@ def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration) ->
                        measuring_type=measuring_type)
 
 
+def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
+    os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+
+    backend = Backends.TENSORFLOW
+    measuring_type = MeasuringTypes.PROBABILITIES
+
+    _general_execution(multiprocess_configuration=multiprocess_configuration,
+                       backend=backend,
+                       measuring_type=measuring_type)
+
+
 if __name__ == '__main__':
     alphas = list(np.arange(0.05, 1.05, 0.05))
     # alphas = [0.7]'steps': 300,
 
     steps = 300
     learning_rate = 0.1
-    batch_size = 10000
+    batch_size = 100
     shots = 100
     plays = 1
     cutoff_dim = 10
@@ -247,4 +259,5 @@ if __name__ == '__main__':
         squeezing=[squeezing] * number_alphas
     )
 
-    multi_fock_backend(multiprocess_configuration=multiprocess_configuration)
+    # multi_fock_backend(multiprocess_configuration=multiprocess_configuration)
+    multi_tf_backend(multiprocess_configuration=multiprocess_configuration)

@@ -2,7 +2,7 @@ from csd import CSD
 from csd.typings.typing import MeasuringTypes, CSDConfiguration, Backends
 import numpy as np
 from csd.util import timing
-# import json
+import os
 
 
 @timing
@@ -26,6 +26,8 @@ def execute_probabilities_gaussian_backend(csd: CSD) -> None:
 
 @timing
 def execute_probabilities_tf_backend(csd: CSD) -> None:
+    os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.TENSORFLOW],
         measuring_types=[MeasuringTypes.PROBABILITIES]
@@ -50,6 +52,8 @@ def execute_sampling_gaussian_backend(csd: CSD) -> None:
 
 @timing
 def execute_sampling_tf_backend(csd: CSD) -> None:
+    os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.TENSORFLOW],
         measuring_types=[MeasuringTypes.SAMPLING]
@@ -76,9 +80,9 @@ if __name__ == '__main__':
         'save_plots': True,
         'multiprocessing': True
     }))
-    execute_probabilities_fock_backend(csd=csd)
+    # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    # execute_probabilities_tf_backend(csd=csd)
+    execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
     # execute_sampling_tf_backend(csd=csd)
