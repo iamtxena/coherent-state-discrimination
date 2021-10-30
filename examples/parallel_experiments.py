@@ -174,7 +174,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
 
-    pool = Pool(processes=cpu_count())
+    pool = Pool(processes=5 if backend == Backends.TENSORFLOW else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
                                                                 backend,
@@ -236,11 +236,11 @@ if __name__ == '__main__':
 
     steps = 300
     learning_rate = 0.1
-    batch_size = 100
+    batch_size = 1000
     shots = 100
     plays = 1
     cutoff_dim = 10
-    number_modes = 1
+    number_modes = 2
     number_layers = 1
     squeezing = False
 
@@ -259,5 +259,5 @@ if __name__ == '__main__':
         squeezing=[squeezing] * number_alphas
     )
 
-    # multi_fock_backend(multiprocess_configuration=multiprocess_configuration)
-    multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
+    # multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
+    multi_fock_backend(multiprocess_configuration=multiprocess_configuration)
