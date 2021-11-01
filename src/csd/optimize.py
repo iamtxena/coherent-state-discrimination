@@ -1,22 +1,35 @@
 from abc import ABC
-from typing import Callable, List, Union, Optional
-from csd.typings.typing import Backends
+from typing import Callable, Union, Optional
+from csd.optimizers.parallel_tf import ParallelTFOptimizer
+from csd.typings.typing import Backends, OptimizationResult
 from .optimizers.tf import TFOptimizer
 from .optimizers.scipy import ScipyOptimizer
+from .optimizers.parallel_scipy import ParallelOptimizer
 
 
 class Optimize(ABC):
 
-    def __init__(self, backend: Optional[Union[Backends, None]] = None, nparams: int = 1):
-        self._backends: Union[Backends, None] = backend
-        self._optimizer: Union[TFOptimizer, ScipyOptimizer, None] = None
+    def __init__(self,
+                 opt_backend: Optional[Backends] = Backends.FOCK,
+                 nparams: int = 1,
+                 parallel_optimization: bool = False):
 
-        if self._backends is Backends.TENSORFLOW:
+        self._opt_backend: Backends = opt_backend if opt_backend is not None else Backends.FOCK
+        self._optimizer: Union[TFOptimizer, ScipyOptimizer, ParallelOptimizer, ParallelTFOptimizer, None] = None
+
+        if self._opt_backend is Backends.TENSORFLOW:
             self._optimizer = TFOptimizer(nparams=nparams)
-        if self._backends is Backends.FOCK or self._backends is Backends.GAUSSIAN:
-            self._optimizer = ScipyOptimizer(nparams=nparams)
 
-    def optimize(self, cost_function: Callable) -> List[float]:
+        if ((self._opt_backend is Backends.FOCK or self._opt_backend is Backends.GAUSSIAN) and
+                parallel_optimization is False):
+            self._optimizer = ScipyOptimizer(nparams=nparams)
+        if ((self._opt_backend is Backends.FOCK or self._opt_backend is Backends.GAUSSIAN) and
+                parallel_optimization is True):
+            self._optimizer = ParallelOptimizer(nparams=nparams)
+
+    def optimize(self,
+                 cost_function: Callable,
+                 current_alpha: Optional[float] = 0.0) -> OptimizationResult:
         if self._optimizer is None:
             raise ValueError("optimizer not initilized")
-        return self._optimizer.optimize(cost_function=cost_function)
+        return self._optimizer.optimize(cost_function=cost_function, current_alpha=current_alpha)

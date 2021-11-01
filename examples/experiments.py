@@ -61,28 +61,33 @@ def execute_sampling_tf_backend(csd: CSD) -> None:
 
 
 if __name__ == '__main__':
-    alphas = list(np.arange(0.05, 1.05, 0.05))
-    # alphas = [0.7]
+    alpha_init = 0.05
+    alpha_end = 1.05
+    number_points_to_plot = 10
+    alpha_step = (alpha_end - alpha_init) / number_points_to_plot
+    # alphas = list(np.arange(0.05, 1.05, 0.05))
+    alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
+
     csd = CSD(csd_config=CSDConfiguration({
         'alphas': alphas,
         'steps': 300,
         'learning_rate': 0.1,
-        'batch_size': 100,
+        'batch_size': 100000,
         'shots': 100,
         'plays': 1,
         'cutoff_dim': 10,
         'architecture': {
-            'number_modes': 1,
+            'number_modes': 2,
             'number_layers': 1,
             'squeezing': False,
         },
         'save_results': False,
         'save_plots': True,
-        'multiprocessing': True
+        'parallel_optimization': True
     }))
-    # execute_probabilities_fock_backend(csd=csd)
+    execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    execute_probabilities_tf_backend(csd=csd)
+    # execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
     # execute_sampling_tf_backend(csd=csd)

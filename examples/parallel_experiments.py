@@ -24,7 +24,7 @@ class MultiProcessConfiguration(NamedTuple):
 
 
 class LaunchExecutionConfiguration(NamedTuple):
-    backend: Backends
+    launch_backend: Backends
     measuring_type: MeasuringTypes
     steps: int
     learning_rate: float
@@ -38,7 +38,7 @@ class LaunchExecutionConfiguration(NamedTuple):
     alpha: float
 
 
-def _set_plot_label(backend: Backends, measuring_type: MeasuringTypes) -> str:
+def _set_plot_label(plot_label_backend: Backends, measuring_type: MeasuringTypes) -> str:
     """Set the label for the success probability plot
 
     Args:
@@ -48,22 +48,23 @@ def _set_plot_label(backend: Backends, measuring_type: MeasuringTypes) -> str:
     Returns:
         str: the determined label
     """
-    if backend is Backends.FOCK and measuring_type is MeasuringTypes.PROBABILITIES:
+    if plot_label_backend is Backends.FOCK and measuring_type is MeasuringTypes.PROBABILITIES:
         return "pFockProb(a)"
-    if backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.PROBABILITIES:
+    if plot_label_backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.PROBABILITIES:
         return "pGausProb(a)"
-    if backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.PROBABILITIES:
+    if plot_label_backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.PROBABILITIES:
         return "pTFProb(a)"
-    if backend is Backends.FOCK and measuring_type is MeasuringTypes.SAMPLING:
+    if plot_label_backend is Backends.FOCK and measuring_type is MeasuringTypes.SAMPLING:
         return "pFockSampl(a)"
-    if backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.SAMPLING:
+    if plot_label_backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.SAMPLING:
         return "pTFSampl(a)"
-    if backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.SAMPLING:
+    if plot_label_backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.SAMPLING:
         return "pGausSampl(a)"
-    raise ValueError(f"Values not supported. backend: {backend.value} and measuring_type: {measuring_type.value}")
+    raise ValueError(
+        f"Values not supported. backend: {plot_label_backend.value} and measuring_type: {measuring_type.value}")
 
 
-def _set_plot_title(backend: Backends,
+def _set_plot_title(plot_title_backend: Backends,
                     measuring_type: MeasuringTypes,
                     batch_size: int,
                     plays: int,
@@ -71,7 +72,7 @@ def _set_plot_title(backend: Backends,
                     layers: int,
                     squeezing: bool) -> str:
 
-    return (f"backend:{backend.value}, "
+    return (f"backend:{plot_title_backend.value}, "
             f"measuring:{measuring_type.value}, \n"
             f"batch size:{batch_size}, plays:{plays}, modes:{modes}, layers,{layers}, squeezing:{squeezing}")
 
@@ -92,17 +93,18 @@ def launch_execution(configuration: LaunchExecutionConfiguration) -> ResultExecu
             'squeezing': configuration.squeezing,
         },
         'save_results': False,
-        'save_plots': False
+        'save_plots': False,
+        'parallel_optimization': True
     }))
     return csd.execute(configuration=RunConfiguration({
-        'backend': configuration.backend,
+        'run_backend': configuration.launch_backend,
         'measuring_type': configuration.measuring_type,
     }))
 
 
 def uncurry_launch_execution(t) -> ResultExecution:
     one_execution_configuration = LaunchExecutionConfiguration(
-        backend=t[0],
+        launch_backend=t[0],
         measuring_type=t[1],
         steps=t[2],
         learning_rate=t[3],
@@ -130,7 +132,7 @@ def update_execution_result(acumulated_one_process_result: OneProcessResultExecu
     return new_one_process_result
 
 
-def create_full_execution_result(backend: Backends,
+def create_full_execution_result(full_backend: Backends,
                                  measuring_type: MeasuringTypes,
                                  multiprocess_configuration: MultiProcessConfiguration,
                                  results: List[ResultExecution]) -> ResultExecution:
@@ -150,11 +152,11 @@ def create_full_execution_result(backend: Backends,
         'opt_params': acumulated_one_process_result['opt_params'],
         'p_err': acumulated_one_process_result['p_err'],
         'p_succ': acumulated_one_process_result['p_succ'],
-        'backend': backend.value,
+        'result_backend': full_backend.value,
         'measuring_type': measuring_type.value,
-        'plot_label': _set_plot_label(backend=backend,
+        'plot_label': _set_plot_label(plot_label_backend=full_backend,
                                       measuring_type=measuring_type),
-        'plot_title': _set_plot_title(backend=backend,
+        'plot_title': _set_plot_title(plot_title_backend=full_backend,
                                       measuring_type=measuring_type,
                                       batch_size=multiprocess_configuration.batch_size[0],
                                       plays=multiprocess_configuration.plays[0],
@@ -174,13 +176,13 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
 
-    pool = Pool(processes=5 if backend == Backends.TENSORFLOW else cpu_count())
+    pool = Pool(processes=5 if backend == Backends.TENSORFLOW else cpu_count() - 2)
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
                                                                 backend,
                                                                 measuring_type)).get()
 
-    result = create_full_execution_result(backend=backend,
+    result = create_full_execution_result(full_backend=backend,
                                           measuring_type=measuring_type,
                                           multiprocess_configuration=multiprocess_configuration,
                                           results=execution_results)
@@ -231,16 +233,21 @@ def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> N
 
 
 if __name__ == '__main__':
-    alphas = list(np.arange(0.05, 1.05, 0.05))
+    alpha_init = 0.05
+    alpha_end = 1.05
+    # alpha_step = (alpha_end - alpha_init) / cpu_count()
+    alpha_step = (alpha_end - alpha_init) / 10
+    # alphas = list(np.arange(0.05, 1.05, 0.05))
+    alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     # alphas = [0.7]'steps': 300,
 
     steps = 300
     learning_rate = 0.1
-    batch_size = 1000
+    batch_size = 10000
     shots = 100
     plays = 1
     cutoff_dim = 10
-    number_modes = 2
+    number_modes = 1
     number_layers = 1
     squeezing = False
 

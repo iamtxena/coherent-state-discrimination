@@ -21,8 +21,10 @@ class Engine(ABC):
     DEFAULT_CUTOFF_DIMENSION = 10
 
     @typechecked
-    def __init__(self, backend: Backends, options: Optional[BackendOptions] = None) -> None:
-        self._backend = backend
+    def __init__(self,
+                 engine_backend: Optional[Backends] = Backends.FOCK,
+                 options: Optional[BackendOptions] = None) -> None:
+        self._backend: Backends = engine_backend if engine_backend is not None else Backends.FOCK
         self._cutoff_dim = options['cutoff_dim'] if options is not None else self.DEFAULT_CUTOFF_DIMENSION
         self._engine = sf.Engine(backend=self._backend.value,
                                  backend_options=options)

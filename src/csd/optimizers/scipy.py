@@ -1,6 +1,8 @@
 from abc import ABC
-from typing import Callable, List
-from scipy.optimize import minimize
+from typing import Callable, Optional
+from scipy.optimize import minimize, OptimizeResult
+from csd.config import logger
+from csd.typings.typing import OptimizationResult
 
 
 class ScipyOptimizer(ABC):
@@ -12,8 +14,13 @@ class ScipyOptimizer(ABC):
     def reset(self):
         raise NotImplementedError()
 
-    def optimize(self, cost_function: Callable) -> List[float]:
-        return minimize(cost_function,
-                        self._params,
-                        method=self._method,
-                        tol=1e-6).x
+    def optimize(self, cost_function: Callable,
+                 current_alpha: Optional[float] = 0.0) -> OptimizationResult:
+        result: OptimizeResult = minimize(cost_function,
+                                          self._params,
+                                          method=self._method,
+                                          tol=1e-6)
+        logger.debug(f"Optimization result for alpha={current_alpha} :\n{result}")
+
+        return OptimizationResult(optimized_parameters=result.x,
+                                  error_probability=result.fun)

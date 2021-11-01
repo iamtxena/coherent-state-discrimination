@@ -3,7 +3,7 @@ from csd.circuit import Circuit
 from csd.engine import Engine
 from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends,
-                                CSDConfiguration,
+                                CSDConfiguration, OptimizationResult,
                                 RunConfiguration,
                                 MeasuringTypes,
                                 ResultExecution,
@@ -53,6 +53,7 @@ class CSD(ABC):
         self._save_results = csd_config.get('save_results', False)
         self._save_plots = csd_config.get('save_plots', False)
         self._architecture = self._set_architecture(csd_config.get('architecture')).copy()
+        self._parallel_optimization = csd_config.get('parallel_optimization', False)
 
     def _set_default_values(self):
         self._alphas: List[float] = []
@@ -64,6 +65,7 @@ class CSD(ABC):
         self._cutoff_dim = self.DEFAULT_CUTOFF_DIMENSION
         self._save_results = False
         self._save_plots = False
+        self._parallel_optimization = False
 
         self._current_batch: Union[Batch, None] = None
         self._result = None
@@ -116,25 +118,17 @@ class CSD(ABC):
         if self._current_batch is None:
             raise ValueError("Current Batch must be initialized")
 
-        cost_function = CostFunction(batch=self._current_batch,
-                                     params=params,
-                                     options=CostFunctionOptions(
-                                         engine=self._engine,
-                                         circuit=self._circuit,
-                                         backend_name=self._engine.backend_name,
-                                         measuring_type=self._run_configuration['measuring_type'],
-                                         shots=self._shots,
-                                         plays=self._plays))
+        self._engine = self._create_engine()
 
-        loss = cost_function.run_and_compute_average_batch_error_probability()
-        self._current_p_err = self._save_current_p_error(p_err=loss)
-        # logger.debug(f"average error: {self._current_p_err} for params: {params}")
-        return loss
-
-    def _save_current_p_error(self, p_err: Union[float, EagerTensor]) -> float:
-        if isinstance(p_err, EagerTensor):
-            return float(p_err.numpy())
-        return p_err
+        return CostFunction(batch=self._current_batch,
+                            params=params,
+                            options=CostFunctionOptions(
+                                engine=self._engine,
+                                circuit=self._circuit,
+                                backend_name=self._engine.backend_name,
+                                measuring_type=self._run_configuration['measuring_type'],
+                                shots=self._shots,
+                                plays=self._plays)).run_and_compute_average_batch_error_probability()
 
     @timing
     def execute(self, configuration: RunConfiguration) -> ResultExecution:
@@ -151,21 +145,22 @@ class CSD(ABC):
 
         self._run_configuration = configuration.copy()
         self._circuit = self._create_circuit()
-        self._engine = self._create_engine()
         optimization = self._create_optimization()
         result = self._init_result()
 
-        logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['backend'].value}, "
+        logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
                      " with measuring_type: "
-                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value}")
+                     f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value} \n"
+                     f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']} "
+                     f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         return self._single_process_optimization(optimization, result)
 
     def _single_process_optimization(self, optimization, result):
         for sample_alpha in self._alphas:
-            optimized_parameters = self._execute_for_one_alpha(optimization=optimization,
-                                                               sample_alpha=sample_alpha)
-            self._update_result(result=result, optimized_parameters=optimized_parameters)
+            one_alpha_optimization_result = self._execute_for_one_alpha(optimization=optimization,
+                                                                        sample_alpha=sample_alpha)
+            self._update_result(result=result, one_alpha_optimization_result=one_alpha_optimization_result)
         self._save_results_to_file(result)
         self._save_plot_to_file(result)
 
@@ -176,8 +171,9 @@ class CSD(ABC):
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
-        return Optimize(backend=self._run_configuration['backend'],
-                        nparams=self._circuit.free_parameters)
+        return Optimize(opt_backend=self._run_configuration['run_backend'],
+                        nparams=self._circuit.free_parameters,
+                        parallel_optimization=self._parallel_optimization)
 
     def _save_plot_to_file(self, result):
         if self._save_plots:
@@ -192,33 +188,25 @@ class CSD(ABC):
             save_object_to_disk(obj=result, path='results')
 
     @timing
-    def _execute_for_one_alpha(self, optimization: Optimize, sample_alpha: float) -> List[float]:
+    def _execute_for_one_alpha(self, optimization: Optimize, sample_alpha: float) -> OptimizationResult:
         self._alpha_value = sample_alpha
         self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value)
 
-        logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)}')
+        logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)} \n'
+                     f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']} "
+                     f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
-        learning_steps = self._set_learning_steps()
+        return optimization.optimize(cost_function=self._cost_function)
 
-        for step in range(learning_steps):
-            optimized_parameters = optimization.optimize(cost_function=self._cost_function)
-            self._print_optimized_parameters_for_tf_backend_only(step, optimized_parameters)
-        return optimized_parameters
-
-    def _print_optimized_parameters_for_tf_backend_only(self, step, optimized_parameters):
-        if self._backend_is_tf() and (step + 1) % 100 == 0:
-            logger.debug("Learned parameters value at step {}: {}".format(
-                step + 1, optimized_parameters))
-
-    def _update_result(self, result: ResultExecution, optimized_parameters: List[float]):
+    def _update_result(self, result: ResultExecution, one_alpha_optimization_result: OptimizationResult):
         logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)}'
-                     f' parameters: {optimized_parameters}'
-                     f' p_succ: {1 - self._current_p_err}')
+                     f' parameters: {one_alpha_optimization_result.optimized_parameters}'
+                     f' p_succ: {1 - one_alpha_optimization_result.error_probability}')
         result['alphas'].append(np.round(self._alpha_value, 2))
         # result['batches'].append([])  # self._current_batch.codewords if self._current_batch is not None else [])
-        result['opt_params'].append(list(optimized_parameters))
-        result['p_err'].append(self._current_p_err)
-        result['p_succ'].append(1 - self._current_p_err)
+        result['opt_params'].append(list(one_alpha_optimization_result.optimized_parameters))
+        result['p_err'].append(one_alpha_optimization_result.error_probability)
+        result['p_succ'].append(1 - one_alpha_optimization_result.error_probability)
 
     def _init_result(self):
         result: ResultExecution = {
@@ -227,9 +215,9 @@ class CSD(ABC):
             'opt_params': [],
             'p_err': [],
             'p_succ': [],
-            'backend': self._run_configuration['backend'].value,
+            'result_backend': self._run_configuration['run_backend'].value,
             'measuring_type': self._run_configuration['measuring_type'].value,
-            'plot_label': self._set_plot_label(backend=self._run_configuration['backend'],
+            'plot_label': self._set_plot_label(plot_label_backend=self._run_configuration['run_backend'],
                                                measuring_type=self._run_configuration['measuring_type']),
             'plot_title': self._set_plot_title(batch_size=self._batch_size,
                                                plays=self._plays,
@@ -245,23 +233,23 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
 
         if self._backend_is_tf():
-            return TFEngine(backend=self._run_configuration['backend'], options={
+            return TFEngine(engine_backend=Backends.TENSORFLOW, options={
                 "cutoff_dim": self._cutoff_dim,
                 "batch_size": self._batch_size
             })
-        return Engine(backend=self._run_configuration['backend'], options={
+        return Engine(engine_backend=self._run_configuration['run_backend'], options={
             "cutoff_dim": self._cutoff_dim
         })
 
     def _backend_is_tf(self):
-        return self._run_configuration['backend'] == Backends.TENSORFLOW
+        return self._run_configuration['run_backend'] == Backends.TENSORFLOW
 
     def _set_learning_steps(self) -> int:
         if self._backend_is_tf():
             return self._steps
         return 1
 
-    def _set_plot_label(self, backend: Backends, measuring_type: MeasuringTypes) -> str:
+    def _set_plot_label(self, plot_label_backend: Backends, measuring_type: MeasuringTypes) -> str:
         """Set the label for the success probability plot
 
         Args:
@@ -271,19 +259,20 @@ class CSD(ABC):
         Returns:
             str: the determined label
         """
-        if backend is Backends.FOCK and measuring_type is MeasuringTypes.PROBABILITIES:
+        if plot_label_backend is Backends.FOCK and measuring_type is MeasuringTypes.PROBABILITIES:
             return "pFockProb(a)"
-        if backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.PROBABILITIES:
+        if plot_label_backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.PROBABILITIES:
             return "pGausProb(a)"
-        if backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.PROBABILITIES:
+        if plot_label_backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.PROBABILITIES:
             return "pTFProb(a)"
-        if backend is Backends.FOCK and measuring_type is MeasuringTypes.SAMPLING:
+        if plot_label_backend is Backends.FOCK and measuring_type is MeasuringTypes.SAMPLING:
             return "pFockSampl(a)"
-        if backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.SAMPLING:
+        if plot_label_backend is Backends.TENSORFLOW and measuring_type is MeasuringTypes.SAMPLING:
             return "pTFSampl(a)"
-        if backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.SAMPLING:
+        if plot_label_backend is Backends.GAUSSIAN and measuring_type is MeasuringTypes.SAMPLING:
             return "pGausSampl(a)"
-        raise ValueError(f"Values not supported. backend: {backend.value} and measuring_type: {measuring_type.value}")
+        raise ValueError(
+            f"Values not supported. backend: {plot_label_backend.value} and measuring_type: {measuring_type.value}")
 
     def _set_plot_title(self,
                         batch_size: int,
@@ -294,7 +283,7 @@ class CSD(ABC):
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
-        return (f"backend:{self._run_configuration['backend'].value}, "
+        return (f"backend:{self._run_configuration['run_backend'].value}, "
                 f"measuring:{self._run_configuration['measuring_type'].value}, \n"
                 f"batch size:{batch_size}, plays:{plays}, modes:{modes}, layers,{layers}, squeezing:{squeezing}")
 
@@ -333,7 +322,7 @@ class CSD(ABC):
                                      measuring_type: MeasuringTypes) -> List[ResultExecution]:
 
         return [self.execute(configuration=RunConfiguration({
-            'backend': backend,
+            'run_backend': backend,
             'measuring_type': measuring_type,
         })) for backend in backends]
 

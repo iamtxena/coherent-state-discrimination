@@ -33,6 +33,7 @@ class CSDConfiguration(TypedDict, total=False):
     save_results: bool
     save_plots: bool
     architecture: Architecture
+    parallel_optimization: bool
 
 
 class Backends(enum.Enum):
@@ -48,13 +49,13 @@ class MeasuringTypes(enum.Enum):
 
 
 class RunConfiguration(TypedDict, total=False):
-    backend: Backends
+    run_backend: Backends
     measuring_type: MeasuringTypes
 
 
-class OptimizationResult(TypedDict):
-    optimized_parameters: List[Union[float, EagerTensor]]
-    current_p_err: float
+class OptimizationResult(NamedTuple):
+    optimized_parameters: List[float]
+    error_probability: float
 
 
 class OneProcessResultExecution(TypedDict):
@@ -69,7 +70,7 @@ class ResultExecution(TypedDict):
     opt_params: List[Union[List[float], EagerTensor]]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]
-    backend: str
+    result_backend: str
     measuring_type: str
     plot_label: str
     plot_title: str
