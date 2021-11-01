@@ -181,7 +181,8 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
         return Optimize(opt_backend=self._run_configuration['run_backend'],
                         nparams=self._circuit.free_parameters,
-                        parallel_optimization=self._parallel_optimization)
+                        parallel_optimization=self._parallel_optimization,
+                        learning_steps=self._steps)
 
     def _save_plot_to_file(self, result):
         if self._save_plots:
@@ -204,7 +205,7 @@ class CSD(ABC):
                      f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']} "
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
-        return optimization.optimize(cost_function=self._cost_function)
+        return optimization.optimize(cost_function=self._cost_function, current_alpha=self._alpha_value)
 
     def _update_result(self, result: ResultExecution, one_alpha_optimization_result: OptimizationResult):
         logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)}'

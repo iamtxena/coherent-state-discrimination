@@ -178,7 +178,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(processes=5 if backend == Backends.TENSORFLOW else cpu_count() - 2)
+    pool = Pool(cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
                                                                 backend,
@@ -242,15 +242,14 @@ def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> N
 if __name__ == '__main__':
     alpha_init = 0.05
     alpha_end = 1.05
-    # alpha_step = (alpha_end - alpha_init) / cpu_count()
-    alpha_step = (alpha_end - alpha_init) / 10
+    number_points_to_plot = 10
+    alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     # alphas = list(np.arange(0.05, 1.05, 0.05))
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
-    # alphas = [0.7]'steps': 300,
 
     steps = 300
     learning_rate = 0.1
-    batch_size = 10000
+    batch_size = 100
     shots = 100
     plays = 1
     cutoff_dim = 10
@@ -273,5 +272,5 @@ if __name__ == '__main__':
         squeezing=[squeezing] * number_alphas
     )
 
-    # multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
-    multi_fock_backend(multiprocess_configuration=multiprocess_configuration)
+    multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
+    # multi_fock_backend(multiprocess_configuration=multiprocess_configuration)

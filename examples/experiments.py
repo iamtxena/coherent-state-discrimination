@@ -1,3 +1,4 @@
+import multiprocessing
 from csd import CSD
 from csd.typings.typing import MeasuringTypes, CSDConfiguration, Backends
 import numpy as np
@@ -27,6 +28,7 @@ def execute_probabilities_gaussian_backend(csd: CSD) -> None:
 @timing
 def execute_probabilities_tf_backend(csd: CSD) -> None:
     os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+    multiprocessing.set_start_method('spawn', force=True)
 
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.TENSORFLOW],
@@ -81,13 +83,13 @@ if __name__ == '__main__':
             'number_layers': 1,
             'squeezing': False,
         },
-        'save_results': True,
+        'save_results': False,
         'save_plots': True,
         'parallel_optimization': True
     }))
-    execute_probabilities_fock_backend(csd=csd)
+    # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    # execute_probabilities_tf_backend(csd=csd)
+    execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
     # execute_sampling_tf_backend(csd=csd)

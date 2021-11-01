@@ -12,14 +12,16 @@ class Optimize(ABC):
     def __init__(self,
                  opt_backend: Optional[Backends] = Backends.FOCK,
                  nparams: int = 1,
-                 parallel_optimization: bool = False):
+                 parallel_optimization: bool = False,
+                 learning_steps: int = 300):
 
         self._opt_backend: Backends = opt_backend if opt_backend is not None else Backends.FOCK
         self._optimizer: Union[TFOptimizer, ScipyOptimizer, ParallelOptimizer, ParallelTFOptimizer, None] = None
 
         if self._opt_backend is Backends.TENSORFLOW:
-            self._optimizer = TFOptimizer(nparams=nparams)
-
+            self._optimizer = TFOptimizer(nparams=nparams, learning_steps=learning_steps)
+        # if self._opt_backend is Backends.TENSORFLOW and parallel_optimization is True:
+        #     self._optimizer = ParallelTFOptimizer(nparams=nparams)
         if ((self._opt_backend is Backends.FOCK or self._opt_backend is Backends.GAUSSIAN) and
                 parallel_optimization is False):
             self._optimizer = ScipyOptimizer(nparams=nparams)
