@@ -1,4 +1,5 @@
 from multiprocessing import Pool, cpu_count
+from time import time
 from typing import Iterator, List, NamedTuple
 from csd import CSD
 from csd.plot import Plot
@@ -162,7 +163,8 @@ def create_full_execution_result(full_backend: Backends,
                                       plays=multiprocess_configuration.plays[0],
                                       modes=multiprocess_configuration.number_modes[0],
                                       layers=multiprocess_configuration.number_layers[0],
-                                      squeezing=multiprocess_configuration.squeezing[0])
+                                      squeezing=multiprocess_configuration.squeezing[0]),
+        'total_time': 0.0
     })
 
 
@@ -175,7 +177,7 @@ def plot_results(alphas: List[float], execution_result: ResultExecution) -> None
 def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
-
+    start_time = time()
     pool = Pool(processes=5 if backend == Backends.TENSORFLOW else cpu_count() - 2)
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -186,12 +188,17 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                                           measuring_type=measuring_type,
                                           multiprocess_configuration=multiprocess_configuration,
                                           results=execution_results)
-
     pool.close()
     pool.join()
 
+    _update_result_with_total_time(result=result, start_time=start_time)
     plot_results(alphas=multiprocess_configuration.alphas,
                  execution_result=result)
+
+
+def _update_result_with_total_time(result: ResultExecution, start_time: float) -> None:
+    end_time = time()
+    result['total_time'] = end_time - start_time
 
 
 def _build_iterator(multiprocess_configuration: MultiProcessConfiguration,

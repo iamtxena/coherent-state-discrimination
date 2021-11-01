@@ -10,6 +10,7 @@ from csd.typings.typing import (Backends,
                                 Architecture)
 from typing import Optional, Union, cast, List
 import numpy as np
+from time import time
 from csd.config import logger
 from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
@@ -156,15 +157,22 @@ class CSD(ABC):
 
         return self._single_process_optimization(optimization, result)
 
-    def _single_process_optimization(self, optimization, result):
+    def _single_process_optimization(self, optimization: Optimize, result: ResultExecution):
+        start_time = time()
         for sample_alpha in self._alphas:
             one_alpha_optimization_result = self._execute_for_one_alpha(optimization=optimization,
                                                                         sample_alpha=sample_alpha)
             self._update_result(result=result, one_alpha_optimization_result=one_alpha_optimization_result)
-        self._save_results_to_file(result)
-        self._save_plot_to_file(result)
+
+        self._update_result_with_total_time(result=result, start_time=start_time)
+        self._save_results_to_file(result=result)
+        self._save_plot_to_file(result=result)
 
         return result
+
+    def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
+        end_time = time()
+        result['total_time'] = end_time - start_time
 
     def _create_optimization(self) -> Optimize:
         if self._circuit is None:
@@ -223,7 +231,8 @@ class CSD(ABC):
                                                plays=self._plays,
                                                modes=self._architecture['number_modes'],
                                                layers=self._architecture['number_layers'],
-                                               squeezing=self._architecture['squeezing'])
+                                               squeezing=self._architecture['squeezing']),
+            'total_time': 0.0
         }
 
         return result

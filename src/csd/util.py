@@ -9,9 +9,11 @@ import re
 
 SECONDS_PER_MINUTE = 60
 MINUTES_PER_HOUR = 60
+HOURS_PER_DAY = 24
 
 
 def set_friendly_time(time_interval: float) -> str:
+    days = 0
     hours = 0
     minutes = int(np.floor(time_interval / SECONDS_PER_MINUTE))
     seconds = int(np.floor(time_interval % SECONDS_PER_MINUTE))
@@ -19,9 +21,15 @@ def set_friendly_time(time_interval: float) -> str:
     if minutes > MINUTES_PER_HOUR:
         hours = int(np.floor(minutes / MINUTES_PER_HOUR))
         minutes = int(np.floor(minutes % MINUTES_PER_HOUR))
-
+    if hours > HOURS_PER_DAY:
+        days = int(np.floor(hours / HOURS_PER_DAY))
+        hours = int(np.floor(hours % HOURS_PER_DAY))
     friendly_time = ''
 
+    if days == 1:
+        friendly_time += f'{days} day, '
+    if days > 1:
+        friendly_time += f'{days} days, '
     if hours == 1:
         friendly_time += f'{hours} hour, '
     if hours > 1:

@@ -72,16 +72,16 @@ if __name__ == '__main__':
         'alphas': alphas,
         'steps': 300,
         'learning_rate': 0.1,
-        'batch_size': 100000,
+        'batch_size': 100,
         'shots': 100,
         'plays': 1,
         'cutoff_dim': 10,
         'architecture': {
-            'number_modes': 2,
+            'number_modes': 1,
             'number_layers': 1,
             'squeezing': False,
         },
-        'save_results': False,
+        'save_results': True,
         'save_plots': True,
         'parallel_optimization': True
     }))

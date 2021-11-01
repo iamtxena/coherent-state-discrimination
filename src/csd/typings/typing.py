@@ -74,6 +74,7 @@ class ResultExecution(TypedDict):
     measuring_type: str
     plot_label: str
     plot_title: str
+    total_time: float
 
 
 class EngineRunOptions(TypedDict):
