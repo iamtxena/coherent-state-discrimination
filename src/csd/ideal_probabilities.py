@@ -11,14 +11,15 @@ class IdealProbabilities(ABC):
 
     """
 
-    def __init__(self, alphas: List[float]):
+    def __init__(self, alphas: List[float], number_modes: int = 1):
         self._p_homos = [self._prob_homodyne(a=current_alpha) for current_alpha in alphas]
         self._p_hels = [self._prob_helstrom(a=current_alpha) for current_alpha in alphas]
         self._p_ken_op = self._compute_probs_with_betas_optimized(alphas=alphas)
+        self._number_modes = number_modes
 
     @property
     def p_homos(self) -> Tuple[List[float], str]:
-        return (self._p_homos, "pHom(a)")
+        return (self._p_homos, f"pHom(a)^{self._number_modes}")
 
     @property
     def p_hels(self) -> Tuple[List[float], str]:
@@ -29,7 +30,7 @@ class IdealProbabilities(ABC):
         return (self._p_ken_op, "pKenOp(a)")
 
     def _prob_homodyne(self, a: float) -> float:
-        return (1 + math.erf(math.sqrt(2) * a)) / 2
+        return ((1 + math.erf(math.sqrt(2) * a)) / 2)**self._number_modes
 
     def _prob_helstrom(self, a: float) -> float:
         return (1 + math.sqrt(1 - math.exp(-4 * a**2))) / 2
