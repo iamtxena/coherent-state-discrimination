@@ -73,7 +73,8 @@ def _set_plot_title(plot_title_backend: Backends,
                     layers: int,
                     squeezing: bool) -> str:
 
-    trained_steps = f', steps: {steps}, l_rate:{learning_rate}' if plot_title_backend == Backends.TENSORFLOW else ""
+    trained_steps = (f', steps: {steps}, l_rate:{learning_rate}, cutoff:{cutoff_dim}'
+                     if plot_title_backend == Backends.TENSORFLOW else "")
 
     return (f"backend:{plot_title_backend.value}, "
             f"measuring:{measuring_type.value}{trained_steps}\n"
@@ -171,7 +172,7 @@ def create_full_execution_result(full_backend: Backends,
 
 
 def plot_results(alphas: List[float], execution_result: ResultExecution) -> None:
-    plot = Plot(alphas=alphas)
+    plot = Plot(alphas=alphas, number_modes=number_modes)
     plot.plot_success_probabilities(executions=[execution_result], save_plot=True)
 
 
@@ -180,7 +181,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(6)
+    pool = Pool(8)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -244,17 +245,17 @@ def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> N
 
 if __name__ == '__main__':
     alpha_init = 0.05
-    alpha_end = 1.05
-    number_points_to_plot = 6
+    alpha_end = 2.05
+    number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
 
     steps = 250
-    learning_rate = 0.01
+    learning_rate = 0.1
     shots = 100
     plays = 1
     cutoff_dim = 10
-    number_modes = 4
+    number_modes = 2
     batch_size = 2**number_modes
     number_layers = 1
     squeezing = True
