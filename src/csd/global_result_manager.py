@@ -7,7 +7,7 @@ import numpy as np
 
 from csd.typings.global_result import GlobalResult
 
-RESULTS_PATH = "results/"
+RESULTS_PATH = "results/globals/"
 RESULTS_FILE = "global_results.csv"
 
 
