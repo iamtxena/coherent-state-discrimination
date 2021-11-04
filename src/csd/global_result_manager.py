@@ -1,6 +1,7 @@
 
 from abc import ABC
 import os
+from pathlib import Path
 import csv
 from typing import Union
 import numpy as np
@@ -15,17 +16,22 @@ RESULTS_FILENAME = "global_results"
 class GlobalResultManager(ABC):
 
     def __init__(self):
-        self._results_file = self._check_if_file_exists()
+        self._global_results_file = self._check_if_file_exists()
 
     def _check_if_file_exists(self, global_result: Union[GlobalResult, None] = None) -> str:
-        results_file = f'{RESULTS_PATH}{RESULTS_FILENAME}'
+        global_results_path = f'{RESULTS_PATH}'
+        results_file = f'{RESULTS_PATH}'
 
+        if global_result is None:
+            results_file += RESULTS_FILENAME
         if global_result is not None:
-            results_file += f'{ALPHAS_PATH}{str(np.round(global_result.alpha, 2))}'
+            global_results_path += ALPHAS_PATH
+            results_file += f'{ALPHAS_PATH}{RESULTS_FILENAME}{str(np.round(global_result.alpha, 2))}'
 
         results_file += '.csv'
 
         if not os.path.exists(results_file):
+            Path(global_results_path).mkdir(parents=True, exist_ok=True)
             with open(results_file, 'w', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow(GlobalResult(alpha=0.0,

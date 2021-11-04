@@ -22,6 +22,8 @@ from csd.util import timing, save_object_to_disk
 from csd.batch import Batch
 from .cost_function import CostFunction
 
+MAX_CUTOFF_DIM = 30
+
 
 class CSD(ABC):
 
@@ -185,9 +187,12 @@ class CSD(ABC):
 
         return result
 
-    def _write_result(self, alpha: float, one_alpha_start_time: float, error_probability: float):
+    def _write_result(self, alpha: float, one_alpha_start_time: float, error_probability: np.ndarray):
+
+        fixed_error_probability = error_probability[0]
+
         GlobalResultManager().write_result(GlobalResult(alpha=alpha,
-                                                        success_probability=1 - error_probability,
+                                                        success_probability=1 - fixed_error_probability,
                                                         number_modes=self._architecture['number_modes'],
                                                         time_in_seconds=time() - one_alpha_start_time))
 
@@ -268,8 +273,12 @@ class CSD(ABC):
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
-        current_cutoff = (self._cutoff_dim * 2 if self._alpha_value > 0.9 or self._alpha_value < 0.25
-                          else self._cutoff_dim)
+        current_cutoff = self._cutoff_dim
+        if self._architecture['number_modes'] < 3:
+            current_cutoff = (MAX_CUTOFF_DIM if self._alpha_value > 0.9 or self._alpha_value < 0.25
+                              else self._cutoff_dim)
+        if self._architecture['number_modes'] >= 3:
+            current_cutoff = MAX_CUTOFF_DIM
 
         if self._backend_is_tf():
             return TFEngine(engine_backend=Backends.TENSORFLOW, options={

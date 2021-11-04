@@ -12,9 +12,9 @@ class GlobalResult(NamedTuple):
 
     @property
     def distance_to_homodyne_probability(self) -> float:
-        return (self.success_probability - IdealHomodyneProbability(
+        return self.success_probability - IdealHomodyneProbability(
             alpha=self.alpha,
-            number_modes=self.number_modes).homodyne_probability)
+            number_modes=self.number_modes).homodyne_probability
 
     @property
     def bit_error_rate(self) -> float:
