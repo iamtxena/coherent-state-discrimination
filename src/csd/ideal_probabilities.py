@@ -12,10 +12,10 @@ class IdealProbabilities(ABC):
     """
 
     def __init__(self, alphas: List[float], number_modes: int = 1):
+        self._number_modes = number_modes
         self._p_homos = [self._prob_homodyne(a=current_alpha) for current_alpha in alphas]
         self._p_hels = [self._prob_helstrom(a=current_alpha) for current_alpha in alphas]
         self._p_ken_op = self._compute_probs_with_betas_optimized(alphas=alphas)
-        self._number_modes = number_modes
 
     @property
     def p_homos(self) -> Tuple[List[float], str]:
