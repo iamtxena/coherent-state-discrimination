@@ -181,8 +181,8 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    # pool = Pool(2)
-    pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
+    pool = Pool(8)
+    # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
                                                                 backend,
@@ -244,9 +244,9 @@ def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> N
 
 
 if __name__ == '__main__':
-    alpha_init = 0.5
-    alpha_end = 1.05
-    number_points_to_plot = 10
+    alpha_init = 0.05
+    alpha_end = 2.05
+    number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
 
@@ -254,7 +254,7 @@ if __name__ == '__main__':
     learning_rate = 0.1
     shots = 100
     plays = 1
-    cutoff_dim = 7
+    cutoff_dim = 10
     number_modes = 1
     batch_size = 2**number_modes
     number_layers = 1
