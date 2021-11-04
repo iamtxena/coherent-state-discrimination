@@ -72,16 +72,16 @@ if __name__ == '__main__':
 
     csd = CSD(csd_config=CSDConfiguration({
         'alphas': alphas,
-        'steps': 300,
+        'steps': 100,
         'learning_rate': 0.1,
-        'batch_size': 100,
+        'batch_size': 10,
         'shots': 100,
         'plays': 1,
         'cutoff_dim': 10,
         'architecture': {
-            'number_modes': 1,
+            'number_modes': 2,
             'number_layers': 1,
-            'squeezing': False,
+            'squeezing': True,
         },
         'save_results': False,
         'save_plots': True,

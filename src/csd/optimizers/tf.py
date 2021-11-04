@@ -4,6 +4,7 @@ from typing import Callable, List, Optional, Tuple
 import tensorflow as tf
 import numpy as np
 import os
+from datetime import datetime
 
 from tensorflow.python.framework.ops import EagerTensor
 from tensorflow.python.ops.variables import Variable
@@ -15,11 +16,18 @@ from csd.config import logger
 
 class TFOptimizer(ABC):
 
-    def __init__(self, nparams: int = 1, learning_steps: int = 300):
+    def __init__(self,
+                 nparams: int = 1,
+                 learning_steps: int = 300,
+                 learning_rate: float = 0.1,
+                 modes: int = 1):
         os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
         self._learning_steps = learning_steps
+        self._learning_rate = learning_rate
         self._current_alpha = 0.0
         self._number_parameters = nparams
+        self._number_modes = modes
+        self._opt = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
     def optimize(self, cost_function: Callable,
                  current_alpha: Optional[float] = 0.0) -> OptimizationResult:
@@ -29,12 +37,37 @@ class TFOptimizer(ABC):
         loss = tf.Variable(0.0)
         params = [tf.Variable(0.1) for _ in range(self._number_parameters)]
 
+        current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
+        train_log_dir = (f'logs/gradient_tape/modes/{self._number_modes}/{current_time}'
+                         f'_alpha_{np.round(current_alpha, 2)}')
+        self._train_summary_writer = tf.summary.create_file_writer(train_log_dir)
+
+        # Define our metrics
+        self._train_loss = tf.keras.metrics.Mean('train_loss')
+        self._train_params = [tf.keras.metrics.Mean(f'train_param_{index}',
+                                                    dtype=tf.float32)
+                              for index, _ in enumerate(params)]
+
         for step in range(self._learning_steps):
             loss, params = self._one_step_optimization(cost_function=cost_function,
                                                        parameters=params,
                                                        init_time=init_time,
                                                        step=step,
-                                                       total_steps=self._learning_steps)
+                                                       total_steps=self._learning_steps,
+                                                       learning_rate=self._learning_rate)
+            with self._train_summary_writer.as_default():
+                tf.summary.scalar('loss', self._train_loss.result(), step=step)
+                for index, train_param in enumerate(self._train_params):
+                    tf.summary.scalar(f'param_{index}',
+                                      train_param.result(), step=step)
+
+            # template = 'Step {}, Loss: {}'
+            # logger.info(template.format(step + 1, self._train_loss.result()))
+
+            # Reset metrics every epoch
+            self._train_loss.reset_states()
+            for train_param in self._train_params:
+                train_param.reset_states()
 
         return OptimizationResult(optimized_parameters=[param.numpy() for param in params],
                                   error_probability=loss.numpy())
@@ -44,11 +77,13 @@ class TFOptimizer(ABC):
                                parameters: List[Variable],
                                init_time: float,
                                step: int,
-                               total_steps: int) -> Tuple[EagerTensor, List[Variable]]:
+                               total_steps: int,
+                               learning_rate: float) -> Tuple[EagerTensor, List[Variable]]:
         one_loop_time = time.time()
 
         loss, parameters = self._tf_optimize(cost_function=cost_function,
-                                             parameters=parameters)
+                                             parameters=parameters,
+                                             learning_rate=learning_rate)
 
         self._print_time_when_necessary(learning_steps=total_steps,
                                         init_time=init_time,
@@ -59,14 +94,19 @@ class TFOptimizer(ABC):
 
     def _tf_optimize(self,
                      cost_function: Callable,
-                     parameters: List[Variable]) -> Tuple[EagerTensor, List[Variable]]:
+                     parameters: List[Variable],
+                     learning_rate: float) -> Tuple[EagerTensor, List[Variable]]:
 
-        opt = tf.keras.optimizers.Adam(learning_rate=0.01)
         with tf.GradientTape() as tape:
             loss = cost_function(parameters)
 
         gradients = tape.gradient(loss, parameters)
-        opt.apply_gradients(zip(gradients, parameters))
+        self._opt.apply_gradients(zip(gradients, parameters))
+
+        self._train_loss(loss)
+        for train_param, parameter in zip(self._train_params, parameters):
+            train_param(parameter)
+
         return loss, parameters
 
     def _print_time_when_necessary(self,

@@ -96,8 +96,11 @@ class CSD(ABC):
             'squeezing': False,
         }
 
-    def _create_batch_for_alpha(self, alpha_value: float) -> Batch:
-        return Batch(size=self._batch_size, word_size=self._architecture['number_modes'], alpha_value=alpha_value)
+    def _create_batch_for_alpha(self, alpha_value: float, random_words: bool) -> Batch:
+        return Batch(size=self._batch_size,
+                     word_size=self._architecture['number_modes'],
+                     alpha_value=alpha_value,
+                     random_words=random_words)
 
     def _create_circuit(self) -> Circuit:
         """Creates a circuit to run an experiment based on configuration parameters
@@ -155,13 +158,19 @@ class CSD(ABC):
                      f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']} "
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
-        return self._single_process_optimization(optimization, result)
+        return self._single_process_optimization(optimization=optimization,
+                                                 result=result,
+                                                 random_words=self._backend_is_tf())
 
-    def _single_process_optimization(self, optimization: Optimize, result: ResultExecution):
+    def _single_process_optimization(self,
+                                     optimization: Optimize,
+                                     result: ResultExecution,
+                                     random_words: bool):
         start_time = time()
         for sample_alpha in self._alphas:
             one_alpha_optimization_result = self._execute_for_one_alpha(optimization=optimization,
-                                                                        sample_alpha=sample_alpha)
+                                                                        sample_alpha=sample_alpha,
+                                                                        random_words=random_words)
             self._update_result(result=result, one_alpha_optimization_result=one_alpha_optimization_result)
 
         self._update_result_with_total_time(result=result, start_time=start_time)
@@ -182,7 +191,9 @@ class CSD(ABC):
         return Optimize(opt_backend=self._run_configuration['run_backend'],
                         nparams=self._circuit.free_parameters,
                         parallel_optimization=self._parallel_optimization,
-                        learning_steps=self._steps)
+                        learning_steps=self._steps,
+                        learning_rate=self._learning_rate,
+                        modes=self._architecture['number_modes'])
 
     def _save_plot_to_file(self, result):
         if self._save_plots:
@@ -197,9 +208,12 @@ class CSD(ABC):
             save_object_to_disk(obj=result, path='results')
 
     @timing
-    def _execute_for_one_alpha(self, optimization: Optimize, sample_alpha: float) -> OptimizationResult:
+    def _execute_for_one_alpha(self,
+                               optimization: Optimize,
+                               sample_alpha: float,
+                               random_words: bool) -> OptimizationResult:
         self._alpha_value = sample_alpha
-        self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value)
+        self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
 
         logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)} \n'
                      f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']} "

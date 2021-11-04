@@ -73,8 +73,10 @@ def _set_plot_title(plot_title_backend: Backends,
                     layers: int,
                     squeezing: bool) -> str:
 
+    trained_steps = f', steps: {steps}, l_rate:{learning_rate}' if plot_title_backend == Backends.TENSORFLOW else ""
+
     return (f"backend:{plot_title_backend.value}, "
-            f"measuring:{measuring_type.value}, \n"
+            f"measuring:{measuring_type.value}{trained_steps}\n"
             f"batch size:{batch_size}, plays:{plays}, modes:{modes}, layers,{layers}, squeezing:{squeezing}")
 
 
@@ -178,7 +180,8 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(cpu_count())
+    pool = Pool(6)
+    # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
                                                                 backend,
@@ -204,8 +207,8 @@ def _update_result_with_total_time(result: ResultExecution, start_time: float) -
 def _build_iterator(multiprocess_configuration: MultiProcessConfiguration,
                     backend: Backends,
                     measuring_type: MeasuringTypes) -> Iterator:
-    return zip([backend] * batch_size,
-               [measuring_type] * batch_size,
+    return zip([backend] * number_alphas,
+               [measuring_type] * number_alphas,
                multiprocess_configuration.steps,
                multiprocess_configuration.learning_rate,
                multiprocess_configuration.batch_size,
@@ -242,22 +245,23 @@ def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> N
 if __name__ == '__main__':
     alpha_init = 0.05
     alpha_end = 1.05
-    number_points_to_plot = 10
+    number_points_to_plot = 6
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
-    # alphas = list(np.arange(0.05, 1.05, 0.05))
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
 
-    steps = 300
-    learning_rate = 0.1
-    batch_size = 100
+    steps = 250
+    learning_rate = 0.01
     shots = 100
     plays = 1
     cutoff_dim = 10
-    number_modes = 1
+    number_modes = 4
+    batch_size = 2**number_modes
     number_layers = 1
-    squeezing = False
+    squeezing = True
 
     number_alphas = len(alphas)
+
+    print(f'number alphas: {number_alphas}')
 
     multiprocess_configuration = MultiProcessConfiguration(
         alphas=alphas,
