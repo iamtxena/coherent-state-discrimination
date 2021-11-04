@@ -27,12 +27,16 @@ class TFOptimizer(ABC):
         self._current_alpha = 0.0
         self._number_parameters = nparams
         self._number_modes = modes
-        self._opt = tf.keras.optimizers.Adam(learning_rate=learning_rate)
 
     def optimize(self, cost_function: Callable,
                  current_alpha: Optional[float] = 0.0) -> OptimizationResult:
 
         self._current_alpha = current_alpha if current_alpha is not None else 0.0
+        if self._current_alpha < 0.2 and self._number_modes > 1:
+            self._learning_rate /= 100
+            self._learning_steps *= 10
+
+        self._opt = tf.keras.optimizers.Adam(learning_rate=self._learning_rate)
         init_time = time.time()
         loss = tf.Variable(0.0)
         params = [tf.Variable(0.1) for _ in range(self._number_parameters)]
