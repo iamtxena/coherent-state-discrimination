@@ -8,7 +8,8 @@ import numpy as np
 from csd.typings.global_result import GlobalResult
 
 RESULTS_PATH = "results/globals/"
-RESULTS_FILE = "global_results.csv"
+ALPHAS_PATH = "alphas/"
+RESULTS_FILENAME = "global_results"
 
 
 class GlobalResultManager(ABC):
@@ -17,12 +18,15 @@ class GlobalResultManager(ABC):
         self._results_file = self._check_if_file_exists()
 
     def _check_if_file_exists(self, global_result: Union[GlobalResult, None] = None) -> str:
-        results_file = f'{RESULTS_PATH}{RESULTS_FILE}'
+        results_file = f'{RESULTS_PATH}{RESULTS_FILENAME}'
+
         if global_result is not None:
-            results_file += str(np.round(global_result.alpha, 2))
+            results_file += f'{ALPHAS_PATH}{str(np.round(global_result.alpha, 2))}'
+
+        results_file += '.csv'
 
         if not os.path.exists(results_file):
-            with open('countries.csv', 'w', encoding='UTF8') as f:
+            with open(results_file, 'w', newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow(GlobalResult(alpha=0.0,
                                              success_probability=0.0,
