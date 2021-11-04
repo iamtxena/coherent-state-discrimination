@@ -1,9 +1,13 @@
 # ideal_probabilities.py
 
 from abc import ABC
-from typing import List, Tuple
+from typing import List, NamedTuple, Tuple
 import math
 from scipy.optimize import minimize
+
+
+def compute_homodyne_probability(a: float, number_modes: int):
+    return ((1 + math.erf(math.sqrt(2) * a)) / 2)**number_modes
 
 
 class IdealProbabilities(ABC):
@@ -30,7 +34,7 @@ class IdealProbabilities(ABC):
         return (self._p_ken_op, "pKenOp(a)")
 
     def _prob_homodyne(self, a: float) -> float:
-        return ((1 + math.erf(math.sqrt(2) * a)) / 2)**self._number_modes
+        return compute_homodyne_probability(a, number_modes=self._number_modes)
 
     def _prob_helstrom(self, a: float) -> float:
         return (1 + math.sqrt(1 - math.exp(-4 * a**2))) / 2
@@ -50,3 +54,12 @@ class IdealProbabilities(ABC):
     def _compute_probs_with_betas_optimized(self, alphas: List[float]) -> List[float]:
         opt_betas = self._optimize(alphas=alphas)
         return [self._p_succ(b=opt_beta, a=alpha) for (opt_beta, alpha) in zip(opt_betas, alphas)]
+
+
+class IdealHomodyneProbability(NamedTuple):
+    alpha: float
+    number_modes: int
+
+    @property
+    def homodyne_probability(self) -> float:
+        return compute_homodyne_probability(a=self.alpha, number_modes=self.number_modes)

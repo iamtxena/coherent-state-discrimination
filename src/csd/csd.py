@@ -1,7 +1,9 @@
 from abc import ABC
 from csd.circuit import Circuit
 from csd.engine import Engine
+from csd.global_result_manager import GlobalResultManager
 from csd.tf_engine import TFEngine
+from csd.typings.global_result import GlobalResult
 from csd.typings.typing import (Backends,
                                 CSDConfiguration, OptimizationResult,
                                 RunConfiguration,
@@ -168,16 +170,26 @@ class CSD(ABC):
                                      random_words: bool):
         start_time = time()
         for sample_alpha in self._alphas:
+            one_alpha_start_time = time()
             one_alpha_optimization_result = self._execute_for_one_alpha(optimization=optimization,
                                                                         sample_alpha=sample_alpha,
                                                                         random_words=random_words)
             self._update_result(result=result, one_alpha_optimization_result=one_alpha_optimization_result)
+            self._write_result(alpha=sample_alpha,
+                               one_alpha_start_time=one_alpha_start_time,
+                               error_probability=one_alpha_optimization_result.error_probability)
 
         self._update_result_with_total_time(result=result, start_time=start_time)
         self._save_results_to_file(result=result)
         self._save_plot_to_file(result=result)
 
         return result
+
+    def _write_result(self, alpha: float, one_alpha_start_time: float, error_probability: float):
+        GlobalResultManager().write_result(GlobalResult(alpha=alpha,
+                                                        success_probability=1 - error_probability,
+                                                        number_modes=self._architecture['number_modes'],
+                                                        time_in_seconds=time() - one_alpha_start_time))
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()
@@ -256,16 +268,16 @@ class CSD(ABC):
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
-        self._cutoff_dim = (self._cutoff_dim * 3 if self._alpha_value > 0.9 or self._alpha_value < 0.25
-                            else self._cutoff_dim)
+        current_cutoff = (self._cutoff_dim * 2 if self._alpha_value > 0.9 or self._alpha_value < 0.25
+                          else self._cutoff_dim)
 
         if self._backend_is_tf():
             return TFEngine(engine_backend=Backends.TENSORFLOW, options={
-                "cutoff_dim": self._cutoff_dim,
+                "cutoff_dim": current_cutoff,
                 "batch_size": self._batch_size
             })
         return Engine(engine_backend=self._run_configuration['run_backend'], options={
-            "cutoff_dim": self._cutoff_dim
+            "cutoff_dim": current_cutoff
         })
 
     def _backend_is_tf(self):
