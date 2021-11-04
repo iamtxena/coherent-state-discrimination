@@ -160,7 +160,7 @@ class CSD(ABC):
 
         return self._single_process_optimization(optimization=optimization,
                                                  result=result,
-                                                 random_words=self._backend_is_tf())
+                                                 random_words=(not self._backend_is_tf()))
 
     def _single_process_optimization(self,
                                      optimization: Optimize,
