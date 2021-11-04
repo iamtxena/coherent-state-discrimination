@@ -15,10 +15,10 @@ class Plot(ABC):
     """
 
     # @typechecked
-    def __init__(self, alphas: List[float] = None):
+    def __init__(self, alphas: List[float] = None, number_modes: int = 1):
         if alphas is None:
             raise ValueError("alphas not set.")
-        self._ideal_probabilities = IdealProbabilities(alphas=alphas)
+        self._ideal_probabilities = IdealProbabilities(alphas=alphas, number_modes=number_modes)
         self._alphas = alphas
 
     def plot_success_probabilities(self,
