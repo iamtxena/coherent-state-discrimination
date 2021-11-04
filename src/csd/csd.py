@@ -256,10 +256,12 @@ class CSD(ABC):
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
+        self._cutoff_dim = (self._cutoff_dim * 3 if self._alpha_value > 0.9 or self._alpha_value < 0.25
+                            else self._cutoff_dim)
+
         if self._backend_is_tf():
             return TFEngine(engine_backend=Backends.TENSORFLOW, options={
-                "cutoff_dim": (self._cutoff_dim * 3 if self._alpha_value > 0.9 or self._alpha_value < 0.25
-                               else self._cutoff_dim),
+                "cutoff_dim": self._cutoff_dim,
                 "batch_size": self._batch_size
             })
         return Engine(engine_backend=self._run_configuration['run_backend'], options={
