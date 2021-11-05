@@ -28,7 +28,7 @@ def plot_computation_times() -> None:
 
 
 if __name__ == '__main__':
-    consolidate_results = False
+    consolidate_results = True
     # _consolidate_results()
     load_results(consolidate_results=consolidate_results)
     plot_probabilities()
