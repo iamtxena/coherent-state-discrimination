@@ -3,7 +3,7 @@ from abc import ABC
 import os
 from pathlib import Path
 import csv
-from typing import Union
+from typing import Optional, Union
 import numpy as np
 import glob
 from csd.plot import Plot
@@ -40,7 +40,8 @@ class GlobalResultManager(ABC):
                 writer.writerow(GlobalResult(alpha=0.0,
                                              success_probability=0.0,
                                              number_modes=1,
-                                             time_in_seconds=1).header())
+                                             time_in_seconds=1,
+                                             squeezing=False).header())
         return results_file
 
     def write_result(self, global_result: GlobalResult) -> None:
@@ -65,7 +66,8 @@ class GlobalResultManager(ABC):
             writer.writerow(GlobalResult(alpha=0.0,
                                          success_probability=0.0,
                                          number_modes=1,
-                                         time_in_seconds=1).header())
+                                         time_in_seconds=1,
+                                         squeezing=False).header())
         return global_results_file
 
     def _transfer_alpha_results_to_global_file(self, global_results_file: str, alpha_file: str) -> None:
@@ -76,7 +78,8 @@ class GlobalResultManager(ABC):
             alpha_results = [GlobalResult(alpha=float(row[0]),
                                           success_probability=float(row[1]),
                                           number_modes=int(row[2]),
-                                          time_in_seconds=float(row[3])) for row in reader]
+                                          time_in_seconds=float(row[3]),
+                                          squeezing=bool(row[6])) for row in reader]
 
             with open(global_results_file, 'a+', newline='') as write_obj:
                 writer = csv.writer(write_obj)
@@ -93,7 +96,8 @@ class GlobalResultManager(ABC):
             self._global_results = [GlobalResult(alpha=float(row[0]),
                                                  success_probability=float(row[1]),
                                                  number_modes=int(row[2]),
-                                                 time_in_seconds=float(row[3])) for row in reader]
+                                                 time_in_seconds=float(row[3]),
+                                                 squeezing=bool(row[6])) for row in reader]
         self._create_unique_alphas()
         self._create_unique_modes()
         self._select_global_results()
@@ -144,6 +148,25 @@ class GlobalResultManager(ABC):
                 not hasattr(self, '_alphas')):
             self.load_results()
         Plot(alphas=self._alphas).times(
+            number_modes=self._number_modes,
+            global_results=self._selected_global_results,
+            save_plot=save_plot)
+
+    def plot_modes_probs(self, one_alpha: Optional[Union[float, None]] = None, save_plot=False) -> None:
+        if (not hasattr(self, '_selected_global_results') or
+            not hasattr(self, '_number_modes') or
+                not hasattr(self, '_alphas')):
+            self.load_results()
+
+        if one_alpha is not None:
+            Plot(alphas=[one_alpha]).success_probabilities_one_alpha(
+                one_alpha=one_alpha,
+                number_modes=self._number_modes,
+                global_results=self._selected_global_results,
+                save_plot=save_plot)
+            return
+
+        Plot(alphas=self._alphas).success_probabilities_all_alphas(
             number_modes=self._number_modes,
             global_results=self._selected_global_results,
             save_plot=save_plot)

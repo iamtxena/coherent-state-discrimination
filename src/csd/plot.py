@@ -4,10 +4,12 @@ from abc import ABC
 from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
 # from typeguard import typechecked
-from csd.ideal_probabilities import IdealProbabilities
+from csd.ideal_probabilities import IdealHomodyneProbability, IdealProbabilities
 from csd.typings.global_result import GlobalResult
 from csd.typings.typing import ResultExecution
 from csd.util import set_current_time, _fix_path, set_friendly_time
+import numpy as np
+# from csd.config import logger
 
 
 class Plot(ABC):
@@ -21,6 +23,111 @@ class Plot(ABC):
             raise ValueError("alphas not set.")
         self._ideal_probabilities = IdealProbabilities(alphas=alphas, number_modes=number_modes)
         self._alphas = alphas
+
+    def success_probabilities_all_alphas(self,
+                                         number_modes: List[int],
+                                         global_results: List[GlobalResult],
+                                         save_plot: Optional[bool] = False) -> None:
+        fig = plt.figure(figsize=(15, 10))
+        fig.suptitle("Average Success Probability", fontsize=20)
+
+        for idx, one_alpha in enumerate(self._alphas):
+            if idx == 9:
+                break
+            homodyne_probabilities = []
+            squeezed_probabilities = []
+            non_squeezed_probabilities = []
+
+            for number_mode in number_modes:
+                homodyne_prob = IdealHomodyneProbability(
+                    alpha=one_alpha, number_modes=number_mode).homodyne_probability
+                squeezed_probability = [global_result.success_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode and
+                                            global_result.squeezing and
+                                            global_result.alpha == one_alpha)]
+                non_squeezed_probability = [global_result.success_probability
+                                            for global_result in global_results
+                                            if (global_result.number_modes == number_mode and
+                                                not global_result.squeezing and
+                                                global_result.alpha == one_alpha)]
+                if len(squeezed_probability) > 1:
+                    raise ValueError("more than one squeezed_probability found!")
+                if len(non_squeezed_probability) > 1:
+                    raise ValueError("more than one non_squeezed_probability found!")
+                homodyne_probabilities.append(homodyne_prob)
+                if len(squeezed_probability) == 0:
+                    squeezed_probability.append(0.0)
+                squeezed_probabilities.append(squeezed_probability.pop(0))
+                if len(non_squeezed_probability) == 0:
+                    non_squeezed_probability.append(0.0)
+                non_squeezed_probabilities.append(non_squeezed_probability.pop(0))
+
+            probs_labels = ((squeezed_probabilities, "pSucc Squeezing"),
+                            (non_squeezed_probabilities, "pSucc No Squeezing"),
+                            (homodyne_probabilities, "pSucc Homodyne"))
+            ax = fig.add_subplot(3, 3, idx + 1 % 3)
+            ax.set_ylim([0, 1])
+            ax.set_title(f"$\\alpha$={np.round(one_alpha, 2)}", fontsize=14)
+
+            for prob, label in probs_labels:
+                ax.plot(number_modes, prob, label=label)
+
+            ax.set_xticks(number_modes)
+            ax.legend()
+            ax.set_xlabel('number modes')
+            ax.set_ylabel('Average Success Probabilities')
+        plt.subplots_adjust(hspace=0.4)
+        self._show_or_save_plot(save_plot, fig, "_probs_all")
+
+    def success_probabilities_one_alpha(self,
+                                        one_alpha: float,
+                                        number_modes: List[int],
+                                        global_results: List[GlobalResult],
+                                        save_plot: Optional[bool] = False) -> None:
+        fig, axes = plt.subplots(figsize=[10, 8])
+        homodyne_probabilities = []
+        squeezed_probabilities = []
+        non_squeezed_probabilities = []
+
+        for number_mode in number_modes:
+            homodyne_prob = IdealHomodyneProbability(alpha=one_alpha, number_modes=number_mode).homodyne_probability
+            squeezed_probability = [global_result.success_probability
+                                    for global_result in global_results
+                                    if (global_result.number_modes == number_mode and
+                                        global_result.squeezing and
+                                        global_result.alpha == one_alpha)]
+            non_squeezed_probability = [global_result.success_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode and
+                                            not global_result.squeezing and
+                                            global_result.alpha == one_alpha)]
+            if len(squeezed_probability) > 1:
+                raise ValueError("more than one squeezed_probability found!")
+            if len(non_squeezed_probability) > 1:
+                raise ValueError("more than one non_squeezed_probability found!")
+            homodyne_probabilities.append(homodyne_prob)
+            if len(squeezed_probability) == 0:
+                squeezed_probability.append(0.0)
+            squeezed_probabilities.append(squeezed_probability.pop(0))
+            if len(non_squeezed_probability) == 0:
+                non_squeezed_probability.append(0.0)
+            non_squeezed_probabilities.append(non_squeezed_probability.pop(0))
+
+        probs_labels = ((squeezed_probabilities, "pSucc Squeezing"),
+                        (non_squeezed_probabilities, "pSucc No Squeezing"),
+                        (homodyne_probabilities, "pSucc Homodyne"))
+
+        plt.title(f"Average Success Probability for alpha={one_alpha}", fontsize=24)
+
+        for prob, label in probs_labels:
+            axes.plot(number_modes, prob, label=label)
+
+        axes.set_xticks(number_modes)
+        plt.legend()
+        plt.xlabel('number modes')
+        plt.ylabel('Average Success Probabilities')
+        self._show_or_save_plot(save_plot, fig, f"_probs_{str(np.round(one_alpha, 2))}")
 
     def success_probabilities(self,
                               number_modes: List[int],

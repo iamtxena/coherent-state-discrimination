@@ -22,7 +22,7 @@ from csd.util import timing, save_object_to_disk
 from csd.batch import Batch
 from .cost_function import CostFunction
 
-MAX_CUTOFF_DIM = 10
+MAX_CUTOFF_DIM = 5
 
 
 class CSD(ABC):

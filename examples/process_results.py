@@ -1,3 +1,4 @@
+from typing import Optional, Union
 from csd.global_result_manager import GlobalResultManager
 
 
@@ -27,11 +28,17 @@ def plot_computation_times() -> None:
     GlobalResultManager().plot_computation_times(save_plot=True)
 
 
+def plot_modes_probs(one_alpha: Optional[Union[float, None]] = None) -> None:
+    GlobalResultManager().plot_modes_probs(one_alpha=one_alpha, save_plot=True)
+
+
 if __name__ == '__main__':
-    consolidate_results = True
-    # _consolidate_results()
-    load_results(consolidate_results=consolidate_results)
-    plot_probabilities()
-    plot_distances()
-    plot_bit_error_rates()
-    plot_computation_times()
+    # consolidate_results = False
+    # # _consolidate_results()
+    # load_results(consolidate_results=consolidate_results)
+    # plot_probabilities()
+    # plot_distances()
+    # plot_bit_error_rates()
+    # plot_computation_times()
+    # plot_modes_probs(one_alpha=0.05)
+    plot_modes_probs()

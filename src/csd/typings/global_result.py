@@ -9,6 +9,7 @@ class GlobalResult(NamedTuple):
     success_probability: float
     number_modes: int
     time_in_seconds: float
+    squeezing: bool
 
     @property
     def distance_to_homodyne_probability(self) -> float:
@@ -26,15 +27,17 @@ class GlobalResult(NamedTuple):
                 'number_modes',
                 'time_in_seconds',
                 'distance_to_homodyne_probability',
-                'bit_error_rate']
+                'bit_error_rate',
+                'squeezing']
 
-    def values(self) -> Tuple[float, float, int, float, float, float]:
+    def values(self) -> Tuple[float, float, int, float, float, float, bool]:
         return (self.alpha,
                 self.success_probability,
                 self.number_modes,
                 self.time_in_seconds,
                 self.distance_to_homodyne_probability,
-                self.bit_error_rate)
+                self.bit_error_rate,
+                self.squeezing)
 
     def __str__(self) -> str:
         return json.dumps({
@@ -43,7 +46,8 @@ class GlobalResult(NamedTuple):
             "number_modes": self.number_modes,
             "time_in_seconds": self.time_in_seconds,
             "distance_to_homodyne_probability": self.distance_to_homodyne_probability,
-            "bit_error_rate": self.bit_error_rate
+            "bit_error_rate": self.bit_error_rate,
+            "squeezing": self.squeezing
         })
 
     def __repr__(self) -> str:
