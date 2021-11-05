@@ -22,7 +22,7 @@ from csd.util import timing, save_object_to_disk
 from csd.batch import Batch
 from .cost_function import CostFunction
 
-MAX_CUTOFF_DIM = 5
+MAX_CUTOFF_DIM = 20
 
 
 class CSD(ABC):
@@ -194,7 +194,8 @@ class CSD(ABC):
         GlobalResultManager().write_result(GlobalResult(alpha=alpha,
                                                         success_probability=1 - fixed_error_probability,
                                                         number_modes=self._architecture['number_modes'],
-                                                        time_in_seconds=time() - one_alpha_start_time))
+                                                        time_in_seconds=time() - one_alpha_start_time,
+                                                        squeezing=self._architecture['squeezing']))
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()
