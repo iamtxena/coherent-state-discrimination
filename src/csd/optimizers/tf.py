@@ -49,6 +49,9 @@ class TFOptimizer(ABC):
                                                     dtype=tf.float32)
                               for index, _ in enumerate(params)]
 
+        if self._current_alpha < 0.25 or self._current_alpha > 1.25:
+            self._learning_steps = 500
+
         for step in range(self._learning_steps):
             loss, params = self._one_step_optimization(cost_function=cost_function,
                                                        parameters=params,
