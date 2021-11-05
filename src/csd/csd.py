@@ -22,7 +22,7 @@ from csd.util import timing, save_object_to_disk
 from csd.batch import Batch
 from .cost_function import CostFunction
 
-MAX_CUTOFF_DIM = 30
+MAX_CUTOFF_DIM = 5
 
 
 class CSD(ABC):
@@ -210,7 +210,8 @@ class CSD(ABC):
                         parallel_optimization=self._parallel_optimization,
                         learning_steps=self._steps,
                         learning_rate=self._learning_rate,
-                        modes=self._architecture['number_modes'])
+                        modes=self._architecture['number_modes'],
+                        params_name=[*self._circuit.parameters])
 
     def _save_plot_to_file(self, result):
         if self._save_plots:
