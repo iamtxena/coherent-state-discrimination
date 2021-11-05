@@ -244,21 +244,21 @@ def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> N
 
 
 if __name__ == '__main__':
-    alpha_init = 0.05
-    alpha_end = 2.05
+    alpha_init = 0.10
+    alpha_end = 1.40
     number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
 
-    steps = 60
-    learning_rate = 0.1
+    steps = 300
+    learning_rate = 0.01
     shots = 100
     plays = 1
-    cutoff_dim = 10
-    number_modes = 1
+    cutoff_dim = 7
+    number_modes = 2
     batch_size = 2**number_modes
     number_layers = 1
-    squeezing = True
+    squeezing = False
 
     number_alphas = len(alphas)
 

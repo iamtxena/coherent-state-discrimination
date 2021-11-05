@@ -57,7 +57,7 @@ class TFOptimizer(ABC):
         if self._current_alpha < 0.25 or self._current_alpha > 1.25:
             self._learning_steps = 500
 
-        if self._current_alpha < 0.1:
+        if self._current_alpha < 0.1 and self._number_modes >= 3:
             self._opt = tf.keras.optimizers.Adam(learning_rate=0.001)
             self._learning_steps = 10000
 
