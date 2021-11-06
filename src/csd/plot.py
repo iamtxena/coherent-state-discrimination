@@ -250,7 +250,7 @@ class Plot(ABC):
 
         self._show_or_save_plot(save_plot, fig)
 
-    def _show_or_save_plot(self, save_plot, fig, suffix=None):
+    def _show_or_save_plot(self, save_plot, fig, suffix=''):
         if not save_plot:
             plt.show()
 
