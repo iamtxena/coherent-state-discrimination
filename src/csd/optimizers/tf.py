@@ -41,8 +41,45 @@ class TFOptimizer(ABC):
         self._opt = tf.keras.optimizers.Adam(learning_rate=self._learning_rate)
         init_time = time.time()
         loss = tf.Variable(0.0)
-        params = [tf.Variable(0.1) for _ in range(self._number_parameters)]
+        parameters = [tf.Variable(0.1) for _ in range(self._number_parameters)]
 
+        self._prepare_tf_board(self._current_alpha)
+        self._set_learning_values_by_alpha(self._current_alpha)
+
+        for step in range(self._learning_steps):
+            loss, parameters = self._tf_optimize(cost_function=cost_function,
+                                                 parameters=parameters)
+
+            reset = self._print_time_when_necessary(learning_steps=self._learning_steps,
+                                                    init_time=init_time,
+                                                    step=step,
+                                                    optimized_parameters=parameters)
+            init_time = time.time() if reset else init_time
+            self._update_tf_board_metrics(step)
+
+        return OptimizationResult(optimized_parameters=[param.numpy() for param in parameters],
+                                  error_probability=loss.numpy())
+
+    def _update_tf_board_metrics(self, step: int) -> None:
+        with self._train_summary_writer.as_default():
+            tf.summary.scalar('loss', self._train_loss.result(), step=step)
+            for train_param, param_name in zip(self._train_params, self._params_name):
+                tf.summary.scalar(param_name, train_param.result(), step=step)
+
+            # Reset metrics every step
+        self._train_loss.reset_states()
+        for train_param in self._train_params:
+            train_param.reset_states()
+
+    def _set_learning_values_by_alpha(self, alpha: float):
+        if alpha < 0.25 or alpha > 1.25:
+            self._learning_steps = 500
+
+        if alpha <= 0.1:
+            self._opt = tf.keras.optimizers.Adam(learning_rate=0.001)
+            self._learning_steps = 5000
+
+    def _prepare_tf_board(self, current_alpha: float) -> None:
         current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
         train_log_dir = (f'logs/gradient_tape/modes/{self._number_modes}/{current_time}'
                          f'_alpha_{np.round(current_alpha, 2)}')
@@ -53,50 +90,6 @@ class TFOptimizer(ABC):
         self._train_params = [tf.keras.metrics.Mean(f'train_param_{param_name}',
                                                     dtype=tf.float32)
                               for param_name in self._params_name]
-
-        if self._current_alpha < 0.25 or self._current_alpha > 1.25:
-            self._learning_steps = 500
-
-        if self._current_alpha <= 0.1:
-            self._opt = tf.keras.optimizers.Adam(learning_rate=0.001)
-            self._learning_steps = 5000
-
-        for step in range(self._learning_steps):
-            loss, params = self._one_step_optimization(cost_function=cost_function,
-                                                       parameters=params,
-                                                       init_time=init_time,
-                                                       step=step,
-                                                       total_steps=self._learning_steps)
-            with self._train_summary_writer.as_default():
-                tf.summary.scalar('loss', self._train_loss.result(), step=step)
-                for train_param, param_name in zip(self._train_params, self._params_name):
-                    tf.summary.scalar(param_name, train_param.result(), step=step)
-
-            # Reset metrics every step
-            self._train_loss.reset_states()
-            for train_param in self._train_params:
-                train_param.reset_states()
-
-        return OptimizationResult(optimized_parameters=[param.numpy() for param in params],
-                                  error_probability=loss.numpy())
-
-    def _one_step_optimization(self,
-                               cost_function: Callable,
-                               parameters: List[Variable],
-                               init_time: float,
-                               step: int,
-                               total_steps: int) -> Tuple[EagerTensor, List[Variable]]:
-        one_loop_time = time.time()
-
-        loss, parameters = self._tf_optimize(cost_function=cost_function,
-                                             parameters=parameters)
-
-        self._print_time_when_necessary(learning_steps=total_steps,
-                                        init_time=init_time,
-                                        step=step,
-                                        one_loop_time=one_loop_time,
-                                        optimized_parameters=parameters)
-        return loss, parameters
 
     def _tf_optimize(self,
                      cost_function: Callable,
@@ -118,13 +111,11 @@ class TFOptimizer(ABC):
                                    learning_steps: int,
                                    init_time: float,
                                    step: int,
-                                   one_loop_time: float,
-                                   optimized_parameters: List[float]) -> None:
-        # self._print_one_loop_time(step=step, total_steps=learning_steps, one_loop_time=one_loop_time)
+                                   optimized_parameters: List[float]) -> bool:
         reset = self._print_optimized_parameters_for_tf_backend_only(step, optimized_parameters)
         if reset:
             self._print_one_loop_time(step=step, total_steps=learning_steps, one_loop_time=init_time)
-        init_time = time.time() if reset else init_time
+        return reset
 
     def _print_optimized_parameters_for_tf_backend_only(self,
                                                         step: int,

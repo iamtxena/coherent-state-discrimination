@@ -30,12 +30,12 @@ class Circuit(ABC):
 
         if self.number_modes == 1:
             self._create_circuit_for_one_mode(squeezing=architecture['squeezing'],
-                                              number_modes=self.number_modes,
                                               measuring_type=measuring_type)
             return
 
         self._create_multimode_circuit(squeezing=architecture['squeezing'],
-                                       number_modes=self.number_modes,
+                                       number_input_modes=self.number_input_modes,
+                                       number_ancillas=self.number_ancillas,
                                        measuring_type=measuring_type)
 
     @property
@@ -67,11 +67,15 @@ class Circuit(ABC):
     def number_input_modes(self) -> int:
         return self._number_input_modes
 
-    def _create_multimode_circuit(self, squeezing: bool, number_modes: int, measuring_type: MeasuringTypes) -> None:
-        M = number_modes
+    def _create_multimode_circuit(self,
+                                  squeezing: bool,
+                                  number_input_modes: int,
+                                  number_ancillas: int,
+                                  measuring_type: MeasuringTypes) -> None:
+        M = number_input_modes + number_ancillas
         K = int(M * (M - 1) / 2)
 
-        alpha = self._create_free_parameter_list(base_name='alpha', number_elems=M, circuit=self._prog)
+        alpha = self._create_free_parameter_list(base_name='alpha', number_elems=number_input_modes, circuit=self._prog)
         theta_1 = self._create_free_parameter_list(base_name='theta_1', number_elems=K, circuit=self._prog)
         phi_1 = self._create_free_parameter_list(base_name='phi_1', number_elems=K, circuit=self._prog)
         varphi_1 = self._create_free_parameter_list(base_name='varphi_1', number_elems=M, circuit=self._prog)
@@ -94,7 +98,10 @@ class Circuit(ABC):
                                                             phi_r=phi_r if squeezing else [])
         # logger.debug(f'registered parameters: {self.parameters}')
         with self._prog.context as q:
-            self._apply_displacement_layer_to_all_modes(alpha, context=q, number_modes=M)
+            self._apply_displacement_layer_to_only_input_modes(alpha,
+                                                               context=q,
+                                                               number_input_modes=number_input_modes,
+                                                               number_ancillas=number_ancillas)
             UniversalMultimode(theta_1=theta_1,
                                phi_1=phi_1,
                                varphi_1=varphi_1,
@@ -110,7 +117,10 @@ class Circuit(ABC):
             if measuring_type is MeasuringTypes.SAMPLING:
                 sf.ops.MeasureFock() | q
 
-    def _create_circuit_for_one_mode(self, squeezing: bool, number_modes: int, measuring_type: MeasuringTypes) -> None:
+    def _create_circuit_for_one_mode(self,
+                                     squeezing: bool,
+                                     measuring_type: MeasuringTypes) -> None:
+        number_modes = 1
         alpha = self._create_free_parameter_list(base_name='alpha', number_elems=number_modes, circuit=self._prog)
         if squeezing:
             r = self._create_free_parameter_list(base_name='r', number_elems=number_modes, circuit=self._prog)
@@ -128,10 +138,21 @@ class Circuit(ABC):
             if measuring_type is MeasuringTypes.SAMPLING:
                 sf.ops.MeasureFock() | q
 
-    def _apply_displacement_layer_to_all_modes(self, alpha, context, number_modes):
-        modes = list(range(number_modes))
+    def _apply_displacement_layer_to_only_input_modes(self,
+                                                      alpha: List[FreeParameter],
+                                                      context: sf.Program,
+                                                      number_input_modes: int,
+                                                      number_ancillas: int):
+        modes = list(range(number_input_modes))
         for mode in modes:
-            sf.ops.Dgate(alpha[mode], 0.0) | context[mode]
+            sf.ops.Dgate(alpha[mode], 0.0) | context[mode + number_ancillas]
+
+    def _apply_displacement_layer_to_all_modes(self,
+                                               alpha: List[FreeParameter],
+                                               context: sf.Program,
+                                               number_modes: int):
+        self._apply_displacement_layer_to_only_input_modes(
+            alpha=alpha, context=context, number_input_modes=number_modes, number_ancillas=0)
 
     def _apply_squeezing_layer_to_all_modes(self, r, phi_r, context, number_modes):
         modes = list(range(number_modes))
