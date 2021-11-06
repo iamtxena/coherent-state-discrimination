@@ -104,8 +104,11 @@ class CSD(ABC):
         }
 
     def _create_batch_for_alpha(self, alpha_value: float, random_words: bool) -> Batch:
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
+
         return Batch(size=self._batch_size,
-                     word_size=self._architecture['number_modes'],
+                     word_size=self._circuit.number_input_modes,
                      alpha_value=alpha_value,
                      random_words=random_words)
 
@@ -162,7 +165,8 @@ class CSD(ABC):
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
                      " with measuring_type: "
                      f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value} \n"
-                     f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']} "
+                     f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
+                     f" ancillas: {self._circuit.number_ancillas} "
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         return self._single_process_optimization(optimization=optimization,
@@ -173,6 +177,9 @@ class CSD(ABC):
                                      optimization: Optimize,
                                      result: ResultExecution,
                                      random_words: bool):
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
+
         start_time = time()
         for sample_alpha in self._alphas:
             one_alpha_start_time = time()
@@ -185,7 +192,8 @@ class CSD(ABC):
                                error_probability=one_alpha_optimization_result.error_probability)
             logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)} '
                          f'pSucc: {one_alpha_optimization_result.error_probability}\n'
-                         f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']}"
+                         f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
+                         f" ancillas: {self._circuit.number_ancillas}"
                          f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         self._update_result_with_total_time(result=result, start_time=start_time)
@@ -195,12 +203,14 @@ class CSD(ABC):
         return result
 
     def _write_result(self, alpha: float, one_alpha_start_time: float, error_probability: np.ndarray):
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
 
         fixed_error_probability = error_probability[0]
 
         GlobalResultManager().write_result(GlobalResult(alpha=alpha,
                                                         success_probability=1 - fixed_error_probability,
-                                                        number_modes=self._architecture['number_modes'],
+                                                        number_modes=self._circuit.number_input_modes,
                                                         time_in_seconds=time() - one_alpha_start_time,
                                                         squeezing=self._architecture['squeezing']))
 
@@ -218,7 +228,7 @@ class CSD(ABC):
                         parallel_optimization=self._parallel_optimization,
                         learning_steps=self._steps,
                         learning_rate=self._learning_rate,
-                        modes=self._architecture['number_modes'],
+                        modes=self._circuit.number_input_modes,
                         params_name=[*self._circuit.parameters])
 
     def _save_plot_to_file(self, result):
@@ -238,11 +248,15 @@ class CSD(ABC):
                                optimization: Optimize,
                                sample_alpha: float,
                                random_words: bool) -> OptimizationResult:
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
+
         self._alpha_value = sample_alpha
         self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
 
         logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)} \n'
-                     f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']} "
+                     f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
+                     f" ancillas: {self._circuit.number_ancillas}"
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         return optimization.optimize(cost_function=self._cost_function, current_alpha=self._alpha_value)
@@ -258,6 +272,9 @@ class CSD(ABC):
         result['p_succ'].append(1 - one_alpha_optimization_result.error_probability)
 
     def _init_result(self):
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
+
         result: ResultExecution = {
             'alphas': [],
             'batches': [],
@@ -270,9 +287,10 @@ class CSD(ABC):
                                                measuring_type=self._run_configuration['measuring_type']),
             'plot_title': self._set_plot_title(batch_size=self._batch_size,
                                                plays=self._plays,
-                                               modes=self._architecture['number_modes'],
+                                               modes=self._circuit.number_input_modes,
                                                layers=self._architecture['number_layers'],
-                                               squeezing=self._architecture['squeezing']),
+                                               squeezing=self._architecture['squeezing'],
+                                               ancillas=self._circuit.number_ancillas,),
             'total_time': 0.0
         }
 
@@ -281,12 +299,14 @@ class CSD(ABC):
     def _create_engine(self) -> Union[Engine, TFEngine]:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
+        if self._circuit is None:
+            raise ValueError("Circuit must be initialized")
 
         current_cutoff = self._cutoff_dim
-        if self._architecture['number_modes'] < 3:
+        if self._circuit.number_modes < 3:
             current_cutoff = (MAX_CUTOFF_DIM if self._alpha_value > 0.5 or self._alpha_value < 0.25
                               else self._cutoff_dim)
-        if self._architecture['number_modes'] >= 3 and self._alpha_value > 0.9:
+        if self._circuit.number_modes >= 3 and self._alpha_value > 0.9:
             current_cutoff = MAX_CUTOFF_DIM
 
         if self._backend_is_tf():
@@ -336,13 +356,15 @@ class CSD(ABC):
                         plays: int,
                         modes: int,
                         layers: int,
-                        squeezing: bool) -> str:
+                        squeezing: bool,
+                        ancillas: int) -> str:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
         return (f"backend:{self._run_configuration['run_backend'].value}, "
                 f"measuring:{self._run_configuration['measuring_type'].value}, \n"
-                f"batch size:{batch_size}, plays:{plays}, modes:{modes}, layers,{layers}, squeezing:{squeezing}")
+                f"batch size:{batch_size}, plays:{plays}, modes:{modes}, ancillas:{ancillas},"
+                f"layers,{layers}, squeezing:{squeezing}")
 
     @timing
     def execute_all_backends_and_measuring_types(

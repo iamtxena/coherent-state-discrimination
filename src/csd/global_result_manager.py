@@ -41,7 +41,8 @@ class GlobalResultManager(ABC):
                                              success_probability=0.0,
                                              number_modes=1,
                                              time_in_seconds=1,
-                                             squeezing=False).header())
+                                             squeezing=False,
+                                             number_ancillas=0).header())
         return results_file
 
     def write_result(self, global_result: GlobalResult) -> None:
@@ -67,7 +68,8 @@ class GlobalResultManager(ABC):
                                          success_probability=0.0,
                                          number_modes=1,
                                          time_in_seconds=1,
-                                         squeezing=False).header())
+                                         squeezing=False,
+                                         number_ancillas=0).header())
         return global_results_file
 
     def _transfer_alpha_results_to_global_file(self, global_results_file: str, alpha_file: str) -> None:
@@ -79,7 +81,8 @@ class GlobalResultManager(ABC):
                                           success_probability=float(row[1]),
                                           number_modes=int(row[2]),
                                           time_in_seconds=float(row[3]),
-                                          squeezing=bool(row[6])) for row in reader]
+                                          squeezing=bool(row[6]),
+                                          number_ancillas=int(row[7])) for row in reader]
 
             with open(global_results_file, 'a+', newline='') as write_obj:
                 writer = csv.writer(write_obj)
@@ -97,7 +100,8 @@ class GlobalResultManager(ABC):
                                                  success_probability=float(row[1]),
                                                  number_modes=int(row[2]),
                                                  time_in_seconds=float(row[3]),
-                                                 squeezing=bool(row[6])) for row in reader]
+                                                 squeezing=bool(row[6]),
+                                                 number_ancillas=int(row[7])) for row in reader]
         self._create_unique_alphas()
         self._create_unique_modes()
         self._select_global_results()

@@ -19,9 +19,10 @@ class MultiProcessConfiguration(NamedTuple):
     shots: List[int]
     plays: List[int]
     cutoff_dim: List[int]
-    number_modes: List[int]
+    number_input_modes: List[int]
     number_layers: List[int]
     squeezing: List[bool]
+    number_ancillas: List[int]
 
 
 class LaunchExecutionConfiguration(NamedTuple):
@@ -33,9 +34,10 @@ class LaunchExecutionConfiguration(NamedTuple):
     shots: int
     plays: int
     cutoff_dim: int
-    number_modes: int
+    number_input_modes: int
     number_layers: int
     squeezing: bool
+    number_ancillas: int
     alpha: float
 
 
@@ -71,14 +73,13 @@ def _set_plot_title(plot_title_backend: Backends,
                     plays: int,
                     modes: int,
                     layers: int,
-                    squeezing: bool) -> str:
-
-    trained_steps = (f', steps: {steps}, l_rate:{learning_rate}, cutoff:{cutoff_dim}'
-                     if plot_title_backend == Backends.TENSORFLOW else "")
+                    squeezing: bool,
+                    ancillas: int) -> str:
 
     return (f"backend:{plot_title_backend.value}, "
-            f"measuring:{measuring_type.value}{trained_steps}\n"
-            f"batch size:{batch_size}, plays:{plays}, modes:{modes}, layers,{layers}, squeezing:{squeezing}")
+            f"measuring:{measuring_type.value}, \n"
+            f"batch size:{batch_size}, plays:{plays}, modes:{modes}, ancillas:{ancillas},"
+            f"layers,{layers}, squeezing:{squeezing}")
 
 
 @timing
@@ -92,7 +93,8 @@ def launch_execution(configuration: LaunchExecutionConfiguration) -> ResultExecu
         'plays': configuration.plays,
         'cutoff_dim': configuration.cutoff_dim,
         'architecture': {
-            'number_modes': configuration.number_modes,
+            'number_modes': configuration.number_input_modes,
+            'number_ancillas': configuration.number_ancillas,
             'number_layers': configuration.number_layers,
             'squeezing': configuration.squeezing,
         },
@@ -116,10 +118,11 @@ def uncurry_launch_execution(t) -> ResultExecution:
         shots=t[5],
         plays=t[6],
         cutoff_dim=t[7],
-        number_modes=t[8],
+        number_input_modes=t[8],
         number_layers=t[9],
         squeezing=t[10],
-        alpha=t[11],
+        number_ancillas=t[11],
+        alpha=t[12],
     )
     return launch_execution(configuration=one_execution_configuration)
 
@@ -164,15 +167,16 @@ def create_full_execution_result(full_backend: Backends,
                                       measuring_type=measuring_type,
                                       batch_size=multiprocess_configuration.batch_size[0],
                                       plays=multiprocess_configuration.plays[0],
-                                      modes=multiprocess_configuration.number_modes[0],
+                                      modes=multiprocess_configuration.number_input_modes[0],
                                       layers=multiprocess_configuration.number_layers[0],
-                                      squeezing=multiprocess_configuration.squeezing[0]),
+                                      squeezing=multiprocess_configuration.squeezing[0],
+                                      ancillas=multiprocess_configuration.number_ancillas[0]),
         'total_time': 0.0
     })
 
 
-def plot_results(alphas: List[float], execution_result: ResultExecution) -> None:
-    plot = Plot(alphas=alphas, number_modes=number_modes)
+def plot_results(alphas: List[float], execution_result: ResultExecution, number_input_modes: int) -> None:
+    plot = Plot(alphas=alphas, number_modes=number_input_modes)
     plot.plot_success_probabilities(executions=[execution_result], save_plot=True)
 
 
@@ -197,7 +201,8 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
 
     _update_result_with_total_time(result=result, start_time=start_time)
     plot_results(alphas=multiprocess_configuration.alphas,
-                 execution_result=result)
+                 execution_result=result,
+                 number_input_modes=multiprocess_configuration.number_input_modes[0])
 
 
 def _update_result_with_total_time(result: ResultExecution, start_time: float) -> None:
@@ -216,9 +221,10 @@ def _build_iterator(multiprocess_configuration: MultiProcessConfiguration,
                multiprocess_configuration.shots,
                multiprocess_configuration.plays,
                multiprocess_configuration.cutoff_dim,
-               multiprocess_configuration.number_modes,
+               multiprocess_configuration.number_input_modes,
                multiprocess_configuration.number_layers,
                multiprocess_configuration.squeezing,
+               multiprocess_configuration.number_ancillas,
                multiprocess_configuration.alphas)
 
 
@@ -256,8 +262,9 @@ if __name__ == '__main__':
     shots = 100
     plays = 1
     cutoff_dim = 7
-    number_modes = 3
-    batch_size = 2**number_modes
+    number_input_modes = 3
+    number_ancillas = 0
+    batch_size = 2**number_input_modes
     number_layers = 1
     squeezing = True
 
@@ -273,9 +280,10 @@ if __name__ == '__main__':
         shots=[shots] * number_alphas,
         plays=[plays] * number_alphas,
         cutoff_dim=[cutoff_dim] * number_alphas,
-        number_modes=[number_modes] * number_alphas,
+        number_input_modes=[number_input_modes] * number_alphas,
         number_layers=[number_layers] * number_alphas,
-        squeezing=[squeezing] * number_alphas
+        squeezing=[squeezing] * number_alphas,
+        number_ancillas=[number_ancillas] * number_alphas
     )
 
     multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
