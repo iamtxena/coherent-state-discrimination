@@ -180,6 +180,10 @@ class CSD(ABC):
             self._write_result(alpha=sample_alpha,
                                one_alpha_start_time=one_alpha_start_time,
                                error_probability=one_alpha_optimization_result.error_probability)
+            logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)} '
+                         f'pSucc: {one_alpha_optimization_result.error_probability}\n'
+                         f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._architecture['number_modes']}"
+                         f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         self._update_result_with_total_time(result=result, start_time=start_time)
         self._save_results_to_file(result=result)
@@ -279,7 +283,7 @@ class CSD(ABC):
         if self._architecture['number_modes'] < 3:
             current_cutoff = (MAX_CUTOFF_DIM if self._alpha_value > 0.5 or self._alpha_value < 0.25
                               else self._cutoff_dim)
-        if self._architecture['number_modes'] >= 3:
+        if self._architecture['number_modes'] >= 3 and self._alpha_value > 0.9:
             current_cutoff = MAX_CUTOFF_DIM
 
         if self._backend_is_tf():
