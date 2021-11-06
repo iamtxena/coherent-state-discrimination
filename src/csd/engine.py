@@ -35,7 +35,7 @@ class Engine(ABC):
     def backend_name(self) -> str:
         return self._engine.backend_name
 
-    def _translate_output_codeword_to_input_codeword(
+    def _apply_guess_strategy_move_noise_to_ancillas(
             self,
             max_success_probability_codeword_selected: CodeWordSuccessProbability) -> CodeWordSuccessProbability:
         output_codeword, codeword_to_guess, success_probability = self._prepare_codewords_and_probability(
@@ -43,25 +43,24 @@ class Engine(ABC):
 
         self._error_when_codeword_to_guess_is_larger_than_output_codeword(output_codeword, codeword_to_guess)
 
-        if output_codeword.size == codeword_to_guess.size:
-            return CodeWordSuccessProbability(guessed_codeword=output_codeword,
-                                              output_codeword=output_codeword,
-                                              success_probability=success_probability)
+        return CodeWordSuccessProbability(
+            guessed_codeword=self._create_codeword_from_last_output_modes(output_codeword, codeword_to_guess),
+            output_codeword=output_codeword,
+            success_probability=success_probability)
 
-        if codeword_to_guess.size == 1:
-            all_zeros_output_codeword = CodeWord(word=[output_codeword.alpha] * output_codeword.size)
-            all_alpha_codeword_to_guess = CodeWord(word=[codeword_to_guess.alpha] * codeword_to_guess.size)
-            all_minus_alpha_codeword_to_guess = CodeWord(word=[-codeword_to_guess.alpha] * codeword_to_guess.size)
+    def _create_codeword_from_last_output_modes(self, output_codeword:
+                                                CodeWord, codeword_to_guess: CodeWord) -> CodeWord:
+        """ Create a codeword with the same size as the codeword to guess (input codeword)
+            using the last modes from the output codeword -> meaning, ignoring the ancilla modes.
 
-            if output_codeword == all_zeros_output_codeword:
-                return CodeWordSuccessProbability(guessed_codeword=all_alpha_codeword_to_guess,
-                                                  output_codeword=output_codeword,
-                                                  success_probability=success_probability)
-            return CodeWordSuccessProbability(guessed_codeword=all_minus_alpha_codeword_to_guess,
-                                              output_codeword=output_codeword,
-                                              success_probability=success_probability)
-
-        raise NotImplementedError()
+            Doing that, we have two chances for each ancilla to detect one input codeword
+                (when ancilla mode measurement is 0 or 1).
+            What it means then, is that the optimization is going to move all possible
+                communication "noise" to the ancillas.
+            The more ancillas you add, the better to detect the appropiate input codeword.
+            Beware of the computation time, though.
+        """
+        return CodeWord(word=output_codeword.word[-codeword_to_guess.size:])
 
     def _prepare_codewords_and_probability(self, max_success_probability_codeword_selected: CodeWordSuccessProbability):
         output_codeword = max_success_probability_codeword_selected.output_codeword
@@ -85,7 +84,7 @@ class Engine(ABC):
             if codeword_success_probability.success_probability > max_codeword_success_probability.success_probability:
                 max_codeword_success_probability = codeword_success_probability
 
-        return self._translate_output_codeword_to_input_codeword(max_codeword_success_probability)
+        return self._apply_guess_strategy_move_noise_to_ancillas(max_codeword_success_probability)
 
     def run_circuit_checking_measuring_type(
             self,
