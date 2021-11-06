@@ -3,8 +3,15 @@ from time import time
 from typing import Iterator, List, NamedTuple
 from csd import CSD
 from csd.plot import Plot
-from csd.typings.typing import (MeasuringTypes, CSDConfiguration, Backends,
-                                OneProcessResultExecution, ResultExecution, RunConfiguration)
+from csd.typings.typing import (CutOffDimensions,
+                                LearningRate,
+                                LearningSteps,
+                                MeasuringTypes,
+                                CSDConfiguration,
+                                Backends,
+                                OneProcessResultExecution,
+                                ResultExecution,
+                                RunConfiguration)
 import numpy as np
 from csd.util import timing
 import os
@@ -13,12 +20,12 @@ import os
 
 class MultiProcessConfiguration(NamedTuple):
     alphas: List[float]
-    steps: List[int]
-    learning_rate: List[float]
+    learning_steps: List[LearningSteps]
+    learning_rate: List[LearningRate]
     batch_size: List[int]
     shots: List[int]
     plays: List[int]
-    cutoff_dim: List[int]
+    cutoff_dim: List[CutOffDimensions]
     number_input_modes: List[int]
     number_layers: List[int]
     squeezing: List[bool]
@@ -28,12 +35,12 @@ class MultiProcessConfiguration(NamedTuple):
 class LaunchExecutionConfiguration(NamedTuple):
     launch_backend: Backends
     measuring_type: MeasuringTypes
-    steps: int
-    learning_rate: float
+    learning_steps: LearningSteps
+    learning_rate: LearningRate
     batch_size: int
     shots: int
     plays: int
-    cutoff_dim: int
+    cutoff_dim: CutOffDimensions
     number_input_modes: int
     number_layers: int
     squeezing: bool
@@ -74,11 +81,15 @@ def _set_plot_title(plot_title_backend: Backends,
                     modes: int,
                     layers: int,
                     squeezing: bool,
-                    ancillas: int) -> str:
+                    ancillas: int,
+                    learning_rate: LearningRate,
+                    learning_steps: LearningSteps,
+                    cutoff_dim: CutOffDimensions) -> str:
 
     return (f"backend:{plot_title_backend.value}, "
             f"measuring:{measuring_type.value}, \n"
-            f"batch size:{batch_size}, plays:{plays}, modes:{modes}, ancillas:{ancillas},"
+            f"batch size:{batch_size}, plays:{plays}, modes:{modes}, ancillas:{ancillas}, \n"
+            f"steps: {learning_steps}, l_rate: {learning_rate}, cutoff_dim: {cutoff_dim}, \n"
             f"layers,{layers}, squeezing:{squeezing}")
 
 
@@ -86,7 +97,7 @@ def _set_plot_title(plot_title_backend: Backends,
 def launch_execution(configuration: LaunchExecutionConfiguration) -> ResultExecution:
     csd = CSD(csd_config=CSDConfiguration({
         'alphas': [configuration.alpha],
-        'steps': configuration.steps,
+        'learning_steps': configuration.learning_steps,
         'learning_rate': configuration.learning_rate,
         'batch_size': configuration.batch_size,
         'shots': configuration.shots,
@@ -112,7 +123,7 @@ def uncurry_launch_execution(t) -> ResultExecution:
     one_execution_configuration = LaunchExecutionConfiguration(
         launch_backend=t[0],
         measuring_type=t[1],
-        steps=t[2],
+        learning_steps=t[2],
         learning_rate=t[3],
         batch_size=t[4],
         shots=t[5],
@@ -170,7 +181,10 @@ def create_full_execution_result(full_backend: Backends,
                                       modes=multiprocess_configuration.number_input_modes[0],
                                       layers=multiprocess_configuration.number_layers[0],
                                       squeezing=multiprocess_configuration.squeezing[0],
-                                      ancillas=multiprocess_configuration.number_ancillas[0]),
+                                      ancillas=multiprocess_configuration.number_ancillas[0],
+                                      learning_rate=multiprocess_configuration.learning_rate[0],
+                                      learning_steps=multiprocess_configuration.learning_steps[0],
+                                      cutoff_dim=multiprocess_configuration.cutoff_dim[0]),
         'total_time': 0.0
     })
 
@@ -215,7 +229,7 @@ def _build_iterator(multiprocess_configuration: MultiProcessConfiguration,
                     measuring_type: MeasuringTypes) -> Iterator:
     return zip([backend] * number_alphas,
                [measuring_type] * number_alphas,
-               multiprocess_configuration.steps,
+               multiprocess_configuration.learning_steps,
                multiprocess_configuration.learning_rate,
                multiprocess_configuration.batch_size,
                multiprocess_configuration.shots,
@@ -257,11 +271,11 @@ if __name__ == '__main__':
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     # alphas = [0.10]
 
-    steps = 300
-    learning_rate = 0.01
+    learning_steps = LearningSteps(default=300, high=500, extreme=2000)
+    learning_rate = LearningRate(default=0.01, high=0.001, extreme=0.0001)
     shots = 100
     plays = 1
-    cutoff_dim = 7
+    cutoff_dim = CutOffDimensions(default=7, high=14, extreme=30)
     number_input_modes = 3
     number_ancillas = 0
     batch_size = 2**number_input_modes
@@ -274,7 +288,7 @@ if __name__ == '__main__':
 
     multiprocess_configuration = MultiProcessConfiguration(
         alphas=alphas,
-        steps=[steps] * number_alphas,
+        learning_steps=[learning_steps] * number_alphas,
         learning_rate=[learning_rate] * number_alphas,
         batch_size=[batch_size] * number_alphas,
         shots=[shots] * number_alphas,

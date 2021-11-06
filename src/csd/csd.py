@@ -5,7 +5,7 @@ from csd.global_result_manager import GlobalResultManager
 from csd.tf_engine import TFEngine
 from csd.typings.global_result import GlobalResult
 from csd.typings.typing import (Backends,
-                                CSDConfiguration, OptimizationResult,
+                                CSDConfiguration, CutOffDimensions, LearningRate, LearningSteps, OptimizationResult,
                                 RunConfiguration,
                                 MeasuringTypes,
                                 ResultExecution,
@@ -22,19 +22,17 @@ from csd.util import timing, save_object_to_disk
 from csd.batch import Batch
 from .cost_function import CostFunction
 
-MAX_CUTOFF_DIM = 20
-
 
 class CSD(ABC):
 
     DEFAULT_NUM_SHOTS = 1000
-    DEFAULT_CUTOFF_DIMENSION = 10
+    DEFAULT_CUTOFF_DIMENSION = CutOffDimensions(default=7, high=14, extreme=30)
     DEFAULT_ALPHA = 0.7
     DEFAULT_BATCH_SIZE = 1
     DEFAULT_WORD_SIZE = 10
-    DEFAULT_STEPS = 500
-    DEFAULT_LEARNING_RATE: float = 0.1
-    DEFAULT_PLAYS = 100
+    DEFAULT_LEARNING_STEPS = LearningSteps(default=300, high=500, extreme=2000)
+    DEFAULT_LEARNING_RATE = LearningRate(default=0.01, high=0.001, extreme=0.001)
+    DEFAULT_PLAYS = 1
 
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
         self._set_default_values()
@@ -49,7 +47,7 @@ class CSD(ABC):
 
     def _set_values_from_config(self, csd_config):
         self._alphas = csd_config.get('alphas', [self.DEFAULT_ALPHA])
-        self._steps = csd_config.get('steps', self.DEFAULT_STEPS)
+        self._learning_steps = csd_config.get('steps', self.DEFAULT_LEARNING_STEPS)
         self._learning_rate = csd_config.get('learning_rate', self.DEFAULT_LEARNING_RATE)
         self._batch_size = csd_config.get('batch_size', self.DEFAULT_BATCH_SIZE)
         self._shots = csd_config.get('shots', self.DEFAULT_NUM_SHOTS)
@@ -62,7 +60,7 @@ class CSD(ABC):
 
     def _set_default_values(self):
         self._alphas: List[float] = []
-        self._steps = self.DEFAULT_STEPS
+        self._learning_steps = self.DEFAULT_LEARNING_STEPS
         self._learning_rate = self.DEFAULT_LEARNING_RATE
         self._batch_size = self.DEFAULT_BATCH_SIZE
         self._shots = self.DEFAULT_NUM_SHOTS
@@ -166,7 +164,8 @@ class CSD(ABC):
                      " with measuring_type: "
                      f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value} \n"
                      f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
-                     f" ancillas: {self._circuit.number_ancillas} "
+                     f" ancillas: {self._circuit.number_ancillas} \n"
+                     f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         return self._single_process_optimization(optimization=optimization,
@@ -193,7 +192,8 @@ class CSD(ABC):
             logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)} '
                          f'pSucc: {one_alpha_optimization_result.error_probability}\n'
                          f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
-                         f" ancillas: {self._circuit.number_ancillas}"
+                         f" ancillas: {self._circuit.number_ancillas} \n steps: {self._learning_steps}, "
+                         f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
                          f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         self._update_result_with_total_time(result=result, start_time=start_time)
@@ -227,7 +227,7 @@ class CSD(ABC):
         return Optimize(opt_backend=self._run_configuration['run_backend'],
                         nparams=self._circuit.free_parameters,
                         parallel_optimization=self._parallel_optimization,
-                        learning_steps=self._steps,
+                        learning_steps=self._learning_steps,
                         learning_rate=self._learning_rate,
                         modes=self._circuit.number_input_modes,
                         params_name=[*self._circuit.parameters])
@@ -257,7 +257,8 @@ class CSD(ABC):
 
         logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)} \n'
                      f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
-                     f" ancillas: {self._circuit.number_ancillas}"
+                     f" ancillas: {self._circuit.number_ancillas} \n "
+                     f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         return optimization.optimize(cost_function=self._cost_function, current_alpha=self._alpha_value)
@@ -303,12 +304,10 @@ class CSD(ABC):
         if self._circuit is None:
             raise ValueError("Circuit must be initialized")
 
-        current_cutoff = self._cutoff_dim
-        if self._circuit.number_modes < 3:
-            current_cutoff = (MAX_CUTOFF_DIM if self._alpha_value > 0.5 or self._alpha_value < 0.25
-                              else self._cutoff_dim)
+        current_cutoff = self._cutoff_dim.default
+
         if self._circuit.number_modes >= 3 and self._alpha_value > 0.9:
-            current_cutoff = MAX_CUTOFF_DIM
+            current_cutoff = self._cutoff_dim.high
 
         if self._backend_is_tf():
             return TFEngine(engine_backend=Backends.TENSORFLOW, options={
@@ -321,11 +320,6 @@ class CSD(ABC):
 
     def _backend_is_tf(self):
         return self._run_configuration['run_backend'] == Backends.TENSORFLOW
-
-    def _set_learning_steps(self) -> int:
-        if self._backend_is_tf():
-            return self._steps
-        return 1
 
     def _set_plot_label(self, plot_label_backend: Backends, measuring_type: MeasuringTypes) -> str:
         """Set the label for the success probability plot
@@ -364,7 +358,8 @@ class CSD(ABC):
 
         return (f"backend:{self._run_configuration['run_backend'].value}, "
                 f"measuring:{self._run_configuration['measuring_type'].value}, \n"
-                f"batch size:{batch_size}, plays:{plays}, modes:{modes}, ancillas:{ancillas},"
+                f"batch size:{batch_size}, plays:{plays}, modes:{modes}, ancillas:{ancillas}, \n"
+                f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}, \n"
                 f"layers,{layers}, squeezing:{squeezing}")
 
     @timing

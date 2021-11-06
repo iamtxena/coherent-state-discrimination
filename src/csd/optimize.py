@@ -1,7 +1,7 @@
 from abc import ABC
 from typing import Callable, List, Union, Optional
 from csd.optimizers.parallel_tf import ParallelTFOptimizer
-from csd.typings.typing import Backends, OptimizationResult
+from csd.typings.typing import Backends, LearningRate, LearningSteps, OptimizationResult
 from .optimizers.tf import TFOptimizer
 from .optimizers.scipy import ScipyOptimizer
 from .optimizers.parallel_scipy import ParallelOptimizer
@@ -13,8 +13,8 @@ class Optimize(ABC):
                  opt_backend: Optional[Backends] = Backends.FOCK,
                  nparams: int = 1,
                  parallel_optimization: bool = False,
-                 learning_steps: int = 300,
-                 learning_rate: float = 0.1,
+                 learning_steps: LearningSteps = LearningSteps(default=300, high=500, extreme=2000),
+                 learning_rate: LearningRate = LearningRate(default=0.01, high=0.001, extreme=0.001),
                  modes: int = 1,
                  params_name: List[str] = []):
 

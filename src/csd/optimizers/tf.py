@@ -8,8 +8,10 @@ from datetime import datetime
 
 from tensorflow.python.framework.ops import EagerTensor
 from tensorflow.python.ops.variables import Variable
+from tensorflow.keras import optimizers as tfOptimizers
+from tensorflow.keras import metrics as tfMetrics
 
-from csd.typings.typing import OptimizationResult
+from csd.typings.typing import LearningRate, LearningSteps, OptimizationResult
 from csd.util import set_friendly_time
 from csd.config import logger
 
@@ -18,8 +20,8 @@ class TFOptimizer(ABC):
 
     def __init__(self,
                  nparams: int = 1,
-                 learning_steps: int = 300,
-                 learning_rate: float = 0.1,
+                 learning_steps: LearningSteps = LearningSteps(default=300, high=500, extreme=2000),
+                 learning_rate: LearningRate = LearningRate(default=0.01, high=0.001, extreme=0.001),
                  modes: int = 1,
                  params_name: List[str] = []):
         os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
@@ -38,19 +40,19 @@ class TFOptimizer(ABC):
 
         self._current_alpha = current_alpha if current_alpha is not None else 0.0
 
-        self._opt = tf.keras.optimizers.Adam(learning_rate=self._learning_rate)
+        self._opt = tfOptimizers.Adam(learning_rate=self._learning_rate.default)
         init_time = time.time()
         loss = tf.Variable(0.0)
         parameters = [tf.Variable(0.1) for _ in range(self._number_parameters)]
 
         self._prepare_tf_board(self._current_alpha)
-        self._set_learning_values_by_alpha(self._current_alpha)
+        current_learning_steps = self._set_learning_values_by_alpha(self._current_alpha)
 
-        for step in range(self._learning_steps):
+        for step in range(current_learning_steps):
             loss, parameters = self._tf_optimize(cost_function=cost_function,
                                                  parameters=parameters)
 
-            reset = self._print_time_when_necessary(learning_steps=self._learning_steps,
+            reset = self._print_time_when_necessary(learning_steps=current_learning_steps,
                                                     init_time=init_time,
                                                     step=step,
                                                     optimized_parameters=parameters)
@@ -71,13 +73,14 @@ class TFOptimizer(ABC):
         for train_param in self._train_params:
             train_param.reset_states()
 
-    def _set_learning_values_by_alpha(self, alpha: float):
+    def _set_learning_values_by_alpha(self, alpha: float) -> int:
         if alpha < 0.25 or alpha > 1.25:
-            self._learning_steps = 500
+            current_learning_steps = self._learning_steps.high
 
-        if alpha <= 0.1:
-            self._opt = tf.keras.optimizers.Adam(learning_rate=0.001)
-            self._learning_steps = 5000
+        if alpha <= 0.1 and self._number_modes >= 3:
+            self._opt = tfOptimizers.Adam(learning_rate=self._learning_rate.high)
+            current_learning_steps = self._learning_steps.extreme
+        return current_learning_steps
 
     def _prepare_tf_board(self, current_alpha: float) -> None:
         current_time = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -86,9 +89,9 @@ class TFOptimizer(ABC):
         self._train_summary_writer = tf.summary.create_file_writer(train_log_dir)
 
         # Define our metrics
-        self._train_loss = tf.keras.metrics.Mean('train_loss')
-        self._train_params = [tf.keras.metrics.Mean(f'train_param_{param_name}',
-                                                    dtype=tf.float32)
+        self._train_loss = tfMetrics.Mean('train_loss')
+        self._train_params = [tfMetrics.Mean(f'train_param_{param_name}',
+                                             dtype=tf.float32)
                               for param_name in self._params_name]
 
     def _tf_optimize(self,

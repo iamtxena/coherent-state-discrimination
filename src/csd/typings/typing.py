@@ -11,6 +11,42 @@ from csd.batch import Batch
 from csd.codeword import CodeWord
 
 
+class LearningSteps(NamedTuple):
+    default: int
+    high: int
+    extreme: int
+
+    def __str__(self) -> str:
+        return f'[{self.default},{self.high},{self.extreme}]'
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
+class LearningRate(NamedTuple):
+    default: float
+    high: float
+    extreme: float
+
+    def __str__(self) -> str:
+        return f'[{self.default},{self.high},{self.extreme}]'
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
+class CutOffDimensions(NamedTuple):
+    default: int
+    high: int
+    extreme: int
+
+    def __str__(self) -> str:
+        return f'[{self.default},{self.high},{self.extreme}]'
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
 class BackendOptions(TypedDict, total=False):
     cutoff_dim: int
     batch_size: Union[int, None]
@@ -25,12 +61,12 @@ class Architecture(TypedDict, total=False):
 
 class CSDConfiguration(TypedDict, total=False):
     alphas: List[float]
-    steps: int
-    learning_rate: float
+    learning_steps: LearningSteps
+    learning_rate: LearningRate
     batch_size: int
     shots: int
     plays: int
-    cutoff_dim: int
+    cutoff_dim: CutOffDimensions
     save_results: bool
     save_plots: bool
     architecture: Architecture
