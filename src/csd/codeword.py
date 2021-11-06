@@ -17,12 +17,32 @@ class CodeWord():
     """Class for keeping track of an input word for an experiment."""
 
     def __init__(self,
-                 size: int,
+                 size: Optional[int] = 0,
                  alpha_value: Optional[float] = DEFAULT_ALPHA_VALUE,
                  word: Optional[List[float]] = None):
-        self._alpha_value = alpha_value if alpha_value is not None else DEFAULT_ALPHA_VALUE
-        self._word = self._create_random_word(word_size=size,
+        self._create_alpha_value_from_input_parameters(alpha_value, word)
+        self._create_size_from_input_parameters(size, word)
+
+        self._word = self._create_random_word(word_size=self._size,
                                               alpha_value=self._alpha_value) if word is None else word
+
+    def _create_size_from_input_parameters(self, size, word):
+        if size is not None:
+            self._size = size
+        if size is None and word is not None:
+            self._size = len(word)
+        if size is None and word is None:
+            raise ValueError('size and word not defined! One of them MUST be defined.')
+
+    def _create_alpha_value_from_input_parameters(self,
+                                                  alpha_value: Optional[float] = DEFAULT_ALPHA_VALUE,
+                                                  word: Optional[List[float]] = None) -> None:
+        if alpha_value is not None:
+            self._alpha_value = alpha_value
+        if alpha_value is None and word is not None:
+            self._alpha_value = np.abs(word[0])
+        if alpha_value is None and word is None:
+            self._alpha_value = DEFAULT_ALPHA_VALUE
 
     def _create_word(self, samples: List[float], word_size=10) -> List[float]:
         return [random.choice(samples) for _ in range(word_size)]
@@ -52,7 +72,7 @@ class CodeWord():
 
     @property
     def size(self) -> int:
-        return len(self._word)
+        return self._size
 
     @property
     def number_alphas(self) -> int:

@@ -53,7 +53,8 @@ class CostFunction(ABC):
 
         success_probability_from_guesses = [
             codeword_success_prob.success_probability
-            if batch_codeword == codeword_success_prob.codeword else 1 - codeword_success_prob.success_probability
+            if batch_codeword == codeword_success_prob.guessed_codeword
+            else 1 - codeword_success_prob.success_probability
             for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
         return sum(success_probability_from_guesses) / self._input_batch.size
 

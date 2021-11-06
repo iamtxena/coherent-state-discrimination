@@ -97,12 +97,14 @@ class TFEngineRunOptions(TypedDict):
 
 @dataclass
 class CodeWordSuccessProbability():
-    codeword: CodeWord
+    guessed_codeword: CodeWord
+    output_codeword: CodeWord
     success_probability: Union[float, EagerTensor]
 
     def __str__(self) -> str:
         return json.dumps({
-            "codeword": self.codeword.word,
+            "input_codeword": self.guessed_codeword.word if self.guessed_codeword is not None else None,
+            "output_codeword": self.output_codeword.word,
             "psucc": (self.success_probability
                       if isinstance(self.success_probability, float)
                       else list(self.success_probability.numpy()))

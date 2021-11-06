@@ -35,6 +35,47 @@ class Engine(ABC):
     def backend_name(self) -> str:
         return self._engine.backend_name
 
+    def _translate_output_codeword_to_input_codeword(
+            self,
+            max_success_probability_codeword_selected: CodeWordSuccessProbability) -> CodeWordSuccessProbability:
+        output_codeword, codeword_to_guess, success_probability = self._prepare_codewords_and_probability(
+            max_success_probability_codeword_selected)
+
+        self._error_when_codeword_to_guess_is_larger_than_output_codeword(output_codeword, codeword_to_guess)
+
+        if output_codeword.size == codeword_to_guess.size:
+            return CodeWordSuccessProbability(guessed_codeword=output_codeword,
+                                              output_codeword=output_codeword,
+                                              success_probability=success_probability)
+
+        if codeword_to_guess.size == 1:
+            all_zeros_output_codeword = CodeWord(word=[output_codeword.alpha] * output_codeword.size)
+            all_alpha_codeword_to_guess = CodeWord(word=[codeword_to_guess.alpha] * codeword_to_guess.size)
+            all_minus_alpha_codeword_to_guess = CodeWord(word=[-codeword_to_guess.alpha] * codeword_to_guess.size)
+
+            if output_codeword == all_zeros_output_codeword:
+                return CodeWordSuccessProbability(guessed_codeword=all_alpha_codeword_to_guess,
+                                                  output_codeword=output_codeword,
+                                                  success_probability=success_probability)
+            return CodeWordSuccessProbability(guessed_codeword=all_minus_alpha_codeword_to_guess,
+                                              output_codeword=output_codeword,
+                                              success_probability=success_probability)
+
+        raise NotImplementedError()
+
+    def _prepare_codewords_and_probability(self, max_success_probability_codeword_selected: CodeWordSuccessProbability):
+        output_codeword = max_success_probability_codeword_selected.output_codeword
+        codeword_to_guess = max_success_probability_codeword_selected.guessed_codeword
+        success_probability = max_success_probability_codeword_selected.success_probability
+        return output_codeword, codeword_to_guess, success_probability
+
+    def _error_when_codeword_to_guess_is_larger_than_output_codeword(self,
+                                                                     output_codeword: CodeWord,
+                                                                     codeword_to_guess: CodeWord):
+        if output_codeword.size < codeword_to_guess.size:
+            raise ValueError(f"Output codeword size: {output_codeword.size} MUST NOT be"
+                             f"larger than codeword to guess size: {codeword_to_guess.size}")
+
     def _max_probability_codeword(
             self,
             codewords_sucess_probabilities: List[CodeWordSuccessProbability]) -> CodeWordSuccessProbability:
@@ -44,7 +85,7 @@ class Engine(ABC):
             if codeword_success_probability.success_probability > max_codeword_success_probability.success_probability:
                 max_codeword_success_probability = codeword_success_probability
 
-        return max_codeword_success_probability
+        return self._translate_output_codeword_to_input_codeword(max_codeword_success_probability)
 
     def run_circuit_checking_measuring_type(
             self,
@@ -70,9 +111,15 @@ class Engine(ABC):
         options['shots'] = 1
         zero_prob = sum([1 for read_value in [self._run_circuit(circuit=circuit, options=options).samples[0][0]
                                               for _ in range(shots)] if read_value == 0]) / shots
-        codewords = generate_all_codewords_from_codeword(codeword=options['output_codeword'])
-        return [CodeWordSuccessProbability(codeword=codewords[0], success_probability=zero_prob),
-                CodeWordSuccessProbability(codeword=codewords[1], success_probability=1 - zero_prob)]
+        output_codewords = generate_all_codewords_from_codeword(codeword=options['output_codeword'])
+        return [CodeWordSuccessProbability(guessed_codeword=CodeWord(size=options['input_codeword'].size,
+                                                                     alpha_value=options['input_codeword'].alpha),
+                                           output_codeword=output_codewords[0],
+                                           success_probability=zero_prob),
+                CodeWordSuccessProbability(guessed_codeword=CodeWord(size=options['input_codeword'].size,
+                                                                     alpha_value=options['input_codeword'].alpha),
+                                           output_codeword=output_codewords[1],
+                                           success_probability=1 - zero_prob)]
 
     def _run_circuit_probabilities(self,
                                    circuit: Circuit,
@@ -82,28 +129,34 @@ class Engine(ABC):
         options['shots'] = 0
         result = self._run_circuit(circuit=circuit, options=options)
         return self._compute_fock_probabilities_for_all_codewords(state=result.state,
-                                                                  codeword=options['output_codeword'],
+                                                                  input_codeword=options['input_codeword'],
+                                                                  output_codeword=options['output_codeword'],
                                                                   cutoff_dim=self._cutoff_dim)
 
-    def _get_fock_prob_indices_from_modes(self, codeword: CodeWord, cutoff_dimension: int) -> List[CodeWordIndices]:
-        if codeword.size > cutoff_dimension:
+    def _get_fock_prob_indices_from_modes(self,
+                                          output_codeword: CodeWord,
+                                          cutoff_dimension: int) -> List[CodeWordIndices]:
+        if output_codeword.size > cutoff_dimension:
             raise ValueError("cutoff dimension MUST be equal or greater than modes")
-        codewords = generate_all_codewords_from_codeword(codeword)
+        output_codewords = generate_all_codewords_from_codeword(output_codeword)
 
-        return [CodeWordIndices(codeword=codeword,
+        return [CodeWordIndices(codeword=output_codeword,
                                 indices=self._convert_word_to_fock_prob_indices(
-                                    codeword=codeword,
+                                    codeword=output_codeword,
                                     cutoff_dim=cutoff_dimension))
-                for codeword in codewords]
+                for output_codeword in output_codewords]
 
     def _compute_fock_probabilities_for_all_codewords(self,
                                                       state: BaseState,
-                                                      codeword: CodeWord,
+                                                      input_codeword: CodeWord,
+                                                      output_codeword: CodeWord,
                                                       cutoff_dim: int) -> List[CodeWordSuccessProbability]:
         all_codewords_indices = self._get_fock_prob_indices_from_modes(
-            codeword=codeword, cutoff_dimension=cutoff_dim)
+            output_codeword=output_codeword, cutoff_dimension=cutoff_dim)
         return [CodeWordSuccessProbability(
-            codeword=codeword_indices.codeword,
+            guessed_codeword=CodeWord(size=input_codeword.size,
+                                      alpha_value=input_codeword.alpha),
+            output_codeword=codeword_indices.codeword,
             success_probability=self._compute_fock_prob_one_word(
                 state=state,
                 fock_prob_indices_one_word=codeword_indices.indices))
