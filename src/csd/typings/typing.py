@@ -18,6 +18,7 @@ class BackendOptions(TypedDict, total=False):
 
 class Architecture(TypedDict, total=False):
     number_modes: int
+    number_ancillas: int
     number_layers: int
     squeezing: bool
 

@@ -86,6 +86,8 @@ class CSD(ABC):
             return tmp_architecture
         if 'number_modes' in architecture:
             tmp_architecture['number_modes'] = architecture['number_modes']
+        if 'number_ancillas' in architecture:
+            tmp_architecture['number_ancillas'] = architecture['number_ancillas']
         if 'number_layers' in architecture:
             tmp_architecture['number_layers'] = architecture['number_layers']
         if 'squeezing' in architecture:
@@ -96,6 +98,7 @@ class CSD(ABC):
     def _default_architecture(self) -> Architecture:
         return {
             'number_modes': 1,
+            'number_ancillas': 0,
             'number_layers': 1,
             'squeezing': False,
         }

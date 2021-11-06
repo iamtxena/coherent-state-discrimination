@@ -22,17 +22,50 @@ class Circuit(ABC):
         if not architecture or 'number_modes' not in architecture:
             raise ValueError('No architecture or number_modes specified')
 
-        self._prog = sf.Program(architecture['number_modes'])
+        self._number_input_modes = architecture['number_modes']
+        self._number_ancillas = architecture['number_ancillas'] if 'number_ancillas' in architecture else 0
+        self._number_modes = self._number_input_modes + self._number_ancillas
 
-        if architecture['number_modes'] == 1:
+        self._prog = sf.Program(self.number_modes)
+
+        if self.number_modes == 1:
             self._create_circuit_for_one_mode(squeezing=architecture['squeezing'],
-                                              number_modes=architecture['number_modes'],
+                                              number_modes=self.number_modes,
                                               measuring_type=measuring_type)
             return
 
         self._create_multimode_circuit(squeezing=architecture['squeezing'],
-                                       number_modes=architecture['number_modes'],
+                                       number_modes=self.number_modes,
                                        measuring_type=measuring_type)
+
+    @property
+    def circuit(self) -> sf.Program:
+        return self._prog
+
+    @property
+    def free_parameters(self) -> int:
+        """Number of free parameters to optimize
+
+        Returns:
+            int: Number of free parameters to optimize
+        """
+        return self._free_parameters
+
+    @property
+    def parameters(self) -> dict:
+        return self._prog.free_params
+
+    @property
+    def number_modes(self) -> int:
+        return self._number_modes
+
+    @property
+    def number_ancillas(self) -> int:
+        return self._number_ancillas
+
+    @property
+    def number_input_modes(self) -> int:
+        return self._number_input_modes
 
     def _create_multimode_circuit(self, squeezing: bool, number_modes: int, measuring_type: MeasuringTypes) -> None:
         M = number_modes
@@ -129,20 +162,3 @@ class Circuit(ABC):
 
         return (len(theta_1) + len(phi_1) + len(varphi_1) + len(r) +
                 len(phi_r) + len(theta_2) + len(phi_2) + len(varphi_2) + len(a))
-
-    @property
-    def circuit(self) -> sf.Program:
-        return self._prog
-
-    @property
-    def free_parameters(self) -> int:
-        """Number of free parameters to optimize
-
-        Returns:
-            int: Number of free parameters to optimize
-        """
-        return self._free_parameters
-
-    @property
-    def parameters(self) -> dict:
-        return self._prog.free_params
