@@ -212,7 +212,8 @@ class CSD(ABC):
                                                         success_probability=1 - fixed_error_probability,
                                                         number_modes=self._circuit.number_input_modes,
                                                         time_in_seconds=time() - one_alpha_start_time,
-                                                        squeezing=self._architecture['squeezing']))
+                                                        squeezing=self._architecture['squeezing'],
+                                                        number_ancillas=self._circuit.number_ancillas))
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()

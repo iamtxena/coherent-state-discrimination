@@ -81,14 +81,16 @@ class ResultExecution(TypedDict):
 class EngineRunOptions(TypedDict):
     params: Union[List[Union[float, EagerTensor]],
                   NDArray[np.float]]
-    codeword: CodeWord
+    input_codeword: CodeWord
+    output_codeword: CodeWord
     shots: int
     measuring_type: MeasuringTypes
 
 
 class TFEngineRunOptions(TypedDict):
     params: List[EagerTensor]
-    batch: Batch
+    input_batch: Batch
+    output_batch: Batch
     shots: int
     measuring_type: MeasuringTypes
 

@@ -5,6 +5,7 @@ from typing import List, Union
 
 from tensorflow.python.framework.ops import EagerTensor
 from csd.batch import Batch
+from csd.codeword import CodeWord
 from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends, CodeWordSuccessProbability, EngineRunOptions, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
@@ -16,9 +17,11 @@ class CostFunction(ABC):
     """
 
     def __init__(self, batch: Batch, params: List[float], options: CostFunctionOptions) -> None:
-        self._batch = batch
         self._params = params
         self._options = options
+        self._input_batch = batch
+        self._output_batch = Batch(word_size=self._options.circuit.number_modes,
+                                   alpha_value=self._input_batch.alpha)
 
     def _run_and_get_codeword_guesses(self) -> List[CodeWordSuccessProbability]:
         if self._options.backend_name == Backends.TENSORFLOW.value:
@@ -28,7 +31,8 @@ class CostFunction(ABC):
                 circuit=self._options.circuit,
                 options=TFEngineRunOptions(
                     params=self._params,
-                    batch=self._batch,
+                    input_batch=self._input_batch,
+                    output_batch=self._output_batch,
                     shots=self._options.shots,
                     measuring_type=self._options.measuring_type))
             return result
@@ -36,10 +40,12 @@ class CostFunction(ABC):
             circuit=self._options.circuit,
             options=EngineRunOptions(
                 params=self._params,
-                codeword=codeword,
+                input_codeword=codeword,
+                output_codeword=CodeWord(size=self._options.circuit.number_modes,
+                                         alpha_value=codeword.alpha),
                 shots=self._options.shots,
                 measuring_type=self._options.measuring_type))
-                for codeword in self._batch.codewords]
+                for codeword in self._input_batch.codewords]
 
     def _compute_one_play_average_batch_success_probability(
             self,
@@ -48,8 +54,8 @@ class CostFunction(ABC):
         success_probability_from_guesses = [
             codeword_success_prob.success_probability
             if batch_codeword == codeword_success_prob.codeword else 1 - codeword_success_prob.success_probability
-            for batch_codeword, codeword_success_prob in zip(self._batch.codewords, codeword_guesses)]
-        return sum(success_probability_from_guesses) / self._batch.size
+            for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
+        return sum(success_probability_from_guesses) / self._input_batch.size
 
     def run_and_compute_average_batch_error_probability(self) -> Union[float, EagerTensor]:
         return 1 - sum([self._compute_one_play_average_batch_success_probability(

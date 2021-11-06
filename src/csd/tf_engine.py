@@ -37,7 +37,7 @@ class TFEngine(Engine):
         options['shots'] = 0
         result = self._run_tf_circuit(circuit=circuit, options=options)
         return self._compute_tf_fock_probabilities_for_all_codewords(state=result.state,
-                                                                     batch=options['batch'],
+                                                                     output_batch=options['output_batch'],
                                                                      cutoff_dim=self._cutoff_dim)
 
     # def _run_tf_circuit_sampling(self,
@@ -58,10 +58,10 @@ class TFEngine(Engine):
 
     def _compute_tf_fock_probabilities_for_all_codewords(self,
                                                          state: FockStateTF,
-                                                         batch: Batch,
+                                                         output_batch: Batch,
                                                          cutoff_dim: int) -> List[List[CodeWordSuccessProbability]]:
         all_codewords_indices = self._get_fock_prob_indices_from_modes(
-            codeword=batch.one_codeword, cutoff_dimension=cutoff_dim)
+            codeword=output_batch.one_codeword, cutoff_dimension=cutoff_dim)
 
         success_probabilities_batches = [
             BatchSuccessProbability(codeword_indices=codeword_indices,
@@ -71,7 +71,7 @@ class TFEngine(Engine):
             for codeword_indices in all_codewords_indices]
 
         return self._compute_codewords_success_probabilities(
-            batch=batch,
+            batch=output_batch,
             success_probabilities_batches=success_probabilities_batches)
 
     def _compute_codewords_success_probabilities(
@@ -119,7 +119,7 @@ class TFEngine(Engine):
     def _parse_tf_circuit_parameters(self,
                                      circuit: Circuit,
                                      options: TFEngineRunOptions) -> dict:
-        all_values = options['batch'].letters
+        all_values = options['input_batch'].letters
         for param in options['params']:
             all_values.append(param)
 

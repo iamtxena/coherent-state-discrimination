@@ -1,11 +1,13 @@
 from functools import wraps
 from time import time
-from typing import Optional
+from typing import List, Optional
+from csd.codeword import CodeWord
 from csd.config import logger
 import numpy as np
 import pickle
 from datetime import datetime
 import re
+import itertools
 
 SECONDS_PER_MINUTE = 60
 MINUTES_PER_HOUR = 60
@@ -87,3 +89,15 @@ def set_current_time() -> str:
         with the following format 'YYYYMMDD_HHMMSS'
     """
     return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+
+def generate_all_codewords_from_codeword(codeword: CodeWord) -> List[CodeWord]:
+    letters = [codeword.alpha, -codeword.alpha]
+    return [CodeWord(size=len(word), alpha_value=codeword.alpha, word=list(word))
+            for word in itertools.product(letters, repeat=codeword.size)]
+
+
+def generate_all_codewords(word_size: int, alpha_value: float) -> List[CodeWord]:
+    letters = [alpha_value, -alpha_value]
+    return [CodeWord(size=len(word), alpha_value=alpha_value, word=list(word))
+            for word in itertools.product(letters, repeat=word_size)]
