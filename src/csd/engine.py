@@ -10,6 +10,8 @@ from csd.typings.typing import (Backends, BackendOptions, CodeWordIndices,
 from csd.circuit import Circuit
 from typing import List, Optional
 import itertools
+
+from csd.util import generate_all_codewords_from_codeword
 # from csd.config import logger
 
 
@@ -68,7 +70,7 @@ class Engine(ABC):
         options['shots'] = 1
         zero_prob = sum([1 for read_value in [self._run_circuit(circuit=circuit, options=options).samples[0][0]
                                               for _ in range(shots)] if read_value == 0]) / shots
-        codewords = self._generate_all_codewords(codeword=options['codeword'])
+        codewords = generate_all_codewords_from_codeword(codeword=options['output_codeword'])
         return [CodeWordSuccessProbability(codeword=codewords[0], success_probability=zero_prob),
                 CodeWordSuccessProbability(codeword=codewords[1], success_probability=1 - zero_prob)]
 
@@ -80,24 +82,19 @@ class Engine(ABC):
         options['shots'] = 0
         result = self._run_circuit(circuit=circuit, options=options)
         return self._compute_fock_probabilities_for_all_codewords(state=result.state,
-                                                                  codeword=options['codeword'],
+                                                                  codeword=options['output_codeword'],
                                                                   cutoff_dim=self._cutoff_dim)
 
     def _get_fock_prob_indices_from_modes(self, codeword: CodeWord, cutoff_dimension: int) -> List[CodeWordIndices]:
         if codeword.size > cutoff_dimension:
             raise ValueError("cutoff dimension MUST be equal or greater than modes")
-        codewords = self._generate_all_codewords(codeword)
+        codewords = generate_all_codewords_from_codeword(codeword)
 
         return [CodeWordIndices(codeword=codeword,
                                 indices=self._convert_word_to_fock_prob_indices(
                                     codeword=codeword,
                                     cutoff_dim=cutoff_dimension))
                 for codeword in codewords]
-
-    def _generate_all_codewords(self, codeword: CodeWord) -> List[CodeWord]:
-        letters = [codeword.alpha, -codeword.alpha]
-        return [CodeWord(size=len(word), alpha_value=codeword.alpha, word=list(word))
-                for word in itertools.product(letters, repeat=codeword.size)]
 
     def _compute_fock_probabilities_for_all_codewords(self,
                                                       state: BaseState,
@@ -130,7 +127,7 @@ class Engine(ABC):
     def _parse_circuit_parameters(self,
                                   circuit: Circuit,
                                   options: EngineRunOptions) -> dict:
-        all_values = [elem for elem in options['codeword'].to_list()]
+        all_values = [elem for elem in options['input_codeword'].to_list()]
         for param in options['params']:
             all_values.append(param)
 
