@@ -42,7 +42,6 @@ class Engine(ABC):
             max_success_probability_codeword_selected)
 
         self._error_when_codeword_to_guess_is_larger_than_output_codeword(output_codeword, codeword_to_guess)
-
         return CodeWordSuccessProbability(
             guessed_codeword=self._create_codeword_from_last_output_modes(output_codeword, codeword_to_guess),
             output_codeword=output_codeword,

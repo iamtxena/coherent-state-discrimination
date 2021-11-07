@@ -20,7 +20,8 @@ class CostFunction(ABC):
         self._params = params
         self._options = options
         self._input_batch = batch
-        self._output_batch = Batch(word_size=self._options.circuit.number_modes,
+        self._output_batch = Batch(size=self._input_batch.size,
+                                   word_size=self._options.circuit.number_modes,
                                    alpha_value=self._input_batch.alpha)
 
     def _run_and_get_codeword_guesses(self) -> List[CodeWordSuccessProbability]:

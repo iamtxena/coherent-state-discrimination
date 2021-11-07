@@ -31,7 +31,6 @@ class TFOptimizer(ABC):
         self._number_parameters = nparams
         self._number_modes = modes
         if len(params_name) - modes != nparams:
-            logger.error(f'params_names: {params_name}')
             raise ValueError(f"params names length: {params_name.__len__()} does not match nparams: {nparams}")
         self._params_name = params_name[modes:]
 
@@ -74,6 +73,8 @@ class TFOptimizer(ABC):
             train_param.reset_states()
 
     def _set_learning_values_by_alpha(self, alpha: float) -> int:
+        current_learning_steps = self._learning_steps.default
+
         if alpha < 0.25 or alpha > 1.25:
             current_learning_steps = self._learning_steps.high
 

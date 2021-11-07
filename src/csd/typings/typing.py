@@ -143,7 +143,7 @@ class CodeWordSuccessProbability():
             "output_codeword": self.output_codeword.word,
             "psucc": (self.success_probability
                       if isinstance(self.success_probability, float)
-                      else list(self.success_probability.numpy()))
+                      else float(self.success_probability.numpy()))
         })
 
     def __repr__(self) -> str:

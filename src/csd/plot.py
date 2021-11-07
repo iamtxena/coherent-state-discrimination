@@ -264,7 +264,7 @@ class Plot(ABC):
         alpha_time = set_friendly_time(execution['total_time'] /
                                        len(execution['alphas'])) if 'total_time' in execution else ''
         total_time_per_alpha = f"\n Average one alpha computation time: {alpha_time}"
-        plt.title(f"{execution['plot_title']}{total_time}{total_time_per_alpha}")
+        plt.title(f"{execution['plot_title']}{total_time}{total_time_per_alpha}", fontsize=8)
 
     def _plot_probs_and_label_into_axis(self,
                                         axes: plt.Axes,

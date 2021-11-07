@@ -26,7 +26,7 @@ class TFEngine(Engine):
         #     codewords_sucess_probabilities = self._run_circuit_sampling(circuit=circuit, options=options)
         # else:
         batch_sucess_probabilities = self._run_tf_circuit_probabilities(circuit=circuit, options=options)
-        # logger.debug(codewords_sucess_probabilities)
+
         return [self._max_probability_codeword(codewords_sucess_probabilities=codewords_sucess_probabilities)
                 for codewords_sucess_probabilities in batch_sucess_probabilities]
 
