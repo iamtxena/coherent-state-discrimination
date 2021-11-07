@@ -273,14 +273,15 @@ if __name__ == '__main__':
 
     learning_steps = LearningSteps(default=300, high=500, extreme=2000)
     learning_rate = LearningRate(default=0.01, high=0.001, extreme=0.0001)
+    cutoff_dim = CutOffDimensions(default=7, high=14, extreme=30)
+    number_input_modes = 1
+    number_ancillas = 0
+    squeezing = False
+
+    batch_size = 2**number_input_modes
     shots = 100
     plays = 1
-    cutoff_dim = CutOffDimensions(default=7, high=14, extreme=30)
-    number_input_modes = 3
-    number_ancillas = 0
-    batch_size = 2**number_input_modes
     number_layers = 1
-    squeezing = True
 
     number_alphas = len(alphas)
 
