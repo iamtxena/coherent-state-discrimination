@@ -132,3 +132,5 @@ examples/logs
 output.txt
 tf*output.txt
 *bak*
+logs*
+examples/results/globals/alphas*
