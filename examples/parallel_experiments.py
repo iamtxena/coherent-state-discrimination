@@ -1,4 +1,4 @@
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool  # , cpu_count
 from time import time
 from typing import Iterator, List, NamedTuple
 from csd import CSD
@@ -199,7 +199,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(10)
+    pool = Pool()
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -264,19 +264,19 @@ def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> N
 
 
 if __name__ == '__main__':
-    alpha_init = 0.10
-    alpha_end = 1.40
+    alpha_init = 0.1
+    alpha_end = 1.4
     number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
-    # alphas = [0.7]
+    # alphas = [0.3]
 
-    learning_steps = LearningSteps(default=150, high=200, extreme=2000)
-    learning_rate = LearningRate(default=0.1, high=0.01, extreme=0.0001)
+    learning_steps = LearningSteps(default=60, high=60, extreme=1000)
+    learning_rate = LearningRate(default=0.1, high=0.01, extreme=0.001)
     cutoff_dim = CutOffDimensions(default=7, high=15, extreme=30)
     number_input_modes = 1
-    number_ancillas = 0
-    squeezing = False
+    number_ancillas = 1
+    squeezing = True
 
     batch_size = 2**number_input_modes
     shots = 100

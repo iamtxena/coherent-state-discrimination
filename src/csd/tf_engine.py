@@ -23,12 +23,12 @@ class TFEngine(Engine):
             options: TFEngineRunOptions) -> List[CodeWordSuccessProbability]:
 
         # if options['measuring_type'] is MeasuringTypes.SAMPLING:
-        #     codewords_sucess_probabilities = self._run_circuit_sampling(circuit=circuit, options=options)
+        #     codewords_success_probabilities = self._run_circuit_sampling(circuit=circuit, options=options)
         # else:
         batch_sucess_probabilities = self._run_tf_circuit_probabilities(circuit=circuit, options=options)
 
-        return [self._max_probability_codeword(codewords_sucess_probabilities=codewords_sucess_probabilities)
-                for codewords_sucess_probabilities in batch_sucess_probabilities]
+        return [self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
+                for codewords_success_probabilities in batch_sucess_probabilities]
 
     def _run_tf_circuit_probabilities(self,
                                       circuit: Circuit,

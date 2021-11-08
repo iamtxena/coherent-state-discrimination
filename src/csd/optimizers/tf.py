@@ -75,12 +75,12 @@ class TFOptimizer(ABC):
     def _set_learning_values_by_alpha(self, alpha: float) -> int:
         current_learning_steps = self._learning_steps.default
 
-        if alpha < 0.25 or alpha > 1.25:
+        if alpha > 1.2:
             current_learning_steps = self._learning_steps.high
 
         if alpha <= 0.1 and self._number_modes >= 3:
             self._opt = tfOptimizers.Adam(learning_rate=self._learning_rate.high)
-            current_learning_steps = self._learning_steps.extreme
+            current_learning_steps = self._learning_steps.high
         return current_learning_steps
 
     def _prepare_tf_board(self, current_alpha: float) -> None:
