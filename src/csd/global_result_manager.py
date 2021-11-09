@@ -179,14 +179,14 @@ class GlobalResultManager(ABC):
         self._selected_global_results = []
         for alpha in self._alphas:
             for number_mode in self._number_modes:
-                max_duration = 0.0
-                max_result = None
+                min_distance = 1.0
+                min_result = None
                 for result in self._global_results:
                     if (result.alpha == alpha and
                         result.number_modes == number_mode and
-                            result.time_in_seconds > max_duration):
-                        max_result = result
-                if max_result is None:
+                            result.distance_to_homodyne_probability < min_distance):
+                        min_result = result
+                if min_result is None:
                     raise ValueError(
-                        f"Max result not found for this alpha: {alpha} and mode: {number_mode}")
-                self._selected_global_results.append(max_result)
+                        f"Result not found for this alpha: {alpha} and mode: {number_mode}")
+                self._selected_global_results.append(min_result)
