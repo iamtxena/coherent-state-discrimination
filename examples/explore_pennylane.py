@@ -3,8 +3,8 @@ import numpy as np
 import tensorflow as tf
 
 
-N_ITER = 10
-N_EPOCHS = 50
+N_ITER = 5
+N_EPOCHS = 5
 BATCH_SIZE = 1_000
 
 tf.keras.backend.set_floatx('float64')
@@ -65,7 +65,11 @@ def generate_training_data(n_datapoints):
         t_data = np.random.choice([0, 1], size=n_modes)
         index = int("".join(map(str, t_data)), base=2)
         onehot = np.zeros(2 ** n_modes)
-        onehot[index] = 1
+        # Target here is to learn the displacement such that
+        # onehot[index] = 1
+
+        # Displacement should be such that the codeword {+a, +a} should be predicted for all inputs.
+        onehot[2 ** n_modes - 1] = 1
 
         x_data.append(t_data * 2 - 1)
         y_data.append(onehot)
@@ -79,7 +83,7 @@ if __name__ == "__main__":
 
     model = tf.keras.models.Sequential([q_layer, c_layer_out])
 
-    opt = tf.keras.optimizers.Adam(learning_rate=0.2)
+    opt = tf.keras.optimizers.Adam(learning_rate=0.1)
     model.compile(opt, loss="mae", metrics=["accuracy"])
 
     for iteration in range(N_ITER):
