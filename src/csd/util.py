@@ -111,3 +111,13 @@ def estimate_remaining_time(total_iterations: int, current_iteration: int, init_
     current_computation_time = now - init_time
     return ('Estimated remaining time: ' +
             f'{set_friendly_time(time_interval=total_iterations * current_computation_time / current_iteration)}')
+
+
+def strtobool(val: str) -> bool:
+    val = val.lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return True
+    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return False
+    else:
+        raise ValueError("invalid truth value %r" % (val,))

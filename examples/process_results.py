@@ -33,12 +33,12 @@ def plot_modes_probs(one_alpha: Optional[Union[float, None]] = None) -> None:
 
 
 if __name__ == '__main__':
-    # consolidate_results = False
+    # consolidate_results = True
     # # _consolidate_results()
     # load_results(consolidate_results=consolidate_results)
     # plot_probabilities()
     # plot_distances()
     # plot_bit_error_rates()
     # plot_computation_times()
-    # plot_modes_probs(one_alpha=0.05)
+    # # plot_modes_probs(one_alpha=0.05)
     plot_modes_probs()

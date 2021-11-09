@@ -1,5 +1,5 @@
 from multiprocessing import Pool  # , cpu_count
-from time import time
+from time import time  # , sleep
 from typing import Iterator, List, NamedTuple
 from csd import CSD
 from csd.plot import Plot
@@ -199,7 +199,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool()
+    pool = Pool(2)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -269,12 +269,12 @@ if __name__ == '__main__':
     number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
-    # alphas = [0.3]
+    alphas = alphas[12:]
 
     learning_steps = LearningSteps(default=60, high=60, extreme=1000)
     learning_rate = LearningRate(default=0.1, high=0.01, extreme=0.001)
     cutoff_dim = CutOffDimensions(default=7, high=15, extreme=30)
-    number_input_modes = 1
+    number_input_modes = 3
     number_ancillas = 1
     squeezing = True
 
@@ -286,6 +286,9 @@ if __name__ == '__main__':
     number_alphas = len(alphas)
 
     print(f'number alphas: {number_alphas}')
+    # seconds_to_sleep = 2 * 60 * 60
+    # print(f'going to sleep for {seconds_to_sleep}')
+    # sleep(seconds_to_sleep)
 
     multiprocess_configuration = MultiProcessConfiguration(
         alphas=alphas,
