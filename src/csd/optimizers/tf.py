@@ -12,7 +12,7 @@ from tensorflow.keras import optimizers as tfOptimizers
 from tensorflow.keras import metrics as tfMetrics
 
 from csd.typings.typing import LearningRate, LearningSteps, OptimizationResult
-from csd.util import set_friendly_time
+from csd.util import estimate_remaining_time, set_friendly_time
 from csd.config import logger
 
 
@@ -119,6 +119,9 @@ class TFOptimizer(ABC):
         reset = self._print_optimized_parameters_for_tf_backend_only(step, optimized_parameters)
         if reset:
             self._print_one_loop_time(step=step, total_steps=learning_steps, one_loop_time=init_time)
+            logger.debug(estimate_remaining_time(total_iterations=learning_steps,
+                                                 current_iteration=step,
+                                                 init_time=init_time))
         return reset
 
     def _print_optimized_parameters_for_tf_backend_only(self,

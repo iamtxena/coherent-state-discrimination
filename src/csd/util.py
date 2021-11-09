@@ -104,3 +104,10 @@ def generate_all_codewords(word_size: int, alpha_value: float) -> List[CodeWord]
     letters = [alpha_value, -alpha_value]
     return [CodeWord(size=len(word), alpha_value=alpha_value, word=list(word))
             for word in itertools.product(letters, repeat=word_size)]
+
+
+def estimate_remaining_time(total_iterations: int, current_iteration: int, init_time: float) -> str:
+    now = time()
+    current_computation_time = now - init_time
+    return ('Estimated remaining time: ' +
+            f'{set_friendly_time(time_interval=total_iterations * current_computation_time / current_iteration)}')
