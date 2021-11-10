@@ -1,16 +1,21 @@
 import pennylane as qml
 import numpy as np
 import tensorflow as tf
+import matplotlib.pyplot as plt
+from scipy.stats import sem
+import time
+from loguru import logger
 
 
-N_ITER = 5
-N_EPOCHS = 5
-BATCH_SIZE = 1_000
+N_RUNS = 2
+N_ITER = 10
+N_EPOCHS = 2
+BATCH_SIZE = 100
 
 tf.keras.backend.set_floatx('float64')
 
 cutoff = 5
-n_modes = 2
+n_modes = 4
 n_layers = 1
 k = int(n_modes * (n_modes - 1) / 2)
 
@@ -58,18 +63,25 @@ def node(inputs, theta_1, phi_1, varphi_1, r, phi_r, theta_2, phi_2, varphi_2, a
     return [qml.expval(qml.FockStateProjector(np.array([0]), wires=w)) for w in range(n_modes)]
 
 
+def int_to_padded_bin(number, width):
+    bin_data = bin(number)[2:]
+    n_pad = width - len(bin_data)
+    padded_data = "0" * n_pad + bin_data
+
+    return np.array(list(map(int, list(padded_data))))
+
+
 def generate_training_data(n_datapoints):
+    logger.info(f"Generating training data.")
     x_data, y_data = [], []
 
     for _ in range(n_datapoints):
-        t_data = np.random.choice([0, 1], size=n_modes)
-        index = int("".join(map(str, t_data)), base=2)
+        u_lim = 2 ** n_modes
+        index = np.random.randint(u_lim)
         onehot = np.zeros(2 ** n_modes)
-        # Target here is to learn the displacement such that
-        # onehot[index] = 1
+        onehot[index] = 1
 
-        # Displacement should be such that the codeword {+a, +a} should be predicted for all inputs.
-        onehot[2 ** n_modes - 1] = 1
+        t_data = int_to_padded_bin(index, n_modes)
 
         x_data.append(t_data * 2 - 1)
         y_data.append(onehot)
@@ -81,14 +93,48 @@ if __name__ == "__main__":
     q_layer = qml.qnn.KerasLayer(node, weight_shapes, output_dim=int(n_modes))
     c_layer_out = tf.keras.layers.Dense(int(2 ** n_modes), activation=tf.keras.activations.softmax)
 
-    model = tf.keras.models.Sequential([q_layer, c_layer_out])
+    accs = [[] for _ in range(N_RUNS)]
 
-    opt = tf.keras.optimizers.Adam(learning_rate=0.1)
-    model.compile(opt, loss="mae", metrics=["accuracy"])
+    for run in range(N_RUNS):
+        model = tf.keras.models.Sequential([q_layer, c_layer_out])
 
-    for iteration in range(N_ITER):
-        print(f"Iteration {iteration + 1} of {N_ITER}.")
-        X_batch, y_batch = generate_training_data(BATCH_SIZE)
-        model.fit(X_batch, y_batch, epochs=N_EPOCHS, batch_size=BATCH_SIZE)
+        opt = tf.keras.optimizers.Adam(learning_rate=0.1)
+        model.compile(opt, loss="mae", metrics=["accuracy"])
 
-    print(model.summary())
+        for iteration in range(N_ITER):
+            logger.info(f"[{run + 1}/{N_RUNS}] Iteration {iteration + 1} of {N_ITER}")
+
+            then = time.time()
+            X_batch, y_batch = generate_training_data(BATCH_SIZE)
+
+            logger.info("Learning from generated data.")
+            history = model.fit(X_batch, y_batch, epochs=N_EPOCHS, batch_size=BATCH_SIZE, verbose=0)
+
+            accs[run].extend(history.history["accuracy"])
+            delta =  time.time() - then
+
+            logger.info(f"Took {delta} seconds.")
+
+    accs = np.array(accs)
+
+    mean_acc = np.mean(accs, axis=0)
+    ci = 1.96 * sem(accs, axis=0)
+    hi = mean_acc + ci
+    lo = mean_acc - ci
+    xdata = np.arange(accs.shape[1])
+
+    plt.figure(figsize=(10, 6), dpi=400)
+
+    plt.plot(xdata, mean_acc, lw=0.5, color="k")
+    plt.fill_between(xdata, hi, lo, color="k", alpha=0.1)
+
+    plt.xlabel("Training Iterations")
+    plt.ylabel("Average Success Probability")
+
+    plt.ylim(0, 1.05)
+
+    plt.title(f"{n_modes} modes with {n_layers} layers")
+
+    plt.savefig(f"plots/accuracy_{N_ITER}x{N_EPOCHS}_{time.time_ns()}.png", dpi=400)
+
+    plt.close()
