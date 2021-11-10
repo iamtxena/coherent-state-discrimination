@@ -26,47 +26,59 @@ class Plot(ABC):
 
     def success_probabilities_all_alphas(self,
                                          number_modes: List[int],
+                                         number_ancillas: List[int],
                                          global_results: List[GlobalResult],
                                          save_plot: Optional[bool] = False) -> None:
-        fig = plt.figure(figsize=(15, 10))
+        fig = plt.figure(figsize=(25, 20))
         fig.suptitle("Average Success Probability", fontsize=20)
 
         for idx, one_alpha in enumerate(self._alphas):
-            if idx == 9:
-                break
+            # if idx == 9:
+            #     break
             homodyne_probabilities = []
             squeezed_probabilities = []
             non_squeezed_probabilities = []
 
+            probs_labels = []
             for number_mode in number_modes:
-                homodyne_prob = IdealHomodyneProbability(
-                    alpha=one_alpha, number_modes=number_mode).homodyne_probability
-                squeezed_probability = [global_result.success_probability
-                                        for global_result in global_results
-                                        if (global_result.number_modes == number_mode and
-                                            global_result.squeezing and
-                                            global_result.alpha == one_alpha)]
-                non_squeezed_probability = [global_result.success_probability
-                                            for global_result in global_results
-                                            if (global_result.number_modes == number_mode and
-                                                not global_result.squeezing and
-                                                global_result.alpha == one_alpha)]
-                if len(squeezed_probability) > 1:
-                    raise ValueError("more than one squeezed_probability found!")
-                if len(non_squeezed_probability) > 1:
-                    raise ValueError("more than one non_squeezed_probability found!")
-                homodyne_probabilities.append(homodyne_prob)
-                if len(squeezed_probability) == 0:
-                    squeezed_probability.append(0.0)
-                squeezed_probabilities.append(squeezed_probability.pop(0))
-                if len(non_squeezed_probability) == 0:
-                    non_squeezed_probability.append(0.0)
-                non_squeezed_probabilities.append(non_squeezed_probability.pop(0))
+                homodyne_probabilities.append(IdealHomodyneProbability(
+                    alpha=one_alpha, number_modes=number_mode).homodyne_probability)
+                squeezed_probabilities_mode_i = []
+                non_squeezed_probabilities_mode_i = []
+                for ancilla_i in number_ancillas:
+                    squeezed_probability_ancilla_i = [global_result.success_probability
+                                                      for global_result in global_results
+                                                      if (global_result.number_modes == number_mode and
+                                                          global_result.number_ancillas == ancilla_i and
+                                                          global_result.squeezing and
+                                                          global_result.alpha == one_alpha)]
+                    non_squeezed_probability_ancilla_i = [global_result.success_probability
+                                                          for global_result in global_results
+                                                          if (global_result.number_modes == number_mode and
+                                                              global_result.number_ancillas == ancilla_i and
+                                                              not global_result.squeezing and
+                                                              global_result.alpha == one_alpha)]
+                    if len(squeezed_probability_ancilla_i) > 1:
+                        raise ValueError("more than one squeezed_probability found!")
+                    if len(non_squeezed_probability_ancilla_i) > 1:
+                        raise ValueError("more than one non_squeezed_probability found!")
+                    if len(squeezed_probability_ancilla_i) == 0:
+                        squeezed_probability_ancilla_i.append(0.0)
+                    squeezed_probabilities_mode_i.append(squeezed_probability_ancilla_i.pop(0))
+                    if len(non_squeezed_probability_ancilla_i) == 0:
+                        non_squeezed_probability_ancilla_i.append(0.0)
+                    non_squeezed_probabilities_mode_i.append(non_squeezed_probability_ancilla_i.pop(0))
+                squeezed_probabilities.append(squeezed_probabilities_mode_i)
+                non_squeezed_probabilities.append(non_squeezed_probabilities_mode_i)
 
-            probs_labels = ((squeezed_probabilities, "pSucc Squeezing"),
-                            (non_squeezed_probabilities, "pSucc No Squeezing"),
-                            (homodyne_probabilities, "pSucc Homodyne"))
-            ax = fig.add_subplot(3, 3, idx + 1 % 3)
+            for ancilla_i in number_ancillas:
+                sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
+                probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
+                non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
+                probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
+            probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
+
+            ax = fig.add_subplot(4, 4, idx + 1 % 4)
             ax.set_ylim([0, 1])
             ax.set_title(f"$\\alpha$={np.round(one_alpha, 2)}", fontsize=14)
 
@@ -83,6 +95,7 @@ class Plot(ABC):
     def success_probabilities_one_alpha(self,
                                         one_alpha: float,
                                         number_modes: List[int],
+                                        number_ancillas: List[int],
                                         global_results: List[GlobalResult],
                                         save_plot: Optional[bool] = False) -> None:
         fig, axes = plt.subplots(figsize=[10, 8])
@@ -90,35 +103,46 @@ class Plot(ABC):
         squeezed_probabilities = []
         non_squeezed_probabilities = []
 
+        probs_labels = []
         for number_mode in number_modes:
-            homodyne_prob = IdealHomodyneProbability(alpha=one_alpha, number_modes=number_mode).homodyne_probability
-            squeezed_probability = [global_result.success_probability
-                                    for global_result in global_results
-                                    if (global_result.number_modes == number_mode and
-                                        global_result.squeezing and
-                                        global_result.alpha == one_alpha)]
-            non_squeezed_probability = [global_result.success_probability
-                                        for global_result in global_results
-                                        if (global_result.number_modes == number_mode and
-                                            not global_result.squeezing and
-                                            global_result.alpha == one_alpha)]
-            if len(squeezed_probability) > 1:
-                raise ValueError("more than one squeezed_probability found!")
-            if len(non_squeezed_probability) > 1:
-                raise ValueError("more than one non_squeezed_probability found!")
-            homodyne_probabilities.append(homodyne_prob)
-            if len(squeezed_probability) == 0:
-                squeezed_probability.append(0.0)
-            squeezed_probabilities.append(squeezed_probability.pop(0))
-            if len(non_squeezed_probability) == 0:
-                non_squeezed_probability.append(0.0)
-            non_squeezed_probabilities.append(non_squeezed_probability.pop(0))
+            homodyne_probabilities.append(IdealHomodyneProbability(
+                alpha=one_alpha, number_modes=number_mode).homodyne_probability)
+            squeezed_probabilities_mode_i = []
+            non_squeezed_probabilities_mode_i = []
+            for ancilla_i in number_ancillas:
+                squeezed_probability_ancilla_i = [global_result.success_probability
+                                                  for global_result in global_results
+                                                  if (global_result.number_modes == number_mode and
+                                                      global_result.number_ancillas == ancilla_i and
+                                                      global_result.squeezing and
+                                                      global_result.alpha == one_alpha)]
+                non_squeezed_probability_ancilla_i = [global_result.success_probability
+                                                      for global_result in global_results
+                                                      if (global_result.number_modes == number_mode and
+                                                          global_result.number_ancillas == ancilla_i and
+                                                          not global_result.squeezing and
+                                                          global_result.alpha == one_alpha)]
+                if len(squeezed_probability_ancilla_i) > 1:
+                    raise ValueError("more than one squeezed_probability found!")
+                if len(non_squeezed_probability_ancilla_i) > 1:
+                    raise ValueError("more than one non_squeezed_probability found!")
+                if len(squeezed_probability_ancilla_i) == 0:
+                    squeezed_probability_ancilla_i.append(0.0)
+                squeezed_probabilities_mode_i.append(squeezed_probability_ancilla_i.pop(0))
+                if len(non_squeezed_probability_ancilla_i) == 0:
+                    non_squeezed_probability_ancilla_i.append(0.0)
+                non_squeezed_probabilities_mode_i.append(non_squeezed_probability_ancilla_i.pop(0))
+            squeezed_probabilities.append(squeezed_probabilities_mode_i)
+            non_squeezed_probabilities.append(non_squeezed_probabilities_mode_i)
 
-        probs_labels = ((squeezed_probabilities, "pSucc Squeezing"),
-                        (non_squeezed_probabilities, "pSucc No Squeezing"),
-                        (homodyne_probabilities, "pSucc Homodyne"))
+        for ancilla_i in number_ancillas:
+            sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
+            probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
+            non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
+            probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
+        probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
 
-        plt.title(f"Average Success Probability for alpha={one_alpha}", fontsize=24)
+        plt.title(f"Avg. Success Probability for $\\alpha$={np.round(one_alpha, 2)}", fontsize=20)
 
         for prob, label in probs_labels:
             axes.plot(number_modes, prob, label=label)
@@ -131,17 +155,26 @@ class Plot(ABC):
 
     def success_probabilities(self,
                               number_modes: List[int],
+                              number_ancillas: List[int],
                               global_results: List[GlobalResult],
                               save_plot: Optional[bool] = False) -> None:
         fig, axes = plt.subplots(figsize=[10, 8])
         probs_labels = [self._ideal_probabilities.p_hels]
-
+        squeezing_options = [False, True]
         for number_mode in number_modes:
-            probs = [global_result.success_probability
-                     for global_result in global_results
-                     if global_result.number_modes == number_mode]
-            one_prob_label = (probs, f"mode_{number_mode}")
-            probs_labels.append(one_prob_label)
+            for squeezing_option in squeezing_options:
+                for number_ancilla in number_ancillas:
+                    probs = [global_result.success_probability
+                             for global_result in global_results
+                             if (global_result.number_modes == number_mode and
+                                 global_result.number_ancillas == number_ancilla and
+                                 global_result.squeezing == squeezing_option)]
+
+                    probs.extend([0.0] * (len(self._alphas) - len(probs)))
+                    if len(probs) > len(self._alphas):
+                        raise ValueError(f"len(probs): {len(probs)}")
+                    one_prob_label = (probs, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
+                    probs_labels.append(one_prob_label)
             probs_labels.append(IdealProbabilities(alphas=self._alphas, number_modes=number_mode).p_homos)
 
         self._plot_computed_variables(save_plot,
@@ -163,17 +196,24 @@ class Plot(ABC):
 
     def distances(self,
                   number_modes: List[int],
+                  number_ancillas: List[int],
                   global_results: List[GlobalResult],
                   save_plot: Optional[bool] = False) -> None:
         fig, axes = plt.subplots(figsize=[10, 8])
         distances_labels = []
+        squeezing_options = [False, True]
 
         for number_mode in number_modes:
-            distances = [global_result.distance_to_homodyne_probability
-                         for global_result in global_results
-                         if global_result.number_modes == number_mode]
-            one_distance_label = (distances, f"mode_{number_mode}")
-            distances_labels.append(one_distance_label)
+            for squeezing_option in squeezing_options:
+                for number_ancilla in number_ancillas:
+                    distances = [global_result.distance_to_homodyne_probability
+                                 for global_result in global_results
+                                 if (global_result.number_modes == number_mode and
+                                     global_result.number_ancillas == number_ancilla and
+                                     global_result.squeezing == squeezing_option)]
+                    one_distance_label = (
+                        distances, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
+                    distances_labels.append(one_distance_label)
 
         self._plot_computed_variables(save_plot,
                                       fig,
@@ -185,17 +225,24 @@ class Plot(ABC):
 
     def bit_error_rates(self,
                         number_modes: List[int],
+                        number_ancillas: List[int],
                         global_results: List[GlobalResult],
                         save_plot: Optional[bool] = False) -> None:
         fig, axes = plt.subplots(figsize=[10, 8])
         bit_error_labels = []
+        squeezing_options = [False, True]
 
         for number_mode in number_modes:
-            bit_error_rates = [global_result.bit_error_rate
-                               for global_result in global_results
-                               if global_result.number_modes == number_mode]
-            one_bit_errorlabel = (bit_error_rates, f"mode_{number_mode}")
-            bit_error_labels.append(one_bit_errorlabel)
+            for squeezing_option in squeezing_options:
+                for number_ancilla in number_ancillas:
+                    bit_error_rates = [global_result.bit_error_rate
+                                       for global_result in global_results
+                                       if (global_result.number_modes == number_mode and
+                                           global_result.number_ancillas == number_ancilla and
+                                           global_result.squeezing == squeezing_option)]
+                    one_bit_errorlabel = (
+                        bit_error_rates, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
+                    bit_error_labels.append(one_bit_errorlabel)
 
         self._plot_computed_variables(save_plot,
                                       fig,
@@ -207,17 +254,23 @@ class Plot(ABC):
 
     def times(self,
               number_modes: List[int],
+              number_ancillas: List[int],
               global_results: List[GlobalResult],
               save_plot: Optional[bool] = False) -> None:
         fig, axes = plt.subplots(figsize=[10, 8])
         times_labels = []
+        squeezing_options = [False, True]
 
         for number_mode in number_modes:
-            times = [global_result.time_in_seconds
-                     for global_result in global_results
-                     if global_result.number_modes == number_mode]
-            one_time_label = (times, f"mode_{number_mode}")
-            times_labels.append(one_time_label)
+            for squeezing_option in squeezing_options:
+                for number_ancilla in number_ancillas:
+                    times = [global_result.time_in_seconds
+                             for global_result in global_results
+                             if (global_result.number_modes == number_mode and
+                                 global_result.number_ancillas == number_ancilla and
+                                 global_result.squeezing == squeezing_option)]
+                    one_time_label = (times, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
+                    times_labels.append(one_time_label)
 
         self._plot_computed_variables(save_plot,
                                       fig,
@@ -264,10 +317,11 @@ class Plot(ABC):
         alpha_time = set_friendly_time(execution['total_time'] /
                                        len(execution['alphas'])) if 'total_time' in execution else ''
         total_time_per_alpha = f"\n Average one alpha computation time: {alpha_time}"
-        plt.title(f"{execution['plot_title']}{total_time}{total_time_per_alpha}")
+        plt.title(f"{execution['plot_title']}{total_time}{total_time_per_alpha}", fontsize=8)
 
     def _plot_probs_and_label_into_axis(self,
                                         axes: plt.Axes,
                                         probs_labels: List[Tuple[List[float], str]]):
         for prob, label in probs_labels:
+            prob.extend([0.0] * (len(self._alphas) - len(prob)))
             axes.plot(self._alphas, prob, label=label)

@@ -7,6 +7,7 @@ from typing import Optional, Union
 import numpy as np
 import glob
 from csd.plot import Plot
+from csd.util import strtobool
 
 from csd.typings.global_result import GlobalResult
 # from csd.config import logger
@@ -81,7 +82,7 @@ class GlobalResultManager(ABC):
                                           success_probability=float(row[1]),
                                           number_modes=int(row[2]),
                                           time_in_seconds=float(row[3]),
-                                          squeezing=bool(row[6]),
+                                          squeezing=strtobool(row[6]),
                                           number_ancillas=int(row[7])) for row in reader]
 
             with open(global_results_file, 'a+', newline='') as write_obj:
@@ -100,10 +101,11 @@ class GlobalResultManager(ABC):
                                                  success_probability=float(row[1]),
                                                  number_modes=int(row[2]),
                                                  time_in_seconds=float(row[3]),
-                                                 squeezing=bool(row[6]),
+                                                 squeezing=strtobool(row[6]),
                                                  number_ancillas=int(row[7])) for row in reader]
         self._create_unique_alphas()
         self._create_unique_modes()
+        self._create_unique_ancillas()
         self._select_global_results()
 
     def _create_unique_alphas(self):
@@ -116,6 +118,11 @@ class GlobalResultManager(ABC):
         self._number_modes = list(set(self._number_modes))
         self._number_modes.sort()
 
+    def _create_unique_ancillas(self):
+        self._number_ancillas = [result.number_ancillas for result in self._global_results]
+        self._number_ancillas = list(set(self._number_ancillas))
+        self._number_ancillas.sort()
+
     def plot_success_probabilities(self, save_plot=False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
@@ -123,6 +130,7 @@ class GlobalResultManager(ABC):
             self.load_results()
         Plot(alphas=self._alphas).success_probabilities(
             number_modes=self._number_modes,
+            number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
             save_plot=save_plot)
 
@@ -133,6 +141,7 @@ class GlobalResultManager(ABC):
             self.load_results()
         Plot(alphas=self._alphas).distances(
             number_modes=self._number_modes,
+            number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
             save_plot=save_plot)
 
@@ -143,6 +152,7 @@ class GlobalResultManager(ABC):
             self.load_results()
         Plot(alphas=self._alphas).bit_error_rates(
             number_modes=self._number_modes,
+            number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
             save_plot=save_plot)
 
@@ -153,6 +163,7 @@ class GlobalResultManager(ABC):
             self.load_results()
         Plot(alphas=self._alphas).times(
             number_modes=self._number_modes,
+            number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
             save_plot=save_plot)
 
@@ -166,27 +177,32 @@ class GlobalResultManager(ABC):
             Plot(alphas=[one_alpha]).success_probabilities_one_alpha(
                 one_alpha=one_alpha,
                 number_modes=self._number_modes,
+                number_ancillas=self._number_ancillas,
                 global_results=self._selected_global_results,
                 save_plot=save_plot)
             return
 
         Plot(alphas=self._alphas).success_probabilities_all_alphas(
             number_modes=self._number_modes,
+            number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
             save_plot=save_plot)
 
     def _select_global_results(self) -> None:
         self._selected_global_results = []
+        squeezing_options = [False, True]
         for alpha in self._alphas:
             for number_mode in self._number_modes:
-                max_duration = 0.0
-                max_result = None
-                for result in self._global_results:
-                    if (result.alpha == alpha and
-                        result.number_modes == number_mode and
-                            result.time_in_seconds > max_duration):
-                        max_result = result
-                if max_result is None:
-                    raise ValueError(
-                        f"Max result not found for this alpha: {alpha} and mode: {number_mode}")
-                self._selected_global_results.append(max_result)
+                for number_ancilla in self._number_ancillas:
+                    for squeezing_option in squeezing_options:
+                        min_distance = 1.0
+                        min_result = None
+                        for result in self._global_results:
+                            if (result.alpha == alpha and
+                                result.number_modes == number_mode and
+                                result.number_ancillas == number_ancilla and
+                                result.squeezing == squeezing_option and
+                                    result.distance_to_homodyne_probability < min_distance):
+                                min_result = result
+                        if min_result is not None:
+                            self._selected_global_results.append(min_result)

@@ -23,7 +23,7 @@ class IdealProbabilities(ABC):
 
     @property
     def p_homos(self) -> Tuple[List[float], str]:
-        return (self._p_homos, f"pHom(a)^{self._number_modes}")
+        return (self._p_homos, f'$pHom(a)^{self._number_modes}$')
 
     @property
     def p_hels(self) -> Tuple[List[float], str]:

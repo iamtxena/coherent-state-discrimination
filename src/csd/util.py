@@ -40,7 +40,10 @@ def set_friendly_time(time_interval: float) -> str:
         friendly_time += f'{minutes} minute and '
     if minutes > 1:
         friendly_time += f'{minutes} minutes and '
-    friendly_time += f'{seconds} seconds.'
+    if seconds == 1:
+        friendly_time += f'{seconds} second.'
+    if seconds > 1:
+        friendly_time += f'{seconds} seconds.'
     return friendly_time
 
 
@@ -101,3 +104,20 @@ def generate_all_codewords(word_size: int, alpha_value: float) -> List[CodeWord]
     letters = [alpha_value, -alpha_value]
     return [CodeWord(size=len(word), alpha_value=alpha_value, word=list(word))
             for word in itertools.product(letters, repeat=word_size)]
+
+
+def estimate_remaining_time(total_iterations: int, current_iteration: int, init_time: float) -> str:
+    now = time()
+    current_computation_time = now - init_time
+    return ('Estimated remaining time: ' +
+            f'{set_friendly_time(time_interval=total_iterations * current_computation_time / current_iteration)}')
+
+
+def strtobool(val: str) -> bool:
+    val = val.lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return True
+    elif val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return False
+    else:
+        raise ValueError("invalid truth value %r" % (val,))
