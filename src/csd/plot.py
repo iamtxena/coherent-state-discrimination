@@ -103,35 +103,46 @@ class Plot(ABC):
         squeezed_probabilities = []
         non_squeezed_probabilities = []
 
+        probs_labels = []
         for number_mode in number_modes:
-            homodyne_prob = IdealHomodyneProbability(alpha=one_alpha, number_modes=number_mode).homodyne_probability
-            squeezed_probability = [global_result.success_probability
-                                    for global_result in global_results
-                                    if (global_result.number_modes == number_mode and
-                                        global_result.squeezing and
-                                        global_result.alpha == one_alpha)]
-            non_squeezed_probability = [global_result.success_probability
-                                        for global_result in global_results
-                                        if (global_result.number_modes == number_mode and
-                                            not global_result.squeezing and
-                                            global_result.alpha == one_alpha)]
-            if len(squeezed_probability) > 1:
-                raise ValueError("more than one squeezed_probability found!")
-            if len(non_squeezed_probability) > 1:
-                raise ValueError("more than one non_squeezed_probability found!")
-            homodyne_probabilities.append(homodyne_prob)
-            if len(squeezed_probability) == 0:
-                squeezed_probability.append(0.0)
-            squeezed_probabilities.append(squeezed_probability.pop(0))
-            if len(non_squeezed_probability) == 0:
-                non_squeezed_probability.append(0.0)
-            non_squeezed_probabilities.append(non_squeezed_probability.pop(0))
+            homodyne_probabilities.append(IdealHomodyneProbability(
+                alpha=one_alpha, number_modes=number_mode).homodyne_probability)
+            squeezed_probabilities_mode_i = []
+            non_squeezed_probabilities_mode_i = []
+            for ancilla_i in number_ancillas:
+                squeezed_probability_ancilla_i = [global_result.success_probability
+                                                  for global_result in global_results
+                                                  if (global_result.number_modes == number_mode and
+                                                      global_result.number_ancillas == ancilla_i and
+                                                      global_result.squeezing and
+                                                      global_result.alpha == one_alpha)]
+                non_squeezed_probability_ancilla_i = [global_result.success_probability
+                                                      for global_result in global_results
+                                                      if (global_result.number_modes == number_mode and
+                                                          global_result.number_ancillas == ancilla_i and
+                                                          not global_result.squeezing and
+                                                          global_result.alpha == one_alpha)]
+                if len(squeezed_probability_ancilla_i) > 1:
+                    raise ValueError("more than one squeezed_probability found!")
+                if len(non_squeezed_probability_ancilla_i) > 1:
+                    raise ValueError("more than one non_squeezed_probability found!")
+                if len(squeezed_probability_ancilla_i) == 0:
+                    squeezed_probability_ancilla_i.append(0.0)
+                squeezed_probabilities_mode_i.append(squeezed_probability_ancilla_i.pop(0))
+                if len(non_squeezed_probability_ancilla_i) == 0:
+                    non_squeezed_probability_ancilla_i.append(0.0)
+                non_squeezed_probabilities_mode_i.append(non_squeezed_probability_ancilla_i.pop(0))
+            squeezed_probabilities.append(squeezed_probabilities_mode_i)
+            non_squeezed_probabilities.append(non_squeezed_probabilities_mode_i)
 
-        probs_labels = ((squeezed_probabilities, "pSucc Squeezing"),
-                        (non_squeezed_probabilities, "pSucc No Squeezing"),
-                        (homodyne_probabilities, "pSucc Homodyne"))
+        for ancilla_i in number_ancillas:
+            sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
+            probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
+            non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
+            probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
+        probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
 
-        plt.title(f"Average Success Probability for alpha={one_alpha}", fontsize=24)
+        plt.title(f"Avg. Success Probability for $\\alpha$={np.round(one_alpha, 2)}", fontsize=20)
 
         for prob, label in probs_labels:
             axes.plot(number_modes, prob, label=label)
