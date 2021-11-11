@@ -8,8 +8,9 @@ from csd.codeword import CodeWord
 from csd.typings.typing import (Backends, BackendOptions, CodeWordIndices,
                                 CodeWordSuccessProbability, EngineRunOptions, MeasuringTypes)
 from csd.circuit import Circuit
-from typing import List, Optional
+from typing import List, Optional, Union
 import itertools
+from tensorflow.python.framework.ops import EagerTensor
 
 from csd.util import generate_all_codewords_from_codeword
 # from csd.config import logger
@@ -37,19 +38,8 @@ class Engine(ABC):
 
     def _apply_guess_strategy_move_noise_to_ancillas(
             self,
-            max_success_probability_codeword_selected: CodeWordSuccessProbability) -> CodeWordSuccessProbability:
-        output_codeword, codeword_to_guess, success_probability = self._prepare_codewords_and_probability(
-            max_success_probability_codeword_selected)
-
-        self._error_when_codeword_to_guess_is_larger_than_output_codeword(output_codeword, codeword_to_guess)
-
-        return CodeWordSuccessProbability(
-            guessed_codeword=self._create_codeword_from_last_output_modes(output_codeword, codeword_to_guess),
-            output_codeword=output_codeword,
-            success_probability=success_probability)
-
-    def _create_codeword_from_last_output_modes(self, output_codeword:
-                                                CodeWord, codeword_to_guess: CodeWord) -> CodeWord:
+            max_success_probability_codeword_selected: CodeWordSuccessProbability,
+            codewords_success_probabilities: List[CodeWordSuccessProbability]) -> CodeWordSuccessProbability:
         """ Create a codeword with the same size as the codeword to guess (input codeword)
             using the last modes from the output codeword -> meaning, ignoring the ancilla modes.
 
@@ -60,13 +50,50 @@ class Engine(ABC):
             The more ancillas you add, the better to detect the appropiate input codeword.
             Beware of the computation time, though.
         """
+        self._error_when_codeword_to_guess_is_larger_than_output_codeword(
+            max_success_probability_codeword_selected.output_codeword,
+            max_success_probability_codeword_selected.guessed_codeword)
+
+        guessed_codeword = self._create_codeword_from_last_output_modes(
+            max_success_probability_codeword_selected.output_codeword,
+            max_success_probability_codeword_selected.guessed_codeword)
+        success_probability = self._compute_guessed_codeword_probability(guessed_codeword,
+                                                                         codewords_success_probabilities)
+
+        return CodeWordSuccessProbability(guessed_codeword=guessed_codeword,
+                                          output_codeword=max_success_probability_codeword_selected.output_codeword,
+                                          success_probability=success_probability)
+
+    def _create_codeword_from_last_output_modes(self,
+                                                output_codeword: CodeWord,
+                                                codeword_to_guess: CodeWord) -> CodeWord:
         return CodeWord(word=output_codeword.word[-codeword_to_guess.size:])
 
-    def _prepare_codewords_and_probability(self, max_success_probability_codeword_selected: CodeWordSuccessProbability):
-        output_codeword = max_success_probability_codeword_selected.output_codeword
-        codeword_to_guess = max_success_probability_codeword_selected.guessed_codeword
-        success_probability = max_success_probability_codeword_selected.success_probability
-        return output_codeword, codeword_to_guess, success_probability
+    def _compute_guessed_codeword_probability(
+            self,
+            guessed_codeword: CodeWord,
+            codewords_success_probabilities: List[CodeWordSuccessProbability]) -> Union[float, EagerTensor]:
+        """ Sum each probability from an output codeword (with ancillas) that matches
+            the guessed codeword (input codeword size).
+
+            Example:
+                output codewords: [0,0], [0,1], [1,0], [1,1]
+                guessed codeword: [0]
+                Result: sum probabilites from [0,0] and [1,0] because those codewords contain
+                        the guessed codeword [0] as the last digit.
+
+        Args:
+            guessed_codeword (CodeWord): [description]
+            codewords_success_probabilities (List[CodeWordSuccessProbability]): [description]
+
+        Returns:
+            Union[float, EagerTensor]: [description]
+        """
+        return sum([codeword_success_probabilities.success_probability
+                    for codeword_success_probabilities in codewords_success_probabilities
+                    if self._create_codeword_from_last_output_modes(
+                        output_codeword=codeword_success_probabilities.output_codeword,
+                        codeword_to_guess=guessed_codeword) == guessed_codeword])
 
     def _error_when_codeword_to_guess_is_larger_than_output_codeword(self,
                                                                      output_codeword: CodeWord,
@@ -77,14 +104,15 @@ class Engine(ABC):
 
     def _max_probability_codeword(
             self,
-            codewords_sucess_probabilities: List[CodeWordSuccessProbability]) -> CodeWordSuccessProbability:
-        max_codeword_success_probability = codewords_sucess_probabilities[0]
+            codewords_success_probabilities: List[CodeWordSuccessProbability]) -> CodeWordSuccessProbability:
+        max_codeword_success_probability = codewords_success_probabilities[0]
 
-        for codeword_success_probability in codewords_sucess_probabilities:
+        for codeword_success_probability in codewords_success_probabilities:
             if codeword_success_probability.success_probability > max_codeword_success_probability.success_probability:
                 max_codeword_success_probability = codeword_success_probability
 
-        return self._apply_guess_strategy_move_noise_to_ancillas(max_codeword_success_probability)
+        return self._apply_guess_strategy_move_noise_to_ancillas(max_codeword_success_probability,
+                                                                 codewords_success_probabilities)
 
     def run_circuit_checking_measuring_type(
             self,
@@ -92,11 +120,11 @@ class Engine(ABC):
             options: EngineRunOptions) -> CodeWordSuccessProbability:
 
         if options['measuring_type'] is MeasuringTypes.SAMPLING:
-            codewords_sucess_probabilities = self._run_circuit_sampling(circuit=circuit, options=options)
+            codewords_success_probabilities = self._run_circuit_sampling(circuit=circuit, options=options)
         else:
-            codewords_sucess_probabilities = self._run_circuit_probabilities(circuit=circuit, options=options)
+            codewords_success_probabilities = self._run_circuit_probabilities(circuit=circuit, options=options)
 
-        return self._max_probability_codeword(codewords_sucess_probabilities=codewords_sucess_probabilities)
+        return self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
 
     def _run_circuit_sampling(self,
                               circuit: Circuit,

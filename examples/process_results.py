@@ -47,5 +47,5 @@ if __name__ == '__main__':
     # plot_distances()
     # plot_bit_error_rates()
     # plot_computation_times()
-    plot_modes_probs(one_alpha=alphas[5])
+    # plot_modes_probs(one_alpha=alphas[5])
     # plot_modes_probs()

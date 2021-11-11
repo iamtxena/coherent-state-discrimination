@@ -47,7 +47,7 @@ class CSD(ABC):
 
     def _set_values_from_config(self, csd_config):
         self._alphas = csd_config.get('alphas', [self.DEFAULT_ALPHA])
-        self._learning_steps = csd_config.get('steps', self.DEFAULT_LEARNING_STEPS)
+        self._learning_steps = csd_config.get('learning_steps', self.DEFAULT_LEARNING_STEPS)
         self._learning_rate = csd_config.get('learning_rate', self.DEFAULT_LEARNING_RATE)
         self._batch_size = csd_config.get('batch_size', self.DEFAULT_BATCH_SIZE)
         self._shots = csd_config.get('shots', self.DEFAULT_NUM_SHOTS)
@@ -190,10 +190,10 @@ class CSD(ABC):
                                one_alpha_start_time=one_alpha_start_time,
                                error_probability=one_alpha_optimization_result.error_probability)
             logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)} '
-                         f'pSucc: {one_alpha_optimization_result.error_probability}\n'
+                         f'pSucc: {1 - one_alpha_optimization_result.error_probability} '
                          f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
-                         f" ancillas: {self._circuit.number_ancillas} \n steps: {self._learning_steps}, "
-                         f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
+                         f" ancillas: {self._circuit.number_ancillas} steps: {self._learning_steps}, "
+                         f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}"
                          f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
         self._update_result_with_total_time(result=result, start_time=start_time)
@@ -306,8 +306,10 @@ class CSD(ABC):
 
         current_cutoff = self._cutoff_dim.default
 
-        if self._circuit.number_modes >= 3 and self._alpha_value > 0.9:
+        if self._alpha_value > 0.5:
             current_cutoff = self._cutoff_dim.high
+        if self._alpha_value > 1.2:
+            current_cutoff = self._cutoff_dim.extreme
 
         if self._backend_is_tf():
             return TFEngine(engine_backend=Backends.TENSORFLOW, options={

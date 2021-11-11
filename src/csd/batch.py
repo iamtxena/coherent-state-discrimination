@@ -14,14 +14,12 @@ class Batch():
     """Class for keeping track of an input batch for an experiment."""
 
     def __init__(self,
+                 size: int,
                  word_size: int,
                  alpha_value: Optional[float] = DEFAULT_ALPHA_VALUE,
-                 random_words: Optional[bool] = True,
-                 size: Optional[int] = 1):
+                 random_words: Optional[bool] = True):
         self._alpha_value = alpha_value if alpha_value is not None else DEFAULT_ALPHA_VALUE
         if random_words is None or random_words:
-            if size is None:
-                size = 1
             self._batch = self._create_batch_with_random_word(batch_size=size,
                                                               word_size=word_size,
                                                               alpha_value=self._alpha_value)

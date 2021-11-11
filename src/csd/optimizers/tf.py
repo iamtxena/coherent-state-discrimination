@@ -12,7 +12,7 @@ from tensorflow.keras import optimizers as tfOptimizers
 from tensorflow.keras import metrics as tfMetrics
 
 from csd.typings.typing import LearningRate, LearningSteps, OptimizationResult
-from csd.util import set_friendly_time
+from csd.util import estimate_remaining_time, set_friendly_time
 from csd.config import logger
 
 
@@ -31,7 +31,6 @@ class TFOptimizer(ABC):
         self._number_parameters = nparams
         self._number_modes = modes
         if len(params_name) - modes != nparams:
-            logger.error(f'params_names: {params_name}')
             raise ValueError(f"params names length: {params_name.__len__()} does not match nparams: {nparams}")
         self._params_name = params_name[modes:]
 
@@ -74,12 +73,14 @@ class TFOptimizer(ABC):
             train_param.reset_states()
 
     def _set_learning_values_by_alpha(self, alpha: float) -> int:
-        if alpha < 0.25 or alpha > 1.25:
+        current_learning_steps = self._learning_steps.default
+
+        if alpha > 1.2:
             current_learning_steps = self._learning_steps.high
 
         if alpha <= 0.1 and self._number_modes >= 3:
             self._opt = tfOptimizers.Adam(learning_rate=self._learning_rate.high)
-            current_learning_steps = self._learning_steps.extreme
+            current_learning_steps = self._learning_steps.high
         return current_learning_steps
 
     def _prepare_tf_board(self, current_alpha: float) -> None:
@@ -118,6 +119,9 @@ class TFOptimizer(ABC):
         reset = self._print_optimized_parameters_for_tf_backend_only(step, optimized_parameters)
         if reset:
             self._print_one_loop_time(step=step, total_steps=learning_steps, one_loop_time=init_time)
+            logger.debug(estimate_remaining_time(total_iterations=learning_steps,
+                                                 current_iteration=step,
+                                                 init_time=init_time))
         return reset
 
     def _print_optimized_parameters_for_tf_backend_only(self,
