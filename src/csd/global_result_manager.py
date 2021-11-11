@@ -3,7 +3,7 @@ from abc import ABC
 import os
 from pathlib import Path
 import csv
-from typing import Optional, Union
+from typing import List, Optional, Union
 import numpy as np
 import glob
 from csd.plot import Plot
@@ -56,7 +56,8 @@ class GlobalResultManager(ABC):
             csv_writer.writerow(global_result.values())
 
     def _consolidate_results(self) -> None:
-        global_results_file = self._reset_global_results_file()
+        # global_results_file = self._reset_global_results_file()
+        global_results_file = self._check_if_file_exists()
 
         for alpha_file in glob.glob(f"{RESULTS_PATH}{ALPHAS_PATH}*.csv"):
             self._transfer_alpha_results_to_global_file(global_results_file, alpha_file)
@@ -82,17 +83,27 @@ class GlobalResultManager(ABC):
                                           success_probability=float(row[1]),
                                           number_modes=int(row[2]),
                                           time_in_seconds=float(row[3]),
-                                          squeezing=strtobool(row[6]),
-                                          number_ancillas=int(row[7])) for row in reader]
-
+                                          squeezing=strtobool(row[6] if len(row) >= 6 else 'False'),
+                                          number_ancillas=int(row[7] if len(row) >= 7 else 0)) for row in reader]
+            new_results = self._filter_only_new_results(loaded_results=alpha_results)
             with open(global_results_file, 'a+', newline='') as write_obj:
                 writer = csv.writer(write_obj)
-                [writer.writerow(alpha_result.values()) for alpha_result in alpha_results]
+                [writer.writerow(new_result.values()) for new_result in new_results]
+
+    def _filter_only_new_results(self, loaded_results: List[GlobalResult]) -> List[GlobalResult]:
+        return [loaded_result for loaded_result in loaded_results if self._global_results.count(loaded_result) == 0]
 
     def load_results(self, consolidate_results: bool = False) -> None:
         if consolidate_results:
             self._consolidate_results()
 
+        self._load_all_results_from_global_file()
+        self._create_unique_alphas()
+        self._create_unique_modes()
+        self._create_unique_ancillas()
+        self._select_global_results()
+
+    def _load_all_results_from_global_file(self):
         with open(self._global_results_file, 'r') as f:
             reader = csv.reader(f)
             next(reader)
@@ -103,10 +114,6 @@ class GlobalResultManager(ABC):
                                                  time_in_seconds=float(row[3]),
                                                  squeezing=strtobool(row[6]),
                                                  number_ancillas=int(row[7])) for row in reader]
-        self._create_unique_alphas()
-        self._create_unique_modes()
-        self._create_unique_ancillas()
-        self._select_global_results()
 
     def _create_unique_alphas(self):
         self._alphas = [result.alpha for result in self._global_results]

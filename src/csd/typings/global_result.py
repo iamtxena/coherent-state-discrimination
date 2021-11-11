@@ -42,6 +42,16 @@ class GlobalResult(NamedTuple):
                 self.squeezing,
                 self.number_ancillas)
 
+    def __eq__(self, other) -> bool:
+        return (self.alpha == other.alpha and
+                self.success_probability == other.success_probability and
+                self.number_modes == other.number_modes and
+                self.time_in_seconds == other.time_in_seconds and
+                self.distance_to_homodyne_probability == other.distance_to_homodyne_probability and
+                self.bit_error_rate == other.bit_error_rate and
+                self.squeezing == other.squeezing and
+                self.number_ancillas == other.number_ancillas)
+
     def __str__(self) -> str:
         return json.dumps({
             "alpha": self.alpha,
