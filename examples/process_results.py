@@ -1,5 +1,6 @@
 from typing import Optional, Union
 from csd.global_result_manager import GlobalResultManager
+import numpy as np
 
 
 def _consolidate_results() -> None:
@@ -33,12 +34,18 @@ def plot_modes_probs(one_alpha: Optional[Union[float, None]] = None) -> None:
 
 
 if __name__ == '__main__':
-    # consolidate_results = True
+    alpha_init = 0.1
+    alpha_end = 1.4
+    number_points_to_plot = 16
+    alpha_step = (alpha_end - alpha_init) / number_points_to_plot
+    alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
+
+    consolidate_results = True
     # # _consolidate_results()
-    # load_results(consolidate_results=consolidate_results)
+    load_results(consolidate_results=consolidate_results)
     # plot_probabilities()
     # plot_distances()
     # plot_bit_error_rates()
     # plot_computation_times()
-    # # plot_modes_probs(one_alpha=0.05)
-    plot_modes_probs()
+    plot_modes_probs(one_alpha=alphas[5])
+    # plot_modes_probs()
