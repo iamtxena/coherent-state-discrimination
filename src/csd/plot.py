@@ -3,6 +3,7 @@
 from abc import ABC
 from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 # from typeguard import typechecked
 from csd.ideal_probabilities import IdealHomodyneProbability, IdealProbabilities
 from csd.typings.global_result import GlobalResult
@@ -82,8 +83,7 @@ class Plot(ABC):
             ax.set_ylim([0, 1])
             ax.set_title(f"$\\alpha$={np.round(one_alpha, 2)}", fontsize=14)
 
-            for prob, label in probs_labels:
-                ax.plot(number_modes, prob, label=label)
+            self._plot_lines_with_appropiate_colors(number_modes, probs_labels, ax)
 
             ax.set_xticks(number_modes)
             ax.legend()
@@ -91,6 +91,38 @@ class Plot(ABC):
             ax.set_ylabel('Average Success Probabilities')
         plt.subplots_adjust(hspace=0.4)
         self._show_or_save_plot(save_plot, fig, "_probs_all")
+
+    def _plot_lines_with_appropiate_colors(self,
+                                           number_modes: List[int],
+                                           probs_labels: List[Tuple[List[float], str]],
+                                           ax: Axes) -> None:
+
+        for prob, label in probs_labels:
+            if label.find('Homodyne') != -1:
+                color = 'black'
+                linestyle = 'solid'
+            if label.find('pSucc Squeez') != -1:
+                linestyle = 'dashed'
+                if label.find('anc:0') != -1:
+                    color = 'red'
+                if label.find('anc:1') != -1:
+                    color = 'darkorange'
+                if label.find('anc:2') != -1:
+                    color = 'gold'
+                if label.find('anc:3') != -1:
+                    color = 'yellowgreen'
+            if label.find('pSucc No Squeez') != -1:
+                linestyle = 'solid'
+                if label.find('anc:0') != -1:
+                    color = 'red'
+                if label.find('anc:1') != -1:
+                    color = 'darkorange'
+                if label.find('anc:2') != -1:
+                    color = 'gold'
+                if label.find('anc:3') != -1:
+                    color = 'yellowgreen'
+
+            ax.plot(number_modes, prob, label=label, color=color, linestyle=linestyle)
 
     def success_probabilities_one_alpha(self,
                                         one_alpha: float,
@@ -144,8 +176,7 @@ class Plot(ABC):
 
         plt.title(f"Avg. Success Probability for $\\alpha$={np.round(one_alpha, 2)}", fontsize=20)
 
-        for prob, label in probs_labels:
-            axes.plot(number_modes, prob, label=label)
+        self._plot_lines_with_appropiate_colors(number_modes, probs_labels, axes)
 
         axes.set_xticks(number_modes)
         plt.legend()
