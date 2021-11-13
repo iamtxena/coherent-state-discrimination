@@ -10,7 +10,7 @@ from csd.plot import Plot
 from csd.util import strtobool
 
 from csd.typings.global_result import GlobalResult
-# from csd.config import logger
+from csd.config import logger
 
 RESULTS_PATH = "results/globals/"
 ALPHAS_PATH = "alphas/"
@@ -83,8 +83,8 @@ class GlobalResultManager(ABC):
                                           success_probability=float(row[1]),
                                           number_modes=int(row[2]),
                                           time_in_seconds=float(row[3]),
-                                          squeezing=strtobool(row[6] if len(row) >= 6 else 'False'),
-                                          number_ancillas=int(row[7] if len(row) >= 7 else 0)) for row in reader]
+                                          squeezing=strtobool(row[6] if len(row) >= 7 else 'False'),
+                                          number_ancillas=int(row[7] if len(row) >= 8 else 0)) for row in reader]
             new_results = self._filter_only_new_results(loaded_results=alpha_results)
             with open(global_results_file, 'a+', newline='') as write_obj:
                 writer = csv.writer(write_obj)
@@ -94,6 +94,7 @@ class GlobalResultManager(ABC):
         return [loaded_result for loaded_result in loaded_results if self._global_results.count(loaded_result) == 0]
 
     def load_results(self, consolidate_results: bool = False) -> None:
+        self._load_all_results_from_global_file()
         if consolidate_results:
             self._consolidate_results()
 
