@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 # from typeguard import typechecked
-from csd.ideal_probabilities import IdealHomodyneProbability, IdealProbabilities
+from csd.ideal_probabilities import IdealHelstromProbability, IdealHomodyneProbability, IdealProbabilities
 from csd.typings.global_result import GlobalResult
 from csd.typings.typing import ResultExecution
 from csd.util import set_current_time, _fix_path, set_friendly_time
@@ -37,6 +37,7 @@ class Plot(ABC):
             # if idx == 9:
             #     break
             homodyne_probabilities = []
+            helstrom_probabilities = []
             squeezed_probabilities = []
             non_squeezed_probabilities = []
 
@@ -44,6 +45,8 @@ class Plot(ABC):
             for number_mode in number_modes:
                 homodyne_probabilities.append(IdealHomodyneProbability(
                     alpha=one_alpha, number_modes=number_mode).homodyne_probability)
+                helstrom_probabilities.append(IdealHelstromProbability(
+                    alpha=one_alpha).helstrom_probability)
                 squeezed_probabilities_mode_i = []
                 non_squeezed_probabilities_mode_i = []
                 for ancilla_i in number_ancillas:
@@ -78,6 +81,7 @@ class Plot(ABC):
                 non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
                 probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
             probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
+            probs_labels.append((helstrom_probabilities, "pSucc Helstrom"))
 
             ax = fig.add_subplot(4, 4, idx + 1 % 4)
             ax.set_ylim([0, 1])
@@ -100,6 +104,9 @@ class Plot(ABC):
         for prob, label in probs_labels:
             if label.find('Homodyne') != -1:
                 color = 'black'
+                linestyle = 'solid'
+            if label.find('Helstrom') != -1:
+                color = 'dimgrey'
                 linestyle = 'solid'
             if label.find('pSucc Squeez') != -1:
                 linestyle = 'dashed'
@@ -132,6 +139,7 @@ class Plot(ABC):
                                         save_plot: Optional[bool] = False) -> None:
         fig, axes = plt.subplots(figsize=[10, 8])
         homodyne_probabilities = []
+        helstrom_probabilities = []
         squeezed_probabilities = []
         non_squeezed_probabilities = []
 
@@ -139,6 +147,8 @@ class Plot(ABC):
         for number_mode in number_modes:
             homodyne_probabilities.append(IdealHomodyneProbability(
                 alpha=one_alpha, number_modes=number_mode).homodyne_probability)
+            helstrom_probabilities.append(IdealHelstromProbability(
+                alpha=one_alpha).helstrom_probability)
             squeezed_probabilities_mode_i = []
             non_squeezed_probabilities_mode_i = []
             for ancilla_i in number_ancillas:
@@ -173,6 +183,7 @@ class Plot(ABC):
             non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
             probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
         probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
+        probs_labels.append((helstrom_probabilities, "pSucc Helstrom"))
 
         plt.title(f"Avg. Success Probability for $\\alpha$={np.round(one_alpha, 2)}", fontsize=20)
 
