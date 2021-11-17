@@ -10,7 +10,7 @@ from csd.plot import Plot
 from csd.util import strtobool
 
 from csd.typings.global_result import GlobalResult
-from csd.config import logger
+# from csd.config import logger
 
 RESULTS_PATH = "results/globals/"
 ALPHAS_PATH = "alphas/"
@@ -131,18 +131,22 @@ class GlobalResultManager(ABC):
         self._number_ancillas = list(set(self._number_ancillas))
         self._number_ancillas.sort()
 
-    def plot_success_probabilities(self, save_plot=False) -> None:
+    def plot_success_probabilities(self,
+                                   save_plot: bool = False,
+                                   interactive_plot: bool = False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
             self.load_results()
-        Plot(alphas=self._alphas).success_probabilities(
+        return Plot(alphas=self._alphas).success_probabilities(
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
-            save_plot=save_plot)
+            save_plot=save_plot,
+            interactive_plot=interactive_plot)
 
-    def plot_distances(self, save_plot=False) -> None:
+    def plot_distances(self, save_plot=False,
+                       interactive_plot: bool = False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
@@ -151,9 +155,11 @@ class GlobalResultManager(ABC):
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
-            save_plot=save_plot)
+            save_plot=save_plot,
+            interactive_plot=interactive_plot)
 
-    def plot_bit_error_rates(self, save_plot=False) -> None:
+    def plot_bit_error_rates(self, save_plot=False,
+                             interactive_plot: bool = False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
@@ -162,9 +168,11 @@ class GlobalResultManager(ABC):
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
-            save_plot=save_plot)
+            save_plot=save_plot,
+            interactive_plot=interactive_plot)
 
-    def plot_computation_times(self, save_plot=False) -> None:
+    def plot_computation_times(self, save_plot=False,
+                               interactive_plot: bool = False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
@@ -173,9 +181,12 @@ class GlobalResultManager(ABC):
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
-            save_plot=save_plot)
+            save_plot=save_plot,
+            interactive_plot=interactive_plot)
 
-    def plot_modes_probs(self, one_alpha: Optional[Union[float, None]] = None, save_plot=False) -> None:
+    def plot_modes_probs(self,
+                         one_alpha: Optional[Union[float, None]] = None,
+                         save_plot=False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):

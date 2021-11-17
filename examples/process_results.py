@@ -42,10 +42,10 @@ if __name__ == '__main__':
 
     consolidate_results = True
     # # _consolidate_results()
-    load_results(consolidate_results=consolidate_results)
-    # plot_probabilities()
-    # plot_distances()
-    # plot_bit_error_rates()
-    # plot_computation_times()
+    # load_results(consolidate_results=consolidate_results)
+    plot_probabilities()
+    plot_distances()
+    plot_bit_error_rates()
+    plot_computation_times()
     plot_modes_probs(one_alpha=alphas[5])
-    # plot_modes_probs()
+    plot_modes_probs()

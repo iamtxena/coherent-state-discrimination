@@ -199,7 +199,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(1)
+    pool = Pool(2)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -270,15 +270,15 @@ if __name__ == '__main__':
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     # alphas = alphas[12:]
-    one_alpha = alphas[5]
-    alphas = [one_alpha]
+    # one_alpha = alphas[0]
+    # alphas = [one_alpha]
 
     learning_steps = LearningSteps(default=60, high=60, extreme=1000)
     learning_rate = LearningRate(default=0.1, high=0.01, extreme=0.001)
-    cutoff_dim = CutOffDimensions(default=7, high=15, extreme=30)
+    cutoff_dim = CutOffDimensions(default=10, high=15, extreme=30)
     number_input_modes = 3
     number_ancillas = 1
-    squeezing = False
+    squeezing = True
 
     batch_size = 2**number_input_modes
     shots = 100
