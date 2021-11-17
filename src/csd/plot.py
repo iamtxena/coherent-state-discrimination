@@ -238,7 +238,7 @@ class Plot(ABC):
                                  xlabel: str,
                                  ylabel: str,
                                  suffix=None) -> None:
-        wide = 18 if interactive_plot else 15
+        wide = 16 if interactive_plot else 15
         fig, axes = plt.subplots(figsize=[wide, 8])
         plt.subplots_adjust(left=0.3)
 
@@ -252,20 +252,21 @@ class Plot(ABC):
             plt_line, = axes.plot(line[0], line[1], label=line[2], color=line[3], linestyle=line[4])
             plt_lines.append(plt_line)
 
-        plt.legend(fancybox=True, shadow=True, bbox_to_anchor=(-0.1, 1), loc='upper right', ncol=1)
+        plt.legend(fancybox=True, shadow=True, bbox_to_anchor=(-0.055, 1), loc='upper right', ncol=1)
 
         if interactive_plot:
             fig.patch.set_facecolor('grey')
-            fig.patch.set_alpha(0.0)
+            fig.patch.set_alpha(0.1)
             axes.patch.set_facecolor('grey')
-            axes.patch.set_alpha(0.0)
-            plt.subplots_adjust(left=0.3)
+            axes.patch.set_alpha(0.1)
             rax = plt.axes([0.0, 0.65, 0.1, 0.2])
             rax.set_facecolor('grey')
-            rax.patch.set_alpha(0.0)
+            rax.patch.set_alpha(0.1)
             labels = ["mode_1", "mode_2", "mode_3", "mode_4", "mode_5",
                       "Ancillas: 0", "Ancillas: 1", "Squeezing: True", "Squeezing: False"]
             labels_activated = [False, False, False, False, False, False, False, False, False]
+            [line.set_visible(False) for line in plt_lines if 'mode' in str(
+                line.get_label()) or 'pHom' in str(line.get_label())]
             check = CheckButtons(rax, labels, labels_activated)
 
             check.on_clicked(lambda x: self._interactive_plot(x, check, plt_lines, labels))
@@ -280,7 +281,7 @@ class Plot(ABC):
         plt.show()
 
     def _interactive_plot(self, label: str, input_check, input_plt_lines, input_labels) -> None:
-        # index = labels.index(label)
+
         label_checks = input_check.get_status()
         ancilla_0 = label_checks[-4]
         ancilla_1 = label_checks[-3]
