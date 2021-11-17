@@ -254,6 +254,7 @@ def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration) ->
 
 def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
     os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+    # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
     backend = Backends.TENSORFLOW
     measuring_type = MeasuringTypes.PROBABILITIES

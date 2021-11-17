@@ -30,24 +30,25 @@ class Plot(ABC):
                                          number_modes: List[int],
                                          number_ancillas: List[int],
                                          global_results: List[GlobalResult],
-                                         save_plot: Optional[bool] = False) -> None:
+                                         save_plot: Optional[bool] = False,
+                                         apply_log: Optional[bool] = False,
+                                         squeezing: Optional[bool] = True,
+                                         non_squeezing: Optional[bool] = False,
+                                         plot_ancillas: Optional[bool] = False) -> None:
         fig = plt.figure(figsize=(25, 20))
-        fig.suptitle("Average Success Probability", fontsize=20)
+        fig.suptitle("Average Success Probability" if not apply_log else "Success Probability decreasing rate",
+                     fontsize=20)
 
         for idx, one_alpha in enumerate(self._alphas):
-            # if idx == 9:
-            #     break
-            homodyne_probabilities = []
-            helstrom_probabilities = []
+            homodyne_probabilities: List[float] = []
+            helstrom_probabilities: List[float] = []
             squeezed_probabilities = []
             non_squeezed_probabilities = []
 
             probs_labels = []
             for number_mode in number_modes:
-                homodyne_probabilities.append(IdealHomodyneProbability(
-                    alpha=one_alpha, number_modes=number_mode).homodyne_probability)
-                helstrom_probabilities.append(IdealHelstromProbability(
-                    alpha=one_alpha).helstrom_probability)
+                self._compute_hels_homo_probs(apply_log, one_alpha, homodyne_probabilities,
+                                              helstrom_probabilities, number_mode)
                 squeezed_probabilities_mode_i = []
                 non_squeezed_probabilities_mode_i = []
                 for ancilla_i in number_ancillas:
@@ -77,10 +78,13 @@ class Plot(ABC):
                 non_squeezed_probabilities.append(non_squeezed_probabilities_mode_i)
 
             for ancilla_i in number_ancillas:
-                sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
-                probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
-                non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
-                probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
+                if plot_ancillas or (not plot_ancillas and ancilla_i == 0):
+                    sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
+                    if squeezing:
+                        probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
+                    non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
+                    if non_squeezing:
+                        probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
             probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
             probs_labels.append((helstrom_probabilities, "pSucc Helstrom"))
 
@@ -93,10 +97,27 @@ class Plot(ABC):
             ax.set_xticks(number_modes)
             ax.legend()
             ax.set_xlabel('number modes')
-            ax.set_ylabel('Average Success Probabilities')
+            ax.set_ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
+            ax.patch.set_facecolor('silver')
+            ax.patch.set_alpha(0.7)
         plt.subplots_adjust(hspace=0.4)
+        fig.patch.set_facecolor('grey')
+        fig.patch.set_alpha(0.7)
+        suffix = "_probs_all" if not apply_log else "_logs_probs_all"
         self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
-                                suffix="_probs_all", fig=fig)
+                                suffix=suffix, fig=fig)
+
+    def _compute_hels_homo_probs(self,
+                                 apply_log, one_alpha,
+                                 homodyne_probabilities,
+                                 helstrom_probabilities,
+                                 number_mode):
+        homodyne_probability = IdealHomodyneProbability(
+            alpha=one_alpha, number_modes=number_mode).homodyne_probability
+        helstrom_probability = IdealHelstromProbability(
+            alpha=one_alpha).helstrom_probability
+        homodyne_probabilities.append(homodyne_probability if not apply_log else np.abs(np.log(homodyne_probability)))
+        helstrom_probabilities.append(helstrom_probability if not apply_log else np.abs(np.log(helstrom_probability)))
 
     def _plot_lines_with_appropiate_colors(self,
                                            number_modes: List[int],
@@ -111,7 +132,7 @@ class Plot(ABC):
                 color = 'dimgrey'
                 linestyle = 'solid'
             if label.find('pSucc Squeez') != -1:
-                linestyle = 'dashed'
+                linestyle = 'solid'
                 if label.find('anc:0') != -1:
                     color = 'red'
                 if label.find('anc:1') != -1:
@@ -121,7 +142,7 @@ class Plot(ABC):
                 if label.find('anc:3') != -1:
                     color = 'yellowgreen'
             if label.find('pSucc No Squeez') != -1:
-                linestyle = 'solid'
+                linestyle = 'dashed'
                 if label.find('anc:0') != -1:
                     color = 'red'
                 if label.find('anc:1') != -1:
@@ -138,19 +159,21 @@ class Plot(ABC):
                                         number_modes: List[int],
                                         number_ancillas: List[int],
                                         global_results: List[GlobalResult],
-                                        save_plot: Optional[bool] = False) -> None:
+                                        save_plot: Optional[bool] = False,
+                                        apply_log: Optional[bool] = False,
+                                        squeezing: Optional[bool] = True,
+                                        non_squeezing: Optional[bool] = False,
+                                        plot_ancillas: Optional[bool] = False) -> None:
         fig, axes = plt.subplots(figsize=[10, 8])
-        homodyne_probabilities = []
-        helstrom_probabilities = []
+        homodyne_probabilities: List[float] = []
+        helstrom_probabilities: List[float] = []
         squeezed_probabilities = []
         non_squeezed_probabilities = []
 
         probs_labels = []
         for number_mode in number_modes:
-            homodyne_probabilities.append(IdealHomodyneProbability(
-                alpha=one_alpha, number_modes=number_mode).homodyne_probability)
-            helstrom_probabilities.append(IdealHelstromProbability(
-                alpha=one_alpha).helstrom_probability)
+            self._compute_hels_homo_probs(apply_log, one_alpha, homodyne_probabilities,
+                                          helstrom_probabilities, number_mode)
             squeezed_probabilities_mode_i = []
             non_squeezed_probabilities_mode_i = []
             for ancilla_i in number_ancillas:
@@ -180,23 +203,34 @@ class Plot(ABC):
             non_squeezed_probabilities.append(non_squeezed_probabilities_mode_i)
 
         for ancilla_i in number_ancillas:
-            sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
-            probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
-            non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
-            probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
+            if plot_ancillas or (not plot_ancillas and ancilla_i == 0):
+                sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
+                if squeezing:
+                    probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
+                non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
+                if non_squeezing:
+                    probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
         probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
         probs_labels.append((helstrom_probabilities, "pSucc Helstrom"))
-
-        plt.title(f"Avg. Success Probability for $\\alpha$={np.round(one_alpha, 2)}", fontsize=20)
+        title = (f"Avg. Success Probability for $\\alpha$={np.round(one_alpha, 2)}"
+                 if not apply_log else
+                 f"Success Probability decreasing rate for $\\alpha$={np.round(one_alpha, 2)}")
+        plt.title(title, fontsize=20)
+        fig.patch.set_facecolor('grey')
+        fig.patch.set_alpha(0.7)
+        axes.patch.set_facecolor('silver')
+        axes.patch.set_alpha(0.7)
 
         self._plot_lines_with_appropiate_colors(number_modes, probs_labels, axes)
 
         axes.set_xticks(number_modes)
         plt.legend()
         plt.xlabel('number modes')
-        plt.ylabel('Average Success Probabilities')
+        plt.ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
+        suffix = (f"_probs_{str(np.round(one_alpha, 2))}"
+                  if not apply_log else f"_logs_probs_{str(np.round(one_alpha, 2))}")
         self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
-                                suffix=f"_probs_{str(np.round(one_alpha, 2))}", fig=fig)
+                                suffix=suffix, fig=fig)
 
     def success_probabilities(self,
                               number_modes: List[int],
@@ -467,23 +501,23 @@ class Plot(ABC):
                 if label.find('1') != -1:
                     linestyle = 'solid'
                 if label.find('2') != -1:
-                    linestyle = 'dashed'
+                    linestyle = 'dashdot'
                 if label.find('3') != -1:
-                    linestyle = 'dashdot'
+                    linestyle = 'dotted'
                 if label.find('4') != -1:
-                    linestyle = 'dotted'
+                    linestyle = 'solid'
                 if label.find('5') != -1:
-                    linestyle = 'solid'
-                if label.find('6') != -1:
-                    linestyle = 'dashed'
-                if label.find('7') != -1:
                     linestyle = 'dashdot'
-                if label.find('8') != -1:
+                if label.find('6') != -1:
                     linestyle = 'dotted'
-                if label.find('9') != -1:
+                if label.find('7') != -1:
                     linestyle = 'solid'
+                if label.find('8') != -1:
+                    linestyle = 'dashdot'
+                if label.find('9') != -1:
+                    linestyle = 'dotted'
                 if label.find('10') != -1:
-                    linestyle = 'dashed'
+                    linestyle = 'solid'
                 if label.find('11') != -1:
                     linestyle = 'dashdot'
                 if label.find('12') != -1:
@@ -493,7 +527,7 @@ class Plot(ABC):
                 linestyle = 'solid'
             if label.find('pKenOp') != -1:
                 color = 'silver'
-                linestyle = 'dashed'
+                linestyle = 'dashdot'
             if label.find('pTF') != -1:
                 color = 'red'
                 linestyle = 'solid'
@@ -504,9 +538,9 @@ class Plot(ABC):
                 color = 'blue'
                 linestyle = 'solid'
             if label.find('squeez:False') != -1:
-                linestyle = 'solid'
-            if label.find('squeez:True') != -1:
                 linestyle = 'dashed'
+            if label.find('squeez:True') != -1:
+                linestyle = 'solid'
             if label.find('mode_1') != -1:
                 if label.find('anc:0') != -1:
                     color = 'red'
@@ -597,7 +631,6 @@ class Plot(ABC):
                     color = 'paleovioletred'
                 if label.find('anc:3') != -1:
                     color = 'lightpink'
-            # line, = axes.plot(self._alphas, prob, label=label, color=color, linestyle=linestyle)
             line = [self._alphas, prob, label, color, linestyle]
             lines.append(line)
         return lines

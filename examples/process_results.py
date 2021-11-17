@@ -29,8 +29,8 @@ def plot_computation_times() -> None:
     GlobalResultManager().plot_computation_times(save_plot=True)
 
 
-def plot_modes_probs(one_alpha: Optional[Union[float, None]] = None) -> None:
-    GlobalResultManager().plot_modes_probs(one_alpha=one_alpha, save_plot=True)
+def plot_modes_probs(one_alpha: Optional[Union[float, None]] = None, apply_log=False) -> None:
+    GlobalResultManager().plot_modes_probs(one_alpha=one_alpha, save_plot=True, apply_log=apply_log)
 
 
 if __name__ == '__main__':
@@ -48,4 +48,6 @@ if __name__ == '__main__':
     plot_bit_error_rates()
     plot_computation_times()
     plot_modes_probs(one_alpha=alphas[5])
+    plot_modes_probs(one_alpha=alphas[5], apply_log=True)
     plot_modes_probs()
+    plot_modes_probs(apply_log=True)
