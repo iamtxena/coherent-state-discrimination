@@ -478,7 +478,7 @@ class Plot(ABC):
         self._plot_computed_variables(lines=self._set_plot_lines(probs_labels=executions_probs_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
-                                      title="Computation Time Results",
+                                      title="Average Success Probabilities",
                                       xlabel='alpha values',
                                       ylabel='Average Success Probabilities',
                                       suffix="")
