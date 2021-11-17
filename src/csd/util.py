@@ -109,8 +109,8 @@ def generate_all_codewords(word_size: int, alpha_value: float) -> List[CodeWord]
 def estimate_remaining_time(total_iterations: int, current_iteration: int, init_time: float) -> str:
     now = time()
     current_computation_time = now - init_time
-    return ('Estimated remaining time: ' +
-            f'{set_friendly_time(time_interval=total_iterations * current_computation_time / current_iteration)}')
+    time_interval = (total_iterations - current_iteration) * current_computation_time / current_iteration
+    return (f'Estimated remaining time: {set_friendly_time(time_interval=time_interval)}')
 
 
 def strtobool(val: str) -> bool:
