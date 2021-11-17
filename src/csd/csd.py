@@ -306,7 +306,7 @@ class CSD(ABC):
 
         current_cutoff = self._cutoff_dim.default
 
-        if self._alpha_value > 0.5:
+        if self._alpha_value > 0.6:
             current_cutoff = self._cutoff_dim.high
         if self._alpha_value > 1.2:
             current_cutoff = self._cutoff_dim.extreme
