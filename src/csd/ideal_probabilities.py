@@ -31,7 +31,7 @@ class IdealProbabilities(ABC):
 
     @property
     def p_hels(self) -> Tuple[List[float], str]:
-        return (self._p_hels, "pHel(a)")
+        return (self._p_hels, f'$pHel(a)^{self._number_modes}$')
 
     @property
     def p_ken_op(self) -> Tuple[List[float], str]:

@@ -95,7 +95,7 @@ class Plot(ABC):
             self._plot_lines_with_appropiate_colors(number_modes, probs_labels, ax)
 
             ax.set_xticks(number_modes)
-            ax.legend()
+            ax.legend(facecolor='silver', framealpha=0.7)
             ax.set_xlabel('number modes')
             ax.set_ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
             ax.patch.set_facecolor('silver')
@@ -225,7 +225,7 @@ class Plot(ABC):
 
         axes.set_xticks(number_modes)
         # axes.set_ylim([0, 1]) if not apply_log else axes.set_ylim([-1, 0])
-        plt.legend()
+        plt.legend(facecolor='silver', framealpha=0.7)
         plt.xlabel('number modes')
         plt.ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
         suffix = (f"_probs_{str(np.round(one_alpha, 2))}"
@@ -239,10 +239,12 @@ class Plot(ABC):
                               global_results: List[GlobalResult],
                               save_plot: Optional[bool] = False,
                               interactive_plot: Optional[bool] = False) -> None:
-        probs_labels = [self._ideal_probabilities.p_hels]
+        probs_labels = []
         squeezing_options = [False, True]
         for number_mode in number_modes:
+            probs_labels.append(IdealProbabilities(alphas=self._alphas, number_modes=number_mode).p_hels)
             for squeezing_option in squeezing_options:
+
                 for number_ancilla in number_ancillas:
                     probs = [global_result.success_probability
                              for global_result in global_results
@@ -287,7 +289,8 @@ class Plot(ABC):
             plt_line, = axes.plot(line[0], line[1], label=line[2], color=line[3], linestyle=line[4])
             plt_lines.append(plt_line)
 
-        plt.legend(fancybox=True, shadow=True, bbox_to_anchor=(-0.055, 1), loc='upper right', ncol=1)
+        plt.legend(fancybox=True, bbox_to_anchor=(-0.3, 1.01), loc='upper left',
+                   ncol=1, facecolor='silver', framealpha=0.7, fontsize='small')
 
         if interactive_plot:
             fig.patch.set_facecolor('grey')
@@ -295,13 +298,13 @@ class Plot(ABC):
             axes.patch.set_facecolor('grey')
             axes.patch.set_alpha(0.1)
             rax = plt.axes([0.0, 0.65, 0.1, 0.2])
-            rax.set_facecolor('grey')
-            rax.patch.set_alpha(0.1)
+            rax.set_facecolor('silver')
+            rax.patch.set_alpha(0.7)
             labels = ["mode_1", "mode_2", "mode_3", "mode_4", "mode_5",
                       "Ancillas: 0", "Ancillas: 1", "Squeezing: True", "Squeezing: False"]
             labels_activated = [False, False, False, False, False, False, False, False, False]
             [line.set_visible(False) for line in plt_lines if 'mode' in str(
-                line.get_label()) or 'pHom' in str(line.get_label())]
+                line.get_label()) or 'pHom' in str(line.get_label()) or 'pHel' in str(line.get_label())]
             check = CheckButtons(rax, labels, labels_activated)
 
             check.on_clicked(lambda x: self._interactive_plot(x, check, plt_lines, labels))
@@ -337,16 +340,8 @@ class Plot(ABC):
                 if (squeezing_false and label in line_label and 'squeez:False' in line_label and
                         ancilla_1 and 'anc:1' in line_label):
                     line.set_visible(not line.get_visible())
-                if '_1' in label and 'Hom' in line_label and '1' in line_label:
-                    line.set_visible(not line.get_visible())
-                if '_2' in label and 'Hom' in line_label and '2' in line_label:
-                    line.set_visible(not line.get_visible())
-                if '_3' in label and 'Hom' in line_label and '3' in line_label:
-                    line.set_visible(not line.get_visible())
-                if '_4' in label and 'Hom' in line_label and '4' in line_label:
-                    line.set_visible(not line.get_visible())
-                if '_5' in label and 'Hom' in line_label and '5' in line_label:
-                    line.set_visible(not line.get_visible())
+                self._ideal_prob_visibility(label, line, line_label, 'Hom')
+                self._ideal_prob_visibility(label, line, line_label, 'Hel')
         if 'Squeezing' in label:
             squeez_text = 'squeez:True' if 'Squeezing: True' in label else 'squeez:False'
             for index, label_check in enumerate(label_checks):
@@ -375,6 +370,18 @@ class Plot(ABC):
                             line.set_visible(not line.get_visible())
 
         plt.draw()
+
+    def _ideal_prob_visibility(self, label, line, line_label, ideal_label):
+        if '_1' in label and ideal_label in line_label and '1' in line_label:
+            line.set_visible(not line.get_visible())
+        if '_2' in label and ideal_label in line_label and '2' in line_label:
+            line.set_visible(not line.get_visible())
+        if '_3' in label and ideal_label in line_label and '3' in line_label:
+            line.set_visible(not line.get_visible())
+        if '_4' in label and ideal_label in line_label and '4' in line_label:
+            line.set_visible(not line.get_visible())
+        if '_5' in label and ideal_label in line_label and '5' in line_label:
+            line.set_visible(not line.get_visible())
 
     def distances(self,
                   number_modes: List[int],
@@ -499,33 +506,10 @@ class Plot(ABC):
             prob.extend([0.0] * (len(self._alphas) - len(prob)))
             if label.find('pHom') != -1:
                 color = 'black'
-                if label.find('1') != -1:
-                    linestyle = 'solid'
-                if label.find('2') != -1:
-                    linestyle = 'dashdot'
-                if label.find('3') != -1:
-                    linestyle = 'dotted'
-                if label.find('4') != -1:
-                    linestyle = 'solid'
-                if label.find('5') != -1:
-                    linestyle = 'dashdot'
-                if label.find('6') != -1:
-                    linestyle = 'dotted'
-                if label.find('7') != -1:
-                    linestyle = 'solid'
-                if label.find('8') != -1:
-                    linestyle = 'dashdot'
-                if label.find('9') != -1:
-                    linestyle = 'dotted'
-                if label.find('10') != -1:
-                    linestyle = 'solid'
-                if label.find('11') != -1:
-                    linestyle = 'dashdot'
-                if label.find('12') != -1:
-                    linestyle = 'dotted'
+                linestyle = self._ideal_probs_style_lines(label)
             if label.find('pHel') != -1:
                 color = 'dimgrey'
-                linestyle = 'solid'
+                linestyle = self._ideal_probs_style_lines(label)
             if label.find('pKenOp') != -1:
                 color = 'silver'
                 linestyle = 'dashdot'
@@ -635,3 +619,30 @@ class Plot(ABC):
             line = [self._alphas, prob, label, color, linestyle]
             lines.append(line)
         return lines
+
+    def _ideal_probs_style_lines(self, label) -> str:
+        if label.find('1') != -1:
+            linestyle = 'solid'
+        if label.find('2') != -1:
+            linestyle = 'dashdot'
+        if label.find('3') != -1:
+            linestyle = 'dotted'
+        if label.find('4') != -1:
+            linestyle = 'solid'
+        if label.find('5') != -1:
+            linestyle = 'dashdot'
+        if label.find('6') != -1:
+            linestyle = 'dotted'
+        if label.find('7') != -1:
+            linestyle = 'solid'
+        if label.find('8') != -1:
+            linestyle = 'dashdot'
+        if label.find('9') != -1:
+            linestyle = 'dotted'
+        if label.find('10') != -1:
+            linestyle = 'solid'
+        if label.find('11') != -1:
+            linestyle = 'dashdot'
+        if label.find('12') != -1:
+            linestyle = 'dotted'
+        return linestyle
