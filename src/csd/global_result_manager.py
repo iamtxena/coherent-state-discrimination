@@ -231,7 +231,7 @@ class GlobalResultManager(ABC):
                             self._selected_global_results.append(min_result)
                             self._selected_log_global_results.append(
                                 GlobalResult(alpha=min_result.alpha,
-                                             success_probability=np.abs(np.log(min_result.success_probability)),
+                                             success_probability=np.log(min_result.success_probability),
                                              number_modes=min_result.number_modes,
                                              time_in_seconds=min_result.time_in_seconds,
                                              squeezing=min_result.squeezing,

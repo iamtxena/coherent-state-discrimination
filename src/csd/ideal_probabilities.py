@@ -10,8 +10,8 @@ def compute_homodyne_probability(a: float, number_modes: int):
     return ((1 + math.erf(math.sqrt(2) * a)) / 2)**number_modes
 
 
-def compute_helstrom_probability(a: float) -> float:
-    return (1 + math.sqrt(1 - math.exp(-4 * a**2))) / 2
+def compute_helstrom_probability(a: float, number_modes: int) -> float:
+    return ((1 + math.sqrt(1 - math.exp(-4 * a**2))) / 2)**number_modes
 
 
 class IdealProbabilities(ABC):
@@ -41,7 +41,7 @@ class IdealProbabilities(ABC):
         return compute_homodyne_probability(a, number_modes=self._number_modes)
 
     def _prob_helstrom(self, a: float) -> float:
-        return compute_helstrom_probability(a)
+        return compute_helstrom_probability(a, number_modes=self._number_modes)
 
     def _p_zero(self, a: float) -> float:
         return math.exp(-a**2)
@@ -71,7 +71,8 @@ class IdealHomodyneProbability(NamedTuple):
 
 class IdealHelstromProbability(NamedTuple):
     alpha: float
+    number_modes: int
 
     @property
     def helstrom_probability(self) -> float:
-        return compute_helstrom_probability(a=self.alpha)
+        return compute_helstrom_probability(a=self.alpha, number_modes=self.number_modes)

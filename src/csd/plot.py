@@ -89,7 +89,7 @@ class Plot(ABC):
             probs_labels.append((helstrom_probabilities, "pSucc Helstrom"))
 
             ax = fig.add_subplot(4, 4, idx + 1 % 4)
-            ax.set_ylim([0, 1])
+            # ax.set_ylim([0, 1])
             ax.set_title(f"$\\alpha$={np.round(one_alpha, 2)}", fontsize=14)
 
             self._plot_lines_with_appropiate_colors(number_modes, probs_labels, ax)
@@ -115,9 +115,9 @@ class Plot(ABC):
         homodyne_probability = IdealHomodyneProbability(
             alpha=one_alpha, number_modes=number_mode).homodyne_probability
         helstrom_probability = IdealHelstromProbability(
-            alpha=one_alpha).helstrom_probability
-        homodyne_probabilities.append(homodyne_probability if not apply_log else np.abs(np.log(homodyne_probability)))
-        helstrom_probabilities.append(helstrom_probability if not apply_log else np.abs(np.log(helstrom_probability)))
+            alpha=one_alpha, number_modes=number_mode).helstrom_probability
+        homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
+        helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
 
     def _plot_lines_with_appropiate_colors(self,
                                            number_modes: List[int],
