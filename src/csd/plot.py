@@ -89,7 +89,7 @@ class Plot(ABC):
             probs_labels.append((helstrom_probabilities, "pSucc Helstrom"))
 
             ax = fig.add_subplot(4, 4, idx + 1 % 4)
-            # ax.set_ylim([0, 1])
+            # ax.set_ylim([0, 1]) if not apply_log else ax.set_ylim([-1, 0])
             ax.set_title(f"$\\alpha$={np.round(one_alpha, 2)}", fontsize=14)
 
             self._plot_lines_with_appropiate_colors(number_modes, probs_labels, ax)
@@ -224,6 +224,7 @@ class Plot(ABC):
         self._plot_lines_with_appropiate_colors(number_modes, probs_labels, axes)
 
         axes.set_xticks(number_modes)
+        # axes.set_ylim([0, 1]) if not apply_log else axes.set_ylim([-1, 0])
         plt.legend()
         plt.xlabel('number modes')
         plt.ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
