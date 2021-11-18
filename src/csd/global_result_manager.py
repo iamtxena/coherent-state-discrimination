@@ -187,7 +187,8 @@ class GlobalResultManager(ABC):
     def plot_modes_probs(self,
                          one_alpha: Optional[Union[float, None]] = None,
                          save_plot=False,
-                         apply_log=False) -> None:
+                         apply_log=False,
+                         interactive_plot: bool = False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
@@ -200,7 +201,8 @@ class GlobalResultManager(ABC):
                 number_ancillas=self._number_ancillas,
                 global_results=(self._selected_global_results if not apply_log else self._selected_log_global_results),
                 save_plot=save_plot,
-                apply_log=apply_log)
+                apply_log=apply_log,
+                interactive_plot=interactive_plot)
             return
 
         Plot(alphas=self._alphas).success_probabilities_all_alphas(
@@ -208,7 +210,8 @@ class GlobalResultManager(ABC):
             number_ancillas=self._number_ancillas,
             global_results=(self._selected_global_results if not apply_log else self._selected_log_global_results),
             save_plot=save_plot,
-            apply_log=apply_log)
+            apply_log=apply_log,
+            interactive_plot=interactive_plot)
 
     def _select_global_results(self) -> None:
         self._selected_global_results = []

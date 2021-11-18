@@ -3,7 +3,6 @@
 from abc import ABC
 from typing import List, Optional, Tuple
 import matplotlib.pyplot as plt
-from matplotlib.axes import Axes
 from matplotlib.widgets import CheckButtons
 # from typeguard import typechecked
 from csd.ideal_probabilities import IdealHelstromProbability, IdealHomodyneProbability, IdealProbabilities
@@ -34,7 +33,8 @@ class Plot(ABC):
                                          apply_log: Optional[bool] = False,
                                          squeezing: Optional[bool] = True,
                                          non_squeezing: Optional[bool] = False,
-                                         plot_ancillas: Optional[bool] = False) -> None:
+                                         plot_ancillas: Optional[bool] = False,
+                                         interactive_plot: Optional[bool] = False) -> None:
         fig = plt.figure(figsize=(25, 20))
         fig.suptitle("Average Success Probability" if not apply_log else "Success Probability decreasing rate",
                      fontsize=20)
@@ -92,7 +92,12 @@ class Plot(ABC):
             # ax.set_ylim([0, 1]) if not apply_log else ax.set_ylim([-1, 0])
             ax.set_title(f"$\\alpha$={np.round(one_alpha, 2)}", fontsize=14)
 
-            self._plot_lines_with_appropiate_colors(number_modes, probs_labels, ax)
+            lines = self._plot_lines_with_appropiate_colors(number_modes, probs_labels)
+            new_lines = lines.copy()
+            plt_lines = []
+            for line in new_lines:
+                plt_line, = ax.plot(line[0], line[1], label=line[2], color=line[3], linestyle=line[4])
+                plt_lines.append(plt_line)
 
             ax.set_xticks(number_modes)
             ax.legend(facecolor='silver', framealpha=0.7)
@@ -121,9 +126,9 @@ class Plot(ABC):
 
     def _plot_lines_with_appropiate_colors(self,
                                            number_modes: List[int],
-                                           probs_labels: List[Tuple[List[float], str]],
-                                           ax: Axes) -> None:
+                                           probs_labels: List[Tuple[List[float], str]]) -> List[List[object]]:
 
+        lines = []
         for prob, label in probs_labels:
             if label.find('Homodyne') != -1:
                 color = 'black'
@@ -151,8 +156,9 @@ class Plot(ABC):
                     color = 'gold'
                 if label.find('anc:3') != -1:
                     color = 'yellowgreen'
-
-            ax.plot(number_modes, prob, label=label, color=color, linestyle=linestyle)
+            line = [number_modes, prob, label, color, linestyle]
+            lines.append(line)
+        return lines
 
     def success_probabilities_one_alpha(self,
                                         one_alpha: float,
@@ -161,10 +167,7 @@ class Plot(ABC):
                                         global_results: List[GlobalResult],
                                         save_plot: Optional[bool] = False,
                                         apply_log: Optional[bool] = False,
-                                        squeezing: Optional[bool] = True,
-                                        non_squeezing: Optional[bool] = False,
-                                        plot_ancillas: Optional[bool] = False) -> None:
-        fig, axes = plt.subplots(figsize=[10, 8])
+                                        interactive_plot: Optional[bool] = False) -> None:
         homodyne_probabilities: List[float] = []
         helstrom_probabilities: List[float] = []
         squeezed_probabilities = []
@@ -203,35 +206,45 @@ class Plot(ABC):
             non_squeezed_probabilities.append(non_squeezed_probabilities_mode_i)
 
         for ancilla_i in number_ancillas:
-            if plot_ancillas or (not plot_ancillas and ancilla_i == 0):
-                sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
-                if squeezing:
-                    probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
-                non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
-                if non_squeezing:
-                    probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
+            sq_prob_ancilla_i = [sq_prob.pop(0) for sq_prob in squeezed_probabilities]
+            probs_labels.append((sq_prob_ancilla_i, f"pSucc Squeez anc:{ancilla_i}"))
+            non_sq_prob_ancilla_i = [non_sq_prob.pop(0) for non_sq_prob in non_squeezed_probabilities]
+            probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
         probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
         probs_labels.append((helstrom_probabilities, "pSucc Helstrom"))
         title = (f"Avg. Success Probability for $\\alpha$={np.round(one_alpha, 2)}"
                  if not apply_log else
                  f"Success Probability decreasing rate for $\\alpha$={np.round(one_alpha, 2)}")
-        plt.title(title, fontsize=20)
-        fig.patch.set_facecolor('grey')
-        fig.patch.set_alpha(0.7)
-        axes.patch.set_facecolor('silver')
-        axes.patch.set_alpha(0.7)
+        # fig, axes = plt.subplots(figsize=[10, 8])
+        # plt.title(title, fontsize=20)
+        # fig.patch.set_facecolor('grey')
+        # fig.patch.set_alpha(0.7)
+        # axes.patch.set_facecolor('silver')
+        # axes.patch.set_alpha(0.7)
 
-        self._plot_lines_with_appropiate_colors(number_modes, probs_labels, axes)
+        # lines = self._plot_lines_with_appropiate_colors(number_modes, probs_labels, axes)
 
-        axes.set_xticks(number_modes)
-        # axes.set_ylim([0, 1]) if not apply_log else axes.set_ylim([-1, 0])
-        plt.legend(facecolor='silver', framealpha=0.7)
-        plt.xlabel('number modes')
-        plt.ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
+        # axes.set_xticks(number_modes)
+        # # axes.set_ylim([0, 1]) if not apply_log else axes.set_ylim([-1, 0])
+        # plt.legend(facecolor='silver', framealpha=0.7)
+        # plt.xlabel('number modes')
+        # plt.ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
+
+        # self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
+        #                         suffix=suffix, fig=fig)
         suffix = (f"_probs_{str(np.round(one_alpha, 2))}"
                   if not apply_log else f"_logs_probs_{str(np.round(one_alpha, 2))}")
-        self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
-                                suffix=suffix, fig=fig)
+        self._plot_computed_variables(wide=10,
+                                      lines=self._plot_lines_with_appropiate_colors(number_modes, probs_labels),
+                                      save_plot=save_plot if save_plot is not None else False,
+                                      interactive_plot=interactive_plot if interactive_plot is not None else False,
+                                      title=title,
+                                      xlabel='number modes',
+                                      ylabel=('Average Success Probabilities'
+                                              if not apply_log else 'Success Probability decreasing rate'),
+                                      suffix=suffix,
+                                      xtics=number_modes,
+                                      specific_alphas=True)
 
     def success_probabilities(self,
                               number_modes: List[int],
@@ -259,7 +272,8 @@ class Plot(ABC):
                     probs_labels.append(one_prob_label)
             probs_labels.append(IdealProbabilities(alphas=self._alphas, number_modes=number_mode).p_homos)
 
-        self._plot_computed_variables(lines=self._set_plot_lines(probs_labels=probs_labels),
+        self._plot_computed_variables(wide=16 if interactive_plot else 15,
+                                      lines=self._set_plot_lines(probs_labels=probs_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
                                       title="Average Success Probability Results",
@@ -268,17 +282,19 @@ class Plot(ABC):
                                       suffix="_probs")
 
     def _plot_computed_variables(self,
+                                 wide: int,
                                  lines: List[plt.Line2D],
                                  save_plot: bool,
                                  interactive_plot: bool,
                                  title: str,
                                  xlabel: str,
                                  ylabel: str,
-                                 suffix=None) -> None:
+                                 suffix=None,
+                                 xtics: List[int] = None,
+                                 specific_alphas: bool = False) -> None:
         wide = 16 if interactive_plot else 15
         fig, axes = plt.subplots(figsize=[wide, 8])
         plt.subplots_adjust(left=0.3)
-
         plt.title(title, fontsize=20)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
@@ -291,25 +307,41 @@ class Plot(ABC):
 
         plt.legend(fancybox=True, bbox_to_anchor=(-0.3, 1.01), loc='upper left',
                    ncol=1, facecolor='silver', framealpha=0.7, fontsize='small')
-
+        fig.patch.set_facecolor('grey')
+        fig.patch.set_alpha(0.1)
+        axes.patch.set_facecolor('grey')
+        axes.patch.set_alpha(0.1)
+        if xtics is not None:
+            axes.set_xticks(xtics)
         if interactive_plot:
-            fig.patch.set_facecolor('grey')
-            fig.patch.set_alpha(0.1)
-            axes.patch.set_facecolor('grey')
-            axes.patch.set_alpha(0.1)
-            rax = plt.axes([0.0, 0.65, 0.1, 0.2])
+            rax, labels = (self._set_interactive_labels_success_prob(plt_lines)
+                           if not specific_alphas
+                           else self._set_interactive_labels_specific_alphas(plt_lines))
             rax.set_facecolor('silver')
             rax.patch.set_alpha(0.7)
-            labels = ["mode_1", "mode_2", "mode_3", "mode_4", "mode_5",
-                      "Ancillas: 0", "Ancillas: 1", "Squeezing: True", "Squeezing: False"]
-            labels_activated = [False, False, False, False, False, False, False, False, False]
-            [line.set_visible(False) for line in plt_lines if 'mode' in str(
-                line.get_label()) or 'pHom' in str(line.get_label()) or 'pHel' in str(line.get_label())]
+            labels_activated = [False] * len(labels)
             check = CheckButtons(rax, labels, labels_activated)
 
-            check.on_clicked(lambda x: self._interactive_plot(x, check, plt_lines, labels))
+            check.on_clicked(lambda x: self._interactive_plot(x, check, plt_lines, labels, specific_alphas))
 
         return self._show_or_save_plot(save_plot, suffix, fig)
+
+    def _set_interactive_labels_success_prob(self, plt_lines) -> Tuple[plt.Axes, List[str]]:
+        rax = plt.axes([0.0, 0.65, 0.1, 0.2])
+        labels = ["mode_1", "mode_2", "mode_3", "mode_4", "mode_5",
+                  "Ancillas: 0", "Ancillas: 1", "Squeezing: True", "Squeezing: False"]
+
+        [line.set_visible(False) for line in plt_lines if 'mode' in str(
+            line.get_label()) or 'pHom' in str(line.get_label()) or 'pHel' in str(line.get_label())]
+
+        return rax, labels
+
+    def _set_interactive_labels_specific_alphas(self, plt_lines) -> Tuple[plt.Axes, List[str]]:
+        rax = plt.axes([0.02, 0.7, 0.1, 0.2])
+        labels = ["Ancillas: 0", "Ancillas: 1", "Squeezing: True", "Squeezing: False"]
+        [line.set_visible(False) for line in plt_lines if 'Squeez' in str(line.get_label())]
+
+        return rax, labels
 
     def _show_or_save_plot(self, save_plot: bool, suffix: str, fig: plt.Figure) -> None:
         if save_plot:
@@ -318,13 +350,60 @@ class Plot(ABC):
             return
         plt.show()
 
-    def _interactive_plot(self, label: str, input_check, input_plt_lines, input_labels) -> None:
+    def _interactive_plot(self, label: str, input_check, input_plt_lines, input_labels, specific_alphas) -> None:
 
         label_checks = input_check.get_status()
         ancilla_0 = label_checks[-4]
         ancilla_1 = label_checks[-3]
         squeezing_true = label_checks[-2]
         squeezing_false = label_checks[-1]
+
+        if specific_alphas:
+            self._set_line_visibility_for_specific_alphas(input_plt_lines,
+                                                          ancilla_0,
+                                                          ancilla_1,
+                                                          squeezing_true,
+                                                          squeezing_false)
+        if not specific_alphas:
+            self._set_line_visibility_for_probs(label,
+                                                input_plt_lines,
+                                                input_labels,
+                                                label_checks,
+                                                ancilla_0,
+                                                ancilla_1,
+                                                squeezing_true,
+                                                squeezing_false)
+
+        plt.draw()
+
+    def _set_line_visibility_for_specific_alphas(self,
+                                                 input_plt_lines,
+                                                 ancilla_0,
+                                                 ancilla_1,
+                                                 squeezing_true,
+                                                 squeezing_false):
+        for line in input_plt_lines:
+            line_label = str(line.get_label())
+            if 'Hom' not in line_label and 'Hel' not in line_label:
+                line.set_visible(False)
+            if (squeezing_true and 'pSucc Squeez' in line_label and ancilla_0 and 'anc:0' in line_label):
+                line.set_visible(True)
+            if (squeezing_true and 'pSucc Squeez' in line_label and ancilla_1 and 'anc:1' in line_label):
+                line.set_visible(True)
+            if (squeezing_false and 'pSucc No Squeez' in line_label and ancilla_0 and 'anc:0' in line_label):
+                line.set_visible(True)
+            if (squeezing_false and 'pSucc No Squeez' in line_label and ancilla_1 and 'anc:1' in line_label):
+                line.set_visible(True)
+
+    def _set_line_visibility_for_probs(self,
+                                       label,
+                                       input_plt_lines,
+                                       input_labels,
+                                       label_checks,
+                                       ancilla_0,
+                                       ancilla_1,
+                                       squeezing_true,
+                                       squeezing_false):
         if 'mode' in label:
             for line in input_plt_lines:
                 line_label = str(line.get_label())
@@ -369,8 +448,6 @@ class Plot(ABC):
                                 ancilla_text in line_label and 'squeez:True' in line_label):
                             line.set_visible(not line.get_visible())
 
-        plt.draw()
-
     def _ideal_prob_visibility(self, label, line, line_label, ideal_label):
         if '_1' in label and ideal_label in line_label and '1' in line_label:
             line.set_visible(not line.get_visible())
@@ -404,7 +481,8 @@ class Plot(ABC):
                         distances, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
                     distances_labels.append(one_distance_label)
 
-        self._plot_computed_variables(lines=self._set_plot_lines(probs_labels=distances_labels),
+        self._plot_computed_variables(wide=16 if interactive_plot else 15,
+                                      lines=self._set_plot_lines(probs_labels=distances_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
                                       title="Distance to Homodyne Probability Results",
@@ -433,7 +511,8 @@ class Plot(ABC):
                         bit_error_rates, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
                     bit_error_labels.append(one_bit_errorlabel)
 
-        self._plot_computed_variables(lines=self._set_plot_lines(probs_labels=bit_error_labels),
+        self._plot_computed_variables(wide=16 if interactive_plot else 15,
+                                      lines=self._set_plot_lines(probs_labels=bit_error_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
                                       title="Bit Error Rates Results",
@@ -461,7 +540,8 @@ class Plot(ABC):
                     one_time_label = (times, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
                     times_labels.append(one_time_label)
 
-        self._plot_computed_variables(lines=self._set_plot_lines(probs_labels=times_labels),
+        self._plot_computed_variables(wide=16 if interactive_plot else 15,
+                                      lines=self._set_plot_lines(probs_labels=times_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
                                       title="Computation Time Results",
@@ -483,7 +563,8 @@ class Plot(ABC):
                                         for execution in executions]
             self._plot_title(execution=executions[0])
 
-        self._plot_computed_variables(lines=self._set_plot_lines(probs_labels=executions_probs_labels),
+        self._plot_computed_variables(wide=16 if interactive_plot else 15,
+                                      lines=self._set_plot_lines(probs_labels=executions_probs_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
                                       title="Average Success Probabilities",
