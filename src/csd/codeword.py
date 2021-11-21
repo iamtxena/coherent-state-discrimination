@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import List, Optional
 import random
 import numpy as np
-import json
+# import json
 
 A = 1
 MINUS_A = -1
@@ -59,7 +59,8 @@ class CodeWord():
         return self._create_input_word(word=base_word, alpha_value=alpha_value)
 
     def __str__(self) -> str:
-        return json.dumps(self.word)
+        # return json.dumps(self.word)
+        return str(self.word)
 
     def __repr__(self) -> str:
         return self.__str__()

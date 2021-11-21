@@ -6,7 +6,7 @@ from strawberryfields.api import Result
 from strawberryfields.backends.tfbackend.states import FockStateTF
 import tensorflow as tf
 from tensorflow.python.framework.ops import EagerTensor
-from csd.typings.typing import (BatchSuccessProbability, CodeWordSuccessProbability, TFEngineRunOptions)
+from csd.typings.typing import (BatchSuccessProbability, CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions)
 from csd.circuit import Circuit
 from typing import List
 # from csd.config import logger
@@ -22,13 +22,12 @@ class TFEngine(Engine):
             circuit: Circuit,
             options: TFEngineRunOptions) -> List[CodeWordSuccessProbability]:
 
-        # if options['measuring_type'] is MeasuringTypes.SAMPLING:
-        #     codewords_success_probabilities = self._run_circuit_sampling(circuit=circuit, options=options)
-        # else:
-        batch_sucess_probabilities = self._run_tf_circuit_probabilities(circuit=circuit, options=options)
+        batch_success_probabilities = (self._run_tf_circuit_probabilities(circuit=circuit, options=options)
+                                       if options['measuring_type'] is MeasuringTypes.PROBABILITIES
+                                       else self._run_tf_circuit_sampling(circuit=circuit, options=options))
 
         return [self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
-                for codewords_success_probabilities in batch_sucess_probabilities]
+                for codewords_success_probabilities in batch_success_probabilities]
 
     def _run_tf_circuit_probabilities(self,
                                       circuit: Circuit,
@@ -42,21 +41,82 @@ class TFEngine(Engine):
                                                                      output_batch=options['output_batch'],
                                                                      cutoff_dim=self._cutoff_dim)
 
-    # def _run_tf_circuit_sampling(self,
-    #                              circuit: Circuit,
-    #                              options: EngineRunOptions) -> List[CodeWordSuccessProbability]:
-    #     """Run a circuit experiment doing MeasureFock and performing samplint with nshots
-    #     """
-    #     # if self._engine.backend_name == Backends.GAUSSIAN.value:
-    #     #     return sum([1 for read_value in self._run_circuit(circuit=circuit, options=options).samples
-    #     #                 if read_value[0] == 0]) / options['shots']
-    #     shots = options['shots']
-    #     options['shots'] = 1
-    #     zero_prob = sum([1 for read_value in [self._run_circuit(circuit=circuit, options=options).samples[0][0]
-    #                                           for _ in range(shots)] if read_value == 0]) / shots
-    #     codewords = self._generate_all_codewords(codeword=options['codeword'])
-    #     return [CodeWordSuccessProbability(codeword=codewords[0], success_probability=zero_prob),
-    #             CodeWordSuccessProbability(codeword=codewords[1], success_probability=1 - zero_prob)]
+    def _run_tf_circuit_sampling(self,
+                                 circuit: Circuit,
+                                 options: TFEngineRunOptions) -> List[List[CodeWordSuccessProbability]]:
+        """Run a circuit experiment doing MeasureFock and performing samplint with nshots
+        """
+        shots = options['shots']
+        options['shots'] = 1
+        alpha_value = options['input_batch'].one_codeword.alpha
+        batch_success_probabilities = self._init_batch_success_probabilities(input_batch=options['input_batch'],
+                                                                             output_batch=options['output_batch'])
+        for _ in range(shots):
+            output_codewords = self._convert_batch_sampling_output_to_codeword_list(
+                alpha_value=alpha_value,
+                batch_samples=self._run_tf_circuit(circuit=circuit, options=options).samples)
+            self._assign_counts_to_each_actual_codeword_result(result_codewords=output_codewords,
+                                                               batch_success_probabilities=batch_success_probabilities)
+
+        return self._compute_average_batch_success_probabilities(
+            batch_success_probabilities=batch_success_probabilities,
+            shots=shots)
+
+    def _compute_average_batch_success_probabilities(
+            self,
+            batch_success_probabilities: List[List[CodeWordSuccessProbability]],
+            shots: int) -> List[List[CodeWordSuccessProbability]]:
+        if shots <= 0:
+            raise ValueError(f"shots MUST be greater than zero. Current value: {shots}")
+
+        for input_codeword_success_probabilities in batch_success_probabilities:
+            for codeword_success_probability in input_codeword_success_probabilities:
+                codeword_success_probability.success_probability = tf.constant(
+                    codeword_success_probability.counts / shots)
+        return batch_success_probabilities
+
+    def _assign_counts_to_each_actual_codeword_result(
+            self,
+            result_codewords: List[CodeWord],
+            batch_success_probabilities: List[List[CodeWordSuccessProbability]]) -> None:
+        if len(result_codewords) != len(batch_success_probabilities):
+            raise ValueError(
+                f'result_codewords size: {len(result_codewords)} and '
+                f'batch_success_probabilities length {len(batch_success_probabilities)} differs!')
+
+        for result_codeword, input_codeword_success_probabilities in zip(result_codewords, batch_success_probabilities):
+            for codeword_success_probability in input_codeword_success_probabilities:
+                if codeword_success_probability.output_codeword == result_codeword:
+                    codeword_success_probability.counts += 1
+                    break
+
+    def _init_one_input_codeword_success_probabilities(self,
+                                                       input_codeword: CodeWord,
+                                                       output_batch: Batch) -> List[CodeWordSuccessProbability]:
+        return [CodeWordSuccessProbability(guessed_codeword=input_codeword,
+                                           output_codeword=output_codeword,
+                                           success_probability=tf.Variable(0.0))
+                for output_codeword in output_batch.codewords]
+
+    def _init_batch_success_probabilities(self,
+                                          input_batch: Batch,
+                                          output_batch: Batch) -> List[List[CodeWordSuccessProbability]]:
+        return [self._init_one_input_codeword_success_probabilities(input_codeword=input_codeword,
+                                                                    output_batch=output_batch)
+                for input_codeword in input_batch.codewords]
+
+    def _convert_sampling_output_to_codeword(self, alpha_value: float, one_codeword_output: EagerTensor) -> CodeWord:
+        ON = -1
+        OFF = 1
+        word = [alpha_value * (ON if one_mode_output != 0 else OFF) for one_mode_output in one_codeword_output[0]]
+        return CodeWord(word=tf.constant(word))
+
+    def _convert_batch_sampling_output_to_codeword_list(self,
+                                                        alpha_value: float,
+                                                        batch_samples: List[EagerTensor]) -> List[CodeWord]:
+        return [self._convert_sampling_output_to_codeword(alpha_value=alpha_value,
+                                                          one_codeword_output=one_codeword_output)
+                for one_codeword_output in batch_samples]
 
     def _compute_tf_fock_probabilities_for_all_codewords(self,
                                                          state: FockStateTF,
@@ -97,11 +157,11 @@ class TFEngine(Engine):
         return [CodeWordSuccessProbability(
             guessed_codeword=CodeWord(size=input_codeword.size,
                                       alpha_value=input_codeword.alpha),
-            output_codeword=batch_sucess_probabilities.codeword_indices.codeword,
+            output_codeword=batch_success_probabilities.codeword_indices.codeword,
             success_probability=self._compute_one_codeword_success_probability(
                 index_codeword=index_codeword,
-                success_probabilities_indices=batch_sucess_probabilities.success_probability))
-                for batch_sucess_probabilities in success_probabilities_batches]
+                success_probabilities_indices=batch_success_probabilities.success_probability))
+                for batch_success_probabilities in success_probabilities_batches]
 
     def _compute_one_codeword_success_probability(
             self,

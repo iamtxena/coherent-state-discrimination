@@ -136,6 +136,7 @@ class CodeWordSuccessProbability():
     guessed_codeword: CodeWord
     output_codeword: CodeWord
     success_probability: Union[float, EagerTensor]
+    counts: int = 0
 
     def __str__(self) -> str:
         return json.dumps({

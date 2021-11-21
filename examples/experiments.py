@@ -1,6 +1,6 @@
 import multiprocessing
 from csd import CSD
-from csd.typings.typing import MeasuringTypes, CSDConfiguration, Backends
+from csd.typings.typing import CutOffDimensions, LearningRate, LearningSteps, MeasuringTypes, CSDConfiguration, Backends
 import numpy as np
 from csd.util import timing
 import os
@@ -63,33 +63,57 @@ def execute_sampling_tf_backend(csd: CSD) -> None:
 
 
 if __name__ == '__main__':
-    alpha_init = 0.05
-    alpha_end = 1.05
-    number_points_to_plot = 10
+    alpha_init = 0.1
+    alpha_end = 1.4
+    number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
-    # alphas = list(np.arange(0.05, 1.05, 0.05))
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
+    alphas[5]
+
+    learning_steps = LearningSteps(default=60,
+                                   high=100,
+                                   extreme=1000)
+    learning_rate = LearningRate(default=0.1,
+                                 high=0.1,
+                                 extreme=0.1)
+    cutoff_dim = CutOffDimensions(default=10,
+                                  high=15,
+                                  extreme=30)
+
+    number_input_modes = 1
+    number_ancillas = 0
+    squeezing = True
+
+    batch_size = 2**number_input_modes
+    shots = 10
+    plays = 1
+    number_layers = 1
+
+    number_alphas = len(alphas)
+
+    print(f'number alphas: {number_alphas}')
 
     csd = CSD(csd_config=CSDConfiguration({
         'alphas': alphas,
-        'steps': 100,
-        'learning_rate': 0.1,
-        'batch_size': 10,
-        'shots': 100,
-        'plays': 1,
-        'cutoff_dim': 10,
+        'learning_steps': learning_steps,
+        'learning_rate': learning_rate,
+        'batch_size': batch_size,
+        'shots': shots,
+        'plays': plays,
+        'cutoff_dim': cutoff_dim,
         'architecture': {
-            'number_modes': 2,
-            'number_layers': 1,
-            'squeezing': True,
+            'number_modes': number_input_modes,
+            'number_ancillas': number_ancillas,
+            'number_layers': number_layers,
+            'squeezing': squeezing,
         },
         'save_results': False,
-        'save_plots': True,
-        'parallel_optimization': True
+        'save_plots': False,
+        'parallel_optimization': False
     }))
     # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    execute_probabilities_tf_backend(csd=csd)
+    # execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
-    # execute_sampling_tf_backend(csd=csd)
+    execute_sampling_tf_backend(csd=csd)
