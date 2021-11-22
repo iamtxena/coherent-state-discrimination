@@ -68,7 +68,8 @@ class CostFunction(ABC):
                 raise ValueError(f"input codeword: {input_codeword} not found as result")
 
         logger.debug(f'success_probability_from_guesses: {success_probability_from_guesses}')
-        avg_succ = sum(success_probability_from_guesses) / self._input_batch.size
+        avg_succ = tf.divide(tf.math.add_n(success_probability_from_guesses),
+                             tf.constant(self._input_batch.size, dtype=tf.float64))
         logger.debug(f'average success: {avg_succ}')
         return avg_succ
 
