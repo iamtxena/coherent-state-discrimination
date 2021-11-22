@@ -14,6 +14,8 @@ num_modes = 2
 amplitude = 1.0
 
 
+# TODO: Add previous measurement to current layer and use it while calling the
+# predictor to obtain the new displacement values for the layer.
 def generate_nth_layer(layer_number, total_number_of_layers, predictor):
     """Generates the nth layer of the Dolinar receiver.
     Given the `layer_number`, `total_number_of_layers` and `predictor` as input,
@@ -41,7 +43,7 @@ def generate_nth_layer(layer_number, total_number_of_layers, predictor):
             for m in range(num_modes):
                 sf.Dgate(displacement_magnitudes_for_each_mode[m]) | q[m]
 
-            # Perform measurements.
+            # TODO: Perform measurements.
 
     return quantum_layer
 
