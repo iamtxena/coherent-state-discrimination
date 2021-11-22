@@ -10,7 +10,7 @@ from csd.typings.typing import (Backends,
                                 MeasuringTypes,
                                 ResultExecution,
                                 Architecture)
-from typing import Optional, Tuple, Union, cast, List
+from typing import Optional, Union, cast, List
 import numpy as np
 from time import time
 from csd.config import logger
@@ -122,7 +122,7 @@ class CSD(ABC):
         return Circuit(architecture=self._architecture,
                        measuring_type=self._run_configuration['measuring_type'])
 
-    def _cost_function(self, input_params: Tuple[List[float], List[float]]) -> Union[float, EagerTensor]:
+    def _cost_function(self) -> Union[float, EagerTensor]:
         if self._circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
@@ -130,17 +130,14 @@ class CSD(ABC):
         if self._current_batch is None:
             raise ValueError("Current Batch must be initialized")
 
-        self._engine = self._create_engine()
-
         return CostFunction(batch=self._current_batch,
-                            params=input_params[0],
+                            params=self._optimization.parameters,
                             options=CostFunctionOptions(
                                 engine=self._engine,
                                 circuit=self._circuit,
                                 backend_name=self._engine.backend_name,
                                 measuring_type=self._run_configuration['measuring_type'],
                                 shots=self._shots,
-                                all_counts=input_params[1],
                                 plays=self._plays)).run_and_compute_average_batch_error_probability()
 
     @timing
@@ -158,7 +155,6 @@ class CSD(ABC):
 
         self._run_configuration = configuration.copy()
         self._circuit = self._create_circuit()
-        optimization = self._create_optimization()
         result = self._init_result()
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
@@ -169,12 +165,10 @@ class CSD(ABC):
                      f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
-        return self._single_process_optimization(optimization=optimization,
-                                                 result=result,
+        return self._single_process_optimization(result=result,
                                                  random_words=(not self._backend_is_tf()))
 
     def _single_process_optimization(self,
-                                     optimization: Optimize,
                                      result: ResultExecution,
                                      random_words: bool):
         if self._circuit is None:
@@ -183,8 +177,7 @@ class CSD(ABC):
         start_time = time()
         for sample_alpha in self._alphas:
             one_alpha_start_time = time()
-            one_alpha_optimization_result = self._execute_for_one_alpha(optimization=optimization,
-                                                                        sample_alpha=sample_alpha,
+            one_alpha_optimization_result = self._execute_for_one_alpha(sample_alpha=sample_alpha,
                                                                         random_words=random_words)
             self._update_result(result=result, one_alpha_optimization_result=one_alpha_optimization_result)
             self._write_result(alpha=sample_alpha,
@@ -247,7 +240,6 @@ class CSD(ABC):
 
     @timing
     def _execute_for_one_alpha(self,
-                               optimization: Optimize,
                                sample_alpha: float,
                                random_words: bool) -> OptimizationResult:
         if self._circuit is None:
@@ -262,7 +254,10 @@ class CSD(ABC):
                      f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
-        return optimization.optimize(cost_function=self._cost_function, current_alpha=self._alpha_value)
+        self._engine = self._create_engine()
+        self._optimization = self._create_optimization()
+
+        return self._optimization.optimize(cost_function=self._cost_function, current_alpha=self._alpha_value)
 
     def _update_result(self, result: ResultExecution, one_alpha_optimization_result: OptimizationResult):
         logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)}'

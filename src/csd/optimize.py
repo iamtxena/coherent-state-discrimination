@@ -1,10 +1,11 @@
 from abc import ABC
-from typing import Callable, List, Union, Optional
+from typing import Callable, List, Union, Optional, cast
 from csd.optimizers.parallel_tf import ParallelTFOptimizer
 from csd.typings.typing import Backends, LearningRate, LearningSteps, OptimizationResult
 from .optimizers.tf import TFOptimizer
 from .optimizers.scipy import ScipyOptimizer
 from .optimizers.parallel_scipy import ParallelOptimizer
+from tensorflow import Variable
 
 
 class Optimize(ABC):
@@ -35,6 +36,13 @@ class Optimize(ABC):
         if ((self._opt_backend is Backends.FOCK or self._opt_backend is Backends.GAUSSIAN) and
                 parallel_optimization is True):
             self._optimizer = ParallelOptimizer(nparams=nparams)
+
+    @property
+    def parameters(self) -> List[Variable]:
+        if self._opt_backend is not Backends.TENSORFLOW:
+            raise ValueError("backend is NOT Tensorflow")
+
+        return cast(TFOptimizer, self._optimizer).parameters
 
     def optimize(self,
                  cost_function: Callable,

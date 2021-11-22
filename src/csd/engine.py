@@ -11,6 +11,7 @@ from csd.circuit import Circuit
 from typing import List, Optional, Union
 import itertools
 from tensorflow.python.framework.ops import EagerTensor
+import tensorflow as tf
 
 from csd.util import generate_all_codewords_from_codeword
 # from csd.config import logger
@@ -60,7 +61,8 @@ class Engine(ABC):
         success_probability = self._compute_guessed_codeword_probability(guessed_codeword,
                                                                          codewords_success_probabilities)
 
-        return CodeWordSuccessProbability(guessed_codeword=guessed_codeword,
+        return CodeWordSuccessProbability(input_codeword=max_success_probability_codeword_selected.input_codeword,
+                                          guessed_codeword=guessed_codeword,
                                           output_codeword=max_success_probability_codeword_selected.output_codeword,
                                           success_probability=success_probability)
 
@@ -89,11 +91,11 @@ class Engine(ABC):
         Returns:
             Union[float, EagerTensor]: [description]
         """
-        return sum([codeword_success_probabilities.success_probability
-                    for codeword_success_probabilities in codewords_success_probabilities
-                    if self._create_codeword_from_last_output_modes(
-                        output_codeword=codeword_success_probabilities.output_codeword,
-                        codeword_to_guess=guessed_codeword) == guessed_codeword])
+        return tf.math.add_n([codeword_success_probabilities.success_probability
+                              for codeword_success_probabilities in codewords_success_probabilities
+                              if self._create_codeword_from_last_output_modes(
+                                  output_codeword=codeword_success_probabilities.output_codeword,
+                                  codeword_to_guess=guessed_codeword) == guessed_codeword])
 
     def _error_when_codeword_to_guess_is_larger_than_output_codeword(self,
                                                                      output_codeword: CodeWord,
@@ -139,11 +141,13 @@ class Engine(ABC):
         zero_prob = sum([1 for read_value in [self._run_circuit(circuit=circuit, options=options).samples[0][0]
                                               for _ in range(shots)] if read_value == 0]) / shots
         output_codewords = generate_all_codewords_from_codeword(codeword=options['output_codeword'])
-        return [CodeWordSuccessProbability(guessed_codeword=CodeWord(size=options['input_codeword'].size,
+        return [CodeWordSuccessProbability(input_codeword=options['input_codeword'],
+                                           guessed_codeword=CodeWord(size=options['input_codeword'].size,
                                                                      alpha_value=options['input_codeword'].alpha),
                                            output_codeword=output_codewords[0],
                                            success_probability=zero_prob),
-                CodeWordSuccessProbability(guessed_codeword=CodeWord(size=options['input_codeword'].size,
+                CodeWordSuccessProbability(input_codeword=options['input_codeword'],
+                                           guessed_codeword=CodeWord(size=options['input_codeword'].size,
                                                                      alpha_value=options['input_codeword'].alpha),
                                            output_codeword=output_codewords[1],
                                            success_probability=1 - zero_prob)]
@@ -181,6 +185,7 @@ class Engine(ABC):
         all_codewords_indices = self._get_fock_prob_indices_from_modes(
             output_codeword=output_codeword, cutoff_dimension=cutoff_dim)
         return [CodeWordSuccessProbability(
+            input_codeword=input_codeword,
             guessed_codeword=CodeWord(size=input_codeword.size,
                                       alpha_value=input_codeword.alpha),
             output_codeword=codeword_indices.codeword,

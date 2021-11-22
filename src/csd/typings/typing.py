@@ -129,20 +129,21 @@ class TFEngineRunOptions(TypedDict):
     input_batch: Batch
     output_batch: Batch
     shots: int
-    all_counts: List[Variable]
     measuring_type: MeasuringTypes
 
 
 @dataclass
 class CodeWordSuccessProbability():
+    input_codeword: CodeWord
     guessed_codeword: CodeWord
     output_codeword: CodeWord
     success_probability: Union[float, EagerTensor]
-    counts: EagerTensor = Variable(0.0, trainable=False)
+    counts: EagerTensor = Variable(0)
 
     def __str__(self) -> str:
         return json.dumps({
-            "input_codeword": self.guessed_codeword.word if self.guessed_codeword is not None else None,
+            "input_codeword": self.input_codeword.word,
+            "guessed_codeword": self.guessed_codeword.word if self.guessed_codeword is not None else None,
             "output_codeword": self.output_codeword.word,
             "psucc": (self.success_probability
                       if isinstance(self.success_probability, float)

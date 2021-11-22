@@ -10,6 +10,7 @@ from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends, CodeWordSuccessProbability, EngineRunOptions, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
 from csd.config import logger
+import tensorflow as tf
 
 
 class CostFunction(ABC):
@@ -29,16 +30,14 @@ class CostFunction(ABC):
         if self._options.backend_name == Backends.TENSORFLOW.value:
             if not isinstance(self._options.engine, TFEngine):
                 raise ValueError("TF Backend can only run on TFEngine.")
-            result = self._options.engine.run_tf_circuit_checking_measuring_type(
+            return self._options.engine.run_tf_circuit_checking_measuring_type(
                 circuit=self._options.circuit,
                 options=TFEngineRunOptions(
                     params=self._params,
                     input_batch=self._input_batch,
                     output_batch=self._output_batch,
                     shots=self._options.shots,
-                    all_counts=self._options.all_counts,
                     measuring_type=self._options.measuring_type))
-            return result
         return [self._options.engine.run_circuit_checking_measuring_type(
             circuit=self._options.circuit,
             options=EngineRunOptions(
@@ -54,11 +53,19 @@ class CostFunction(ABC):
             self,
             codeword_guesses: List[CodeWordSuccessProbability]) -> Union[float, EagerTensor]:
 
-        success_probability_from_guesses = [
-            codeword_success_prob.success_probability
-            if batch_codeword == codeword_success_prob.guessed_codeword
-            else 1 - codeword_success_prob.success_probability
-            for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
+        success_probability_from_guesses = []
+        for input_codeword in self._input_batch.codewords:
+            found = False
+            for result_codeword_success_probability in codeword_guesses:
+                if not found and input_codeword == result_codeword_success_probability.input_codeword:
+                    found = True
+                    (success_probability_from_guesses.append(result_codeword_success_probability.success_probability)
+                     if input_codeword == result_codeword_success_probability.guessed_codeword
+                     else success_probability_from_guesses.append(
+                         tf.subtract(tf.constant(1.0, dtype=tf.float64),
+                                     result_codeword_success_probability.success_probability)))
+            if not found:
+                raise ValueError(f"input codeword: {input_codeword} not found as result")
 
         logger.debug(f'success_probability_from_guesses: {success_probability_from_guesses}')
         avg_succ = sum(success_probability_from_guesses) / self._input_batch.size
@@ -70,5 +77,9 @@ class CostFunction(ABC):
         #     codeword_guesses=self._run_and_get_codeword_guesses())
         #     for _ in range(self._options.plays)]
         # ) / self._options.plays
-        return 1 - self._compute_one_play_average_batch_success_probability(
-            codeword_guesses=self._run_and_get_codeword_guesses())
+        loss = (tf.subtract(
+            tf.constant(1.0, dtype=tf.float64),
+            self._compute_one_play_average_batch_success_probability(
+                codeword_guesses=self._run_and_get_codeword_guesses())))
+        logger.debug(f'loss: {loss}')
+        return loss

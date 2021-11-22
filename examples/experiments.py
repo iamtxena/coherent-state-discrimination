@@ -70,7 +70,7 @@ if __name__ == '__main__':
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     alphas = [0.7]
 
-    learning_steps = LearningSteps(default=60,
+    learning_steps = LearningSteps(default=10,
                                    high=100,
                                    extreme=1000)
     learning_rate = LearningRate(default=0.1,
