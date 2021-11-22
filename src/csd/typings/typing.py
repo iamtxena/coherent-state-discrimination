@@ -6,6 +6,7 @@ import json
 from dataclasses import dataclass
 
 from tensorflow.python.framework.ops import EagerTensor
+from tensorflow import Variable
 from csd.batch import Batch
 
 from csd.codeword import CodeWord
@@ -128,6 +129,7 @@ class TFEngineRunOptions(TypedDict):
     input_batch: Batch
     output_batch: Batch
     shots: int
+    all_counts: List[Variable]
     measuring_type: MeasuringTypes
 
 
@@ -136,7 +138,7 @@ class CodeWordSuccessProbability():
     guessed_codeword: CodeWord
     output_codeword: CodeWord
     success_probability: Union[float, EagerTensor]
-    counts: int = 0
+    counts: EagerTensor = Variable(0.0, trainable=False)
 
     def __str__(self) -> str:
         return json.dumps({
@@ -144,7 +146,10 @@ class CodeWordSuccessProbability():
             "output_codeword": self.output_codeword.word,
             "psucc": (self.success_probability
                       if isinstance(self.success_probability, float)
-                      else float(self.success_probability.numpy()))
+                      else float(self.success_probability.numpy())),
+            "counts": (self.counts
+                       if isinstance(self.counts, float)
+                       else float(self.counts.numpy()))
         })
 
     def __repr__(self) -> str:

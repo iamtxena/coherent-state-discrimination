@@ -43,13 +43,15 @@ class TFOptimizer(ABC):
         init_time = time.time()
         loss = tf.Variable(0.0)
         parameters = [tf.Variable(0.1) for _ in range(self._number_parameters)]
+        all_counts = [tf.Variable(0., trainable=False) for _ in range(2**(self._number_modes * 2))]
 
         self._prepare_tf_board(self._current_alpha)
         current_learning_steps = self._set_learning_values_by_alpha(self._current_alpha)
 
         for step in range(current_learning_steps):
             loss, parameters = self._tf_optimize(cost_function=cost_function,
-                                                 parameters=parameters)
+                                                 parameters=parameters,
+                                                 all_counts=all_counts)
 
             reset = self._print_time_when_necessary(learning_steps=current_learning_steps,
                                                     init_time=init_time,
@@ -97,13 +99,18 @@ class TFOptimizer(ABC):
 
     def _tf_optimize(self,
                      cost_function: Callable,
-                     parameters: List[Variable]) -> Tuple[EagerTensor, List[Variable]]:
+                     parameters: List[Variable],
+                     all_counts: List[Variable]) -> Tuple[EagerTensor, List[Variable]]:
 
         with tf.GradientTape() as tape:
-            loss = cost_function(parameters)
+            loss = cost_function((parameters, all_counts))
 
-        gradients = tape.gradient(loss, parameters)
-        self._opt.apply_gradients(zip(gradients, parameters))
+        logger.debug(f'loss: {loss}')
+        logger.debug(f'parameters: {parameters}')
+        logger.debug(f'all_counts: {all_counts}')
+        gradients = tape.gradient(loss, [parameters, all_counts])
+        logger.debug(f'gradients: {gradients}')
+        self._opt.apply_gradients(zip(gradients, [parameters, all_counts]))
 
         self._train_loss(loss)
         for train_param, parameter in zip(self._train_params, parameters):

@@ -9,7 +9,7 @@ from csd.codeword import CodeWord
 from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends, CodeWordSuccessProbability, EngineRunOptions, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
-# from csd.config import logger
+from csd.config import logger
 
 
 class CostFunction(ABC):
@@ -22,7 +22,8 @@ class CostFunction(ABC):
         self._input_batch = batch
         self._output_batch = Batch(size=self._input_batch.size,
                                    word_size=self._options.circuit.number_modes,
-                                   alpha_value=self._input_batch.alpha)
+                                   alpha_value=self._input_batch.alpha,
+                                   random_words=False)
 
     def _run_and_get_codeword_guesses(self) -> List[CodeWordSuccessProbability]:
         if self._options.backend_name == Backends.TENSORFLOW.value:
@@ -35,6 +36,7 @@ class CostFunction(ABC):
                     input_batch=self._input_batch,
                     output_batch=self._output_batch,
                     shots=self._options.shots,
+                    all_counts=self._options.all_counts,
                     measuring_type=self._options.measuring_type))
             return result
         return [self._options.engine.run_circuit_checking_measuring_type(
@@ -57,10 +59,16 @@ class CostFunction(ABC):
             if batch_codeword == codeword_success_prob.guessed_codeword
             else 1 - codeword_success_prob.success_probability
             for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
-        return sum(success_probability_from_guesses) / self._input_batch.size
+
+        logger.debug(f'success_probability_from_guesses: {success_probability_from_guesses}')
+        avg_succ = sum(success_probability_from_guesses) / self._input_batch.size
+        logger.debug(f'average success: {avg_succ}')
+        return avg_succ
 
     def run_and_compute_average_batch_error_probability(self) -> Union[float, EagerTensor]:
-        return 1 - sum([self._compute_one_play_average_batch_success_probability(
+        # return 1 - sum([self._compute_one_play_average_batch_success_probability(
+        #     codeword_guesses=self._run_and_get_codeword_guesses())
+        #     for _ in range(self._options.plays)]
+        # ) / self._options.plays
+        return 1 - self._compute_one_play_average_batch_success_probability(
             codeword_guesses=self._run_and_get_codeword_guesses())
-            for _ in range(self._options.plays)]
-        ) / self._options.plays

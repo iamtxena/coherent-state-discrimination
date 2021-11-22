@@ -10,7 +10,7 @@ from csd.typings.typing import (Backends,
                                 MeasuringTypes,
                                 ResultExecution,
                                 Architecture)
-from typing import Optional, Union, cast, List
+from typing import Optional, Tuple, Union, cast, List
 import numpy as np
 from time import time
 from csd.config import logger
@@ -122,7 +122,7 @@ class CSD(ABC):
         return Circuit(architecture=self._architecture,
                        measuring_type=self._run_configuration['measuring_type'])
 
-    def _cost_function(self, params: List[float]) -> Union[float, EagerTensor]:
+    def _cost_function(self, input_params: Tuple[List[float], List[float]]) -> Union[float, EagerTensor]:
         if self._circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
@@ -133,13 +133,14 @@ class CSD(ABC):
         self._engine = self._create_engine()
 
         return CostFunction(batch=self._current_batch,
-                            params=params,
+                            params=input_params[0],
                             options=CostFunctionOptions(
                                 engine=self._engine,
                                 circuit=self._circuit,
                                 backend_name=self._engine.backend_name,
                                 measuring_type=self._run_configuration['measuring_type'],
                                 shots=self._shots,
+                                all_counts=input_params[1],
                                 plays=self._plays)).run_and_compute_average_batch_error_probability()
 
     @timing
