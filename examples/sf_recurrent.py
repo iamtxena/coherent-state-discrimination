@@ -13,14 +13,17 @@ num_modes = 2
 # Signal amplitude. Default is 1.0.
 amplitude = 1.0
 
+# Fock backend.
+eng = sf.Engine("fock", backend_options={"cutoff_dim": 6})
+
 
 # TODO: Add previous measurement to current layer and use it while calling the
 # predictor to obtain the new displacement values for the layer.
-def generate_nth_layer(layer_number, predictor):
+def generate_nth_layer(layer_number, predictor, engine):
     """Generates the nth layer of the Dolinar receiver.
-    Given the `layer_number`, `total_number_of_layers` and `predictor` as input,
-    it returns a function that generates the necessary quantum circuit for the
-    n-th layer of the Dolinar receiver.
+    Given the `layer_number`, `predictor` and `engine` as input, it returns a
+    function that generates the necessary quantum circuit for the n-th layer of
+    the Dolinar receiver.
 
     This function should query the ML backend for the appropriate displacement
     magnitude using the predictor reference.
@@ -32,8 +35,10 @@ def generate_nth_layer(layer_number, predictor):
     # Use predictor to obtain estimates for displacement amplitudes.
     displacement_magnitudes_for_each_mode = None
 
-    def quantum_layer(input_codeword, context):
-        with context as q:
+    def quantum_layer(input_codeword):
+        program = sf.Program(num_modes)
+
+        with program.context as q:
             # Prepare the coherent states for the layer.
             for m in range(num_modes):
                 sf.ops.Coherent(amplitudes[layer_number] * input_codeword[m]) | q[m]
@@ -43,7 +48,10 @@ def generate_nth_layer(layer_number, predictor):
             for m in range(num_modes):
                 sf.Dgate(displacement_magnitudes_for_each_mode[m]) | q[m]
 
-            # TODO: Perform measurements.
+            # Perform measurements.
+            sf.ops.MeasureFock() | q
+
+        return engine.run(program)
 
     return quantum_layer
 
@@ -53,4 +61,4 @@ if __name__ == '__main__':
     model = None
 
     # Layers of the Dolinar receiver.
-    layers = [generate_nth_layer(n, model) for n in range(num_layers)]
+    layers = [generate_nth_layer(n, model, eng) for n in range(num_layers)]
