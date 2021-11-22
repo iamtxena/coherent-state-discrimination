@@ -16,7 +16,7 @@ amplitude = 1.0
 
 # TODO: Add previous measurement to current layer and use it while calling the
 # predictor to obtain the new displacement values for the layer.
-def generate_nth_layer(layer_number, total_number_of_layers, predictor):
+def generate_nth_layer(layer_number, predictor):
     """Generates the nth layer of the Dolinar receiver.
     Given the `layer_number`, `total_number_of_layers` and `predictor` as input,
     it returns a function that generates the necessary quantum circuit for the
@@ -48,4 +48,9 @@ def generate_nth_layer(layer_number, total_number_of_layers, predictor):
     return quantum_layer
 
 if __name__ == '__main__':
-    pass
+    # ML model to predict the displacement magnitude for each of the layers of
+    # the Dolinar receiver.
+    model = None
+
+    # Layers of the Dolinar receiver.
+    layers = [generate_nth_layer(n, model) for n in range(num_layers)]
