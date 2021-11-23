@@ -86,7 +86,7 @@ class TFEngine(Engine):
         for input_codeword_success_probabilities in batch_success_probabilities:
             for codeword_success_probability in input_codeword_success_probabilities:
                 codeword_success_probability.success_probability = tf.divide(
-                    tf.cast(codeword_success_probability.counts, dtype=tf.float32), tf_shots)
+                    codeword_success_probability.counts, tf_shots)
 
         return batch_success_probabilities
 
@@ -118,7 +118,7 @@ class TFEngine(Engine):
                                            guessed_codeword=input_codeword,
                                            output_codeword=output_codeword,
                                            success_probability=tf.Variable(0.0),
-                                           counts=tf.Variable(0))
+                                           counts=tf.Variable(0.))
                 for output_codeword in output_batch.codewords]
 
     def _init_batch_success_probabilities(self,
@@ -136,17 +136,17 @@ class TFEngine(Engine):
     def _convert_sampling_output_to_codeword(self, alpha_value: float, one_codeword_output: EagerTensor) -> CodeWord:
         ON = -1
         OFF = 1
-        # word = [alpha_value * (ON if one_mode_output != 0 else OFF) for one_mode_output in one_codeword_output[0]]
+        word = [alpha_value * (ON if one_mode_output != 0 else OFF) for one_mode_output in one_codeword_output[0]]
         # logger.debug(f'one_codeword_output: {one_codeword_output}')
         # logger.debug(f'one_codeword_output[0]: {one_codeword_output[0]}')
-        word = [alpha_value * tf.cast(ON * (1 + one_mode_output - one_mode_output) if one_mode_output != 0
-                                      else one_mode_output + OFF, dtype=tf.float64)
-                for one_mode_output in one_codeword_output[0]]
-        tf_word = tf.reshape(tf.concat(word, axis=0), [len(word), ])
-        logger.debug(f'tf_word: {tf_word}, type: {type(tf_word)}')
+        # word = [alpha_value * tf.cast(ON * (1 + one_mode_output - one_mode_output) if one_mode_output != 0
+        #                               else one_mode_output + OFF, dtype=tf.float64)
+        #         for one_mode_output in one_codeword_output[0]]
+        # tf_word = tf.reshape(tf.concat(word, axis=0), [len(word), ])
+        # logger.debug(f'tf_word: {tf_word}, type: {type(tf_word)}')
 
-        logger.debug(f'tf_word: {tf_word}, type: {type(tf_word)}')
-        cw = CodeWord(word=tf_word)
+        # logger.debug(f'tf_word: {tf_word}, type: {type(tf_word)}')
+        cw = CodeWord(word=word)
         logger.debug(f'codeword: {cw}')
         return cw
 
