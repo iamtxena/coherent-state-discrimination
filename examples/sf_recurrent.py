@@ -48,14 +48,14 @@ def generate_nth_layer(layer_number, engine):
     return quantum_layer
 
 
-def generate_prediction_model(name=None):
+class Model:
     pass
 
 
 if __name__ == '__main__':
     # ML model to predict the displacement magnitude for each of the layers of
     # the Dolinar receiver.
-    model = generate_prediction_model(name="basic_model")
+    model = Model(name="basic_model")
 
     # Layers of the Dolinar receiver.
     layers = [generate_nth_layer(n, model, ENGINE) for n in range(NUM_LAYERS)]
