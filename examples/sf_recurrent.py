@@ -17,29 +17,22 @@ amplitude = 1.0
 eng = sf.Engine("fock", backend_options={"cutoff_dim": 6})
 
 
-# TODO: Add previous measurement to current layer and use it while calling the
-# predictor to obtain the new displacement values for the layer.
-def generate_nth_layer(layer_number, predictor, engine):
+def generate_nth_layer(layer_number, engine):
     """Generates the nth layer of the Dolinar receiver.
-    Given the `layer_number`, `predictor` and `engine` as input, it returns a
+    Given the `layer_number` and `engine` as input, it returns a
     function that generates the necessary quantum circuit for the n-th layer of
     the Dolinar receiver.
-
-    This function should query the ML backend for the appropriate displacement
-    magnitude using the predictor reference.
     """
 
     # Need k values for the splits of the coherent state.
     amplitudes =  np.ones(num_layers) * (amplitude / num_layers)
 
-    # Use predictor to obtain estimates for displacement amplitudes.
-    displacement_magnitudes_for_each_mode = None
-
-    def quantum_layer(input_codeword):
+    def quantum_layer(input_codeword, displacement_magnitudes_for_each_mode):
         program = sf.Program(num_modes)
 
         with program.context as q:
-            # Prepare the coherent states for the layer.
+            # Prepare the coherent states for the layer. Appropriately scales
+            # the amplitudes for each of the layers.
             for m in range(num_modes):
                 sf.ops.Coherent(amplitudes[layer_number] * input_codeword[m]) | q[m]
 
@@ -55,10 +48,20 @@ def generate_nth_layer(layer_number, predictor, engine):
 
     return quantum_layer
 
+
+def generate_prediction_model(name=None):
+    pass
+
+
 if __name__ == '__main__':
     # ML model to predict the displacement magnitude for each of the layers of
     # the Dolinar receiver.
-    model = None
+    model = generate_prediction_model(name="basic_model")
 
     # Layers of the Dolinar receiver.
     layers = [generate_nth_layer(n, model, eng) for n in range(num_layers)]
+
+    # TODO: Add previous measurement to current layer and use it while calling the
+    # predictor to obtain the new displacement values for the layer.
+
+    # TODO: Add training loop.
