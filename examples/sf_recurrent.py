@@ -1,6 +1,7 @@
 import strawberryfields as sf
 import numpy as np
 import torch
+from torch import nn
 
 # Number of layers of the Dolinar receiver. Selecting 4 as the most basic,
 # non-trivial case.
@@ -48,14 +49,35 @@ def generate_nth_layer(layer_number, engine):
     return quantum_layer
 
 
-class Model:
-    pass
+class Model(nn.Module):
+    """
+    Defines a basic neural network model that predicts the values of the
+    displacement magnitudes.
+    """
+    def __init__(self, *, input_dim, output_dim, name=None):
+        super().__init__()
+
+        self.name = name
+
+        self.input_dim = input_dim
+        self.output_dim = output_dim
+
+        self.network_stack = nn.Sequential(
+            nn.Linear(self.input_dim, 32),
+            nn.ReLU(),
+            nn.Linear(32, self.output_dim),
+            nn.Softmax())
+
+    def forward(self, input_data):
+        return self.network_stack(input_data)
 
 
 if __name__ == '__main__':
     # ML model to predict the displacement magnitude for each of the layers of
     # the Dolinar receiver.
-    model = Model(name="basic_model")
+
+    # TODO: Decide on model architecture.
+    model = Model(input_dim=None, output_dim=None, name="basic_model")
 
     # Layers of the Dolinar receiver.
     layers = [generate_nth_layer(n, model, ENGINE) for n in range(NUM_LAYERS)]
