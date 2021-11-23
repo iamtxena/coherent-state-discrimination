@@ -37,6 +37,7 @@ class CostFunction(ABC):
                     input_batch=self._input_batch,
                     output_batch=self._output_batch,
                     shots=self._options.shots,
+                    all_counts=self._options.all_counts,
                     measuring_type=self._options.measuring_type))
         return [self._options.engine.run_circuit_checking_measuring_type(
             circuit=self._options.circuit,
@@ -62,14 +63,14 @@ class CostFunction(ABC):
                     (success_probability_from_guesses.append(result_codeword_success_probability.success_probability)
                      if input_codeword == result_codeword_success_probability.guessed_codeword
                      else success_probability_from_guesses.append(
-                         tf.subtract(tf.constant(1.0, dtype=tf.float64),
+                         tf.subtract(tf.constant(1.0),
                                      result_codeword_success_probability.success_probability)))
             if not found:
                 raise ValueError(f"input codeword: {input_codeword} not found as result")
 
         logger.debug(f'success_probability_from_guesses: {success_probability_from_guesses}')
         avg_succ = tf.divide(tf.math.add_n(success_probability_from_guesses),
-                             tf.constant(self._input_batch.size, dtype=tf.float64))
+                             tf.constant(self._input_batch.size, dtype=tf.float32))
         logger.debug(f'average success: {avg_succ}')
         return avg_succ
 
@@ -79,7 +80,7 @@ class CostFunction(ABC):
         #     for _ in range(self._options.plays)]
         # ) / self._options.plays
         loss = (tf.subtract(
-            tf.constant(1.0, dtype=tf.float64),
+            tf.constant(1.0),
             self._compute_one_play_average_batch_success_probability(
                 codeword_guesses=self._run_and_get_codeword_guesses())))
         logger.debug(f'loss: {loss}')

@@ -54,20 +54,22 @@ class TFEngine(Engine):
     def _run_tf_circuit_sampling(self,
                                  circuit: Circuit,
                                  options: TFEngineRunOptions) -> List[List[CodeWordSuccessProbability]]:
-        """Run a circuit experiment doing MeasureFock and performing samplint with nshots
+        """Run a circuit experiment doing MeasureFock and performing sampling with nshots
         """
         shots = options['shots']
         options['shots'] = 1
         alpha_value = options['input_batch'].one_codeword.alpha
         batch_success_probabilities = self._init_batch_success_probabilities(input_batch=options['input_batch'],
-                                                                             output_batch=options['output_batch'])
+                                                                             output_batch=options['output_batch'],
+                                                                             all_counts=options['all_counts'])
         # logger.debug(f'INIT batch success probability: {batch_success_probabilities}')
         for _ in range(shots):
             output_codewords = self._convert_batch_sampling_output_to_codeword_list(
                 alpha_value=alpha_value,
                 batch_samples=self._run_tf_circuit(circuit=circuit, options=options).samples)
             self._assign_counts_to_each_actual_codeword_result(result_codewords=output_codewords,
-                                                               batch_success_probabilities=batch_success_probabilities)
+                                                               batch_success_probabilities=batch_success_probabilities,
+                                                               all_counts=options['all_counts'])
 
         return self._compute_average_batch_success_probabilities(
             batch_success_probabilities=batch_success_probabilities,
@@ -79,31 +81,35 @@ class TFEngine(Engine):
             shots: int) -> List[List[CodeWordSuccessProbability]]:
         if shots <= 0:
             raise ValueError(f"shots MUST be greater than zero. Current value: {shots}")
-        tf_shots = tf.constant(shots)
+        tf_shots = tf.constant(shots, dtype=tf.float32)
         # logger.debug(f'batch success probability BEFORE shots: {batch_success_probabilities}')
         for input_codeword_success_probabilities in batch_success_probabilities:
             for codeword_success_probability in input_codeword_success_probabilities:
                 codeword_success_probability.success_probability = tf.divide(
-                    codeword_success_probability.counts, tf_shots)
+                    tf.cast(codeword_success_probability.counts, dtype=tf.float32), tf_shots)
 
         return batch_success_probabilities
 
     def _assign_counts_to_each_actual_codeword_result(
             self,
             result_codewords: List[CodeWord],
-            batch_success_probabilities: List[List[CodeWordSuccessProbability]]) -> None:
+            batch_success_probabilities: List[List[CodeWordSuccessProbability]],
+            all_counts: List[tf.Variable]) -> None:
         if len(result_codewords) != len(batch_success_probabilities):
             raise ValueError(
                 f'result_codewords size: {len(result_codewords)} and '
                 f'batch_success_probabilities length {len(batch_success_probabilities)} differs!')
 
         # logger.debug(f'Result output codewords: {result_codewords}')
+        index_count = 0
         for result_codeword, input_codeword_success_probabilities in zip(result_codewords, batch_success_probabilities):
             found = False
             for codeword_success_probability in input_codeword_success_probabilities:
                 if not found and codeword_success_probability.output_codeword == result_codeword:
                     found = True
-                    codeword_success_probability.counts.assign_add(1)
+                    all_counts[index_count].assign_add(1.0)
+                    codeword_success_probability.counts = all_counts[index_count]
+                index_count += 1
 
     def _init_one_input_codeword_success_probabilities(self,
                                                        input_codeword: CodeWord,
@@ -117,7 +123,11 @@ class TFEngine(Engine):
 
     def _init_batch_success_probabilities(self,
                                           input_batch: Batch,
-                                          output_batch: Batch) -> List[List[CodeWordSuccessProbability]]:
+                                          output_batch: Batch,
+                                          all_counts: List[tf.Variable]) -> List[List[CodeWordSuccessProbability]]:
+
+        for counts in all_counts:
+            counts.assign(0.)
 
         return [self._init_one_input_codeword_success_probabilities(input_codeword=input_codeword,
                                                                     output_batch=output_batch)
@@ -126,8 +136,19 @@ class TFEngine(Engine):
     def _convert_sampling_output_to_codeword(self, alpha_value: float, one_codeword_output: EagerTensor) -> CodeWord:
         ON = -1
         OFF = 1
-        word = [alpha_value * (ON if one_mode_output != 0 else OFF) for one_mode_output in one_codeword_output[0]]
-        return CodeWord(word=word)
+        # word = [alpha_value * (ON if one_mode_output != 0 else OFF) for one_mode_output in one_codeword_output[0]]
+        # logger.debug(f'one_codeword_output: {one_codeword_output}')
+        # logger.debug(f'one_codeword_output[0]: {one_codeword_output[0]}')
+        word = [alpha_value * tf.cast(ON * (1 + one_mode_output - one_mode_output) if one_mode_output != 0
+                                      else one_mode_output + OFF, dtype=tf.float64)
+                for one_mode_output in one_codeword_output[0]]
+        tf_word = tf.reshape(tf.concat(word, axis=0), [len(word), ])
+        logger.debug(f'tf_word: {tf_word}, type: {type(tf_word)}')
+
+        logger.debug(f'tf_word: {tf_word}, type: {type(tf_word)}')
+        cw = CodeWord(word=tf_word)
+        logger.debug(f'codeword: {cw}')
+        return cw
 
     def _convert_batch_sampling_output_to_codeword_list(self,
                                                         alpha_value: float,

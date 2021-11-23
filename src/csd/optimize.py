@@ -44,6 +44,13 @@ class Optimize(ABC):
 
         return cast(TFOptimizer, self._optimizer).parameters
 
+    @property
+    def all_counts(self) -> List[Variable]:
+        if self._opt_backend is not Backends.TENSORFLOW:
+            raise ValueError("backend is NOT Tensorflow")
+
+        return cast(TFOptimizer, self._optimizer).all_counts
+
     def optimize(self,
                  cost_function: Callable,
                  current_alpha: Optional[float] = 0.0) -> OptimizationResult:

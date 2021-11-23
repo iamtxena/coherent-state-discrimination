@@ -129,6 +129,7 @@ class TFEngineRunOptions(TypedDict):
     input_batch: Batch
     output_batch: Batch
     shots: int
+    all_counts: List[Variable]
     measuring_type: MeasuringTypes
 
 
@@ -138,7 +139,7 @@ class CodeWordSuccessProbability():
     guessed_codeword: CodeWord
     output_codeword: CodeWord
     success_probability: Union[float, EagerTensor]
-    counts: EagerTensor = Variable(0)
+    counts: EagerTensor = Variable(0.)
 
     def __str__(self) -> str:
         return json.dumps({

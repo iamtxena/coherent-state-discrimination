@@ -138,6 +138,7 @@ class CSD(ABC):
                                 backend_name=self._engine.backend_name,
                                 measuring_type=self._run_configuration['measuring_type'],
                                 shots=self._shots,
+                                all_counts=self._optimization.all_counts,
                                 plays=self._plays)).run_and_compute_average_batch_error_probability()
 
     @timing
@@ -196,11 +197,12 @@ class CSD(ABC):
 
         return result
 
-    def _write_result(self, alpha: float, one_alpha_start_time: float, error_probability: np.ndarray):
+    def _write_result(self, alpha: float, one_alpha_start_time: float, error_probability: float):
         if self._circuit is None:
             raise ValueError("Circuit must be initialized")
 
-        fixed_error_probability = error_probability[0]
+        # fixed_error_probability = error_probability[0]
+        fixed_error_probability = error_probability
 
         GlobalResultManager().write_result(GlobalResult(alpha=alpha,
                                                         success_probability=1 - fixed_error_probability,
