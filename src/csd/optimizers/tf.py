@@ -1,6 +1,6 @@
 from abc import ABC
 import time
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Tuple
 import tensorflow as tf
 import numpy as np
 import os
@@ -33,8 +33,9 @@ class TFOptimizer(ABC):
         if len(params_name) - modes != nparams:
             raise ValueError(f"params names length: {params_name.__len__()} does not match nparams: {nparams}")
         self._params_name = params_name[modes:]
-        self._parameters = [tf.Variable(0.1) for _ in range(self._number_parameters)]
-        self._all_counts = [tf.Variable(0., trainable=False) for _ in range(2**(self._number_modes * 2))]
+        self._parameters = [tf.Variable(0.1, name=f'param_{i}') for i in range(self._number_parameters)]
+        self._all_counts = [tf.Variable(0., name=f'counts_{i}', trainable=False)
+                            for i in range(2**(self._number_modes * 2))]
 
     @property
     def parameters(self) -> List[tf.Variable]:
@@ -51,15 +52,15 @@ class TFOptimizer(ABC):
 
         self._opt = tfOptimizers.Adam(learning_rate=self._learning_rate.default)
         init_time = time.time()
-        # loss = tf.Variable(0.0)
+        loss = tf.Variable(0.0, name='loss')
         # parameters = [tf.Variable(0.1) for _ in range(self._number_parameters)]
 
         self._prepare_tf_board(self._current_alpha)
         current_learning_steps = self._set_learning_values_by_alpha(self._current_alpha)
 
         for step in range(current_learning_steps):
-            parameters = self._tf_optimize(cost_function=cost_function,
-                                           parameters=self._parameters + self._all_counts)
+            loss, parameters = self._tf_optimize(cost_function=cost_function,
+                                                 parameters=self._parameters + self._all_counts)
 
             reset = self._print_time_when_necessary(learning_steps=current_learning_steps,
                                                     init_time=init_time,
@@ -69,16 +70,16 @@ class TFOptimizer(ABC):
             self._update_tf_board_metrics(step)
 
         return OptimizationResult(optimized_parameters=[param.numpy() for param in parameters],
-                                  error_probability=0.0)
+                                  error_probability=loss.numpy())
 
     def _update_tf_board_metrics(self, step: int) -> None:
         with self._train_summary_writer.as_default():
-            # tf.summary.scalar('loss', self._train_loss.result(), step=step)
+            tf.summary.scalar('loss', self._train_loss.result(), step=step)
             for train_param, param_name in zip(self._train_params, self._params_name):
                 tf.summary.scalar(param_name, train_param.result(), step=step)
 
             # Reset metrics every step
-        # self._train_loss.reset_states()
+        self._train_loss.reset_states()
         for train_param in self._train_params:
             train_param.reset_states()
 
@@ -100,30 +101,33 @@ class TFOptimizer(ABC):
         self._train_summary_writer = tf.summary.create_file_writer(train_log_dir)
 
         # Define our metrics
-        # self._train_loss = tfMetrics.Mean('train_loss')
+        self._train_loss = tfMetrics.Mean('train_loss')
         self._train_params = [tfMetrics.Mean(f'train_param_{param_name}',
                                              dtype=tf.float32)
                               for param_name in self._params_name]
 
     def _tf_optimize(self,
                      cost_function: Callable,
-                     parameters: List[Variable]) -> List[Variable]:
+                     parameters: List[Variable]) -> Tuple[EagerTensor, List[Variable]]:
 
-        # with tf.GradientTape() as tape:
-        #     loss = cost_function(parameters)
+        with tf.GradientTape() as tape:
+            loss = cost_function()
 
-        # logger.debug(f'loss: {loss}')
+        logger.debug(f'loss: {loss}')
 
-        # gradients = tape.gradient(loss, parameters)
-        # logger.debug(f'gradients: {gradients}')
-        # self._opt.apply_gradients(zip(gradients, parameters))
-        self._opt.minimize(loss=cost_function, var_list=parameters)
-        # self._train_loss(loss)
+        gradients = tape.gradient(loss, parameters)
+        logger.debug(f'parameters: {parameters}')
+        logger.debug(f'gradients: {gradients}')
+        w_vars = [var.name for var in tape.watched_variables()]
+        logger.debug(f'watched_variables: {w_vars}')
+        self._opt.apply_gradients(zip(gradients, parameters))
+        # self._opt.minimize(loss=cost_function, var_list=parameters)
+        self._train_loss(loss)
         logger.debug(f'parameters: {parameters}')
         for train_param, parameter in zip(self._train_params, parameters):
             train_param(parameter)
 
-        return parameters
+        return loss, parameters
 
     def _print_time_when_necessary(self,
                                    learning_steps: int,

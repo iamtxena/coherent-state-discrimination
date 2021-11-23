@@ -54,25 +54,31 @@ class CostFunction(ABC):
             self,
             codeword_guesses: List[CodeWordSuccessProbability]) -> Union[float, EagerTensor]:
 
-        success_probability_from_guesses = []
-        for input_codeword in self._input_batch.codewords:
-            found = False
-            for result_codeword_success_probability in codeword_guesses:
-                if not found and input_codeword == result_codeword_success_probability.input_codeword:
-                    found = True
-                    (success_probability_from_guesses.append(result_codeword_success_probability.success_probability)
-                     if input_codeword == result_codeword_success_probability.guessed_codeword
-                     else success_probability_from_guesses.append(
-                         tf.subtract(tf.constant(1.0),
-                                     result_codeword_success_probability.success_probability)))
-            if not found:
-                raise ValueError(f"input codeword: {input_codeword} not found as result")
+        # success_probability_from_guesses = []
+        # for input_codeword in self._input_batch.codewords:
+        #     found = False
+        #     for result_codeword_success_probability in codeword_guesses:
+        #         if not found and input_codeword == result_codeword_success_probability.input_codeword:
+        #             found = True
+        #             (success_probability_from_guesses.append(result_codeword_success_probability.success_probability)
+        #              if input_codeword == result_codeword_success_probability.guessed_codeword
+        #              else success_probability_from_guesses.append(
+        #                  tf.subtract(tf.constant(1.0),
+        #                              result_codeword_success_probability.success_probability)))
+        #     if not found:
+        #         raise ValueError(f"input codeword: {input_codeword} not found as result")
 
-        logger.debug(f'success_probability_from_guesses: {success_probability_from_guesses}')
-        avg_succ = tf.divide(tf.math.add_n(success_probability_from_guesses),
-                             tf.constant(self._input_batch.size, dtype=tf.float32))
-        logger.debug(f'average success: {avg_succ}')
-        return avg_succ
+        # logger.debug(f'success_probability_from_guesses: {success_probability_from_guesses}')
+        # avg_succ = tf.divide(tf.math.add_n(success_probability_from_guesses),
+        #                      tf.constant(self._input_batch.size, dtype=tf.float32))
+        # logger.debug(f'average success: {avg_succ}')
+        # return avg_succ
+        success_probability_from_guesses = [
+            codeword_success_prob.success_probability
+            if batch_codeword == codeword_success_prob.guessed_codeword
+            else 1 - codeword_success_prob.success_probability
+            for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
+        return sum(success_probability_from_guesses) / self._input_batch.size
 
     def run_and_compute_average_batch_error_probability(self) -> Union[float, EagerTensor]:
         # return 1 - sum([self._compute_one_play_average_batch_success_probability(
