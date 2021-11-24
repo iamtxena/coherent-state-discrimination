@@ -44,6 +44,8 @@ def set_friendly_time(time_interval: float) -> str:
         friendly_time += f'{seconds} second.'
     if seconds > 1:
         friendly_time += f'{seconds} seconds.'
+    if seconds < 1:
+        friendly_time += f'{seconds} seconds.'
     return friendly_time
 
 
