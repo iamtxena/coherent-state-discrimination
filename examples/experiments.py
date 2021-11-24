@@ -68,11 +68,11 @@ if __name__ == '__main__':
     number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
-    alphas = [0.1]
+    alphas = [0.7]
     # alphas = alphas[:13]
 
-    learning_steps = LearningSteps(default=2,
-                                   high=2,
+    learning_steps = LearningSteps(default=600,
+                                   high=600,
                                    extreme=1000)
     learning_rate = LearningRate(default=0.1,
                                  high=0.1,
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     squeezing = False
 
     batch_size = 2**number_input_modes
-    shots = 10
+    shots = 1000
     plays = 1
     number_layers = 1
 

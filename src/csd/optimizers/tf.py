@@ -111,7 +111,7 @@ class TFOptimizer(ABC):
         self._opt.apply_gradients(zip(gradients, parameters))
 
         self._train_means_photons_error(means_photons_error)
-        logger.debug(f'parameters: {parameters}')
+        # logger.debug(f'parameters: {parameters}')
         for train_param, parameter in zip(self._train_params, parameters):
             train_param(parameter)
 

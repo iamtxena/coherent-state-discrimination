@@ -10,7 +10,7 @@ from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends, CodeWordSuccessProbability,
                                 EngineRunOptions, RunningTypes, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
-from csd.config import logger
+# from csd.config import logger
 # import tensorflow as tf
 
 
@@ -119,5 +119,5 @@ class CostFunction(ABC):
                 shots=self._options.shots,
                 measuring_type=self._options.measuring_type,
                 running_type=RunningTypes.TRAINING))
-        logger.debug(f'batch_error_probability: {batch_error_probability}')
+        # logger.debug(f'batch_error_probability: {batch_error_probability}')
         return batch_error_probability

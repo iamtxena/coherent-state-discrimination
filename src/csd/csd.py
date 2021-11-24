@@ -188,7 +188,8 @@ class CSD(ABC):
             self._engine = self._create_engine()
 
             one_alpha_optimization_result = self._train_for_one_alpha()
-            one_alpha_success_probability = self._test_for_one_alpha()
+            one_alpha_success_probability = self._test_for_one_alpha(
+                optimized_parameters=one_alpha_optimization_result.optimized_parameters)
 
             self._update_result(result=result,
                                 one_alpha_optimization_result=one_alpha_optimization_result,
@@ -211,16 +212,19 @@ class CSD(ABC):
 
         return result
 
-    def _test_for_one_alpha(self) -> EagerTensor:
+    def _test_for_one_alpha(self, optimized_parameters: List[float]) -> EagerTensor:
         if self._testing_circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
         if self._current_batch is None:
             raise ValueError("Current Batch must be initialized")
+        # list_optimized_parameters = [one_parameter.numpy() for one_parameter in optimized_parameters]
+        logger.debug(
+            f'Going to train with the optimized parameters: {optimized_parameters}')
 
         return OptimizationTesting(batch=self._current_batch,
-                                   params=self._optimization.parameters,
+                                   params=optimized_parameters,
                                    options=OptimizationTestingOptions(
                                        engine=self._engine,
                                        circuit=self._testing_circuit,
