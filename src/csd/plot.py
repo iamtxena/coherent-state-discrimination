@@ -104,10 +104,10 @@ class Plot(ABC):
             ax.set_xlabel('number modes')
             ax.set_ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
             ax.patch.set_facecolor('silver')
-            ax.patch.set_alpha(0.7)
+            # ax.patch.set_alpha(0.7)
         plt.subplots_adjust(hspace=0.4)
         fig.patch.set_facecolor('grey')
-        fig.patch.set_alpha(0.7)
+        # fig.patch.set_alpha(0.7)
         suffix = "_probs_all" if not apply_log else "_logs_probs_all"
         self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
                                 suffix=suffix, fig=fig)
@@ -308,9 +308,9 @@ class Plot(ABC):
         plt.legend(fancybox=True, bbox_to_anchor=(-0.3, 1.01), loc='upper left',
                    ncol=1, facecolor='silver', framealpha=0.7, fontsize='small')
         fig.patch.set_facecolor('grey')
-        fig.patch.set_alpha(0.1)
+        # fig.patch.set_alpha(0.1)
         axes.patch.set_facecolor('grey')
-        axes.patch.set_alpha(0.1)
+        # axes.patch.set_alpha(0.1)
         if xtics is not None:
             axes.set_xticks(xtics)
         if interactive_plot:
@@ -318,7 +318,7 @@ class Plot(ABC):
                            if not specific_alphas
                            else self._set_interactive_labels_specific_alphas(plt_lines))
             rax.set_facecolor('silver')
-            rax.patch.set_alpha(0.7)
+            # rax.patch.set_alpha(0.7)
             labels_activated = [False] * len(labels)
             check = CheckButtons(rax, labels, labels_activated)
 

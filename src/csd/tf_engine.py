@@ -10,6 +10,7 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.typings.typing import (BatchSuccessProbability, CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions)
 from csd.circuit import Circuit
 from csd.config import logger
+import numpy as np
 
 
 class TFEngine(Engine):
@@ -17,10 +18,14 @@ class TFEngine(Engine):
 
     """
 
-    def _compute_prob(self, value: EagerTensor) -> EagerTensor:
-        if value <= 1:
-            return value
-        return tf.divide(value, value)
+    def _compute_error(self, tf_state: FockStateTF, mode: int, alpha_value: float) -> EagerTensor:
+        one_mode_mean_photons = self._get_mean_photon_one_mode(tf_state, mode=mode)
+        exact_mean_photons = np.abs(alpha_value)**2
+        return tf.math.abs(one_mode_mean_photons - exact_mean_photons)
+
+    def _get_mean_photon_one_mode(self, tf_state: FockStateTF, mode: int) -> EagerTensor:
+        # it is a tuple of mean, variance. We only want the mean
+        return tf_state.mean_photon(mode)[0]
 
     def run_tf_circuit_sampling(
             self,
@@ -29,13 +34,13 @@ class TFEngine(Engine):
 
         options['shots'] = 1
         tf_result: Result = self._run_tf_circuit(circuit=circuit, options=options)
-        logger.debug(f'tf_result: {tf_result}')
+        # logger.debug(f'tf_result: {tf_result}')
         tf_state: FockStateTF = tf_result.state
         # tf_samples = tf_result.samples
         # tf_all_probs = tf_state.all_fock_probs
         # fock_prob = tf_state.fock_prob([0])
-        mean, var = tf_state.mean_photon(0)
-        logger.debug(f'mean: {mean} and var: {var}')
+        # mean, var = tf_state.mean_photon(0)
+        # logger.debug(f'mean: {mean} and var: {var}')
         # round_mean = tf.round(mean)
         # logger.debug(f'round_mean: {round_mean}')
 
@@ -43,16 +48,22 @@ class TFEngine(Engine):
         # logger.debug(f'tf_samples: {tf_samples}')
         # logger.debug(f'tf_all_probs: {tf_all_probs}')
         # logger.debug(f'fock_prob: {fock_prob}')
+        # means =
         # for mode_i in range(tf_state.num_modes):
-        #     logger.debug(f'mean_photon({mode_i}): {tf_state.mean_photon(mode_i)}')
+        #      logger.debug(f'mean_photon({mode_i}): {tf_state.mean_photon(mode_i)}')
 
-        # probs = tf.map_fn(self._compute_prob, mean)
-        probs = self._compute_prob(mean[0])
+        # means = tf.map_fn(self._compute_prob, mean)
+        error_all_modes = [self._compute_error(tf_state,
+                                               mode=mode_i,
+                                               alpha_value=options['input_batch'].alpha)
+                           for mode_i in range(tf_state.num_modes)]
+        logger.debug(f'error_all_modes: {error_all_modes}')
         # probs_mean = tf.reduce_mean(floor_photons)
         # logger.debug(f'probs_mean: {probs_mean}')
         # probs = sum(floor_photons) / shots
-        logger.debug(f'probs: {probs}')
-        return probs
+        batch_error = tf.reduce_mean(error_all_modes)
+        logger.debug(f'batch error: {batch_error}')
+        return batch_error
 
     def run_tf_circuit_checking_measuring_type(
             self,
@@ -98,15 +109,17 @@ class TFEngine(Engine):
                               output_codeword: CodeWord,
                               tf_state: FockStateTF,
                               index_input_codeword: int) -> EagerTensor:
-        mean, var = tf_state.mean_photon(0)
-        logger.debug(f'mean: {mean} and var: {var}')
 
-        mean_photons_prob = self._compute_prob(mean[index_input_codeword])
-        is_alpha = mean_photons_prob <= 0
+        mean, _ = tf_state.mean_photon(0)
+        # logger.debug(f'mean: {mean} and var: {var}')
 
-        succ_prob = 1 - mean_photons_prob if is_alpha else mean_photons_prob
-        logger.debug(f'succ_prob: {succ_prob}')
-        return succ_prob
+        # mean_photons_prob = self._compute_prob(mean[index_input_codeword])
+        # is_alpha = output_codeword.word[0] > 0
+
+        # succ_prob = 1 - mean_photons_prob if is_alpha else mean_photons_prob
+        mean_photons_prob = mean[index_input_codeword]
+        logger.debug(f'mean_photons_prob: {mean_photons_prob}')
+        return mean_photons_prob
 
     def _init_one_input_codeword_success_probabilities(self,
                                                        input_codeword: CodeWord,

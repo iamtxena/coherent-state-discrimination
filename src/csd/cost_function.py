@@ -72,6 +72,11 @@ class CostFunction(ABC):
         #                      tf.constant(self._input_batch.size, dtype=tf.float32))
         # logger.debug(f'average success: {avg_succ}')
         # return avg_succ
+        # success_probability_from_guesses = [
+        #     codeword_success_prob.success_probability
+        #     if batch_codeword == codeword_success_prob.guessed_codeword
+        #     else 1 - codeword_success_prob.success_probability
+        #     for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
         success_probability_from_guesses = [
             codeword_success_prob.success_probability
             if batch_codeword == codeword_success_prob.guessed_codeword
@@ -90,13 +95,21 @@ class CostFunction(ABC):
         #         measuring_type=self._options.measuring_type))
         # logger.debug(f"probs: {probs}")
         # loss = 1 - probs
-        loss = 1 - sum([self._compute_one_play_average_batch_success_probability(
-            codeword_guesses=self._run_and_get_codeword_guesses())
-            for _ in range(self._options.plays)]
-        ) / self._options.plays
+        # loss = 1 - sum([self._compute_one_play_average_batch_success_probability(
+        #     codeword_guesses=self._run_and_get_codeword_guesses())
+        #     for _ in range(self._options.plays)]
+        # ) / self._options.plays
         # loss = (tf.subtract(
         #     tf.constant(1.0),
         #     self._compute_one_play_average_batch_success_probability(
         #         codeword_guesses=self._run_and_get_codeword_guesses())))
+        loss = self._options.engine.run_tf_circuit_sampling(
+            circuit=self._options.circuit,
+            options=TFEngineRunOptions(
+                params=self._params,
+                input_batch=self._input_batch,
+                output_batch=self._output_batch,
+                shots=self._options.shots,
+                measuring_type=self._options.measuring_type))
         logger.debug(f'loss: {loss}')
         return loss
