@@ -6,6 +6,7 @@ import json
 from dataclasses import dataclass
 
 from tensorflow.python.framework.ops import EagerTensor
+from tensorflow import Variable
 from csd.batch import Batch
 
 from csd.codeword import CodeWord
@@ -85,9 +86,15 @@ class MeasuringTypes(enum.Enum):
     PROBABILITIES = 'probabilities'
 
 
+class RunningTypes(enum.Enum):
+    TRAINING = 'training'
+    TESTING = 'testing'
+
+
 class RunConfiguration(TypedDict, total=False):
     run_backend: Backends
     measuring_type: MeasuringTypes
+    running_type: RunningTypes
 
 
 class OptimizationResult(NamedTuple):
@@ -128,7 +135,8 @@ class TFEngineRunOptions(TypedDict):
     input_batch: Batch
     output_batch: Batch
     shots: int
-    measuring_type: MeasuringTypes
+    measuring_type: Union[MeasuringTypes, None]
+    running_type: Union[RunningTypes, None]
 
 
 @dataclass
@@ -137,6 +145,7 @@ class CodeWordSuccessProbability():
     guessed_codeword: CodeWord
     output_codeword: CodeWord
     success_probability: Union[float, EagerTensor]
+    counts: Variable
 
     def __str__(self) -> str:
         return json.dumps({

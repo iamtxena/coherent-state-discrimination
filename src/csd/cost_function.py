@@ -7,7 +7,8 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.batch import Batch
 from csd.codeword import CodeWord
 from csd.tf_engine import TFEngine
-from csd.typings.typing import (Backends, CodeWordSuccessProbability, EngineRunOptions, TFEngineRunOptions)
+from csd.typings.typing import (Backends, CodeWordSuccessProbability,
+                                EngineRunOptions, RunningTypes, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
 from csd.config import logger
 # import tensorflow as tf
@@ -37,7 +38,8 @@ class CostFunction(ABC):
                     input_batch=self._input_batch,
                     output_batch=self._output_batch,
                     shots=self._options.shots,
-                    measuring_type=self._options.measuring_type))
+                    measuring_type=self._options.measuring_type,
+                    running_type=RunningTypes.TRAINING))
         return [self._options.engine.run_circuit_checking_measuring_type(
             circuit=self._options.circuit,
             options=EngineRunOptions(
@@ -103,6 +105,11 @@ class CostFunction(ABC):
         #     tf.constant(1.0),
         #     self._compute_one_play_average_batch_success_probability(
         #         codeword_guesses=self._run_and_get_codeword_guesses())))
+        if self._options.backend_name != Backends.TENSORFLOW.value:
+            raise ValueError("TF Backend is the only supported")
+
+        if not isinstance(self._options.engine, TFEngine):
+            raise ValueError("TF Backend can only run on TFEngine.")
         loss = self._options.engine.run_tf_circuit_sampling(
             circuit=self._options.circuit,
             options=TFEngineRunOptions(
@@ -110,6 +117,7 @@ class CostFunction(ABC):
                 input_batch=self._input_batch,
                 output_batch=self._output_batch,
                 shots=self._options.shots,
-                measuring_type=self._options.measuring_type))
+                measuring_type=self._options.measuring_type,
+                running_type=RunningTypes.TRAINING))
         logger.debug(f'loss: {loss}')
         return loss

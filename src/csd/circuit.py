@@ -5,7 +5,7 @@ from typing import List, Optional, Union
 from strawberryfields.parameters import FreeParameter
 from tensorflow.python.framework.ops import EagerTensor
 from csd.operations.universal_multimode import UniversalMultimode
-from csd.typings.typing import Architecture, MeasuringTypes
+from csd.typings.typing import Architecture, RunningTypes
 # from csd.config import logger
 import strawberryfields as sf
 from typeguard import typechecked
@@ -17,7 +17,7 @@ class Circuit(ABC):
     """
 
     @typechecked
-    def __init__(self, architecture: Architecture, measuring_type: MeasuringTypes) -> None:
+    def __init__(self, architecture: Architecture, running_type: RunningTypes) -> None:
 
         if not architecture or 'number_modes' not in architecture:
             raise ValueError('No architecture or number_modes specified')
@@ -30,13 +30,13 @@ class Circuit(ABC):
 
         if self.number_modes == 1:
             self._create_circuit_for_one_mode(squeezing=architecture['squeezing'],
-                                              measuring_type=measuring_type)
+                                              running_type=running_type)
             return
 
         self._create_multimode_circuit(squeezing=architecture['squeezing'],
                                        number_input_modes=self.number_input_modes,
                                        number_ancillas=self.number_ancillas,
-                                       measuring_type=measuring_type)
+                                       running_type=running_type)
 
     @property
     def circuit(self) -> sf.Program:
@@ -71,7 +71,7 @@ class Circuit(ABC):
                                   squeezing: bool,
                                   number_input_modes: int,
                                   number_ancillas: int,
-                                  measuring_type: MeasuringTypes) -> None:
+                                  running_type: RunningTypes) -> None:
         M = number_input_modes + number_ancillas
         K = int(M * (M - 1) / 2)
 
@@ -114,12 +114,12 @@ class Circuit(ABC):
                                number_modes=M,
                                context=q,
                                squeezing=squeezing)
-            # if measuring_type is MeasuringTypes.SAMPLING:
-            #     sf.ops.MeasureFock() | q
+            if running_type is RunningTypes.TESTING:
+                sf.ops.MeasureFock() | q
 
     def _create_circuit_for_one_mode(self,
                                      squeezing: bool,
-                                     measuring_type: MeasuringTypes) -> None:
+                                     running_type: RunningTypes) -> None:
         number_modes = 1
         alpha = self._create_free_parameter_list(base_name='alpha', number_elems=number_modes, circuit=self._prog)
         if squeezing:
@@ -135,8 +135,8 @@ class Circuit(ABC):
             self._apply_displacement_layer_to_all_modes(a, context=q, number_modes=number_modes)
             if squeezing:
                 self._apply_squeezing_layer_to_all_modes(r, phi_r, context=q, number_modes=number_modes)
-            # if measuring_type is MeasuringTypes.SAMPLING:
-            #     sf.ops.MeasureFock() | q
+            if running_type is RunningTypes.TESTING:
+                sf.ops.MeasureFock() | q
 
     def _apply_displacement_layer_to_only_input_modes(self,
                                                       alpha: List[FreeParameter],

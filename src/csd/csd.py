@@ -2,14 +2,16 @@ from abc import ABC
 from csd.circuit import Circuit
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
+from csd.optimization_testing import OptimizationTesting
 from csd.tf_engine import TFEngine
 from csd.typings.global_result import GlobalResult
+from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (Backends,
                                 CSDConfiguration, CutOffDimensions, LearningRate, LearningSteps, OptimizationResult,
                                 RunConfiguration,
                                 MeasuringTypes,
                                 ResultExecution,
-                                Architecture)
+                                Architecture, RunningTypes)
 from typing import Optional, Union, cast, List
 import numpy as np
 from time import time
@@ -75,7 +77,7 @@ class CSD(ABC):
         self._probability_results: List[ResultExecution] = []
         self._sampling_results: List[ResultExecution] = []
         self._plot: Union[Plot, None] = None
-        self._circuit: Union[Circuit, None] = None
+        self._training_circuit: Union[Circuit, None] = None
         self._run_configuration: Union[RunConfiguration, None] = None
 
     def _set_architecture(self, architecture: Optional[Architecture] = None) -> Architecture:
@@ -102,15 +104,15 @@ class CSD(ABC):
         }
 
     def _create_batch_for_alpha(self, alpha_value: float, random_words: bool) -> Batch:
-        if self._circuit is None:
+        if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
         return Batch(size=self._batch_size,
-                     word_size=self._circuit.number_input_modes,
+                     word_size=self._training_circuit.number_input_modes,
                      alpha_value=alpha_value,
                      random_words=random_words)
 
-    def _create_circuit(self) -> Circuit:
+    def _create_circuit(self, running_type: RunningTypes = RunningTypes.TRAINING) -> Circuit:
         """Creates a circuit to run an experiment based on configuration parameters
 
         Returns:
@@ -120,10 +122,10 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
 
         return Circuit(architecture=self._architecture,
-                       measuring_type=self._run_configuration['measuring_type'])
+                       running_type=running_type)
 
     def _cost_function(self) -> Union[float, EagerTensor]:
-        if self._circuit is None:
+        if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
@@ -134,7 +136,7 @@ class CSD(ABC):
                             params=self._optimization.parameters,
                             options=CostFunctionOptions(
                                 engine=self._engine,
-                                circuit=self._circuit,
+                                circuit=self._training_circuit,
                                 backend_name=self._engine.backend_name,
                                 measuring_type=self._run_configuration['measuring_type'],
                                 shots=self._shots,
@@ -154,39 +156,52 @@ class CSD(ABC):
             raise ValueError('No configuration specified')
 
         self._run_configuration = configuration.copy()
-        self._circuit = self._create_circuit()
+        self._training_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
+        self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
         result = self._init_result()
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
                      " with measuring_type: "
                      f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value} \n"
-                     f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
-                     f" ancillas: {self._circuit.number_ancillas} \n"
+                     f"batch_size:{self._batch_size} plays:{self._plays}"
+                     f" modes:{self._training_circuit.number_input_modes}"
+                     f" ancillas: {self._training_circuit.number_ancillas} \n"
                      f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
-        return self._single_process_optimization(result=result,
-                                                 random_words=(not self._backend_is_tf()))
+        return self._train_and_test(result=result,
+                                    random_words=(not self._backend_is_tf()))
 
-    def _single_process_optimization(self,
-                                     result: ResultExecution,
-                                     random_words: bool):
-        if self._circuit is None:
-            raise ValueError("Circuit must be initialized")
+    def _train_and_test(self,
+                        result: ResultExecution,
+                        random_words: bool):
+        if self._training_circuit is None:
+            raise ValueError("Training circuit must be initialized")
+        if self._testing_circuit is None:
+            raise ValueError("Testing circuit must be initialized")
 
         start_time = time()
         for sample_alpha in self._alphas:
             one_alpha_start_time = time()
-            one_alpha_optimization_result = self._execute_for_one_alpha(sample_alpha=sample_alpha,
-                                                                        random_words=random_words)
-            self._update_result(result=result, one_alpha_optimization_result=one_alpha_optimization_result)
+            self._alpha_value = sample_alpha
+            self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
+            self._engine = self._create_engine()
+
+            one_alpha_optimization_result = self._train_for_one_alpha()
+            one_alpha_success_probability = self._test_for_one_alpha()
+
+            self._update_result(result=result,
+                                one_alpha_optimization_result=one_alpha_optimization_result,
+                                one_alpha_success_probability=one_alpha_success_probability)
             self._write_result(alpha=sample_alpha,
                                one_alpha_start_time=one_alpha_start_time,
-                               error_probability=one_alpha_optimization_result.error_probability)
-            logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)} '
-                         f'pSucc: {1 - one_alpha_optimization_result.error_probability} '
-                         f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
-                         f" ancillas: {self._circuit.number_ancillas} steps: {self._learning_steps}, "
+                               one_alpha_success_probability=one_alpha_success_probability)
+
+            logger.debug(f'Optimized and trained for alpha: {np.round(self._alpha_value, 2)} '
+                         f'pSucc: {one_alpha_success_probability.numpy()} '
+                         f"batch_size:{self._batch_size} plays:{self._plays}"
+                         f" modes:{self._training_circuit.number_input_modes}"
+                         f" ancillas: {self._training_circuit.number_ancillas} steps: {self._learning_steps}, "
                          f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}"
                          f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
@@ -196,36 +211,53 @@ class CSD(ABC):
 
         return result
 
-    def _write_result(self, alpha: float, one_alpha_start_time: float, error_probability: float):
-        if self._circuit is None:
+    def _test_for_one_alpha(self) -> EagerTensor:
+        if self._testing_circuit is None:
+            raise ValueError("Circuit must be initialized")
+        if self._run_configuration is None:
+            raise ValueError("Run configuration not specified")
+        if self._current_batch is None:
+            raise ValueError("Current Batch must be initialized")
+
+        return OptimizationTesting(batch=self._current_batch,
+                                   params=self._optimization.parameters,
+                                   options=OptimizationTestingOptions(
+                                       engine=self._engine,
+                                       circuit=self._testing_circuit,
+                                       backend_name=self._engine.backend_name,
+                                       shots=self._shots,
+                                       plays=self._plays)).run_and_compute_average_batch_success_probability()
+
+    def _write_result(self,
+                      alpha: float,
+                      one_alpha_start_time: float,
+                      one_alpha_success_probability: EagerTensor):
+        if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
-        # fixed_error_probability = error_probability[0]
-        fixed_error_probability = error_probability
-
         GlobalResultManager().write_result(GlobalResult(alpha=alpha,
-                                                        success_probability=1 - fixed_error_probability,
-                                                        number_modes=self._circuit.number_input_modes,
+                                                        success_probability=one_alpha_success_probability.numpy(),
+                                                        number_modes=self._training_circuit.number_input_modes,
                                                         time_in_seconds=time() - one_alpha_start_time,
                                                         squeezing=self._architecture['squeezing'],
-                                                        number_ancillas=self._circuit.number_ancillas))
+                                                        number_ancillas=self._training_circuit.number_ancillas))
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()
         result['total_time'] = end_time - start_time
 
     def _create_optimization(self) -> Optimize:
-        if self._circuit is None:
+        if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
         return Optimize(opt_backend=self._run_configuration['run_backend'],
-                        nparams=self._circuit.free_parameters,
+                        nparams=self._training_circuit.free_parameters,
                         parallel_optimization=self._parallel_optimization,
                         learning_steps=self._learning_steps,
                         learning_rate=self._learning_rate,
-                        modes=self._circuit.number_input_modes,
-                        params_name=[*self._circuit.parameters])
+                        modes=self._training_circuit.number_input_modes,
+                        params_name=[*self._training_circuit.parameters])
 
     def _save_plot_to_file(self, result):
         if self._save_plots:
@@ -240,38 +272,42 @@ class CSD(ABC):
             save_object_to_disk(obj=result, path='results')
 
     @timing
-    def _execute_for_one_alpha(self,
-                               sample_alpha: float,
-                               random_words: bool) -> OptimizationResult:
-        if self._circuit is None:
+    def _train_for_one_alpha(self) -> OptimizationResult:
+        if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
-        self._alpha_value = sample_alpha
-        self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
-
         logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)} \n'
-                     f"batch_size:{self._batch_size} plays:{self._plays} modes:{self._circuit.number_input_modes}"
-                     f" ancillas: {self._circuit.number_ancillas} \n "
+                     f"batch_size:{self._batch_size} plays:{self._plays}"
+                     f" modes:{self._training_circuit.number_input_modes}"
+                     f" ancillas: {self._training_circuit.number_ancillas} \n "
                      f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
-        self._engine = self._create_engine()
         self._optimization = self._create_optimization()
+        optimization_result = self._optimization.optimize(
+            cost_function=self._cost_function, current_alpha=self._alpha_value)
 
-        return self._optimization.optimize(cost_function=self._cost_function, current_alpha=self._alpha_value)
+        logger.debug(f'Trained for alpha: {np.round(self._alpha_value, 2)}'
+                     f' parameters: {optimization_result.optimized_parameters}'
+                     f' p_err: {optimization_result.error_probability}')
 
-    def _update_result(self, result: ResultExecution, one_alpha_optimization_result: OptimizationResult):
-        logger.debug(f'Optimized for alpha: {np.round(self._alpha_value, 2)}'
+        return optimization_result
+
+    def _update_result(self,
+                       result: ResultExecution,
+                       one_alpha_optimization_result: OptimizationResult,
+                       one_alpha_success_probability: EagerTensor):
+        logger.debug(f'Tested for alpha: {np.round(self._alpha_value, 2)}'
                      f' parameters: {one_alpha_optimization_result.optimized_parameters}'
-                     f' p_succ: {1 - one_alpha_optimization_result.error_probability}')
+                     f' p_succ: {one_alpha_success_probability.numpy()}')
         result['alphas'].append(np.round(self._alpha_value, 2))
         # result['batches'].append([])  # self._current_batch.codewords if self._current_batch is not None else [])
         result['opt_params'].append(list(one_alpha_optimization_result.optimized_parameters))
         result['p_err'].append(one_alpha_optimization_result.error_probability)
-        result['p_succ'].append(1 - one_alpha_optimization_result.error_probability)
+        result['p_succ'].append(one_alpha_success_probability.numpy())
 
     def _init_result(self):
-        if self._circuit is None:
+        if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
         result: ResultExecution = {
@@ -286,10 +322,10 @@ class CSD(ABC):
                                                measuring_type=self._run_configuration['measuring_type']),
             'plot_title': self._set_plot_title(batch_size=self._batch_size,
                                                plays=self._plays,
-                                               modes=self._circuit.number_input_modes,
+                                               modes=self._training_circuit.number_input_modes,
                                                layers=self._architecture['number_layers'],
                                                squeezing=self._architecture['squeezing'],
-                                               ancillas=self._circuit.number_ancillas,),
+                                               ancillas=self._training_circuit.number_ancillas,),
             'total_time': 0.0
         }
 
@@ -298,7 +334,7 @@ class CSD(ABC):
     def _create_engine(self) -> Union[Engine, TFEngine]:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
-        if self._circuit is None:
+        if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
         current_cutoff = self._cutoff_dim.default
