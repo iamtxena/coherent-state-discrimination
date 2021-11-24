@@ -138,7 +138,6 @@ class CSD(ABC):
                                 backend_name=self._engine.backend_name,
                                 measuring_type=self._run_configuration['measuring_type'],
                                 shots=self._shots,
-                                all_counts=self._optimization.all_counts,
                                 plays=self._plays)).run_and_compute_average_batch_error_probability()
 
     @timing

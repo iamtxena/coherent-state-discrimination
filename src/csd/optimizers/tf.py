@@ -34,16 +34,10 @@ class TFOptimizer(ABC):
             raise ValueError(f"params names length: {params_name.__len__()} does not match nparams: {nparams}")
         self._params_name = params_name[modes:]
         self._parameters = [tf.Variable(0.1, name=f'param_{i}') for i in range(self._number_parameters)]
-        self._all_counts = [tf.Variable(0., name=f'counts_{i}', trainable=False)
-                            for i in range(2**(self._number_modes * 2))]
 
     @property
     def parameters(self) -> List[tf.Variable]:
         return self._parameters
-
-    @property
-    def all_counts(self) -> List[Variable]:
-        return self._all_counts
 
     def optimize(self, cost_function: Callable,
                  current_alpha: Optional[float] = 0.0) -> OptimizationResult:
