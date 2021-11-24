@@ -70,7 +70,7 @@ if __name__ == '__main__':
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     alphas = [0.7]
 
-    learning_steps = LearningSteps(default=10,
+    learning_steps = LearningSteps(default=2,
                                    high=100,
                                    extreme=1000)
     learning_rate = LearningRate(default=0.1,
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     }))
     # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    # execute_probabilities_tf_backend(csd=csd)
+    execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
-    execute_sampling_tf_backend(csd=csd)
+    # execute_sampling_tf_backend(csd=csd)

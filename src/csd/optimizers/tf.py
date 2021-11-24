@@ -57,10 +57,10 @@ class TFOptimizer(ABC):
 
         self._prepare_tf_board(self._current_alpha)
         current_learning_steps = self._set_learning_values_by_alpha(self._current_alpha)
-
+        logger.info(f"number of parameters: {len(self._parameters)}")
         for step in range(current_learning_steps):
             loss, parameters = self._tf_optimize(cost_function=cost_function,
-                                                 parameters=self._parameters + self._all_counts)
+                                                 parameters=self._parameters)
 
             reset = self._print_time_when_necessary(learning_steps=current_learning_steps,
                                                     init_time=init_time,
@@ -111,6 +111,7 @@ class TFOptimizer(ABC):
                      parameters: List[Variable]) -> Tuple[EagerTensor, List[Variable]]:
 
         with tf.GradientTape() as tape:
+            [tape.watch(param) for param in parameters]
             loss = cost_function()
 
         logger.debug(f'loss: {loss}')

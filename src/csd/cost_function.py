@@ -9,8 +9,8 @@ from csd.codeword import CodeWord
 from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends, CodeWordSuccessProbability, EngineRunOptions, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
-from csd.config import logger
-import tensorflow as tf
+# from csd.config import logger
+# import tensorflow as tf
 
 
 class CostFunction(ABC):
@@ -81,13 +81,13 @@ class CostFunction(ABC):
         return sum(success_probability_from_guesses) / self._input_batch.size
 
     def run_and_compute_average_batch_error_probability(self) -> Union[float, EagerTensor]:
-        # return 1 - sum([self._compute_one_play_average_batch_success_probability(
-        #     codeword_guesses=self._run_and_get_codeword_guesses())
-        #     for _ in range(self._options.plays)]
-        # ) / self._options.plays
-        loss = (tf.subtract(
-            tf.constant(1.0),
-            self._compute_one_play_average_batch_success_probability(
-                codeword_guesses=self._run_and_get_codeword_guesses())))
-        logger.debug(f'loss: {loss}')
-        return loss
+        return 1 - sum([self._compute_one_play_average_batch_success_probability(
+            codeword_guesses=self._run_and_get_codeword_guesses())
+            for _ in range(self._options.plays)]
+        ) / self._options.plays
+        # loss = (tf.subtract(
+        #     tf.constant(1.0),
+        #     self._compute_one_play_average_batch_success_probability(
+        #         codeword_guesses=self._run_and_get_codeword_guesses())))
+        # logger.debug(f'loss: {loss}')
+        # return loss
