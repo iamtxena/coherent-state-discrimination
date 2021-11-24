@@ -64,12 +64,6 @@ class TFEngine(Engine):
                                        else self._run_tf_circuit_sampling(circuit=circuit, options=options))
 
         logger.debug(f'batch success probability: {batch_success_probabilities}')
-        # max_probs = []
-        # for codewords_success_probabilities in batch_success_probabilities:
-        #     one_max = self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
-        #     logger.debug(f'codewords_success_probabilities: {codewords_success_probabilities}')
-        #     logger.debug(f'one_max: {one_max}')
-        #     max_probs.append(one_max)
 
         max_probs = [self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
                      for codewords_success_probabilities in batch_success_probabilities]
@@ -100,18 +94,34 @@ class TFEngine(Engine):
                                                       output_batch=options['output_batch'],
                                                       tf_state=tf_state)
 
+    def _compute_success_prob(self,
+                              output_codeword: CodeWord,
+                              tf_state: FockStateTF,
+                              index_input_codeword: int) -> EagerTensor:
+        mean, var = tf_state.mean_photon(0)
+        logger.debug(f'mean: {mean} and var: {var}')
+
+        mean_photons_prob = self._compute_prob(mean[index_input_codeword])
+        is_alpha = mean_photons_prob <= 0
+
+        succ_prob = 1 - mean_photons_prob if is_alpha else mean_photons_prob
+        logger.debug(f'succ_prob: {succ_prob}')
+        return succ_prob
+
     def _init_one_input_codeword_success_probabilities(self,
                                                        input_codeword: CodeWord,
                                                        output_batch: Batch,
-                                                       tf_state: FockStateTF) -> List[CodeWordSuccessProbability]:
-        mean, var = tf_state.mean_photon(0)
-        logger.debug(f'mean: {mean} and var: {var}')
+                                                       tf_state: FockStateTF,
+                                                       index_input_codeword: int) -> List[CodeWordSuccessProbability]:
 
         return [CodeWordSuccessProbability(input_codeword=input_codeword,
                                            guessed_codeword=input_codeword,
                                            output_codeword=output_codeword,
-                                           success_probability=self._compute_prob(mean[index_output]))
-                for index_output, output_codeword in enumerate(output_batch.codewords)]
+                                           success_probability=self._compute_success_prob(
+                                               output_codeword=output_codeword,
+                                               tf_state=tf_state,
+                                               index_input_codeword=index_input_codeword))
+                for output_codeword in output_batch.codewords]
 
     def _init_batch_success_probabilities(self,
                                           input_batch: Batch,
@@ -120,33 +130,9 @@ class TFEngine(Engine):
 
         return [self._init_one_input_codeword_success_probabilities(input_codeword=input_codeword,
                                                                     output_batch=output_batch,
-                                                                    tf_state=tf_state)
-                for input_codeword in input_batch.codewords]
-
-    def _convert_sampling_output_to_codeword(self, alpha_value: float, one_codeword_output: EagerTensor) -> CodeWord:
-        ON = -1
-        OFF = 1
-        word = [alpha_value * (ON if one_mode_output != 0 else OFF) for one_mode_output in one_codeword_output[0]]
-        # logger.debug(f'one_codeword_output: {one_codeword_output}')
-        # logger.debug(f'one_codeword_output[0]: {one_codeword_output[0]}')
-        # word = [alpha_value * tf.cast(ON * (1 + one_mode_output - one_mode_output) if one_mode_output != 0
-        #                               else one_mode_output + OFF, dtype=tf.float64)
-        #         for one_mode_output in one_codeword_output[0]]
-        # tf_word = tf.reshape(tf.concat(word, axis=0), [len(word), ])
-        # logger.debug(f'tf_word: {tf_word}, type: {type(tf_word)}')
-
-        # logger.debug(f'tf_word: {tf_word}, type: {type(tf_word)}')
-        cw = CodeWord(word=word)
-        logger.debug(f'codeword: {cw}')
-        return cw
-
-    def _convert_batch_sampling_output_to_codeword_list(self,
-                                                        alpha_value: float,
-                                                        batch_samples: List[EagerTensor]) -> List[CodeWord]:
-        # logger.debug(f'result samples: {batch_samples}')
-        return [self._convert_sampling_output_to_codeword(alpha_value=alpha_value,
-                                                          one_codeword_output=one_codeword_output)
-                for one_codeword_output in batch_samples]
+                                                                    tf_state=tf_state,
+                                                                    index_input_codeword=index)
+                for index, input_codeword in enumerate(input_batch.codewords)]
 
     def _compute_tf_fock_probabilities_for_all_codewords(self,
                                                          state: FockStateTF,
