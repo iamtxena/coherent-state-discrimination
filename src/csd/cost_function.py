@@ -110,7 +110,7 @@ class CostFunction(ABC):
 
         if not isinstance(self._options.engine, TFEngine):
             raise ValueError("TF Backend can only run on TFEngine.")
-        loss = self._options.engine.run_tf_circuit_sampling(
+        batch_error_probability = self._options.engine.run_tf_circuit_sampling(
             circuit=self._options.circuit,
             options=TFEngineRunOptions(
                 params=self._params,
@@ -119,5 +119,5 @@ class CostFunction(ABC):
                 shots=self._options.shots,
                 measuring_type=self._options.measuring_type,
                 running_type=RunningTypes.TRAINING))
-        logger.debug(f'loss: {loss}')
-        return loss
+        logger.debug(f'batch_error_probability: {batch_error_probability}')
+        return batch_error_probability

@@ -64,7 +64,8 @@ class Engine(ABC):
         return CodeWordSuccessProbability(input_codeword=max_success_probability_codeword_selected.input_codeword,
                                           guessed_codeword=guessed_codeword,
                                           output_codeword=max_success_probability_codeword_selected.output_codeword,
-                                          success_probability=success_probability)
+                                          success_probability=success_probability,
+                                          counts=max_success_probability_codeword_selected.counts)
 
     def _create_codeword_from_last_output_modes(self,
                                                 output_codeword: CodeWord,
@@ -145,12 +146,14 @@ class Engine(ABC):
                                            guessed_codeword=CodeWord(size=options['input_codeword'].size,
                                                                      alpha_value=options['input_codeword'].alpha),
                                            output_codeword=output_codewords[0],
-                                           success_probability=zero_prob),
+                                           success_probability=zero_prob,
+                                           counts=0),
                 CodeWordSuccessProbability(input_codeword=options['input_codeword'],
                                            guessed_codeword=CodeWord(size=options['input_codeword'].size,
                                                                      alpha_value=options['input_codeword'].alpha),
                                            output_codeword=output_codewords[1],
-                                           success_probability=1 - zero_prob)]
+                                           success_probability=1 - zero_prob,
+                                           counts=0)]
 
     def _run_circuit_probabilities(self,
                                    circuit: Circuit,
@@ -191,8 +194,9 @@ class Engine(ABC):
             output_codeword=codeword_indices.codeword,
             success_probability=self._compute_fock_prob_one_word(
                 state=state,
-                fock_prob_indices_one_word=codeword_indices.indices))
-                for codeword_indices in all_codewords_indices]
+                fock_prob_indices_one_word=codeword_indices.indices),
+            counts=0)
+            for codeword_indices in all_codewords_indices]
 
     def _run_circuit(self,
                      circuit: Circuit,
