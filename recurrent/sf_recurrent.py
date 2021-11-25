@@ -115,6 +115,7 @@ def step():
 
             logger.debug(f"{measurement_of_nth_layer.samples = }")
 
+            # TODO: Figure out a way to construct the loss such that it is differentiable.
             for kth_mode in range(NUM_MODES):
                 if input_codeword[kth_mode] == -1 and measurement_of_nth_layer.samples[0][kth_mode] < 0:
                     loss += 1
