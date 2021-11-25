@@ -24,7 +24,12 @@ class ParallelOptimizer(ABC):
         #                                            x0=self._params,
         #                                            parallel={'max_workers': max_workers})
         result: OptimizeResult = minimize_parallel(fun=cost_function,
-                                                   x0=self._params)
+                                                   x0=self._params,
+                                                   options={
+                                                       'disp': True,
+                                                       'gtol': 1e-3,
+                                                       'eps': 1e-2,
+                                                   })
         logger.debug(f"Optimization result for alpha={current_alpha} :\n{result}")
 
         return OptimizationResult(optimized_parameters=result.x,

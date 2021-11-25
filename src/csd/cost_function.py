@@ -8,9 +8,9 @@ from csd.batch import Batch
 from csd.codeword import CodeWord
 from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends, CodeWordSuccessProbability,
-                                EngineRunOptions, MeasuringTypes, RunningTypes, TFEngineRunOptions)
+                                EngineRunOptions, RunningTypes, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
-from csd.config import logger
+# from csd.config import logger
 # import tensorflow as tf
 
 
@@ -63,22 +63,30 @@ class CostFunction(ABC):
         return sum(success_probability_from_guesses) / self._input_batch.size
 
     def run_and_compute_average_batch_error_probability(self) -> Union[float, EagerTensor]:
-        if (self._options.backend_name != Backends.TENSORFLOW.value or
-                self._options.measuring_type == MeasuringTypes.PROBABILITIES):
-            return 1 - self._compute_one_play_average_batch_success_probability(
-                codeword_guesses=self._run_and_get_codeword_guesses())
+        # if (self._options.backend_name != Backends.TENSORFLOW.value or
+        #         self._options.measuring_type == MeasuringTypes.PROBABILITIES):
+        loss = 1 - self._compute_one_play_average_batch_success_probability(
+            codeword_guesses=self._run_and_get_codeword_guesses())
+        if type(loss) == EagerTensor:
+            numpy_loss = loss.numpy()
+            # logger.debug(f'numpy_loss: {numpy_loss}')
+            # first_elem_loss = numpy_loss[0]
+            # logger.debug(f'first_elem_loss: {first_elem_loss}, type: {type(first_elem_loss)}')
+            return numpy_loss
+        # logger.debug(f'loss: {loss}')
+        return loss
 
-        if not isinstance(self._options.engine, TFEngine):
-            raise ValueError("TF Backend can only run on TFEngine.")
+        # if not isinstance(self._options.engine, TFEngine):
+        #     raise ValueError("TF Backend can only run on TFEngine.")
 
-        batch_error_probability = self._options.engine.run_tf_circuit_sampling(
-            circuit=self._options.circuit,
-            options=TFEngineRunOptions(
-                params=self._params,
-                input_batch=self._input_batch,
-                output_batch=self._output_batch,
-                shots=self._options.shots,
-                measuring_type=self._options.measuring_type,
-                running_type=RunningTypes.TRAINING))
-        logger.debug(f'Batch Mean error: {batch_error_probability}')
-        return batch_error_probability
+        # batch_error_probability = self._options.engine.run_tf_circuit_sampling(
+        #     circuit=self._options.circuit,
+        #     options=TFEngineRunOptions(
+        #         params=self._params,
+        #         input_batch=self._input_batch,
+        #         output_batch=self._output_batch,
+        #         shots=self._options.shots,
+        #         measuring_type=self._options.measuring_type,
+        #         running_type=RunningTypes.TRAINING))
+        # logger.debug(f'Batch Mean error: {batch_error_probability}')
+        # return batch_error_probability

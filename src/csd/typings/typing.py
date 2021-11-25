@@ -91,8 +91,14 @@ class RunningTypes(enum.Enum):
     TESTING = 'testing'
 
 
+class OptimizationBackends(enum.Enum):
+    SCIPY = 'scipy'
+    TENSORFLOW = 'tf'
+
+
 class RunConfiguration(TypedDict, total=False):
     run_backend: Backends
+    optimization_backend: OptimizationBackends
     measuring_type: MeasuringTypes
     running_type: RunningTypes
 

@@ -7,7 +7,12 @@ from csd.tf_engine import TFEngine
 from csd.typings.global_result import GlobalResult
 from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (Backends,
-                                CSDConfiguration, CutOffDimensions, LearningRate, LearningSteps, OptimizationResult,
+                                CSDConfiguration,
+                                CutOffDimensions,
+                                LearningRate,
+                                LearningSteps,
+                                OptimizationBackends,
+                                OptimizationResult,
                                 RunConfiguration,
                                 MeasuringTypes,
                                 ResultExecution,
@@ -172,6 +177,12 @@ class CSD(ABC):
         return self._train_and_test(result=result,
                                     random_words=(not self._backend_is_tf()))
 
+    def _get_succ_prob(self,
+                       one_alpha_success_probability: Union[EagerTensor, None],
+                       one_alpha_optimization_result: OptimizationResult) -> float:
+        return (one_alpha_success_probability.numpy() if one_alpha_success_probability is not None
+                else 1 - one_alpha_optimization_result.error_probability)
+
     def _train_and_test(self,
                         result: ResultExecution,
                         random_words: bool):
@@ -188,18 +199,20 @@ class CSD(ABC):
             self._engine = self._create_engine()
 
             one_alpha_optimization_result = self._train_for_one_alpha()
-            one_alpha_success_probability = self._test_for_one_alpha(
-                optimized_parameters=one_alpha_optimization_result.optimized_parameters)
+            one_alpha_success_probability = None
+            # one_alpha_success_probability = self._test_for_one_alpha(
+            #     optimized_parameters=one_alpha_optimization_result.optimized_parameters)
 
             self._update_result(result=result,
                                 one_alpha_optimization_result=one_alpha_optimization_result,
                                 one_alpha_success_probability=one_alpha_success_probability)
             self._write_result(alpha=sample_alpha,
                                one_alpha_start_time=one_alpha_start_time,
-                               one_alpha_success_probability=one_alpha_success_probability)
+                               success_probability=self._get_succ_prob(
+                                   one_alpha_success_probability, one_alpha_optimization_result))
 
             logger.debug(f'Optimized and trained for alpha: {np.round(self._alpha_value, 2)} '
-                         f'pSucc: {one_alpha_success_probability.numpy()} '
+                         f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_alpha_optimization_result)} '
                          f"batch_size:{self._batch_size} plays:{self._plays}"
                          f" modes:{self._training_circuit.number_input_modes}"
                          f" ancillas: {self._training_circuit.number_ancillas} steps: {self._learning_steps}, "
@@ -236,12 +249,12 @@ class CSD(ABC):
     def _write_result(self,
                       alpha: float,
                       one_alpha_start_time: float,
-                      one_alpha_success_probability: EagerTensor):
+                      success_probability: float):
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
         GlobalResultManager().write_result(GlobalResult(alpha=alpha,
-                                                        success_probability=one_alpha_success_probability.numpy(),
+                                                        success_probability=success_probability,
                                                         number_modes=self._training_circuit.number_input_modes,
                                                         time_in_seconds=time() - one_alpha_start_time,
                                                         squeezing=self._architecture['squeezing'],
@@ -256,7 +269,7 @@ class CSD(ABC):
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
-        return Optimize(opt_backend=self._run_configuration['run_backend'],
+        return Optimize(opt_backend=self._run_configuration['optimization_backend'],
                         nparams=self._training_circuit.free_parameters,
                         parallel_optimization=self._parallel_optimization,
                         learning_steps=self._learning_steps,
@@ -302,14 +315,14 @@ class CSD(ABC):
                        result: ResultExecution,
                        one_alpha_optimization_result: OptimizationResult,
                        one_alpha_success_probability: EagerTensor):
-        logger.debug(f'Tested for alpha: {np.round(self._alpha_value, 2)}'
-                     f' parameters: {one_alpha_optimization_result.optimized_parameters}'
-                     f' p_succ: {one_alpha_success_probability.numpy()}')
+        # logger.debug(f'Tested for alpha: {np.round(self._alpha_value, 2)}'
+        #              f' parameters: {one_alpha_optimization_result.optimized_parameters}'
+        #              f' p_succ: {one_alpha_success_probability.numpy()}')
         result['alphas'].append(np.round(self._alpha_value, 2))
         # result['batches'].append([])  # self._current_batch.codewords if self._current_batch is not None else [])
         result['opt_params'].append(list(one_alpha_optimization_result.optimized_parameters))
         result['p_err'].append(one_alpha_optimization_result.error_probability)
-        result['p_succ'].append(one_alpha_success_probability.numpy())
+        result['p_succ'].append(self._get_succ_prob(one_alpha_success_probability, one_alpha_optimization_result))
 
     def _init_result(self):
         if self._training_circuit is None:
@@ -408,7 +421,8 @@ class CSD(ABC):
             backends: List[Backends] = [Backends.FOCK,
                                         Backends.GAUSSIAN,
                                         Backends.TENSORFLOW],
-            measuring_types: Optional[List[MeasuringTypes]] = [MeasuringTypes.PROBABILITIES]) -> List[ResultExecution]:
+            measuring_types: Optional[List[MeasuringTypes]] = [MeasuringTypes.PROBABILITIES],
+            optimization_backend: OptimizationBackends = OptimizationBackends.SCIPY) -> List[ResultExecution]:
         """Execute the experiment for all backends and measuring types
 
         Args:
@@ -425,20 +439,24 @@ class CSD(ABC):
 
         if required_probability_execution:
             self._probability_results = self._execute_with_given_backends(backends=backends,
-                                                                          measuring_type=MeasuringTypes.PROBABILITIES)
+                                                                          measuring_type=MeasuringTypes.PROBABILITIES,
+                                                                          optimization_backend=optimization_backend)
 
         if required_sampling_execution:
             self._sampling_results += self._execute_with_given_backends(backends=backends,
-                                                                        measuring_type=MeasuringTypes.SAMPLING)
+                                                                        measuring_type=MeasuringTypes.SAMPLING,
+                                                                        optimization_backend=optimization_backend)
         return self._probability_results + self._sampling_results
 
     def _execute_with_given_backends(self,
                                      backends: List[Backends],
-                                     measuring_type: MeasuringTypes) -> List[ResultExecution]:
+                                     measuring_type: MeasuringTypes,
+                                     optimization_backend: OptimizationBackends) -> List[ResultExecution]:
 
         return [self.execute(configuration=RunConfiguration({
             'run_backend': backend,
             'measuring_type': measuring_type,
+            'optimization_backend': optimization_backend,
         })) for backend in backends]
 
     def plot_success_probabilities(self,

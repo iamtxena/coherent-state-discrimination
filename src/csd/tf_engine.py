@@ -261,4 +261,6 @@ class TFEngine(Engine):
         for param in options['params']:
             all_values.append(param)
 
-        return {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}
+        output = {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}
+        # logger.debug(f'circuit parameters: {output}')
+        return output

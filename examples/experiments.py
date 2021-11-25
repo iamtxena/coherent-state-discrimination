@@ -1,6 +1,7 @@
 import multiprocessing
 from csd import CSD
-from csd.typings.typing import CutOffDimensions, LearningRate, LearningSteps, MeasuringTypes, CSDConfiguration, Backends
+from csd.typings.typing import (CutOffDimensions, LearningRate, LearningSteps,
+                                MeasuringTypes, CSDConfiguration, Backends, OptimizationBackends)
 import numpy as np
 from csd.util import timing
 import os
@@ -10,7 +11,8 @@ import os
 def execute_probabilities_fock_backend(csd: CSD) -> None:
     results = csd.execute_all_backends_and_measuring_types(
         backends=[Backends.FOCK],
-        measuring_types=[MeasuringTypes.PROBABILITIES]
+        measuring_types=[MeasuringTypes.PROBABILITIES],
+        optimization_backend=OptimizationBackends.SCIPY
     )
     for result in results:
         # print(json.dumps(result, indent=2))
@@ -21,7 +23,8 @@ def execute_probabilities_fock_backend(csd: CSD) -> None:
 def execute_probabilities_gaussian_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.GAUSSIAN],
-        measuring_types=[MeasuringTypes.PROBABILITIES]
+        measuring_types=[MeasuringTypes.PROBABILITIES],
+        optimization_backend=OptimizationBackends.SCIPY
     )
 
 
@@ -32,7 +35,8 @@ def execute_probabilities_tf_backend(csd: CSD) -> None:
 
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.TENSORFLOW],
-        measuring_types=[MeasuringTypes.PROBABILITIES]
+        measuring_types=[MeasuringTypes.PROBABILITIES],
+        optimization_backend=OptimizationBackends.SCIPY
     )
 
 
@@ -40,7 +44,8 @@ def execute_probabilities_tf_backend(csd: CSD) -> None:
 def execute_sampling_fock_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.FOCK],
-        measuring_types=[MeasuringTypes.SAMPLING]
+        measuring_types=[MeasuringTypes.SAMPLING],
+        optimization_backend=OptimizationBackends.SCIPY
     )
 
 
@@ -48,7 +53,8 @@ def execute_sampling_fock_backend(csd: CSD) -> None:
 def execute_sampling_gaussian_backend(csd: CSD) -> None:
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.GAUSSIAN],
-        measuring_types=[MeasuringTypes.SAMPLING]
+        measuring_types=[MeasuringTypes.SAMPLING],
+        optimization_backend=OptimizationBackends.SCIPY
     )
 
 
@@ -58,7 +64,8 @@ def execute_sampling_tf_backend(csd: CSD) -> None:
 
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.TENSORFLOW],
-        measuring_types=[MeasuringTypes.SAMPLING]
+        measuring_types=[MeasuringTypes.SAMPLING],
+        optimization_backend=OptimizationBackends.SCIPY
     )
 
 
@@ -68,8 +75,8 @@ if __name__ == '__main__':
     number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
-    alphas = [0.7]
-    # alphas = alphas[:13]
+    # alphas = [0.7]
+    # alphas = alphas[10:]
 
     learning_steps = LearningSteps(default=100,
                                    high=100,
@@ -77,11 +84,11 @@ if __name__ == '__main__':
     learning_rate = LearningRate(default=0.1,
                                  high=0.1,
                                  extreme=0.1)
-    cutoff_dim = CutOffDimensions(default=7,
-                                  high=10,
+    cutoff_dim = CutOffDimensions(default=10,
+                                  high=20,
                                   extreme=30)
 
-    number_input_modes = 1
+    number_input_modes = 2
     number_ancillas = 0
     squeezing = False
 
@@ -109,12 +116,12 @@ if __name__ == '__main__':
             'squeezing': squeezing,
         },
         'save_results': False,
-        'save_plots': False,
-        'parallel_optimization': False
+        'save_plots': True,
+        'parallel_optimization': True
     }))
     # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    # execute_probabilities_tf_backend(csd=csd)
+    execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
-    execute_sampling_tf_backend(csd=csd)
+    # execute_sampling_tf_backend(csd=csd)
