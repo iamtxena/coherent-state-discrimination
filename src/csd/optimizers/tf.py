@@ -33,11 +33,6 @@ class TFOptimizer(ABC):
         if len(params_name) - modes != nparams:
             raise ValueError(f"params names length: {params_name.__len__()} does not match nparams: {nparams}")
         self._params_name = params_name[modes:]
-        self._parameters = [tf.Variable(0.1, name=f'param_{i}') for i in range(self._number_parameters)]
-
-    @property
-    def parameters(self) -> List[tf.Variable]:
-        return self._parameters
 
     def optimize(self, cost_function: Callable,
                  current_alpha: Optional[float] = 0.0) -> OptimizationResult:
@@ -46,15 +41,15 @@ class TFOptimizer(ABC):
 
         self._opt = tfOptimizers.Adam(learning_rate=self._learning_rate.default)
         init_time = time.time()
-        means_photons_error = tf.Variable(0.0, name='means_photons_error')
-        # parameters = [tf.Variable(0.1) for _ in range(self._number_parameters)]
+        loss = tf.Variable(0.0, name='loss')
+        parameters = [tf.Variable(0.1, name=param_name) for param_name in self._params_name]
 
         self._prepare_tf_board(self._current_alpha)
         current_learning_steps = self._set_learning_values_by_alpha(self._current_alpha)
-        logger.info(f"number of parameters: {len(self._parameters)}")
+        logger.info(f"number of parameters: {len(parameters)}")
         for step in range(current_learning_steps):
-            means_photons_error, parameters = self._tf_optimize(cost_function=cost_function,
-                                                                parameters=self._parameters)
+            loss, parameters = self._tf_optimize(cost_function=cost_function,
+                                                 parameters=parameters)
 
             reset = self._print_time_when_necessary(learning_steps=current_learning_steps,
                                                     init_time=init_time,
@@ -64,16 +59,16 @@ class TFOptimizer(ABC):
             self._update_tf_board_metrics(step)
 
         return OptimizationResult(optimized_parameters=[param.numpy() for param in parameters],
-                                  error_probability=means_photons_error.numpy())
+                                  error_probability=loss.numpy())
 
     def _update_tf_board_metrics(self, step: int) -> None:
         with self._train_summary_writer.as_default():
-            tf.summary.scalar('means_photons_error', self._train_means_photons_error.result(), step=step)
+            tf.summary.scalar('loss', self._train_loss.result(), step=step)
             for train_param, param_name in zip(self._train_params, self._params_name):
                 tf.summary.scalar(param_name, train_param.result(), step=step)
 
             # Reset metrics every step
-        self._train_means_photons_error.reset_states()
+        self._train_loss.reset_states()
         for train_param in self._train_params:
             train_param.reset_states()
 
@@ -95,7 +90,7 @@ class TFOptimizer(ABC):
         self._train_summary_writer = tf.summary.create_file_writer(train_log_dir)
 
         # Define our metrics
-        self._train_means_photons_error = tfMetrics.Mean('train_means_photons_error')
+        self._train_loss = tfMetrics.Mean('train_loss')
         self._train_params = [tfMetrics.Mean(f'train_param_{param_name}',
                                              dtype=tf.float32)
                               for param_name in self._params_name]
@@ -105,17 +100,17 @@ class TFOptimizer(ABC):
                      parameters: List[Variable]) -> Tuple[EagerTensor, List[Variable]]:
 
         with tf.GradientTape() as tape:
-            means_photons_error = cost_function()
+            loss = cost_function(params=parameters)
 
-        gradients = tape.gradient(means_photons_error, parameters)
+        gradients = tape.gradient(loss, parameters)
         self._opt.apply_gradients(zip(gradients, parameters))
 
-        self._train_means_photons_error(means_photons_error)
+        self._train_loss(loss)
         # logger.debug(f'parameters: {parameters}')
         for train_param, parameter in zip(self._train_params, parameters):
             train_param(parameter)
 
-        return means_photons_error, parameters
+        return loss, parameters
 
     def _print_time_when_necessary(self,
                                    learning_steps: int,

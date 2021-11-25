@@ -124,7 +124,7 @@ class CSD(ABC):
         return Circuit(architecture=self._architecture,
                        running_type=running_type)
 
-    def _cost_function(self) -> Union[float, EagerTensor]:
+    def _cost_function(self, params: List[float]) -> Union[float, EagerTensor]:
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
@@ -133,7 +133,7 @@ class CSD(ABC):
             raise ValueError("Current Batch must be initialized")
 
         return CostFunction(batch=self._current_batch,
-                            params=self._optimization.parameters,
+                            params=params,
                             options=CostFunctionOptions(
                                 engine=self._engine,
                                 circuit=self._training_circuit,
@@ -220,6 +220,7 @@ class CSD(ABC):
         if self._current_batch is None:
             raise ValueError("Current Batch must be initialized")
         # list_optimized_parameters = [one_parameter.numpy() for one_parameter in optimized_parameters]
+        # optimized_parameters = [-self._alpha_value]
         logger.debug(
             f'Going to train with the optimized parameters: {optimized_parameters}')
 

@@ -9,7 +9,7 @@ import tensorflow as tf
 from tensorflow.python.framework.ops import EagerTensor
 from csd.typings.typing import (BatchSuccessProbability, CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions)
 from csd.circuit import Circuit
-from csd.config import logger
+# from csd.config import logger
 import numpy as np
 
 
@@ -68,9 +68,10 @@ class TFEngine(Engine):
     def _compute_max_probability_for_all_codewords(
             self,
             batch_success_probabilities: List[List[CodeWordSuccessProbability]]) -> List[CodeWordSuccessProbability]:
+        # logger.debug(f'batch_success_probabilities: {batch_success_probabilities}')
         max_probs = [self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
                      for codewords_success_probabilities in batch_success_probabilities]
-        logger.debug(f'max_probs: {max_probs}')
+        # logger.debug(f'max_probs: {max_probs}')
         return max_probs
 
     def _run_tf_circuit_probabilities(self,
@@ -164,6 +165,7 @@ class TFEngine(Engine):
             output_codewords = self._convert_batch_sampling_output_to_codeword_list(
                 alpha_value=alpha_value,
                 batch_samples=self._run_tf_circuit(circuit=circuit, options=options).samples)
+            # logger.debug(f'output codewords: {output_codewords}')
             self._assign_counts_to_each_actual_codeword_result(result_codewords=output_codewords,
                                                                batch_success_probabilities=batch_success_probabilities)
 

@@ -68,11 +68,11 @@ if __name__ == '__main__':
     number_points_to_plot = 16
     alpha_step = (alpha_end - alpha_init) / number_points_to_plot
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
-    alphas = [0.7]
+    # alphas = [0.7]
     # alphas = alphas[:13]
 
-    learning_steps = LearningSteps(default=600,
-                                   high=600,
+    learning_steps = LearningSteps(default=100,
+                                   high=100,
                                    extreme=1000)
     learning_rate = LearningRate(default=0.1,
                                  high=0.1,
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     squeezing = False
 
     batch_size = 2**number_input_modes
-    shots = 1000
+    shots = 100
     plays = 1
     number_layers = 1
 
@@ -109,12 +109,12 @@ if __name__ == '__main__':
             'squeezing': squeezing,
         },
         'save_results': False,
-        'save_plots': False,
+        'save_plots': True,
         'parallel_optimization': False
     }))
     # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    # execute_probabilities_tf_backend(csd=csd)
+    execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
-    execute_sampling_tf_backend(csd=csd)
+    # execute_sampling_tf_backend(csd=csd)

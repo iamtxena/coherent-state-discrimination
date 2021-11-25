@@ -56,5 +56,5 @@ class OptimizationTesting(ABC):
             for _ in range(self._options.plays)]
         ) / self._options.plays
 
-        logger.debug(f'batch_success_probability: {batch_success_probability}')
+        logger.debug(f'Trained batch_success_probability: {batch_success_probability}')
         return batch_success_probability
