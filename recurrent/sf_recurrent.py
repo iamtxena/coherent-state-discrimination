@@ -67,7 +67,7 @@ def build_model(name="predictor"):
         tf.keras.Input(shape=(NUM_MODES * NUM_VARIABLES + NUM_LAYERS, ), name="input-layer"),
         tf.keras.layers.Dense(8, activation="relu", name="layer-1"),
         tf.keras.layers.Dense(16, activation="relu", name="layer-2"),
-        tf.keras.layers.Dense(NUM_MODES * NUM_VARIABLES, activation="relu", name="output-layer"),
+        tf.keras.layers.Dense(NUM_MODES * NUM_VARIABLES, activation="sigmoid", name="output-layer")
     ], name=name)
 
     return model
