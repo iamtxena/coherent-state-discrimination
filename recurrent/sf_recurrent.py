@@ -72,10 +72,12 @@ if __name__ == '__main__':
     # the Dolinar receiver.
     logger.info("Building model.")
     model = build_model(f"predictor-l-{NUM_LAYERS}-alpha-{SIGNAL_AMPLITUDE}-modes-{NUM_MODES}")
+    logger.info("Done.")
 
     # Layers of the Dolinar receiver.
-    logger.info("Building quantum circuits for the layers.")
+    logger.info("Building quantum circuits.")
     layers = [generate_nth_layer(n, ENGINE) for n in range(NUM_LAYERS)]
+    logger.info("Done.")
 
     # TODO: Add training loop.
     # TODO: Add previous measurement to current layer and use it while calling the
