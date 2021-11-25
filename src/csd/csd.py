@@ -127,6 +127,7 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
 
         return Circuit(architecture=self._architecture,
+                       measuring_type=self._run_configuration['measuring_type'],
                        running_type=running_type)
 
     def _cost_function(self, params: List[float]) -> Union[float, EagerTensor]:

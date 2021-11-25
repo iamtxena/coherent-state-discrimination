@@ -88,7 +88,7 @@ if __name__ == '__main__':
                                   high=20,
                                   extreme=30)
 
-    number_input_modes = 2
+    number_input_modes = 1
     number_ancillas = 0
     squeezing = False
 
@@ -117,11 +117,11 @@ if __name__ == '__main__':
         },
         'save_results': False,
         'save_plots': True,
-        'parallel_optimization': True
+        'parallel_optimization': False
     }))
     # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
-    execute_probabilities_tf_backend(csd=csd)
+    # execute_probabilities_tf_backend(csd=csd)
     # execute_sampling_fock_backend(csd=csd)
     # execute_sampling_gaussian_backend(csd=csd)
-    # execute_sampling_tf_backend(csd=csd)
+    execute_sampling_tf_backend(csd=csd)

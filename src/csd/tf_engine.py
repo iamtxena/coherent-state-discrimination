@@ -10,7 +10,6 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.typings.typing import (BatchSuccessProbability, CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions)
 from csd.circuit import Circuit
 # from csd.config import logger
-import numpy as np
 
 
 class TFEngine(Engine):
@@ -18,50 +17,14 @@ class TFEngine(Engine):
 
     """
 
-    #
-    #   TRAINING: TF CIRCUIT SAMPLING
-    #
-
-    def _compute_error(self, tf_state: FockStateTF, mode: int, alpha_value: float) -> EagerTensor:
-        one_mode_mean_photons = self._get_mean_photon_one_mode(tf_state, mode=mode)
-        exact_mean_photons = np.abs(alpha_value)**2
-        return tf.math.abs(one_mode_mean_photons - exact_mean_photons)
-
-    def _get_mean_photon_one_mode(self, tf_state: FockStateTF, mode: int) -> EagerTensor:
-        # it is a tuple of mean, variance. We only want the mean
-        return tf_state.mean_photon(mode)[0]
-
-    def run_tf_circuit_sampling(
-            self,
-            circuit: Circuit,
-            options: TFEngineRunOptions) -> EagerTensor:
-
-        options['shots'] = 1
-        tf_state: FockStateTF = self._run_tf_circuit(circuit=circuit, options=options).state
-
-        error_all_modes = [self._compute_error(tf_state,
-                                               mode=mode_i,
-                                               alpha_value=options['input_batch'].alpha)
-                           for mode_i in range(tf_state.num_modes)]
-        # logger.debug(f'error_all_modes: {error_all_modes}')
-
-        batch_error = tf.reduce_mean(error_all_modes)
-        # logger.debug(f'batch error: {batch_error}')
-        return batch_error
-
-    #
-    #   TRAINING: TF CIRCUIT PROBABILITIES
-    #
-
     def run_tf_circuit_checking_measuring_type(
             self,
             circuit: Circuit,
             options: TFEngineRunOptions) -> List[CodeWordSuccessProbability]:
 
-        if options['measuring_type'] is not MeasuringTypes.PROBABILITIES:
-            raise ValueError("Run TF Circuit only accepts Probabilities MeasuringTypes")
-
-        batch_success_probabilities = self._run_tf_circuit_probabilities(circuit=circuit, options=options)
+        batch_success_probabilities = (self._run_tf_circuit_probabilities(circuit=circuit, options=options)
+                                       if options['measuring_type'] is MeasuringTypes.PROBABILITIES
+                                       else self._run_tf_sampling(circuit=circuit, options=options))
 
         return self._compute_max_probability_for_all_codewords(batch_success_probabilities)
 
@@ -155,6 +118,12 @@ class TFEngine(Engine):
                                 options: TFEngineRunOptions) -> List[CodeWordSuccessProbability]:
         """Run a circuit experiment doing MeasureFock and performing sampling with nshots
         """
+        batch_success_probabilities = self._run_tf_sampling(circuit, options)
+        return self._compute_max_probability_for_all_codewords(batch_success_probabilities)
+
+    def _run_tf_sampling(self,
+                         circuit: Circuit,
+                         options: TFEngineRunOptions) -> List[List[CodeWordSuccessProbability]]:
         shots = options['shots']
         options['shots'] = 1
         alpha_value = options['input_batch'].one_codeword.alpha
@@ -172,7 +141,8 @@ class TFEngine(Engine):
         batch_success_probabilities = self._compute_average_batch_success_probabilities(
             batch_success_probabilities=batch_success_probabilities,
             shots=shots)
-        return self._compute_max_probability_for_all_codewords(batch_success_probabilities)
+
+        return batch_success_probabilities
 
     def _compute_average_batch_success_probabilities(
             self,
