@@ -77,7 +77,7 @@ def generate_random_codeword():
     """
     Generates a random codeword for `NUM_MODES` modes.
     """
-    return np.random.choice([0, 1], size=NUM_MODES)
+    return np.random.choice([-1, +1], size=NUM_MODES)
 
 
 def step():
@@ -85,12 +85,31 @@ def step():
     Runs a single step of optimization for a single value of alpha across all
     layers of the Dolinar receiver.
     """
-    previous_predictions = np.zeros(NUM_MODES * NUM_LAYERS)
+    global model, layers, optimizer
+
+    previous_predictions = np.random.randn(NUM_MODES * NUM_LAYERS)
 
     with tf.GradientTape() as tape:
-        # Accumulate the loss over the layers.
-        for n_layer in range(NUM_LAYERS):
-            pass
+        input_codeword = generate_random_codeword()
+        loss = 0
+
+        for nth_layer in range(NUM_LAYERS):
+            one_hot_layer_vector = np.zeros(NUM_LAYERS)
+            one_hot_layer_vector[nth_layer] = 1
+            input_vector = np.hstack((previous_predictions, one_hot_layer_vector))
+
+            predicted_displacements = model(input_vector)
+            measurement_of_nth_layer = layers[nth_layer](
+                input_codeword,
+                2 * SIGNAL_AMPLITUDE * predicted_displacements)
+
+
+            for kth_mode in range(NUM_MODES):
+                if input_codeword[kth_mode] == -1 and measurement_of_nth_layer[kth_mode] < 0:
+                    loss += 1
+
+    gradients = tape(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
 
 if __name__ == '__main__':
@@ -106,5 +125,6 @@ if __name__ == '__main__':
     logger.info("Done.")
 
     # TODO: Add training loop.
-    # TODO: Add previous measurement to current layer and use it while calling the
-    # predictor to obtain the new displacement values for the layer.
+
+    # Using the Adam optimizer.
+    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
