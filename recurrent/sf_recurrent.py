@@ -1,8 +1,11 @@
 import strawberryfields as sf
 import numpy as np
 import tensorflow as tf
-
+import os
 from loguru import logger
+
+# Hides info messages from TensorFlow.
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # Number of layers of the Dolinar receiver. Selecting 4 as the most basic,
 # non-trivial case.
@@ -67,13 +70,13 @@ def build_model(name="predictor"):
 if __name__ == '__main__':
     # ML model to predict the displacement magnitude for each of the layers of
     # the Dolinar receiver.
-
+    logger.info("Building model.")
     model = build_model(f"predictor-l-{NUM_LAYERS}-alpha-{SIGNAL_AMPLITUDE}-modes-{NUM_MODES}")
 
     # Layers of the Dolinar receiver.
-    layers = [generate_nth_layer(n, model, ENGINE) for n in range(NUM_LAYERS)]
-
-    # TODO: Add previous measurement to current layer and use it while calling the
-    # predictor to obtain the new displacement values for the layer.
+    logger.info("Building quantum circuits for the layers.")
+    layers = [generate_nth_layer(n, ENGINE) for n in range(NUM_LAYERS)]
 
     # TODO: Add training loop.
+    # TODO: Add previous measurement to current layer and use it while calling the
+    # predictor to obtain the new displacement values for the layer.
