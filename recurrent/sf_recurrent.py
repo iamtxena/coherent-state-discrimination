@@ -21,7 +21,7 @@ NUM_VARIABLES = 1
 SIGNAL_AMPLITUDE = 1.0
 
 # Fock backend.
-ENGINE = sf.Engine("fock", backend_options={"cutoff_dim": 6})
+ENGINE = sf.Engine("tf", backend_options={"cutoff_dim": 6})
 
 
 def generate_nth_layer(layer_number, engine):
@@ -57,6 +57,9 @@ def generate_nth_layer(layer_number, engine):
 
 
 def build_model(name="predictor"):
+    """
+    Builds a tensorflow model layer by layer utilising the sequential API.
+    """
     model = tf.keras.Sequential([
         tf.keras.Input(shape=(NUM_MODES * NUM_VARIABLES, )),
         tf.keras.layers.Dense(8, activation="relu", name="layer-1"),
@@ -65,6 +68,14 @@ def build_model(name="predictor"):
     ], name=name)
 
     return model
+
+
+def step():
+    """
+    Runs a single step of optimization for a single value of alpha across all
+    layers of the Dolinar receiver.
+    """
+    pass
 
 
 if __name__ == '__main__':
