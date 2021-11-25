@@ -30,6 +30,9 @@ def generate_nth_layer(layer_number, engine):
     function that generates the necessary quantum circuit for the n-th layer of
     the Dolinar receiver.
     """
+    # Reset engine if a program has been executed.
+    if engine.run_progs:
+        engine.reset()
 
     # Need k values for the splits of the coherent state.
     amplitudes =  np.ones(NUM_LAYERS) * (SIGNAL_AMPLITUDE / NUM_LAYERS)
@@ -61,13 +64,20 @@ def build_model(name="predictor"):
     Builds a tensorflow model layer by layer utilising the sequential API.
     """
     model = tf.keras.Sequential([
-        tf.keras.Input(shape=(NUM_MODES * NUM_VARIABLES, )),
+        tf.keras.Input(shape=(NUM_MODES * NUM_VARIABLES + NUM_LAYERS, ), name="input-layer"),
         tf.keras.layers.Dense(8, activation="relu", name="layer-1"),
         tf.keras.layers.Dense(16, activation="relu", name="layer-2"),
-        tf.keras.layers.Dense(16, activation="relu", name="layer-3"),
+        tf.keras.layers.Dense(NUM_MODES * NUM_VARIABLES, activation="relu", name="output-layer"),
     ], name=name)
 
     return model
+
+
+def generate_random_codeword():
+    """
+    Generates a random codeword for `NUM_MODES` modes.
+    """
+    return np.random.choice([0, 1], size=NUM_MODES)
 
 
 def step():
@@ -75,7 +85,12 @@ def step():
     Runs a single step of optimization for a single value of alpha across all
     layers of the Dolinar receiver.
     """
-    pass
+    previous_predictions = np.zeros(NUM_MODES * NUM_LAYERS)
+
+    with tf.GradientTape() as tape:
+        # Accumulate the loss over the layers.
+        for n_layer in range(NUM_LAYERS):
+            pass
 
 
 if __name__ == '__main__':
