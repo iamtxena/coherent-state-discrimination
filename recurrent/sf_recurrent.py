@@ -1,7 +1,8 @@
 import strawberryfields as sf
 import numpy as np
 import tensorflow as tf
-from tensorflow import keras
+
+from loguru import logger
 
 # Number of layers of the Dolinar receiver. Selecting 4 as the most basic,
 # non-trivial case.
@@ -52,12 +53,22 @@ def generate_nth_layer(layer_number, engine):
     return quantum_layer
 
 
+def build_model(name="predictor"):
+    model = tf.keras.Sequential([
+        tf.keras.Input(shape=(NUM_MODES * NUM_VARIABLES, )),
+        tf.keras.layers.Dense(8, activation="relu", name="layer-1"),
+        tf.keras.layers.Dense(16, activation="relu", name="layer-2"),
+        tf.keras.layers.Dense(16, activation="relu", name="layer-3"),
+    ], name=name)
+
+    return model
+
+
 if __name__ == '__main__':
     # ML model to predict the displacement magnitude for each of the layers of
     # the Dolinar receiver.
 
-    # TODO: Decide on model architecture.
-    model = None
+    model = build_model(f"predictor-l-{NUM_LAYERS}-alpha-{SIGNAL_AMPLITUDE}-modes-{NUM_MODES}")
 
     # Layers of the Dolinar receiver.
     layers = [generate_nth_layer(n, model, ENGINE) for n in range(NUM_LAYERS)]
