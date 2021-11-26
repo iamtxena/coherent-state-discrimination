@@ -87,6 +87,24 @@ def generate_random_codeword():
     return np.random.choice([-1, +1], size=NUM_MODES)
 
 
+@tf.function
+def loss_metric(prediction, target, true_tensor, false_tensor):
+    """
+    Computes the numerical loss incurred on generating `prediction` instead of
+    `target`.
+    Both `prediction` and `target` are tensors.
+    """
+    indices_where_input_codeword_was_minus = tf.where(target == -1, true_tensor, false_tensor)
+    indices_where_measurement_is_not_positive = tf.where(prediction <= 0, true_tensor, false_tensor)
+
+    combined_indices = tf.logical_and(
+        indices_where_input_codeword_was_minus,
+        indices_where_measurement_is_not_positive
+    )
+
+    return tf.reduce_sum(tf.cast(combined_indices, tf.float32))
+
+
 def step():
     """
     Runs a single step of optimization for a single value of alpha across all
@@ -115,10 +133,17 @@ def step():
 
             logger.debug(f"{measurement_of_nth_layer.samples = }")
 
-            # TODO: Figure out a way to construct the loss such that it is differentiable.
-            for kth_mode in range(NUM_MODES):
-                if input_codeword[kth_mode] == -1 and measurement_of_nth_layer.samples[0][kth_mode] < 0:
-                    loss += 1
+            true_tensor = tf.fill((NUM_MODES), True)
+            false_tensor = tf.fill((NUM_MODES), False)
+
+            loss.assign_add(
+                loss_metric(
+                    measurement_of_nth_layer.samples,
+                    input_codeword,
+                    true_tensor,
+                    false_tensor
+                ) / NUM_MODES
+            )
 
             previous_predictions = predicted_displacements[0]
 
