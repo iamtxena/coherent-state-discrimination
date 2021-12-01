@@ -108,10 +108,20 @@ def loss_metric(prediction, target, true_tensor, false_tensor):
     indices_where_input_codeword_was_minus = tf.where(target == -1, true_tensor, false_tensor)
     indices_where_measurement_is_not_positive = tf.where(prediction <= 0, true_tensor, false_tensor)
 
-    combined_indices = tf.logical_and(
+    indices_where_input_codeword_was_plus = tf.where(target == +1, true_tensor, false_tensor)
+    indices_where_measurement_is_not_negative = tf.where(prediction >= 0, true_tensor, false_tensor)
+
+    combined_indices_1 = tf.logical_and(
         indices_where_input_codeword_was_minus,
         indices_where_measurement_is_not_positive
     )
+
+    combined_indices_2 = tf.logical_and(
+        indices_where_input_codeword_was_plus,
+        indices_where_measurement_is_not_negative
+    )
+
+    combined_indices = tf.logical_and(combined_indices_1, combined_indices_2)
 
     return tf.reduce_sum(tf.cast(combined_indices, tf.float32))
 
