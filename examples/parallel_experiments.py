@@ -9,7 +9,7 @@ from csd.typings.typing import (CutOffDimensions,
                                 MeasuringTypes,
                                 CSDConfiguration,
                                 Backends,
-                                OneProcessResultExecution,
+                                OneProcessResultExecution, OptimizationBackends,
                                 ResultExecution,
                                 RunConfiguration)
 import numpy as np
@@ -115,6 +115,7 @@ def launch_execution(configuration: LaunchExecutionConfiguration) -> ResultExecu
     }))
     return csd.execute(configuration=RunConfiguration({
         'run_backend': configuration.launch_backend,
+        'optimization_backend': OptimizationBackends.TENSORFLOW,
         'measuring_type': configuration.measuring_type,
     }))
 
@@ -253,8 +254,9 @@ def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration) ->
 
 
 def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
     os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
-    os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+    # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
     backend = Backends.TENSORFLOW
     measuring_type = MeasuringTypes.PROBABILITIES
@@ -273,24 +275,24 @@ if __name__ == '__main__':
     # alphas.pop(5)
     # one_alpha = alphas[5]
     # alphas = [one_alpha]
-    alphas = [alphas[5]]
+    # alphas = [alphas[5]]
 
     # list_number_input_modes = list(range(6, 11))
     list_number_input_modes = [1]
     for number_input_modes in list_number_input_modes:
 
-        learning_steps = LearningSteps(default=2,
-                                       high=150,
+        learning_steps = LearningSteps(default=50,
+                                       high=100,
                                        extreme=1000)
         learning_rate = LearningRate(default=0.1,
-                                     high=0.1,
+                                     high=0.01,
                                      extreme=0.1)
-        cutoff_dim = CutOffDimensions(default=15,
+        cutoff_dim = CutOffDimensions(default=7,
                                       high=15,
                                       extreme=30)
 
         number_ancillas = 0
-        squeezing = True
+        squeezing = False
 
         batch_size = 2**number_input_modes
         shots = 100

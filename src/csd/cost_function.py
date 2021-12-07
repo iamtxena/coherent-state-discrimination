@@ -63,20 +63,20 @@ class CostFunction(ABC):
         return sum(success_probability_from_guesses) / self._input_batch.size
 
     def run_and_compute_average_batch_error_probability(self) -> Union[float, EagerTensor]:
-        loss = 1 - sum([self._compute_one_play_average_batch_success_probability(
+        return 1 - sum([self._compute_one_play_average_batch_success_probability(
             codeword_guesses=self._run_and_get_codeword_guesses())
             for _ in range(self._options.plays)]
         ) / self._options.plays
         # loss = 1 - self._compute_one_play_average_batch_success_probability(
         #     codeword_guesses=self._run_and_get_codeword_guesses())
-        if type(loss) == EagerTensor:
-            numpy_loss = loss.numpy()
-            # logger.debug(f'numpy_loss: {numpy_loss}')
-            # first_elem_loss = numpy_loss[0]
-            # logger.debug(f'first_elem_loss: {first_elem_loss}, type: {type(first_elem_loss)}')
-            return numpy_loss
-        # logger.debug(f'loss: {loss}')
-        return loss
+        # if type(loss) == EagerTensor:
+        #     numpy_loss = loss.numpy()
+        #     # logger.debug(f'numpy_loss: {numpy_loss}')
+        #     # first_elem_loss = numpy_loss[0]
+        #     # logger.debug(f'first_elem_loss: {first_elem_loss}, type: {type(first_elem_loss)}')
+        #     return numpy_loss
+        # # logger.debug(f'loss: {loss}')
+        # return loss
 
         # if not isinstance(self._options.engine, TFEngine):
         #     raise ValueError("TF Backend can only run on TFEngine.")

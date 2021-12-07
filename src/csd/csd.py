@@ -166,7 +166,6 @@ class CSD(ABC):
         self._run_configuration = configuration.copy()
         self._training_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
         self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
-        self._engine = self._create_engine()
         result = self._init_result()
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
@@ -200,7 +199,7 @@ class CSD(ABC):
             one_alpha_start_time = time()
             self._alpha_value = sample_alpha
             self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
-
+            self._engine = self._create_engine()
             one_alpha_optimization_result = self._train_for_one_alpha()
             one_alpha_success_probability = None
             # one_alpha_success_probability = self._test_for_one_alpha(
