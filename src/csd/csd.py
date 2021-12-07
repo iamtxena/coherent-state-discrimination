@@ -137,6 +137,8 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
         if self._current_batch is None:
             raise ValueError("Current Batch must be initialized")
+        if self._engine is None:
+            raise ValueError("Engine must be initialized")
 
         return CostFunction(batch=self._current_batch,
                             params=params,
@@ -164,6 +166,7 @@ class CSD(ABC):
         self._run_configuration = configuration.copy()
         self._training_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
         self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
+        self._engine = self._create_engine()
         result = self._init_result()
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
@@ -197,7 +200,6 @@ class CSD(ABC):
             one_alpha_start_time = time()
             self._alpha_value = sample_alpha
             self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
-            self._engine = self._create_engine()
 
             one_alpha_optimization_result = self._train_for_one_alpha()
             one_alpha_success_probability = None
@@ -364,13 +366,17 @@ class CSD(ABC):
             current_cutoff = self._cutoff_dim.extreme
 
         if self._backend_is_tf():
-            return TFEngine(engine_backend=Backends.TENSORFLOW, options={
-                "cutoff_dim": current_cutoff,
-                "batch_size": self._batch_size
+            return TFEngine(
+                number_modes=self._training_circuit.number_modes,
+                engine_backend=Backends.TENSORFLOW, options={
+                    "cutoff_dim": current_cutoff,
+                    "batch_size": self._batch_size
+                })
+        return Engine(
+            number_modes=self._training_circuit.number_modes,
+            engine_backend=self._run_configuration['run_backend'], options={
+                "cutoff_dim": current_cutoff
             })
-        return Engine(engine_backend=self._run_configuration['run_backend'], options={
-            "cutoff_dim": current_cutoff
-        })
 
     def _backend_is_tf(self):
         return self._run_configuration['run_backend'] == Backends.TENSORFLOW

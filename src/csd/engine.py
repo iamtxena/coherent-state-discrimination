@@ -13,7 +13,7 @@ import itertools
 from tensorflow.python.framework.ops import EagerTensor
 import tensorflow as tf
 
-from csd.util import generate_all_codewords_from_codeword
+from csd.util import generate_all_codewords_from_codeword, generate_measurement_matrices
 # from csd.config import logger
 
 
@@ -26,12 +26,14 @@ class Engine(ABC):
 
     @typechecked
     def __init__(self,
+                 number_modes: int,
                  engine_backend: Optional[Backends] = Backends.FOCK,
                  options: Optional[BackendOptions] = None) -> None:
         self._backend: Backends = engine_backend if engine_backend is not None else Backends.FOCK
         self._cutoff_dim = options['cutoff_dim'] if options is not None else self.DEFAULT_CUTOFF_DIMENSION
         self._engine = sf.Engine(backend=self._backend.value,
                                  backend_options=options)
+        self._measurement_matrices = generate_measurement_matrices(num_modes=number_modes, cutoff_dim=self._cutoff_dim)
 
     @property
     def backend_name(self) -> str:

@@ -63,10 +63,12 @@ class CostFunction(ABC):
         return sum(success_probability_from_guesses) / self._input_batch.size
 
     def run_and_compute_average_batch_error_probability(self) -> Union[float, EagerTensor]:
-        # if (self._options.backend_name != Backends.TENSORFLOW.value or
-        #         self._options.measuring_type == MeasuringTypes.PROBABILITIES):
-        loss = 1 - self._compute_one_play_average_batch_success_probability(
+        loss = 1 - sum([self._compute_one_play_average_batch_success_probability(
             codeword_guesses=self._run_and_get_codeword_guesses())
+            for _ in range(self._options.plays)]
+        ) / self._options.plays
+        # loss = 1 - self._compute_one_play_average_batch_success_probability(
+        #     codeword_guesses=self._run_and_get_codeword_guesses())
         if type(loss) == EagerTensor:
             numpy_loss = loss.numpy()
             # logger.debug(f'numpy_loss: {numpy_loss}')

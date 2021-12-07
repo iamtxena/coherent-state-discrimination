@@ -4,10 +4,9 @@ from csd.batch import Batch
 from csd.codeword import CodeWord
 from .engine import Engine
 from strawberryfields.api import Result
-from strawberryfields.backends.tfbackend.states import FockStateTF
 import tensorflow as tf
 from tensorflow.python.framework.ops import EagerTensor
-from csd.typings.typing import (BatchSuccessProbability, CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions)
+from csd.typings.typing import (CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions)
 from csd.circuit import Circuit
 # from csd.config import logger
 
@@ -45,69 +44,40 @@ class TFEngine(Engine):
 
         options['shots'] = 0
         result = self._run_tf_circuit(circuit=circuit, options=options)
-        return self._compute_tf_fock_probabilities_for_all_codewords(state=result.state,
-                                                                     input_codeword=options['input_batch'].one_codeword,
-                                                                     output_batch=options['output_batch'],
-                                                                     cutoff_dim=self._cutoff_dim)
+        self._all_fock_probs = result.state.all_fock_probs()
+        return self._compute_tf_fock_probabilities_for_all_codewords(input_codeword=options['input_batch'].one_codeword,
+                                                                     output_batch=options['output_batch'])
 
     def _compute_tf_fock_probabilities_for_all_codewords(self,
-                                                         state: FockStateTF,
                                                          input_codeword: CodeWord,
-                                                         output_batch: Batch,
-                                                         cutoff_dim: int) -> List[List[CodeWordSuccessProbability]]:
-        all_codewords_indices = self._get_fock_prob_indices_from_modes(
-            output_codeword=output_batch.one_codeword, cutoff_dimension=cutoff_dim)
+                                                         output_batch: Batch) -> List[List[CodeWordSuccessProbability]]:
 
-        success_probabilities_batches = [
-            BatchSuccessProbability(codeword_indices=codeword_indices,
-                                    success_probability=self._compute_tf_fock_prob_one_codeword_indices(
-                                        state=state,
-                                        fock_prob_indices_one_word=codeword_indices.indices))
-            for codeword_indices in all_codewords_indices]
-
-        return self._compute_codewords_success_probabilities(
-            input_codeword=input_codeword,
-            batch=output_batch,
-            success_probabilities_batches=success_probabilities_batches)
-
-    def _compute_codewords_success_probabilities(
-            self,
-            input_codeword: CodeWord,
-            batch: Batch,
-            success_probabilities_batches: List[BatchSuccessProbability]) -> List[List[CodeWordSuccessProbability]]:
         return [self._compute_one_batch_codewords_success_probabilities(
             input_codeword=input_codeword,
-            index_codeword=index_codeword,
-            success_probabilities_batches=success_probabilities_batches)
-            for index_codeword in range(batch.size)]
+            index_batch=index_batch,
+            output_codeword=output_codeword)
+            for index_batch, output_codeword in enumerate(output_batch.codewords)]
 
     def _compute_one_batch_codewords_success_probabilities(
             self,
             input_codeword: CodeWord,
-            index_codeword: int,
-            success_probabilities_batches: List[BatchSuccessProbability]) -> List[CodeWordSuccessProbability]:
+            index_batch: int,
+            output_codeword: CodeWord) -> List[CodeWordSuccessProbability]:
+
+        success_probabilities_all_outcomes = self._compute_success_probabilities_all_outcomes(index_batch=index_batch)
+
         return [CodeWordSuccessProbability(
             input_codeword=input_codeword,
             guessed_codeword=CodeWord(size=input_codeword.size,
                                       alpha_value=input_codeword.alpha),
-            output_codeword=batch_success_probabilities.codeword_indices.codeword,
-            success_probability=self._compute_one_codeword_success_probability(
-                index_codeword=index_codeword,
-                success_probabilities_indices=batch_success_probabilities.success_probability),
+            output_codeword=output_codeword,
+            success_probability=success_probabilities_one_outcome,
             counts=tf.Variable(0))
-            for batch_success_probabilities in success_probabilities_batches]
+            for success_probabilities_one_outcome in success_probabilities_all_outcomes]
 
-    def _compute_one_codeword_success_probability(
-            self,
-            index_codeword: int,
-            success_probabilities_indices: List[EagerTensor]) -> EagerTensor:
-        return sum([tf.gather(success_probability, indices=[index_codeword])
-                    for success_probability in success_probabilities_indices])
-
-    def _compute_tf_fock_prob_one_codeword_indices(self,
-                                                   state: FockStateTF,
-                                                   fock_prob_indices_one_word: List[List[int]]) -> List[EagerTensor]:
-        return [state.fock_prob(fock_prob_indices) for fock_prob_indices in fock_prob_indices_one_word]
+    def _compute_success_probabilities_all_outcomes(self, index_batch: int) -> List[EagerTensor]:
+        return [tf.reduce_sum(tf.math.multiply(measurement_matrix, self._all_fock_probs[index_batch]))
+                for measurement_matrix in self._measurement_matrices]
 
     #
     #   TESTING: TF

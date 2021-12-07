@@ -1,6 +1,6 @@
 from functools import wraps
 from time import time
-from typing import List, Optional
+from typing import List, Optional, Tuple
 from csd.codeword import CodeWord
 from csd.config import logger
 import numpy as np
@@ -123,3 +123,65 @@ def strtobool(val: str) -> bool:
         return False
     else:
         raise ValueError("invalid truth value %r" % (val,))
+
+
+def get_index_shape_from_outcome_one_mode(outcome_one_mode: int, cutoff_dim: int) -> Tuple[int, int]:
+    if outcome_one_mode != 0 and outcome_one_mode != 1:
+        raise ValueError("Outcome mode must be either 0 or 1")
+    if outcome_one_mode == 0:
+        return (0, 1)
+    return (1, cutoff_dim)
+
+
+def get_index_shape_from_outcome(outcome: Tuple[int, ...], cutoff_dim: int) -> List[int]:
+    result: List[int] = []
+    for outcome_one_mode in outcome:
+        result += get_index_shape_from_outcome_one_mode(outcome_one_mode=outcome_one_mode, cutoff_dim=cutoff_dim)
+    return result
+
+
+def generate_measurement_matrix_one_outcome(outcome: Tuple[int, ...],
+                                            cutoff_dim: int,
+                                            zeros_matrix: np.ndarray) -> np.ndarray:
+
+    ones_matrix = np.ones((1, 1), dtype=np.int32)
+    indices = get_index_shape_from_outcome(outcome=outcome, cutoff_dim=cutoff_dim)
+
+    final_matrix = zeros_matrix.copy()
+    if len(indices) < 2 or len(indices) > 14:
+        raise ValueError("modes not supported. Only from 1 to 7 modes supported.")
+    if len(indices) == 2:
+        final_matrix[indices[0]:indices[1]] = ones_matrix
+    if len(indices) == 4:
+        final_matrix[indices[0]:indices[1], indices[2]:indices[3]] = ones_matrix
+    if len(indices) == 6:
+        final_matrix[indices[0]:indices[1], indices[2]:indices[3], indices[4]:indices[5]] = ones_matrix
+    if len(indices) == 8:
+        final_matrix[indices[0]:indices[1], indices[2]:indices[3],
+                     indices[4]:indices[5], indices[6]:indices[7]] = ones_matrix
+    if len(indices) == 10:
+        final_matrix[indices[0]:indices[1], indices[2]:indices[3],
+                     indices[4]:indices[5], indices[6]:indices[7], indices[8]:indices[9]] = ones_matrix
+    if len(indices) == 12:
+        final_matrix[indices[0]:indices[1], indices[2]:indices[3],
+                     indices[4]:indices[5], indices[6]:indices[7],
+                     indices[8]:indices[9], indices[10]:indices[11]] = ones_matrix
+    if len(indices) == 14:
+        final_matrix[indices[0]:indices[1], indices[2]:indices[3],
+                     indices[4]:indices[5], indices[6]:indices[7],
+                     indices[8]:indices[9], indices[10]:indices[11], indices[12]:indices[13]] = ones_matrix
+
+    return final_matrix
+
+
+def generate_all_outcomes(modes=int) -> List[Tuple[int, ...]]:
+    options = [0, 1]
+    return [*itertools.product(options, repeat=modes)]
+
+
+def generate_measurement_matrices(num_modes: int, cutoff_dim: int) -> List[np.ndarray]:
+    matrix_shape = [cutoff_dim] * num_modes
+    zeros_matrix = np.zeros(matrix_shape, dtype=np.float32)
+    outcomes = generate_all_outcomes(modes=num_modes)
+    return [generate_measurement_matrix_one_outcome(outcome=outcome, cutoff_dim=cutoff_dim, zeros_matrix=zeros_matrix)
+            for outcome in outcomes]

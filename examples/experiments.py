@@ -30,6 +30,7 @@ def execute_probabilities_gaussian_backend(csd: CSD) -> None:
 
 @timing
 def execute_probabilities_tf_backend(csd: CSD) -> None:
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
     os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
     multiprocessing.set_start_method('spawn', force=True)
 
@@ -60,7 +61,10 @@ def execute_sampling_gaussian_backend(csd: CSD) -> None:
 
 @timing
 def execute_sampling_tf_backend(csd: CSD) -> None:
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
     os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
+
+    multiprocessing.set_start_method('spawn', force=True)
 
     csd.execute_all_backends_and_measuring_types(
         backends=[Backends.TENSORFLOW],
@@ -88,12 +92,12 @@ if __name__ == '__main__':
                                   high=20,
                                   extreme=30)
 
-    number_input_modes = 1
+    number_input_modes = 2
     number_ancillas = 0
     squeezing = False
 
     batch_size = 2**number_input_modes
-    shots = 100
+    shots = 1000
     plays = 1
     number_layers = 1
 
@@ -117,7 +121,7 @@ if __name__ == '__main__':
         },
         'save_results': False,
         'save_plots': True,
-        'parallel_optimization': False
+        'parallel_optimization': True
     }))
     # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)
