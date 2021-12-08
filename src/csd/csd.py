@@ -280,9 +280,6 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
 
         current_cutoff = self._cutoff_dim
-        if self._architecture['number_modes'] < 3:
-            current_cutoff = (MAX_CUTOFF_DIM if self._alpha_value > 0.5 or self._alpha_value < 0.25
-                              else self._cutoff_dim)
         if self._architecture['number_modes'] >= 3 and self._alpha_value > 0.9:
             current_cutoff = MAX_CUTOFF_DIM
 

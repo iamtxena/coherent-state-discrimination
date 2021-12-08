@@ -181,7 +181,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(4)
+    pool = Pool(2)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -256,7 +256,7 @@ if __name__ == '__main__':
     shots = 100
     plays = 1
     cutoff_dim = 7
-    number_modes = 3
+    number_modes = 4
     batch_size = 2**number_modes
     number_layers = 1
     squeezing = True

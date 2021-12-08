@@ -1,0 +1,630 @@
+number alphas: 16
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Optimizing for alpha: 0.42 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Optimizing for alpha: 0.51 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Optimizing for alpha: 0.26 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Optimizing for alpha: 0.1 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Optimizing for alpha: 0.18 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Optimizing for alpha: 0.59 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Optimizing for alpha: 0.67 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:11:53]: Optimizing for alpha: 0.34 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+2021-11-05 18:11:53.828096: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.834254: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.834712: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.836957: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.838566: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-05 18:11:53.839089: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.841525: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.844109: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.844268: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.846295: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.846430: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.849448: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-05 18:11:53.849496: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.849913: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.854837: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.854845: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.858014: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.858014: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.861002: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.867570: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-05 18:11:53.868102: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.868996: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.870152: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.871511: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.872677: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-05 18:11:53.873064: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.874874: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.875876: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.878002: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.878824: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.881682: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.881815: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.883906: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.890103: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.892608: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-05 18:11:53.893003: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.893826: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.895413: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.897117: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.897777: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-05 18:11:53.898207: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.900717: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.903902: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.907308: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.908257: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.908642: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.908684: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.918186: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.920052: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-05 18:11:53.920052: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-11-05 18:11:53.920496: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.920496: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.934565: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.934565: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.938123: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:53.938123: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.631229: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.633540: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.634473: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.634997: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2021-11-05 18:11:54.635068: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11722 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+2021-11-05 18:11:54.684578: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.685416: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.686093: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.687045: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2021-11-05 18:11:54.687171: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11606 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+2021-11-05 18:11:54.696866: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.697713: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.698878: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.699436: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2021-11-05 18:11:54.699511: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11586 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+2021-11-05 18:11:54.710466: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.712464: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.713049: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.715970: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2021-11-05 18:11:54.716012: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11558 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+2021-11-05 18:11:54.719956: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.720516: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.721269: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.721714: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2021-11-05 18:11:54.721758: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11544 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+2021-11-05 18:11:54.736630: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.737157: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.737168: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.738026: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.738044: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.738517: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2021-11-05 18:11:54.738551: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11522 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+2021-11-05 18:11:54.738921: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.739331: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2021-11-05 18:11:54.739353: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11522 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+2021-11-05 18:11:54.743354: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.743939: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.744472: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:937] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-05 18:11:54.744954: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2021-11-05 18:11:54.744987: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1510] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 11520 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 3090, pci bus id: 0000:01:00.0, compute capability: 8.6
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:20]: Learned parameters value at step 50: [0.07919123, -0.16786177, 0.36644724, 0.09602233, 0.64915836, 0.6204112, -0.4082689, -0.37058115, -0.07941807, -0.047561806, -0.11557642, -0.03972077, -0.47120696, -0.42713755]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:20]: Optimized for alpha: 0.26 took:26 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:20]: Learned parameters value at step 50: [0.28645152, -0.2263591, 0.0037480262, -0.020412218, -0.42432275, 0.56289023, 0.27078864, -0.17440131, -0.19042481, -0.025882376, 0.093827985, -0.07152532, -0.4217211, -0.40703928]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:20]: Optimized for alpha: 0.34 took:27 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:21]: Learned parameters value at step 50: [0.0051159435, -0.019924715, -0.03801668, -0.021415122, -0.32425514, -0.37395954, 0.24147914, 0.15748604, 0.013263681, -0.02478656, -0.031611864, -0.029791253, -0.43653265, -0.40273085]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:21]: Optimized for alpha: 0.42 took:27 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:44]: Learned parameters value at step 100: [0.24483189, -0.22890939, 0.00076019147, 0.1997594, -0.123033494, 0.050565947, 0.035420638, -0.79136866, -0.2583905, -0.021085538, -0.005346438, -0.21197969, -0.70203394, -0.59146065]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:44]: Optimized for alpha: 0.34 took:50 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:46]: Learned parameters value at step 100: [0.12107753, -0.21867953, 0.48128313, 0.3572446, 0.22017783, 0.19175662, -0.97297436, -1.0222883, -0.12563424, -0.18010841, -0.57480985, -0.44123167, -0.66516036, -0.61348754]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:46]: Optimized for alpha: 0.26 took:52 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:47]: Learned parameters value at step 100: [-0.0021478648, -0.03537872, 0.030053247, 0.017345993, -0.1240756, -0.09065605, 0.06320028, 0.08332632, 0.0013291142, -0.056896843, -0.027721362, -0.021347236, -0.7948164, -0.7400988]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:12:47]: Optimized for alpha: 0.42 took:53 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:10]: Learned parameters value at step 150: [0.24104536, -0.20337969, 0.0011912233, 0.15574567, -0.18540919, -0.074949495, 0.030197248, -0.6254351, -0.24383307, -0.036565054, -0.0032007743, -0.12089389, -0.7965619, -0.73678446]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:10]: Optimized for alpha: 0.34 took:1 minute and 16 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:12]: Learned parameters value at step 150: [0.11486604, -0.17807911, 0.8076191, 0.75036585, 0.17501615, 0.15313242, -1.3759677, -1.4940642, -0.1152434, -0.23662874, -0.82476825, -0.76097506, -0.77051556, -0.7448512]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:12]: Optimized for alpha: 0.26 took:1 minute and 18 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:13]: Learned parameters value at step 150: [-0.0013691447, -0.035407934, 0.02926459, 0.023425346, -0.14836241, -0.14675406, 0.061991658, 0.04818371, 0.0014661285, -0.057233043, -0.029568693, -0.023748096, -0.8034099, -0.80075324]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:13]: Optimized for alpha: 0.42 took:1 minute and 19 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:25]: Learned parameters value at step 50: [0.15695661, 0.15144996, 0.15441722, 0.1473676, 0.15276556, 0.15194444, 0.043287996, 0.052126292, 0.15701321, 0.15326588, 0.15332288, 0.1485734, 0.15618765, 0.040127683]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:25]: Optimized for alpha: 0.1 took:1 minute and 31 seconds. steps: [50/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:25]: Learned parameters value at step 50: [-0.013973487, -0.11391933, 0.14993721, 0.050403345, 0.6446836, 0.6358324, -0.3043009, -0.24348958, -0.0597952, -0.046653718, -0.013501557, 0.01328253, -0.4905286, -0.4517848]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:25]: Optimized for alpha: 0.18 took:1 minute and 31 seconds. steps: [50/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:37]: Learned parameters value at step 50: [0.049149834, 0.0786753, -0.01432918, 0.0024419026, -0.3348979, -0.036500495, 0.17445375, -0.12216063, 0.038493175, 0.019852351, -0.032643836, -0.043674603, -0.43558726, -0.39703724]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:37]: Optimized for alpha: 0.51 took:1 minute and 43 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:37]: Learned parameters value at step 200: [0.24028584, -0.12929279, -0.010761854, -0.080565624, -0.1806248, -0.17904429, 0.0009652419, -0.13223657, -0.24047536, -0.18140432, 0.006594589, 0.07867675, -0.79696184, -0.7832627]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:37]: Optimized for alpha: 0.34 took:1 minute and 43 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:39]: Learned parameters value at step 200: [0.10527181, -0.151255, 0.85893494, 0.7985182, 0.20641524, 0.20400815, -1.4299043, -1.5551673, -0.10529718, -0.1869273, -0.85868204, -0.7970878, -0.7953568, -0.78984976]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:39]: Optimized for alpha: 0.26 took:1 minute and 46 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:40]: Learned parameters value at step 200: [-0.0014076891, -0.035420783, 0.029861683, 0.023732351, -0.14937533, -0.1495362, 0.0600186, 0.047136873, 0.0014300339, -0.057221316, -0.029897755, -0.023704756, -0.8013771, -0.8017964]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:40]: Optimized for alpha: 0.42 took:1 minute and 47 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:43]: Learned parameters value at step 50: [0.14836955, 0.26042727, -0.009969327, -0.010103022, -0.35539567, 0.1390711, 0.045453466, -0.105356306, 0.10232243, 0.2361028, -0.09436651, -0.071432754, -0.4255734, -0.39520758]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:43]: Optimized for alpha: 0.59 took:1 minute and 50 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:51]: Learned parameters value at step 50: [0.00038746, 0.21430713, -0.027807385, -0.0037342426, -0.094391055, 0.0439595, 0.1356816, -0.13619949, 0.041178603, 0.18543908, -0.03365141, -0.03606963, -0.44028306, -0.44023266]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:13:51]: Optimized for alpha: 0.67 took:1 minute and 57 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:04]: Learned parameters value at step 250: [0.23901634, -0.062028717, -0.0032895189, -0.07142979, -0.18131329, -0.1813539, 0.0034842526, -0.15816829, -0.23891144, -0.12131503, 0.0015661076, 0.07358271, -0.797827, -0.79817826]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:04]: Optimized for alpha: 0.34 took:2 minutes and 10 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:06]: Learned parameters value at step 250: [0.09783046, -0.116463065, 0.85636765, 0.79520017, 0.20642693, 0.20641497, -1.4251264, -1.5543259, -0.09773668, -0.16336651, -0.8572154, -0.79468614, -0.79522884, -0.7952977]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:06]: Optimized for alpha: 0.26 took:2 minutes and 12 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:07]: Learned parameters value at step 250: [-0.0014245835, -0.035436466, 0.029919092, 0.023687579, -0.14957877, -0.14956608, 0.05985187, 0.047385715, 0.0014217094, -0.057203658, -0.029919663, -0.02368572, -0.80147237, -0.8014432]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:07]: Optimized for alpha: 0.42 took:2 minutes and 13 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:30]: Learned parameters value at step 300: [0.23896708, -0.02609084, -0.00022912007, -0.075631164, -0.18134068, -0.18115565, 0.0037866507, -0.15560678, -0.2389128, -0.097785436, -0.00051414745, 0.07631213, -0.79785377, -0.79789644]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:30]: Optimized for alpha: 0.34 took:2 minutes and 37 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:31]: _execute_for_one_alpha, took: 2 minutes and 37 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:31]: Optimized for alpha: 0.34 parameters: [0.23896708, -0.02609084, -0.00022912007, -0.075631164, -0.18134068, -0.18115565, 0.0037866507, -0.15560678, -0.2389128, -0.097785436, -0.00051414745, 0.07631213, -0.79785377, -0.79789644] p_succ: [0.6145309]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:31]: execute, took: 2 minutes and 37 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:31]: launch_execution, took: 2 minutes and 37 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:31]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:31]: Optimizing for alpha: 0.75 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:33]: Learned parameters value at step 300: [0.09343395, -0.09080981, 0.8574722, 0.79403955, 0.20629694, 0.20627722, -1.4246082, -1.5554887, -0.093376786, -0.1422702, -0.85799897, -0.7937006, -0.79516554, -0.7952019]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:33]: Optimized for alpha: 0.26 took:2 minutes and 39 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:33]: _execute_for_one_alpha, took: 2 minutes and 39 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:33]: Optimized for alpha: 0.26 parameters: [0.09343395, -0.09080981, 0.8574722, 0.79403955, 0.20629694, 0.20627722, -1.4246082, -1.5554887, -0.093376786, -0.1422702, -0.85799897, -0.7937006, -0.79516554, -0.7952019] p_succ: [0.5273566]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:33]: execute, took: 2 minutes and 39 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:33]: launch_execution, took: 2 minutes and 39 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:33]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:33]: Optimizing for alpha: 0.83 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:34]: Learned parameters value at step 300: [-0.0014281898, -0.035453904, 0.029923681, 0.023687027, -0.1495845, -0.14958575, 0.059846684, 0.047373928, 0.0014282583, -0.05718402, -0.029921656, -0.02368502, -0.80146295, -0.8014636]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:34]: Optimized for alpha: 0.42 took:2 minutes and 40 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:34]: _execute_for_one_alpha, took: 2 minutes and 40 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:34]: Optimized for alpha: 0.42 parameters: [-0.0014281898, -0.035453904, 0.029923681, 0.023687027, -0.1495845, -0.14958575, 0.059846684, 0.047373928, 0.0014282583, -0.05718402, -0.029921656, -0.02368502, -0.80146295, -0.8014636] p_succ: [0.6944399]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:34]: execute, took: 2 minutes and 40 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:34]: launch_execution, took: 2 minutes and 40 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:34]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:34]: Optimizing for alpha: 0.91 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:50]: Learned parameters value at step 100: [0.22680046, 0.187965, 0.22118247, 0.1491729, 0.21321332, 0.21014287, -0.031674054, 0.007160591, 0.22721195, 0.21618795, 0.21373639, 0.16247992, 0.22595218, -0.037318606]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:14:50]: Optimized for alpha: 0.1 took:2 minutes and 57 seconds. steps: [100/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:15:48]: Learned parameters value at step 100: [0.045081295, -0.14098766, 0.39077726, 0.17754571, 0.414002, 0.41697708, -0.8473769, -0.6641992, -0.062316626, -0.09155112, -0.5140626, -0.26352116, -0.6160775, -0.5778452]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:15:48]: Optimized for alpha: 0.18 took:3 minutes and 54 seconds. steps: [100/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:16]: Learned parameters value at step 100: [-0.012874278, 0.058066413, 0.030779613, 0.02905663, -0.14652205, -0.13507853, 0.03566424, -0.07569293, 0.0064614164, -0.01597651, -0.029526595, -0.014164543, -0.8365468, -0.75871795]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:16]: Optimized for alpha: 0.51 took:4 minutes and 23 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:24]: Learned parameters value at step 100: [0.013181775, 0.21393219, 0.06207021, 0.018612098, -0.105868004, -0.1125864, -0.019181296, -0.010302063, -0.026373554, 0.21668422, -0.054072626, -0.01709825, -0.8690056, -0.78585607]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:24]: Optimized for alpha: 0.59 took:4 minutes and 30 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:34]: Learned parameters value at step 100: [-0.03392367, 0.183286, -0.020176826, 0.017025046, -0.07178818, -0.07955435, 0.26680052, -0.09627664, 0.034298845, 0.18892294, 0.0064449064, -0.006134627, -0.8067403, -0.80162454]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:34]: Optimized for alpha: 0.67 took:4 minutes and 40 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:42]: Learned parameters value at step 150: [0.2992434, 0.17381686, 0.2937885, 0.07748262, 0.2773526, 0.27375644, -0.11595642, -0.06528128, 0.3002522, 0.2754005, 0.27248722, 0.097361945, 0.30096745, -0.11863102]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:42]: Optimized for alpha: 0.1 took:4 minutes and 48 seconds. steps: [150/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:59]: Learned parameters value at step 50: [-0.026218377, 0.22627042, -0.014479384, -0.055691987, 0.12840304, -0.06891681, -0.196181, 0.24905004, -0.061115853, 0.14038916, -0.056992885, -0.0036943, -0.445125, -0.44265267]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:16:59]: Optimized for alpha: 0.75 took:2 minutes and 28 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:17:11]: Learned parameters value at step 50: [-0.001459004, 0.26579678, -0.013555119, -0.012425378, 0.17451346, 0.28515834, -0.06721048, -0.058298424, 0.031275492, 0.2641899, -0.048639446, 0.005224454, -0.4535404, -0.41107357]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:17:11]: Optimized for alpha: 0.83 took:2 minutes and 37 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:17:37]: Learned parameters value at step 50: [0.04344346, 0.1428323, -0.014516305, -0.016380075, 0.1580135, 0.38488317, -0.0029083937, -0.06694991, 0.10317711, 0.10721956, -0.04150057, -0.0016191576, -0.42625478, -0.40909696]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:17:37]: Optimized for alpha: 0.91 took:3 minutes and 2 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:17:50]: Learned parameters value at step 150: [0.12270663, -0.15164776, 0.9064212, 0.5148833, 0.2371444, 0.20710133, -1.3343091, -1.0513357, -0.08484307, -0.24473849, -0.8985294, -0.5524962, -0.71862286, -0.6340264]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:17:50]: Optimized for alpha: 0.18 took:5 minutes and 56 seconds. steps: [150/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:18:40]: Learned parameters value at step 200: [0.36824697, 0.18658736, 0.36520067, 0.009584422, 0.34003624, 0.33987167, -0.2014592, -0.06942913, 0.369792, 0.3033757, 0.3210777, 0.03336339, 0.37516424, -0.19785139]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:18:40]: Optimized for alpha: 0.1 took:6 minutes and 46 seconds. steps: [200/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:19:24]: Learned parameters value at step 150: [-0.009250951, 0.055402275, 0.026943173, 0.007629178, -0.22611597, -0.21256925, 0.051606614, 0.013292765, 0.008865438, -0.014793916, -0.026563434, -0.0070820954, -0.8908755, -0.86707234]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:19:24]: Optimized for alpha: 0.51 took:7 minutes and 30 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:19:31]: Learned parameters value at step 150: [0.018285956, 0.22003892, 0.03315225, 0.01387254, -0.19477218, -0.18755119, 0.06285399, 0.025724217, -0.019042151, 0.19890065, -0.033000834, -0.013779195, -0.9074739, -0.8927793]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:19:31]: Optimized for alpha: 0.59 took:7 minutes and 38 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:19:39]: Learned parameters value at step 150: [-0.03324942, 0.2002205, 0.02012847, -0.0022869955, -0.14706536, -0.14856201, 0.018981699, 0.0042003235, 0.03311763, 0.14747882, -0.017438022, 0.001163356, -0.90498626, -0.90519947]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:19:39]: Optimized for alpha: 0.67 took:7 minutes and 46 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:19:54]: Learned parameters value at step 200: [0.12538895, -0.10625889, 0.89911455, 0.81533325, 0.26746103, 0.18413644, -1.3358543, -1.4038615, -0.12941724, -0.28051662, -0.89894783, -0.82227254, -0.7049182, -0.6827244]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:19:54]: Optimized for alpha: 0.18 took:8 minutes and 0 seconds. steps: [200/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:20:05]: Learned parameters value at step 100: [0.02861998, 0.23796907, 3.1197327e-05, -0.048844807, -0.03518993, -0.034011442, 0.01908324, 0.3551007, -0.02671365, 0.1613694, 0.0018142643, 0.037160266, -0.809213, -0.81782144]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:20:05]: Optimized for alpha: 0.75 took:5 minutes and 34 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:20:18]: Learned parameters value at step 100: [-0.019937877, 0.25980848, 0.010183758, -0.017787324, 0.010260177, 0.039678857, 0.06422306, -0.01788877, 0.021670185, 0.26577768, -0.0075837662, 0.015759464, -0.8192495, -0.7869407]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:20:18]: Optimized for alpha: 0.83 took:5 minutes and 45 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:20:37]: Learned parameters value at step 250: [0.42990205, 0.2275492, 0.4309822, -0.039800882, 0.3977, 0.40487838, -0.28120175, -0.009589848, 0.4319457, 0.3339962, 0.34595898, -0.002907597, 0.44514513, -0.27137867]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:20:37]: Optimized for alpha: 0.1 took:8 minutes and 43 seconds. steps: [250/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:20:44]: Learned parameters value at step 100: [-0.03639386, 0.13309136, 0.010548814, -0.020527896, 0.06768709, 0.07641218, 0.0149682285, -0.04122195, 0.046165157, 0.12806796, -0.011678228, 0.021482322, -0.8154079, -0.81398875]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:20:44]: Optimized for alpha: 0.91 took:6 minutes and 10 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:21:58]: Learned parameters value at step 250: [0.1313609, -0.13004704, 0.8999982, 0.844672, 0.27611512, 0.23505636, -1.3251128, -1.4482356, -0.13892013, -0.17285565, -0.9042195, -0.8448348, -0.71293354, -0.6947812]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:21:58]: Optimized for alpha: 0.18 took:10 minutes and 4 seconds. steps: [250/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:22:30]: Learned parameters value at step 200: [-0.008871361, 0.053151652, 0.026569692, 0.0070369695, -0.23880251, -0.23394628, 0.05330052, 0.0142320655, 0.008807218, -0.013319866, -0.026596272, -0.0070725144, -0.90306795, -0.8960709]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:22:30]: Optimized for alpha: 0.51 took:10 minutes and 36 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:22:34]: Learned parameters value at step 300: [0.4826893, 0.25139132, 0.48806432, -0.06878567, 0.44878867, 0.46589413, -0.34918848, 0.029354747, 0.4847863, 0.3614123, 0.3579702, -0.021523725, 0.50919986, -0.33781612]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:22:34]: Optimized for alpha: 0.1 took:10 minutes and 40 seconds. steps: [300/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:22:39]: Learned parameters value at step 200: [0.01724173, 0.22279844, 0.03191397, 0.014387007, -0.20670407, -0.20436044, 0.063624665, 0.028795172, -0.017145088, 0.18126014, -0.031827748, -0.014353554, -0.9193615, -0.91596645]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:22:39]: Optimized for alpha: 0.59 took:10 minutes and 45 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:22:46]: Learned parameters value at step 200: [-0.032127757, 0.18551628, 0.016580436, -0.0005222778, -0.16827837, -0.16842194, 0.031209731, 7.262503e-05, 0.03190107, 0.12551679, -0.016301515, 0.00037736123, -0.9331331, -0.93323183]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:22:46]: Optimized for alpha: 0.67 took:10 minutes and 53 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:23:11]: Learned parameters value at step 150: [0.027569596, 0.22130647, 0.0015067622, 0.0074247336, -0.10949981, -0.10879864, 0.0039383457, 0.06181101, -0.027707594, 0.17569762, -0.0014410645, -0.011860905, -0.9224711, -0.9216169]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:23:11]: Optimized for alpha: 0.75 took:8 minutes and 40 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:23:26]: Learned parameters value at step 150: [-0.020782366, 0.27175632, 0.009525352, -0.016007923, -0.0688745, -0.05730537, 0.0426086, -0.020772185, 0.020513574, 0.2529846, -0.010907305, 0.015588525, -0.9411472, -0.9214774]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:23:26]: Optimized for alpha: 0.83 took:8 minutes and 53 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:23:51]: Learned parameters value at step 150: [-0.041800726, 0.150063, 0.010700458, -0.018580973, -0.026462406, -0.026652414, 0.012697889, -0.04355072, 0.041455768, 0.11762533, -0.010616729, 0.018802475, -0.9565783, -0.9567371]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:23:51]: Optimized for alpha: 0.91 took:9 minutes and 17 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:24:02]: Learned parameters value at step 300: [0.13665625, -0.08960913, 0.9018167, 0.84294766, 0.2809201, 0.24001935, -1.3204135, -1.4519627, -0.14404877, -0.128244, -0.90539145, -0.8432848, -0.7183857, -0.6959164]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:24:02]: Optimized for alpha: 0.18 took:12 minutes and 8 seconds. steps: [300/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:24:32]: Learned parameters value at step 350: [0.52647656, 0.2524061, 0.5362801, -0.0823318, 0.492883, 0.5211824, -0.40478262, 0.041518614, 0.5283269, 0.37933776, 0.3681903, -0.030561473, 0.56633794, -0.39698294]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:24:32]: Optimized for alpha: 0.1 took:12 minutes and 38 seconds. steps: [350/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:25:36]: Learned parameters value at step 250: [-0.008717514, 0.050929356, 0.02672239, 0.0069643063, -0.24038048, -0.2392795, 0.05342621, 0.013980421, 0.008695453, -0.01187365, -0.026713897, -0.006968142, -0.90478355, -0.9032807]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:25:36]: Optimized for alpha: 0.51 took:13 minutes and 42 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:25:47]: Learned parameters value at step 250: [0.015878398, 0.22330253, 0.031432882, 0.014908454, -0.20816001, -0.20774564, 0.06271246, 0.030014822, -0.015711352, 0.1682219, -0.031390928, -0.014930086, -0.92108357, -0.9205154]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:25:47]: Optimized for alpha: 0.59 took:13 minutes and 53 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:25:54]: Learned parameters value at step 250: [-0.030914234, 0.16353568, 0.015923843, 1.4179022e-08, -0.17345631, -0.17347126, 0.031340353, 0.00050892454, 0.030743085, 0.10738038, -0.015851643, -7.918619e-05, -0.94016284, -0.9401755]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:25:54]: Optimized for alpha: 0.67 took:14 minutes and 0 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:06]: Learned parameters value at step 350: [0.16204584, -0.047539666, 0.9039174, 0.8444078, 0.2897151, 0.23402746, -1.3202144, -1.4546074, -0.12993962, -0.10663691, -0.90835863, -0.84267384, -0.71255094, -0.70473427]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:06]: Optimized for alpha: 0.18 took:14 minutes and 13 seconds. steps: [350/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:18]: Learned parameters value at step 200: [0.027394328, 0.20697762, 0.0017846096, 0.014642325, -0.13264218, -0.1325279, 0.0033260349, 0.0329395, -0.027189776, 0.18110722, -0.001764741, -0.015060612, -0.9554711, -0.9552236]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:18]: Optimized for alpha: 0.75 took:11 minutes and 47 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:33]: Learned parameters value at step 400: [0.56715184, 0.121141665, 0.61555004, -0.07767523, 0.51384157, 0.55331314, -0.39992765, -0.070073575, 0.5578273, 0.48360655, 0.49386173, -0.075903445, 0.57550746, -0.4501555]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:33]: Optimized for alpha: 0.1 took:14 minutes and 39 seconds. steps: [400/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:34]: Learned parameters value at step 200: [-0.02046293, 0.28585243, 0.0113648, -0.0139359, -0.09716305, -0.09081179, 0.021015737, -0.027006987, 0.020191383, 0.23383357, -0.011208006, 0.013873419, -0.9809539, -0.97096115]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:34]: Optimized for alpha: 0.83 took:12 minutes and 1 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:59]: Learned parameters value at step 200: [-0.04163175, 0.15615447, 0.010063077, -0.018790187, -0.06154669, -0.061671555, 0.016046481, -0.041249875, 0.04155542, 0.11215179, -0.009843907, 0.01899095, -1.007798, -1.0080438]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:26:59]: Optimized for alpha: 0.91 took:12 minutes and 25 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:11]: Learned parameters value at step 400: [0.1521507, -0.026834052, 0.9079854, 0.8430943, 0.2805047, 0.23554355, -1.3196696, -1.4562994, -0.15175013, -0.08590397, -0.9093815, -0.84201473, -0.7339227, -0.69977784]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:11]: Optimized for alpha: 0.18 took:16 minutes and 17 seconds. steps: [400/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:34]: Learned parameters value at step 450: [0.57978535, 0.020481313, 0.63298714, 0.002516754, 0.5252013, 0.5798718, -0.43284166, -0.041586097, 0.54323864, 0.39060923, 0.5232872, -0.07316046, 0.572748, -0.5007893]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:34]: Optimized for alpha: 0.1 took:16 minutes and 40 seconds. steps: [450/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:43]: Learned parameters value at step 300: [-0.008594058, 0.048742183, 0.026832161, 0.0068780007, -0.24047948, -0.24032693, 0.053649426, 0.013767343, 0.008587325, -0.010487343, -0.026824594, -0.0068742246, -0.9048867, -0.9046823]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:43]: Optimized for alpha: 0.51 took:16 minutes and 49 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:43]: _execute_for_one_alpha, took: 16 minutes and 49 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:43]: Optimized for alpha: 0.51 parameters: [-0.008594058, 0.048742183, 0.026832161, 0.0068780007, -0.24047948, -0.24032693, 0.053649426, 0.013767343, 0.008587325, -0.010487343, -0.026824594, -0.0068742246, -0.9048867, -0.9046823] p_succ: [0.7805851]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:43]: execute, took: 16 minutes and 49 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:43]: launch_execution, took: 16 minutes and 49 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:43]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:43]: Optimizing for alpha: 0.99 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:53]: Learned parameters value at step 300: [0.01458379, 0.22236127, 0.031108547, 0.015304593, -0.20824927, -0.20821439, 0.0620895, 0.030764218, -0.014430178, 0.15917829, -0.03107415, -0.01532213, -0.9211895, -0.9211425]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:53]: Optimized for alpha: 0.59 took:16 minutes and 59 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:53]: _execute_for_one_alpha, took: 17 minutes and 0 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:53]: Optimized for alpha: 0.59 parameters: [0.01458379, 0.22236127, 0.031108547, 0.015304593, -0.20824927, -0.20821439, 0.0620895, 0.030764218, -0.014430178, 0.15917829, -0.03107415, -0.01532213, -0.9211895, -0.9211425] p_succ: [0.8415695]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:53]: execute, took: 17 minutes and 0 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:53]: launch_execution, took: 17 minutes and 0 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:53]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:28:53]: Optimizing for alpha: 1.08 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:00]: Learned parameters value at step 300: [-0.029877981, 0.14184883, 0.015540123, 0.00039163124, -0.17445202, -0.17445467, 0.030659763, 0.0012063938, 0.029753044, 0.091394305, -0.015480636, -0.00045912171, -0.94150954, -0.9415099]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:00]: Optimized for alpha: 0.67 took:17 minutes and 6 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:00]: _execute_for_one_alpha, took: 17 minutes and 7 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:00]: Optimized for alpha: 0.67 parameters: [-0.029877981, 0.14184883, 0.015540123, 0.00039163124, -0.17445202, -0.17445467, 0.030659763, 0.0012063938, 0.029753044, 0.091394305, -0.015480636, -0.00045912171, -0.94150954, -0.9415099] p_succ: [0.89011395]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:00]: execute, took: 17 minutes and 7 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:00]: launch_execution, took: 17 minutes and 7 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:00]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:00]: Optimizing for alpha: 1.16 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:25]: Learned parameters value at step 250: [0.026957422, 0.20113492, 0.0015690782, 0.015540228, -0.13924323, -0.13923903, 0.0026530137, 0.03135533, -0.02675453, 0.17365971, -0.001506369, -0.015573697, -0.9646302, -0.9646402]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:25]: Optimized for alpha: 0.75 took:14 minutes and 54 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:42]: Learned parameters value at step 250: [-0.02009756, 0.28993237, 0.010877456, -0.013488373, -0.10603198, -0.10327879, 0.021404216, -0.026688287, 0.01982713, 0.22233304, -0.010843321, 0.013458271, -0.9937158, -0.9894783]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:29:42]: Optimized for alpha: 0.83 took:15 minutes and 9 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:30:07]: Learned parameters value at step 250: [-0.041593973, 0.15611964, 0.009498359, -0.01939376, -0.07439595, -0.07447693, 0.018138638, -0.038576473, 0.041470073, 0.10782468, -0.009437067, 0.019378107, -1.026793, -1.0269374]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:30:07]: Optimized for alpha: 0.91 took:15 minutes and 33 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:30:16]: Learned parameters value at step 450: [0.14044571, -0.011863644, 0.9106244, 0.84230405, 0.28281552, 0.24354404, -1.3195746, -1.4571606, -0.17658076, -0.07492414, -0.909906, -0.84165704, -0.73379236, -0.68241024]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:30:16]: Optimized for alpha: 0.18 took:18 minutes and 22 seconds. steps: [450/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:30:36]: Learned parameters value at step 500: [0.60284674, -0.0041109878, 0.6833042, 0.026555805, 0.5420195, 0.5882531, -0.4719482, -0.087758884, 0.5590422, 0.40202993, 0.5486078, -0.10769444, 0.57659817, -0.5261597]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:30:36]: Optimized for alpha: 0.1 took:18 minutes and 42 seconds. steps: [500/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:16]: Learned parameters value at step 50: [-0.007814174, 0.24039543, 0.05974423, -0.031833366, 0.42951193, 0.3021725, 0.07416764, -0.105547205, -0.030238146, 0.16712342, -0.092604764, 0.0059912335, -0.44602302, -0.45184487]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:16]: Optimized for alpha: 0.99 took:3 minutes and 33 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:20]: Learned parameters value at step 500: [0.14968492, -0.003552398, 0.91103715, 0.8416625, 0.2960459, 0.24734627, -1.3196151, -1.4576833, -0.1808416, -0.07094416, -0.91055614, -0.8418422, -0.71979314, -0.67244345]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:20]: Optimized for alpha: 0.18 took:20 minutes and 27 seconds. steps: [500/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:21]: _execute_for_one_alpha, took: 20 minutes and 27 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:21]: Optimized for alpha: 0.18 parameters: [0.14968492, -0.003552398, 0.91103715, 0.8416625, 0.2960459, 0.24734627, -1.3196151, -1.4576833, -0.1808416, -0.07094416, -0.91055614, -0.8418422, -0.71979314, -0.67244345] p_succ: [0.60413164]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:21]: execute, took: 20 minutes and 27 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:21]: launch_execution, took: 20 minutes and 27 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:21]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:21]: Optimizing for alpha: 1.24 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:33]: Learned parameters value at step 300: [0.026477722, 0.19350211, 0.0013267704, 0.015787728, -0.14074026, -0.14074938, 0.0021947757, 0.03197994, -0.026292088, 0.16672526, -0.0012674315, -0.015836116, -0.96670824, -0.9667232]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:33]: Optimized for alpha: 0.75 took:18 minutes and 2 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:33]: _execute_for_one_alpha, took: 18 minutes and 2 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:33]: Optimized for alpha: 0.75 parameters: [0.026477722, 0.19350211, 0.0013267704, 0.015787728, -0.14074026, -0.14074938, 0.0021947757, 0.03197994, -0.026292088, 0.16672526, -0.0012674315, -0.015836116, -0.96670824, -0.9667232] p_succ: [0.92696416]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:33]: execute, took: 18 minutes and 2 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:33]: launch_execution, took: 18 minutes and 2 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:33]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:33]: Optimizing for alpha: 1.32 
+batch_size:4 plays:1 modes:2 layers:1 squeezing: True
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:41]: Learned parameters value at step 50: [-0.0011080918, 0.14435782, 0.08346766, -0.02339697, 0.34907457, 0.47796527, 0.15691829, -0.03746284, 0.05648734, 0.35265875, -0.05695839, -0.0009850226, -0.44616613, -0.44511333]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:41]: Optimized for alpha: 1.08 took:3 minutes and 47 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:52]: Learned parameters value at step 300: [-0.019678688, 0.2880755, 0.010690268, -0.0132969245, -0.10846351, -0.10750561, 0.02101875, -0.026253095, 0.019418731, 0.21597932, -0.010655456, 0.01326213, -0.99721813, -0.9957638]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:52]: Optimized for alpha: 0.83 took:18 minutes and 19 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:52]: _execute_for_one_alpha, took: 18 minutes and 19 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:52]: Optimized for alpha: 0.83 parameters: [-0.019678688, 0.2880755, 0.010690268, -0.0132969245, -0.10846351, -0.10750561, 0.02101875, -0.026253095, 0.019418731, 0.21597932, -0.010655456, 0.01326213, -0.99721813, -0.9957638] p_succ: [0.95362884]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:52]: execute, took: 18 minutes and 19 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:52]: launch_execution, took: 18 minutes and 19 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:57]: Learned parameters value at step 50: [0.040392302, 0.058640268, -0.14880258, 0.04746385, -0.036637064, 0.548994, 0.5549437, 0.07997079, 0.24925967, 0.19387539, 0.102680594, -0.08409379, -0.37315473, -0.35694107]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:57]: Optimized for alpha: 1.16 took:3 minutes and 56 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:57]: Learned parameters value at step 550: [0.6268252, -0.01476318, 0.7362933, 0.07317772, 0.56337357, 0.5922323, -0.51097673, -0.15800172, 0.58015764, 0.44546375, 0.5604772, -0.13896516, 0.5811575, -0.5502332]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:32:57]: Optimized for alpha: 0.1 took:21 minutes and 3 seconds. steps: [550/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:33:13]: Learned parameters value at step 300: [-0.041506264, 0.15281974, 0.009305368, -0.01922218, -0.07868236, -0.07871853, 0.017732004, -0.037778813, 0.041385226, 0.103970125, -0.009241002, 0.019172408, -1.0331738, -1.0332347]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:33:13]: Optimized for alpha: 0.91 took:18 minutes and 39 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:33:13]: _execute_for_one_alpha, took: 18 minutes and 39 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:33:13]: Optimized for alpha: 0.91 parameters: [-0.041506264, 0.15281974, 0.009305368, -0.01922218, -0.07868236, -0.07871853, 0.017732004, -0.037778813, 0.041385226, 0.103970125, -0.009241002, 0.019172408, -1.0331738, -1.0332347] p_succ: [0.9719901]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:33:13]: execute, took: 18 minutes and 39 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:33:13]: launch_execution, took: 18 minutes and 39 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:03]: Learned parameters value at step 100: [0.01831718, 0.22266284, 0.051055565, -0.03154824, 0.117398895, 0.11072904, 0.11817155, -0.07265937, -0.015298859, 0.16414954, -0.048125893, 0.030741554, -0.8325456, -0.83535135]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:03]: Optimized for alpha: 0.99 took:6 minutes and 20 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:24]: Learned parameters value at step 100: [-0.033549998, 0.22166283, 0.07139237, -0.012145996, 0.15714833, 0.16268492, 0.15887013, -0.025045754, 0.030635165, 0.31961688, -0.06934449, 0.011477528, -0.84433913, -0.84257644]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:24]: Optimized for alpha: 1.08 took:6 minutes and 30 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:42]: Learned parameters value at step 100: [-0.14396876, -0.043565027, 0.08934442, 0.08779889, 0.22729257, 0.27780655, 0.2671592, 0.112822086, 0.14469019, -0.022597628, -0.0700825, -0.11056901, -0.91512066, -0.81890875]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:42]: Optimized for alpha: 1.16 took:6 minutes and 41 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:47]: Learned parameters value at step 600: [0.6660749, -0.00959013, 0.78917617, 0.17159617, 0.5896851, 0.5980008, -0.5570841, -0.23521326, 0.61018693, 0.4611854, 0.57825613, -0.19068252, 0.58515704, -0.5874458]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:47]: Optimized for alpha: 0.1 took:23 minutes and 53 seconds. steps: [600/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:49]: Learned parameters value at step 50: [0.04497634, 0.2240152, 0.23287237, 0.112871446, -0.09954451, 0.5142732, -0.042128336, 0.23725376, 0.23720929, -0.16017085, -0.020404572, -0.07448057, -0.3138345, -0.31803596]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:35:49]: Optimized for alpha: 1.24 took:3 minutes and 28 seconds. steps: [50/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:36:01]: Learned parameters value at step 50: [0.112107225, 0.12921038, 0.124658324, 0.10374206, -0.13936575, 0.46287993, 0.060645852, 0.21183391, 0.20879053, -0.07852422, 0.009946148, -0.053959034, -0.3030686, -0.29929906]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:36:01]: Optimized for alpha: 1.32 took:3 minutes and 27 seconds. steps: [50/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:37:42]: Learned parameters value at step 150: [0.016776666, 0.22069055, 0.052642364, -0.033239644, 0.011997646, 0.010809498, 0.113207914, -0.06709817, -0.016662698, 0.16361918, -0.052583177, 0.033171464, -0.98074263, -0.9815443]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:37:42]: Optimized for alpha: 0.99 took:8 minutes and 59 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:38:03]: Learned parameters value at step 150: [-0.030048948, 0.30286214, 0.07200696, -0.007374049, 0.0479905, 0.048533894, 0.14790973, -0.018226774, 0.03006765, 0.2697561, -0.071885325, 0.0072139516, -1.0059795, -1.0069283]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:38:03]: Optimized for alpha: 1.08 took:9 minutes and 9 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:38:22]: Learned parameters value at step 150: [-0.14209475, 0.0024011855, 0.12984346, 0.0738405, 0.07335155, 0.07349987, 0.20351425, 0.16492999, 0.14299315, -0.055043016, -0.13427031, -0.07246785, -1.0579506, -1.0554956]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:38:22]: Optimized for alpha: 1.16 took:9 minutes and 21 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:38:42]: Learned parameters value at step 650: [0.6871399, -0.0009259839, 0.825697, 0.2358374, 0.600865, 0.5866819, -0.58261865, -0.32950094, 0.63172084, 0.49622893, 0.5739381, -0.26475143, 0.6044792, -0.58232886]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:38:42]: Optimized for alpha: 0.1 took:26 minutes and 48 seconds. steps: [650/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:38:50]: Learned parameters value at step 100: [-0.18447974, 0.15502077, 0.22458743, 0.051055375, 0.08671095, 0.43505156, -0.13575776, 0.12079759, 0.19886386, 0.15130591, -0.27537403, -0.038673554, -0.7981117, -0.5777539]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:38:50]: Optimized for alpha: 1.24 took:6 minutes and 29 seconds. steps: [100/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:39:21]: Learned parameters value at step 100: [-0.0074253017, 0.19675393, 0.05640087, 0.08015441, -0.22205627, 0.4842123, 0.17701654, 0.16018453, 0.26876822, 0.002745652, -0.06504612, -0.119875595, -0.5938617, -0.35575265]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:39:21]: Optimized for alpha: 1.32 took:6 minutes and 48 seconds. steps: [100/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:40:22]: Learned parameters value at step 200: [0.016668383, 0.23160468, 0.051962852, -0.0321951, -0.029349443, -0.029699907, 0.11295538, -0.06691825, -0.016610557, 0.15679415, -0.052207366, 0.03227059, -1.0406958, -1.0409551]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:40:22]: Optimized for alpha: 0.99 took:11 minutes and 38 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:40:43]: Learned parameters value at step 200: [-0.029883524, 0.3264395, 0.07104342, -0.005326544, -9.879097e-05, -0.00039483153, 0.14742997, -0.01758907, 0.029896235, 0.2560926, -0.07103719, 0.005325813, -1.0769342, -1.0780939]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:40:43]: Optimized for alpha: 1.08 took:11 minutes and 49 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:41:00]: Learned parameters value at step 200: [-0.14246927, 0.0014552618, 0.12770768, 0.0748232, 0.018073345, 0.012714785, 0.20806952, 0.16135864, 0.142582, -0.052183755, -0.12859744, -0.07467026, -1.1316946, -1.1402626]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:41:00]: Optimized for alpha: 1.16 took:12 minutes and 0 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:41:30]: Learned parameters value at step 150: [-0.18457925, 0.13670813, 0.12405729, 0.06445908, 0.11874126, 0.16380565, 0.08671271, 0.12128258, 0.17953399, 0.10073496, -0.14630802, -0.0663405, -1.0539347, -0.9904222]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:41:30]: Optimized for alpha: 1.24 took:9 minutes and 9 seconds. steps: [150/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:41:33]: Learned parameters value at step 700: [0.6788183, -0.035926577, 0.8776724, 0.33256754, 0.6108112, 0.571472, -0.5997857, -0.44382316, 0.6243798, 0.5852822, 0.55622905, -0.32265362, 0.63309884, -0.5612352]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:41:33]: Optimized for alpha: 0.1 took:29 minutes and 39 seconds. steps: [700/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:42:24]: Learned parameters value at step 150: [-0.21713889, 0.05923917, 0.06396348, 0.06387486, 0.006857805, 0.45084685, 0.28550228, 0.13509135, 0.20479049, 0.1339881, -0.06781995, -0.06643577, -0.90447634, -0.5872963]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:42:24]: Optimized for alpha: 1.32 took:9 minutes and 50 seconds. steps: [150/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:43:00]: Learned parameters value at step 250: [0.016588181, 0.24141517, 0.05201011, -0.03157035, -0.046153866, -0.046275157, 0.111824565, -0.06583028, -0.016510548, 0.15009385, -0.05234363, 0.031686064, -1.0656822, -1.065754]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:43:00]: Optimized for alpha: 0.99 took:14 minutes and 17 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:43:22]: Learned parameters value at step 250: [-0.029931692, 0.33616006, 0.07055999, -0.0044056172, -0.021477366, -0.021842692, 0.14731844, -0.017323758, 0.02979972, 0.25036323, -0.07068696, 0.0045851273, -1.1093757, -1.1102128]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:43:22]: Optimized for alpha: 1.08 took:14 minutes and 29 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:43:39]: Learned parameters value at step 250: [-0.14249876, 0.0011466882, 0.12797801, 0.07467953, -0.005867993, -0.009563351, 0.20831609, 0.1612218, 0.14249516, -0.051812984, -0.12770331, -0.07479066, -1.1670167, -1.1730974]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:43:39]: Optimized for alpha: 1.16 took:14 minutes and 39 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:44:09]: Learned parameters value at step 200: [-0.18033302, 0.1254014, 0.11145127, 0.06487803, 0.05428763, 0.06295629, 0.12415194, 0.13082244, 0.18087608, 0.08866107, -0.1171892, -0.064883634, -1.1575873, -1.14258]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:44:09]: Optimized for alpha: 1.24 took:11 minutes and 48 seconds. steps: [200/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:44:23]: Learned parameters value at step 750: [0.6713273, -0.05951245, 0.92738366, 0.42496508, 0.6188894, 0.55678654, -0.63182354, -0.5269832, 0.6067603, 0.63674164, 0.54824317, -0.37282774, 0.6612506, -0.5423448]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:44:23]: Optimized for alpha: 0.1 took:32 minutes and 30 seconds. steps: [750/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:45:03]: Learned parameters value at step 200: [-0.19695216, 0.03020801, 0.07970159, 0.08002498, 0.12407157, 0.19218753, 0.157695, 0.15997851, 0.19816644, 0.042303894, -0.08004799, -0.08011566, -1.1204165, -1.016982]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:45:03]: Optimized for alpha: 1.32 took:12 minutes and 30 seconds. steps: [200/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:45:40]: Learned parameters value at step 300: [0.016508712, 0.24711992, 0.05274547, -0.031530716, -0.05262313, -0.05265623, 0.11017267, -0.06425095, -0.016417513, 0.14566725, -0.05297217, 0.031588707, -1.0753595, -1.0753754]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:45:40]: Optimized for alpha: 0.99 took:16 minutes and 57 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:45:40]: _execute_for_one_alpha, took: 16 minutes and 57 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:45:40]: Optimized for alpha: 0.99 parameters: [0.016508712, 0.24711992, 0.05274547, -0.031530716, -0.05262313, -0.05265623, 0.11017267, -0.06425095, -0.016417513, 0.14566725, -0.05297217, 0.031588707, -1.0753595, -1.0753754] p_succ: [0.9839721]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:45:40]: execute, took: 16 minutes and 57 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:45:40]: launch_execution, took: 16 minutes and 57 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:00]: Learned parameters value at step 300: [-0.029890653, 0.34010193, 0.070547596, -0.0045644217, -0.030669866, -0.030913882, 0.14680493, -0.016146544, 0.029699344, 0.24731144, -0.07071415, 0.004771658, -1.1234728, -1.1239457]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:00]: Optimized for alpha: 1.08 took:17 minutes and 6 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:00]: _execute_for_one_alpha, took: 17 minutes and 7 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:00]: Optimized for alpha: 1.08 parameters: [-0.029890653, 0.34010193, 0.070547596, -0.0045644217, -0.030669866, -0.030913882, 0.14680493, -0.016146544, 0.029699344, 0.24731144, -0.07071415, 0.004771658, -1.1234728, -1.1239457] p_succ: [0.9913378]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:00]: execute, took: 17 minutes and 7 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:00]: launch_execution, took: 17 minutes and 7 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:15]: Learned parameters value at step 300: [-0.14248116, 0.0008868718, 0.12792678, 0.07476997, -0.015955277, -0.01773945, 0.20864278, 0.16084492, 0.14248121, -0.051394746, -0.12719163, -0.074965306, -1.1823988, -1.1853148]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:15]: Optimized for alpha: 1.16 took:17 minutes and 14 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:15]: _execute_for_one_alpha, took: 17 minutes and 14 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:15]: Optimized for alpha: 1.16 parameters: [-0.14248116, 0.0008868718, 0.12792678, 0.07476997, -0.015955277, -0.01773945, 0.20864278, 0.16084492, 0.14248121, -0.051394746, -0.12719163, -0.074965306, -1.1823988, -1.1853148] p_succ: [0.99560523]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:15]: execute, took: 17 minutes and 14 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:15]: launch_execution, took: 17 minutes and 14 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:39]: Learned parameters value at step 250: [-0.1804945, 0.1260767, 0.11024421, 0.065656856, 0.018317994, 0.02013795, 0.12901889, 0.1321166, 0.18053435, 0.084798016, -0.11196072, -0.06565137, -1.2113732, -1.207476]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:39]: Optimized for alpha: 1.24 took:14 minutes and 18 seconds. steps: [250/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:57]: Learned parameters value at step 800: [0.6634994, -0.088208884, 0.97877854, 0.4997447, 0.6264885, 0.5412232, -0.66137886, -0.60166216, 0.5856069, 0.6859196, 0.5426537, -0.42015117, 0.68572605, -0.5277019]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:46:57]: Optimized for alpha: 0.1 took:35 minutes and 3 seconds. steps: [800/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:47:20]: Learned parameters value at step 250: [-0.19534113, 0.026752489, 0.07961269, 0.08149848, 0.07128461, 0.08665648, 0.14822105, 0.16313164, 0.19497816, 0.032380313, -0.08048371, -0.081522815, -1.2106711, -1.1821618]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:47:20]: Optimized for alpha: 1.32 took:14 minutes and 47 seconds. steps: [250/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:48:43]: Learned parameters value at step 300: [-0.18050568, 0.12775132, 0.11057516, 0.0660698, 0.00090338214, 0.0012176519, 0.12938689, 0.1322458, 0.1805105, 0.083473414, -0.11066431, -0.066071495, -1.2376894, -1.236724]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:48:43]: Optimized for alpha: 1.24 took:16 minutes and 22 seconds. steps: [300/300]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:48:44]: _execute_for_one_alpha, took: 16 minutes and 22 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:48:44]: Optimized for alpha: 1.24 parameters: [-0.18050568, 0.12775132, 0.11057516, 0.0660698, 0.00090338214, 0.0012176519, 0.12938689, 0.1322458, 0.1805105, 0.083473414, -0.11066431, -0.066071495, -1.2376894, -1.236724] p_succ: [0.9977999]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:48:44]: execute, took: 16 minutes and 22 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:48:44]: launch_execution, took: 16 minutes and 22 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:49:06]: Learned parameters value at step 850: [0.65569353, -0.11593547, 1.0304773, 0.56301177, 0.63315594, 0.52488655, -0.685946, -0.6672625, 0.56470835, 0.7299388, 0.53917944, -0.4636533, 0.70673734, -0.51701504]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:49:06]: Optimized for alpha: 0.1 took:37 minutes and 12 seconds. steps: [850/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:49:21]: Learned parameters value at step 300: [-0.19498488, 0.02622898, 0.07909152, 0.08179436, 0.034479935, 0.03855135, 0.1488369, 0.16364565, 0.1949826, 0.03059323, -0.07943025, -0.081798315, -1.2662498, -1.2569643]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:49:21]: Optimized for alpha: 1.32 took:16 minutes and 48 seconds. steps: [300/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:51:06]: Learned parameters value at step 900: [0.6478751, -0.14061491, 1.0816563, 0.61628264, 0.638365, 0.5082317, -0.7040158, -0.72513664, 0.5476506, 0.7697698, 0.53792065, -0.50304455, 0.7247491, -0.5096504]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:51:06]: Optimized for alpha: 0.1 took:39 minutes and 12 seconds. steps: [900/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:51:15]: Learned parameters value at step 350: [-0.19496441, 0.02634125, 0.07894214, 0.08190867, 0.014188234, 0.015412478, 0.1489937, 0.16379426, 0.19496883, 0.029981941, -0.07907153, -0.081910804, -1.2975395, -1.294225]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:51:15]: Optimized for alpha: 1.32 took:18 minutes and 42 seconds. steps: [350/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:53:04]: Learned parameters value at step 950: [0.63943166, -0.16135041, 1.1314535, 0.66091955, 0.6422483, 0.4918926, -0.7174403, -0.7751099, 0.5346056, 0.8049977, 0.5387645, -0.5373166, 0.74087995, -0.5050949]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:53:04]: Optimized for alpha: 0.1 took:41 minutes and 10 seconds. steps: [950/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:53:09]: Learned parameters value at step 400: [-0.19496435, 0.026493128, 0.07890479, 0.081968255, 0.0039566765, 0.0043650907, 0.14901142, 0.16381964, 0.19496506, 0.02974839, -0.07894025, -0.08196933, -1.313594, -1.3123544]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:53:09]: Optimized for alpha: 1.32 took:20 minutes and 36 seconds. steps: [400/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:55:03]: Learned parameters value at step 1000: [0.63112897, -0.17986566, 1.1804811, 0.69806933, 0.64377546, 0.47576183, -0.7261753, -0.81992716, 0.5263018, 0.83726937, 0.542658, -0.5684792, 0.75471574, -0.50246227]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:55:03]: Optimized for alpha: 0.1 took:43 minutes and 9 seconds. steps: [1000/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:55:03]: Learned parameters value at step 450: [-0.19496459, 0.026580509, 0.078895934, 0.08199763, -0.0007634146, -0.0006188503, 0.1490101, 0.16382092, 0.19496441, 0.029654311, -0.07888937, -0.0819977, -1.321076, -1.3206116]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:55:03]: Optimized for alpha: 1.32 took:22 minutes and 30 seconds. steps: [450/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:56:57]: Learned parameters value at step 500: [-0.19496486, 0.026616383, 0.07889174, 0.08200996, -0.002751153, -0.0027002385, 0.14901388, 0.16382234, 0.19496427, 0.029614603, -0.07886779, -0.08200953, -1.3242424, -1.3240756]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:56:57]: Optimized for alpha: 1.32 took:24 minutes and 24 seconds. steps: [500/500]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:56:57]: _execute_for_one_alpha, took: 24 minutes and 24 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:56:57]: Optimized for alpha: 1.32 parameters: [-0.19496486, 0.026616383, 0.07889174, 0.08200996, -0.002751153, -0.0027002385, 0.14901388, 0.16382234, 0.19496427, 0.029614603, -0.07886779, -0.08200953, -1.3242424, -1.3240756] p_succ: [0.99902]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:56:57]: execute, took: 24 minutes and 24 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:56:57]: launch_execution, took: 24 minutes and 24 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 18:57:01]: Learned parameters value at step 1050: [0.62184656, -0.19588485, 1.2280699, 0.7285951, 0.6439345, 0.46035588, -0.73302484, -0.85894084, 0.52035844, 0.8661275, 0.5485321, -0.5953105, 0.76765126, -0.50155735]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:57:01]: Optimized for alpha: 0.1 took:45 minutes and 7 seconds. steps: [1050/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:58:49]: Learned parameters value at step 1100: [0.6120626, -0.21026431, 1.2745872, 0.7537401, 0.64232934, 0.44550958, -0.7385401, -0.8936158, 0.51599073, 0.89218503, 0.5566754, -0.6191589, 0.7796239, -0.50179017]
+[CSD] 0.0.1|DEBUG|2021-11-05 18:58:49]: Optimized for alpha: 0.1 took:46 minutes and 55 seconds. steps: [1100/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:00:37]: Learned parameters value at step 1150: [0.60221744, -0.22372942, 1.3204026, 0.7747034, 0.63869756, 0.43116546, -0.74292505, -0.9251386, 0.51283497, 0.9160264, 0.5673057, -0.6410472, 0.7905167, -0.5027524]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:00:37]: Optimized for alpha: 0.1 took:48 minutes and 44 seconds. steps: [1150/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:02:26]: Learned parameters value at step 1200: [0.5909995, -0.23647036, 1.3652585, 0.7916634, 0.63447994, 0.41784504, -0.7468258, -0.9535952, 0.5109886, 0.9385138, 0.57852167, -0.6599904, 0.80118734, -0.5049083]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:02:26]: Optimized for alpha: 0.1 took:50 minutes and 32 seconds. steps: [1200/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:04:15]: Learned parameters value at step 1250: [0.57964295, -0.24875419, 1.4094925, 0.8058903, 0.62869036, 0.40513363, -0.75041544, -0.97993946, 0.5096174, 0.95932806, 0.59142107, -0.6777342, 0.8111883, -0.5074774]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:04:15]: Optimized for alpha: 0.1 took:52 minutes and 21 seconds. steps: [1250/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:06:03]: Learned parameters value at step 1300: [0.5680944, -0.26074556, 1.4530879, 0.81803185, 0.62168276, 0.39316505, -0.7538358, -1.004568, 0.50872177, 0.9788088, 0.60543823, -0.6944568, 0.8206912, -0.5104687]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:06:03]: Optimized for alpha: 0.1 took:54 minutes and 9 seconds. steps: [1300/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:07:50]: Learned parameters value at step 1350: [0.555959, -0.27235195, 1.4957911, 0.8282885, 0.6140224, 0.38201618, -0.7576953, -1.027416, 0.50795865, 0.9969977, 0.61954564, -0.7099586, 0.83016956, -0.513918]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:07:50]: Optimized for alpha: 0.1 took:55 minutes and 56 seconds. steps: [1350/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:09:38]: Learned parameters value at step 1400: [0.54413974, -0.28348312, 1.5376027, 0.83754253, 0.6051068, 0.37132505, -0.7621844, -1.0487896, 0.5064572, 1.0134484, 0.6342754, -0.72520775, 0.8395132, -0.51716304]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:09:38]: Optimized for alpha: 0.1 took:57 minutes and 44 seconds. steps: [1400/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:11:24]: Learned parameters value at step 1450: [0.5312543, -0.29507834, 1.5785815, 0.8451667, 0.59640414, 0.3618707, -0.766727, -1.0690836, 0.50612706, 1.0296011, 0.6479491, -0.73921067, 0.8489627, -0.5213717]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:11:24]: Optimized for alpha: 0.1 took:59 minutes and 31 seconds. steps: [1450/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:13:12]: Learned parameters value at step 1500: [0.51992196, -0.3070798, 1.6192038, 0.85312223, 0.58576506, 0.3531551, -0.7703421, -1.0892308, 0.5060339, 1.044747, 0.6634433, -0.7541712, 0.8573015, -0.5251972]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:13:12]: Optimized for alpha: 0.1 took:1 hour, 1 minute and 18 seconds. steps: [1500/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:14:59]: Learned parameters value at step 1550: [0.50798154, -0.31909874, 1.6585158, 0.85998356, 0.5752693, 0.34521335, -0.77513134, -1.1079689, 0.5055396, 1.0587637, 0.6773287, -0.7682898, 0.866256, -0.52929306]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:14:59]: Optimized for alpha: 0.1 took:1 hour, 3 minutes and 5 seconds. steps: [1550/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:16:46]: Learned parameters value at step 1600: [0.49700004, -0.3317477, 1.6971421, 0.8670591, 0.5637302, 0.3382584, -0.7792138, -1.1264911, 0.5055007, 1.0721227, 0.6917617, -0.7828467, 0.8745447, -0.53335094]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:16:46]: Optimized for alpha: 0.1 took:1 hour, 4 minutes and 52 seconds. steps: [1600/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:18:33]: Learned parameters value at step 1650: [0.48654315, -0.34467182, 1.7346327, 0.87409174, 0.5517115, 0.33208308, -0.7835905, -1.1442478, 0.5052185, 1.0844882, 0.7055532, -0.79735565, 0.8828461, -0.5372996]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:18:33]: Optimized for alpha: 0.1 took:1 hour, 6 minutes and 40 seconds. steps: [1650/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:20:21]: Learned parameters value at step 1700: [0.4761919, -0.35852584, 1.7710884, 0.8807319, 0.5397111, 0.32706732, -0.78778577, -1.1615342, 0.5056358, 1.0965042, 0.71846837, -0.8115867, 0.8910459, -0.5417393]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:20:21]: Optimized for alpha: 0.1 took:1 hour, 8 minutes and 27 seconds. steps: [1700/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:22:08]: Learned parameters value at step 1750: [0.4672696, -0.3723708, 1.8062582, 0.8880322, 0.5267148, 0.32249585, -0.7921417, -1.1781222, 0.5051525, 1.1071926, 0.73120844, -0.82619625, 0.8991071, -0.54538065]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:22:08]: Optimized for alpha: 0.1 took:1 hour, 10 minutes and 14 seconds. steps: [1750/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:23:56]: Learned parameters value at step 1800: [0.45891866, -0.38692442, 1.8402076, 0.8952849, 0.5135637, 0.31882814, -0.79633, -1.1941918, 0.50491494, 1.1173335, 0.74317795, -0.84063196, 0.9070645, -0.54909503]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:23:56]: Optimized for alpha: 0.1 took:1 hour, 12 minutes and 2 seconds. steps: [1800/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:25:42]: Learned parameters value at step 1850: [0.45133612, -0.40229034, 1.8729955, 0.90268624, 0.500212, 0.31623983, -0.79989505, -1.2099955, 0.50529474, 1.1271726, 0.7546975, -0.85498923, 0.9146399, -0.5530138]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:25:42]: Optimized for alpha: 0.1 took:1 hour, 13 minutes and 48 seconds. steps: [1850/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:27:29]: Learned parameters value at step 1900: [0.44439927, -0.4182213, 1.904376, 0.9100434, 0.48685944, 0.3143684, -0.80348206, -1.2251626, 0.5057271, 1.1364223, 0.76522094, -0.86901855, 0.9222452, -0.55692536]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:27:29]: Optimized for alpha: 0.1 took:1 hour, 15 minutes and 36 seconds. steps: [1900/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:29:16]: Learned parameters value at step 1950: [0.43836662, -0.43437344, 1.9342333, 0.9175145, 0.4733511, 0.31291988, -0.80722904, -1.2395464, 0.5058034, 1.1448623, 0.7747972, -0.88270193, 0.9299509, -0.56046736]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:29:16]: Optimized for alpha: 0.1 took:1 hour, 17 minutes and 22 seconds. steps: [1950/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:30:47]: Learned parameters value at step 2000: [0.42943683, -0.453908, 1.958454, 0.9195822, 0.45777777, 0.3091656, -0.8061025, -1.2502518, 0.5052921, 1.1537504, 0.78477764, -0.8902648, 0.93398273, -0.56536174]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:30:47]: Optimized for alpha: 0.1 took:1 hour, 18 minutes and 53 seconds. steps: [2000/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:31:52]: Learned parameters value at step 2050: [0.40634164, -0.48174453, 1.96701, 0.90344286, 0.43897018, 0.29557765, -0.7935895, -1.2490972, 0.50184333, 1.1644142, 0.7939082, -0.8777525, 0.929229, -0.57675177]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:31:52]: Optimized for alpha: 0.1 took:1 hour, 19 minutes and 58 seconds. steps: [2050/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:32:56]: Learned parameters value at step 2100: [0.3858805, -0.50351393, 1.9740257, 0.8919318, 0.42111683, 0.28310135, -0.781536, -1.2486624, 0.49810258, 1.1735566, 0.80300677, -0.8675293, 0.92482835, -0.5886503]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:32:56]: Optimized for alpha: 0.1 took:1 hour, 21 minutes and 2 seconds. steps: [2100/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:34:02]: Learned parameters value at step 2150: [0.36942282, -0.51888376, 1.9807081, 0.8851486, 0.40403363, 0.2720878, -0.7716075, -1.2492368, 0.49278963, 1.1805049, 0.81179494, -0.8609774, 0.9220069, -0.5991031]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:34:02]: Optimized for alpha: 0.1 took:1 hour, 22 minutes and 8 seconds. steps: [2150/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:35:09]: Learned parameters value at step 2200: [0.35596243, -0.5301263, 1.987084, 0.88076574, 0.38749942, 0.26260376, -0.76273793, -1.2506356, 0.48650306, 1.1861241, 0.82055795, -0.8571536, 0.9200197, -0.608487]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:35:09]: Optimized for alpha: 0.1 took:1 hour, 23 minutes and 15 seconds. steps: [2200/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:36:16]: Learned parameters value at step 2250: [0.34393698, -0.5391225, 1.993352, 0.8775475, 0.37238693, 0.25459242, -0.75583196, -1.252414, 0.4796808, 1.1908103, 0.8279856, -0.8549962, 0.9195712, -0.61754405]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:36:16]: Optimized for alpha: 0.1 took:1 hour, 24 minutes and 22 seconds. steps: [2250/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:37:26]: Learned parameters value at step 2300: [0.33672515, -0.54325634, 1.9996593, 0.8789983, 0.35613018, 0.24871945, -0.7484357, -1.2553887, 0.47091103, 1.1940024, 0.8375083, -0.85584015, 0.9188978, -0.62326694]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:37:26]: Optimized for alpha: 0.1 took:1 hour, 25 minutes and 33 seconds. steps: [2300/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:38:29]: Learned parameters value at step 2350: [0.32385105, -0.5538578, 2.0046055, 0.87233174, 0.34304893, 0.24252845, -0.7407103, -1.2573938, 0.46629605, 1.1995996, 0.84394765, -0.8538142, 0.9175958, -0.63553756]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:38:29]: Optimized for alpha: 0.1 took:1 hour, 26 minutes and 35 seconds. steps: [2350/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:39:40]: Learned parameters value at step 2400: [0.3195492, -0.555262, 2.0110898, 0.8755323, 0.32763976, 0.23940851, -0.7346338, -1.2611477, 0.45641854, 1.2016957, 0.85315585, -0.8571033, 0.9180499, -0.63903767]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:39:40]: Optimized for alpha: 0.1 took:1 hour, 27 minutes and 46 seconds. steps: [2400/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:40:52]: Learned parameters value at step 2450: [0.3101842, -0.561624, 2.017422, 0.87383103, 0.31669134, 0.23629625, -0.7328643, -1.2637688, 0.4490735, 1.2047713, 0.8563687, -0.85827744, 0.92176247, -0.646977]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:40:52]: Optimized for alpha: 0.1 took:1 hour, 28 minutes and 59 seconds. steps: [2450/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:41:55]: Learned parameters value at step 2500: [0.30385897, -0.5663479, 2.0226152, 0.873775, 0.30261448, 0.23415413, -0.724768, -1.2674278, 0.4419514, 1.2083846, 0.865378, -0.86023366, 0.9201969, -0.65412337]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:41:55]: Optimized for alpha: 0.1 took:1 hour, 30 minutes and 1 seconds. steps: [2500/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:43:07]: Learned parameters value at step 2550: [0.30000535, -0.5678189, 2.0292683, 0.8779335, 0.29035255, 0.23448297, -0.7222154, -1.2713675, 0.43230322, 1.2099124, 0.8711598, -0.86431646, 0.9236324, -0.6569931]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:43:07]: Optimized for alpha: 0.1 took:1 hour, 31 minutes and 14 seconds. steps: [2550/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:44:10]: Learned parameters value at step 2600: [0.29068434, -0.5762039, 2.0338342, 0.87441427, 0.27864715, 0.23245594, -0.71503526, -1.2745266, 0.4275377, 1.2145611, 0.8776965, -0.8649158, 0.92232287, -0.6676838]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:44:10]: Optimized for alpha: 0.1 took:1 hour, 32 minutes and 16 seconds. steps: [2600/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:45:22]: Learned parameters value at step 2650: [0.28845745, -0.5766577, 2.0404944, 0.87981373, 0.2665722, 0.23476033, -0.71240515, -1.278906, 0.4175721, 1.2157402, 0.8838394, -0.8699112, 0.9258485, -0.6687107]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:45:22]: Optimized for alpha: 0.1 took:1 hour, 33 minutes and 28 seconds. steps: [2650/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:46:27]: Learned parameters value at step 2700: [0.2786503, -0.58600223, 2.044955, 0.8761504, 0.2562151, 0.23338977, -0.7064691, -1.2819997, 0.41349357, 1.2204276, 0.8888906, -0.87039274, 0.92533374, -0.68000007]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:46:27]: Optimized for alpha: 0.1 took:1 hour, 34 minutes and 33 seconds. steps: [2700/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:47:39]: Learned parameters value at step 2750: [0.2790597, -0.5844751, 2.0514483, 0.88331956, 0.24322812, 0.23764151, -0.7022593, -1.2869946, 0.4027685, 1.221241, 0.8969306, -0.8764729, 0.92771065, -0.6780666]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:47:39]: Optimized for alpha: 0.1 took:1 hour, 35 minutes and 45 seconds. steps: [2750/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:48:41]: Learned parameters value at step 2800: [0.2697218, -0.59404176, 2.0554838, 0.8800491, 0.23293719, 0.23657772, -0.695507, -1.290219, 0.39917195, 1.2261283, 0.9024454, -0.87684107, 0.9261387, -0.6894113]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:48:41]: Optimized for alpha: 0.1 took:1 hour, 36 minutes and 47 seconds. steps: [2800/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:49:57]: Learned parameters value at step 2850: [0.26895455, -0.5936682, 2.0625849, 0.88700086, 0.22289392, 0.2421353, -0.69587505, -1.2947013, 0.38881463, 1.2264798, 0.90612257, -0.8825983, 0.9329512, -0.686752]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:49:57]: Optimized for alpha: 0.1 took:1 hour, 38 minutes and 3 seconds. steps: [2850/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:50:59]: Learned parameters value at step 2900: [0.26006126, -0.60310173, 2.0664773, 0.8840901, 0.21300788, 0.2412639, -0.68934476, -1.2979442, 0.3855285, 1.2313148, 0.9113849, -0.8829875, 0.93125194, -0.69785297]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:50:59]: Optimized for alpha: 0.1 took:1 hour, 39 minutes and 5 seconds. steps: [2900/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:52:12]: Learned parameters value at step 2950: [0.25866914, -0.6042553, 2.0725434, 0.88980794, 0.20353168, 0.24672094, -0.6884857, -1.3021705, 0.3765709, 1.2324464, 0.91501796, -0.8875683, 0.93675363, -0.6968883]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:52:12]: Optimized for alpha: 0.1 took:1 hour, 40 minutes and 19 seconds. steps: [2950/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:53:19]: Learned parameters value at step 3000: [0.24949972, -0.6140593, 2.076693, 0.88657826, 0.19525616, 0.2462439, -0.6844427, -1.3051342, 0.37357217, 1.2369542, 0.91800505, -0.88798606, 0.9373909, -0.7075883]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:53:19]: Optimized for alpha: 0.1 took:1 hour, 41 minutes and 25 seconds. steps: [3000/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:54:28]: Learned parameters value at step 3050: [0.24997784, -0.61401886, 2.081431, 0.8925388, 0.18414387, 0.2517566, -0.67964286, -1.3096402, 0.36481857, 1.2386359, 0.9246666, -0.8922571, 0.93873304, -0.70615786]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:54:28]: Optimized for alpha: 0.1 took:1 hour, 42 minutes and 34 seconds. steps: [3050/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:55:40]: Learned parameters value at step 3100: [0.24608506, -0.61852276, 2.086127, 0.8946615, 0.1758168, 0.25551867, -0.6775859, -1.3131176, 0.35860375, 1.2411919, 0.9274883, -0.89459866, 0.94253623, -0.7090189]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:55:40]: Optimized for alpha: 0.1 took:1 hour, 43 minutes and 47 seconds. steps: [3100/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:56:43]: Learned parameters value at step 3150: [0.24154167, -0.6239361, 2.0895035, 0.89448625, 0.16577925, 0.2566369, -0.67112285, -1.3166617, 0.35395736, 1.2450749, 0.9332594, -0.8960175, 0.94063157, -0.7151229]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:56:43]: Optimized for alpha: 0.1 took:1 hour, 44 minutes and 49 seconds. steps: [3150/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:57:55]: Learned parameters value at step 3200: [0.24085127, -0.62539184, 2.0937674, 0.8993271, 0.15704255, 0.26246086, -0.6687449, -1.3203408, 0.34634638, 1.2469358, 0.93677044, -0.8988028, 0.94455075, -0.714054]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:57:55]: Optimized for alpha: 0.1 took:1 hour, 46 minutes and 1 seconds. steps: [3200/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:58:58]: Learned parameters value at step 3250: [0.2336351, -0.633545, 2.096684, 0.8959862, 0.14839564, 0.26129398, -0.6629778, -1.3232104, 0.34385577, 1.2516863, 0.9407881, -0.8988155, 0.94246703, -0.7236758]
+[CSD] 0.0.1|DEBUG|2021-11-05 19:58:58]: Optimized for alpha: 0.1 took:1 hour, 47 minutes and 4 seconds. steps: [3250/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:00:10]: Learned parameters value at step 3300: [0.23374772, -0.6340918, 2.1004772, 0.90066504, 0.13991249, 0.26745096, -0.6605693, -1.3266937, 0.33625394, 1.2534895, 0.9441069, -0.90134513, 0.94643563, -0.72133136]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:00:10]: Optimized for alpha: 0.1 took:1 hour, 48 minutes and 16 seconds. steps: [3300/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:01:16]: Learned parameters value at step 3350: [0.22505194, -0.6436161, 2.103559, 0.8959862, 0.13313915, 0.26568502, -0.6571545, -1.3289808, 0.3348551, 1.2582692, 0.9456332, -0.9006893, 0.9469416, -0.73182327]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:01:16]: Optimized for alpha: 0.1 took:1 hour, 49 minutes and 22 seconds. steps: [3350/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:02:25]: Learned parameters value at step 3400: [0.22901148, -0.6402058, 2.1057792, 0.9021417, 0.122296944, 0.27250233, -0.65090567, -1.332929, 0.3259764, 1.2601231, 0.95223975, -0.90350765, 0.9458209, -0.7266092]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:02:25]: Optimized for alpha: 0.1 took:1 hour, 50 minutes and 31 seconds. steps: [3400/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:03:31]: Learned parameters value at step 3450: [0.22044156, -0.64951, 2.1083517, 0.8973371, 0.11569119, 0.26998875, -0.6472042, -1.3350159, 0.32510936, 1.2651316, 0.9536338, -0.9022594, 0.94543594, -0.73739547]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:03:31]: Optimized for alpha: 0.1 took:1 hour, 51 minutes and 37 seconds. steps: [3450/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:04:43]: Learned parameters value at step 3500: [0.22278255, -0.6474222, 2.1109898, 0.90262437, 0.10753086, 0.27741468, -0.6445546, -1.3381848, 0.3170922, 1.2667, 0.95675707, -0.90425247, 0.9493657, -0.7316756]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:04:43]: Optimized for alpha: 0.1 took:1 hour, 52 minutes and 49 seconds. steps: [3500/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:05:46]: Learned parameters value at step 3550: [0.21521506, -0.655582, 2.112976, 0.8982054, 0.10077805, 0.27436852, -0.6403446, -1.3403085, 0.31636322, 1.2717959, 0.95834917, -0.90286875, 0.9475745, -0.7424212]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:05:46]: Optimized for alpha: 0.1 took:1 hour, 53 minutes and 53 seconds. steps: [3550/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:06:57]: Learned parameters value at step 3600: [0.21625657, -0.65473306, 2.1150906, 0.9016228, 0.09355312, 0.28047362, -0.6379123, -1.3430953, 0.3097703, 1.2739425, 0.9604715, -0.9039921, 0.95109904, -0.738943]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:06:57]: Optimized for alpha: 0.1 took:1 hour, 55 minutes and 3 seconds. steps: [3600/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:08:07]: Learned parameters value at step 3650: [0.2139374, -0.65745366, 2.1167011, 0.90212476, 0.08674002, 0.28259808, -0.6345995, -1.3455272, 0.30595857, 1.2775052, 0.9621326, -0.90355426, 0.951641, -0.7419698]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:08:07]: Optimized for alpha: 0.1 took:1 hour, 56 minutes and 13 seconds. steps: [3650/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:09:09]: Learned parameters value at step 3700: [0.21013159, -0.66129553, 2.1178334, 0.899256, 0.079431295, 0.28166774, -0.6300726, -1.3479365, 0.30361786, 1.2819296, 0.96418387, -0.9031034, 0.9487945, -0.7483836]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:09:09]: Optimized for alpha: 0.1 took:1 hour, 57 minutes and 15 seconds. steps: [3700/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:10:21]: Learned parameters value at step 3750: [0.2108207, -0.6601212, 2.1196237, 0.9018443, 0.07319832, 0.28770685, -0.6282321, -1.3503419, 0.29777348, 1.2841914, 0.9653898, -0.9036141, 0.9530858, -0.7444818]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:10:21]: Optimized for alpha: 0.1 took:1 hour, 58 minutes and 27 seconds. steps: [3750/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:11:31]: Learned parameters value at step 3800: [0.20650403, -0.66402453, 2.1212182, 0.8998905, 0.06745055, 0.28748733, -0.6256206, -1.3523431, 0.29582897, 1.28828, 0.96587133, -0.902543, 0.95374835, -0.74965304]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:11:31]: Optimized for alpha: 0.1 took:1 hour, 59 minutes and 37 seconds. steps: [3800/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:12:33]: Learned parameters value at step 3850: [0.20459802, -0.66534895, 2.1218753, 0.8983922, 0.06028681, 0.28745884, -0.62155145, -1.3547698, 0.29289985, 1.2923689, 0.96745527, -0.9021193, 0.95058846, -0.7536325]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:12:33]: Optimized for alpha: 0.1 took:2 hours, 39 seconds. steps: [3850/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:13:45]: Learned parameters value at step 3900: [0.20631987, -0.6626414, 2.1229022, 0.9011423, 0.053942285, 0.29329112, -0.6191504, -1.3571664, 0.28720045, 1.294838, 0.9687016, -0.9022462, 0.9526863, -0.7493867]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:13:45]: Optimized for alpha: 0.1 took:2 hours, 1 minute and 51 seconds. steps: [3900/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:14:55]: Learned parameters value at step 3950: [0.19911689, -0.6685019, 2.1250565, 0.89606476, 0.04972925, 0.29059476, -0.6177092, -1.3586464, 0.28756168, 1.2993973, 0.967841, -0.90075946, 0.95497435, -0.75703585]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:14:55]: Optimized for alpha: 0.1 took:2 hours, 3 minutes and 1 seconds. steps: [3950/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:15:58]: Learned parameters value at step 4000: [0.19917248, -0.6674115, 2.1254568, 0.8965599, 0.04301467, 0.29212755, -0.6145411, -1.3610857, 0.28389153, 1.3030317, 0.9686685, -0.9002455, 0.952432, -0.7582094]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:15:58]: Optimized for alpha: 0.1 took:2 hours, 4 minutes and 4 seconds. steps: [4000/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:17:07]: Learned parameters value at step 4050: [0.20012562, -0.6651803, 2.126176, 0.8981569, 0.0370804, 0.2960135, -0.6123056, -1.3633935, 0.27951187, 1.3060852, 0.9691055, -0.89983106, 0.9526141, -0.7564913]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:17:07]: Optimized for alpha: 0.1 took:2 hours, 5 minutes and 13 seconds. steps: [4050/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:18:17]: Learned parameters value at step 4100: [0.19869134, -0.6649839, 2.127653, 0.8982596, 0.03242215, 0.29880565, -0.61092484, -1.3652878, 0.27665493, 1.3093709, 0.9688304, -0.8988884, 0.9551585, -0.75648266]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:18:17]: Optimized for alpha: 0.1 took:2 hours, 6 minutes and 24 seconds. steps: [4100/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:19:22]: Learned parameters value at step 4150: [0.1928852, -0.6688576, 2.12912, 0.89291143, 0.027636122, 0.29445517, -0.6092049, -1.3670788, 0.27735046, 1.3142357, 0.96767086, -0.8977748, 0.95369583, -0.7648981]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:19:22]: Optimized for alpha: 0.1 took:2 hours, 7 minutes and 28 seconds. steps: [4150/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:20:30]: Learned parameters value at step 4200: [0.19353966, -0.6662218, 2.1302059, 0.8939005, 0.022542961, 0.29794055, -0.6078542, -1.3692307, 0.27360943, 1.3172655, 0.9673543, -0.8973291, 0.954866, -0.7628543]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:20:30]: Optimized for alpha: 0.1 took:2 hours, 8 minutes and 36 seconds. steps: [4200/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:21:37]: Learned parameters value at step 4250: [0.1936298, -0.66428095, 2.1309187, 0.8943695, 0.017000278, 0.29941225, -0.6063794, -1.3714471, 0.2707428, 1.3208869, 0.96649706, -0.89640796, 0.9529479, -0.7638771]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:21:37]: Optimized for alpha: 0.1 took:2 hours, 9 minutes and 43 seconds. steps: [4250/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:22:47]: Learned parameters value at step 4300: [0.19355543, -0.66185373, 2.1326022, 0.8947211, 0.012764955, 0.30314222, -0.60561347, -1.3733652, 0.2676296, 1.3238692, 0.9659015, -0.8958144, 0.9556229, -0.7617136]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:22:47]: Optimized for alpha: 0.1 took:2 hours, 10 minutes and 53 seconds. steps: [4300/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:23:55]: Learned parameters value at step 4350: [0.19118439, -0.6616249, 2.1342983, 0.89326423, 0.008463353, 0.30280572, -0.6049396, -1.3751913, 0.2665428, 1.3277334, 0.9645086, -0.8946107, 0.9559208, -0.7644397]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:23:55]: Optimized for alpha: 0.1 took:2 hours, 12 minutes and 1 seconds. steps: [4350/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:25:03]: Learned parameters value at step 4400: [0.19000968, -0.66018945, 2.1359637, 0.8923998, 0.0042177886, 0.30383334, -0.60449296, -1.3771169, 0.2648036, 1.3313233, 0.96306473, -0.89372176, 0.9564593, -0.7656597]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:25:03]: Optimized for alpha: 0.1 took:2 hours, 13 minutes and 9 seconds. steps: [4400/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:26:12]: Learned parameters value at step 4450: [0.19073683, -0.6568007, 2.1372147, 0.89295983, -0.00068694516, 0.30588436, -0.6042673, -1.3792515, 0.26201963, 1.3346732, 0.96133727, -0.89293927, 0.95533997, -0.7652428]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:26:12]: Optimized for alpha: 0.1 took:2 hours, 14 minutes and 18 seconds. steps: [4450/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:27:14]: Learned parameters value at step 4500: [0.18751797, -0.6563877, 2.1388013, 0.8884156, -0.005975291, 0.30175993, -0.6044373, -1.3811731, 0.2622966, 1.3391125, 0.9584898, -0.8924765, 0.9511671, -0.7709592]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:27:14]: Optimized for alpha: 0.1 took:2 hours, 15 minutes and 20 seconds. steps: [4500/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:28:26]: Learned parameters value at step 4550: [0.18850534, -0.6516393, 2.1416078, 0.8897592, -0.009087104, 0.3071106, -0.6045772, -1.382868, 0.2589291, 1.3414637, 0.958024, -0.8918786, 0.956134, -0.76536345]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:28:26]: Optimized for alpha: 0.1 took:2 hours, 16 minutes and 33 seconds. steps: [4550/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:29:34]: Learned parameters value at step 4600: [0.18603757, -0.650758, 2.1440651, 0.88887084, -0.012756987, 0.30580494, -0.60518616, -1.3845347, 0.25879133, 1.3453693, 0.95560545, -0.8901135, 0.9563894, -0.7687283]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:29:34]: Optimized for alpha: 0.1 took:2 hours, 17 minutes and 41 seconds. steps: [4600/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:30:42]: Learned parameters value at step 4650: [0.18537682, -0.6481308, 2.1464462, 0.8879972, -0.016442912, 0.30682927, -0.606061, -1.3864056, 0.25750706, 1.3488342, 0.95320463, -0.8893102, 0.9569502, -0.7697705]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:30:42]: Optimized for alpha: 0.1 took:2 hours, 18 minutes and 48 seconds. steps: [4650/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:31:50]: Learned parameters value at step 4700: [0.18475617, -0.6451311, 2.1490479, 0.88712674, -0.020087995, 0.30777824, -0.60721236, -1.388239, 0.2563056, 1.3522311, 0.9506795, -0.88852954, 0.9575444, -0.7705292]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:31:50]: Optimized for alpha: 0.1 took:2 hours, 19 minutes and 56 seconds. steps: [4700/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:32:59]: Learned parameters value at step 4750: [0.18535693, -0.64082175, 2.1514044, 0.88722026, -0.024336694, 0.30915192, -0.6089678, -1.3901895, 0.25446227, 1.3554807, 0.9474741, -0.8877225, 0.9567185, -0.77042836]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:32:59]: Optimized for alpha: 0.1 took:2 hours, 21 minutes and 5 seconds. steps: [4750/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:34:01]: Learned parameters value at step 4800: [0.18352507, -0.6379894, 2.1538136, 0.8834885, -0.02974279, 0.30539113, -0.6118093, -1.3920771, 0.25475717, 1.3594916, 0.9425067, -0.8875476, 0.952116, -0.7747799]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:34:01]: Optimized for alpha: 0.1 took:2 hours, 22 minutes and 8 seconds. steps: [4800/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:35:13]: Learned parameters value at step 4850: [0.18494035, -0.6317805, 2.157948, 0.88493115, -0.031995818, 0.31100637, -0.61300683, -1.3935777, 0.25183526, 1.3615553, 0.9418668, -0.88686967, 0.957335, -0.76873755]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:35:13]: Optimized for alpha: 0.1 took:2 hours, 23 minutes and 20 seconds. steps: [4850/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:36:23]: Learned parameters value at step 4900: [0.18317631, -0.6291296, 2.1615527, 0.8846786, -0.03525848, 0.3099162, -0.6153342, -1.3950872, 0.25203276, 1.3651029, 0.938521, -0.8849984, 0.9578939, -0.7712698]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:36:23]: Optimized for alpha: 0.1 took:2 hours, 24 minutes and 29 seconds. steps: [4900/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:37:26]: Learned parameters value at step 4950: [0.1809745, -0.62663966, 2.16451, 0.8806037, -0.040211003, 0.30548817, -0.61927456, -1.3969519, 0.25313094, 1.3691918, 0.9326496, -0.88490874, 0.95413035, -0.7768762]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:37:26]: Optimized for alpha: 0.1 took:2 hours, 25 minutes and 32 seconds. steps: [4950/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:38:36]: Learned parameters value at step 5000: [0.18202026, -0.6208087, 2.168736, 0.88119227, -0.042841554, 0.3091772, -0.621732, -1.3985265, 0.25119123, 1.3716381, 0.9304105, -0.8842475, 0.9571353, -0.77381694]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:38:36]: Optimized for alpha: 0.1 took:2 hours, 26 minutes and 42 seconds. steps: [5000/5000]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:38:36]: _execute_for_one_alpha, took: 2 hours, 26 minutes and 42 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 20:38:36]: Optimized for alpha: 0.1 parameters: [0.18202026, -0.6208087, 2.168736, 0.88119227, -0.042841554, 0.3091772, -0.621732, -1.3985265, 0.25119123, 1.3716381, 0.9304105, -0.8842475, 0.9571353, -0.77381694] p_succ: [0.55327487]
+[CSD] 0.0.1|DEBUG|2021-11-05 20:38:36]: execute, took: 2 hours, 26 minutes and 42 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 20:38:36]: launch_execution, took: 2 hours, 26 minutes and 42 seconds.
+[CSD] 0.0.1|DEBUG|2021-11-05 20:38:37]: _general_execution, took: 2 hours, 26 minutes and 43 seconds.
