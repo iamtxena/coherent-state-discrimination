@@ -1,1 +1,2 @@
 alpha,success_probability,number_modes,time_in_seconds,distance_to_homodyne_probability,bit_error_rate,squeezing,number_ancillas
+0.225,0.8455638885498047,1,0.8964293003082275,0.17191910883772477,0.1544361114501953,False,0
