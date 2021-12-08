@@ -274,14 +274,14 @@ if __name__ == '__main__':
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     # alphas.pop(5)
     # one_alpha = alphas[5]
-    alphas = alphas[1:5]
+    # alphas = alphas[1:5]
     # alphas = [0.1]
 
     # list_number_input_modes = list(range(6, 11))
-    list_number_input_modes = [4, 5]
+    list_number_input_modes = [4]
     for number_input_modes in list_number_input_modes:
 
-        learning_steps = LearningSteps(default=100,
+        learning_steps = LearningSteps(default=300,
                                        high=500,
                                        extreme=60)
         learning_rate = LearningRate(default=0.1,
