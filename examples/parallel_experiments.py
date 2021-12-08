@@ -275,19 +275,19 @@ if __name__ == '__main__':
     # alphas.pop(5)
     # one_alpha = alphas[5]
     # alphas = [one_alpha]
-    # alphas = [alphas[5]]
+    # alphas = [0.1]
 
     # list_number_input_modes = list(range(6, 11))
     list_number_input_modes = [1]
     for number_input_modes in list_number_input_modes:
 
-        learning_steps = LearningSteps(default=50,
+        learning_steps = LearningSteps(default=60,
                                        high=100,
                                        extreme=1000)
         learning_rate = LearningRate(default=0.1,
                                      high=0.01,
                                      extreme=0.1)
-        cutoff_dim = CutOffDimensions(default=7,
+        cutoff_dim = CutOffDimensions(default=10,
                                       high=15,
                                       extreme=30)
 

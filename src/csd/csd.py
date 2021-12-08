@@ -2,10 +2,10 @@ from abc import ABC
 from csd.circuit import Circuit
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
-from csd.optimization_testing import OptimizationTesting
+# from csd.optimization_testing import OptimizationTesting
 from csd.tf_engine import TFEngine
 from csd.typings.global_result import GlobalResult
-from csd.typings.optimization_testing import OptimizationTestingOptions
+# from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (Backends,
                                 CSDConfiguration,
                                 CutOffDimensions,
@@ -165,7 +165,7 @@ class CSD(ABC):
 
         self._run_configuration = configuration.copy()
         self._training_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
-        self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
+        # self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
         result = self._init_result()
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
@@ -191,8 +191,8 @@ class CSD(ABC):
                         random_words: bool):
         if self._training_circuit is None:
             raise ValueError("Training circuit must be initialized")
-        if self._testing_circuit is None:
-            raise ValueError("Testing circuit must be initialized")
+        # if self._testing_circuit is None:
+        #     raise ValueError("Testing circuit must be initialized")
 
         start_time = time()
         for sample_alpha in self._alphas:
@@ -227,26 +227,26 @@ class CSD(ABC):
 
         return result
 
-    def _test_for_one_alpha(self, optimized_parameters: List[float]) -> EagerTensor:
-        if self._testing_circuit is None:
-            raise ValueError("Circuit must be initialized")
-        if self._run_configuration is None:
-            raise ValueError("Run configuration not specified")
-        if self._current_batch is None:
-            raise ValueError("Current Batch must be initialized")
-        # list_optimized_parameters = [one_parameter.numpy() for one_parameter in optimized_parameters]
-        # optimized_parameters = [-self._alpha_value]
-        logger.debug(
-            f'Going to train with the optimized parameters: {optimized_parameters}')
+    # def _test_for_one_alpha(self, optimized_parameters: List[float]) -> EagerTensor:
+    #     if self._testing_circuit is None:
+    #         raise ValueError("Circuit must be initialized")
+    #     if self._run_configuration is None:
+    #         raise ValueError("Run configuration not specified")
+    #     if self._current_batch is None:
+    #         raise ValueError("Current Batch must be initialized")
+    #     # list_optimized_parameters = [one_parameter.numpy() for one_parameter in optimized_parameters]
+    #     # optimized_parameters = [-self._alpha_value]
+    #     logger.debug(
+    #         f'Going to train with the optimized parameters: {optimized_parameters}')
 
-        return OptimizationTesting(batch=self._current_batch,
-                                   params=optimized_parameters,
-                                   options=OptimizationTestingOptions(
-                                       engine=self._engine,
-                                       circuit=self._testing_circuit,
-                                       backend_name=self._engine.backend_name,
-                                       shots=self._shots,
-                                       plays=self._plays)).run_and_compute_average_batch_success_probability()
+    #     return OptimizationTesting(batch=self._current_batch,
+    #                                params=optimized_parameters,
+    #                                options=OptimizationTestingOptions(
+    #                                    engine=self._engine,
+    #                                    circuit=self._testing_circuit,
+    #                                    backend_name=self._engine.backend_name,
+    #                                    shots=self._shots,
+    #                                    plays=self._plays)).run_and_compute_average_batch_success_probability()
 
     def _write_result(self,
                       alpha: float,
@@ -359,7 +359,7 @@ class CSD(ABC):
 
         current_cutoff = self._cutoff_dim.default
 
-        if self._alpha_value > 0.6:
+        if self._alpha_value > 1.0:
             current_cutoff = self._cutoff_dim.high
         if self._alpha_value > 1.2:
             current_cutoff = self._cutoff_dim.extreme

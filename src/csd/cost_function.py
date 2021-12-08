@@ -11,7 +11,6 @@ from csd.typings.typing import (Backends, CodeWordSuccessProbability,
                                 EngineRunOptions, RunningTypes, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
 # from csd.config import logger
-# import tensorflow as tf
 
 
 class CostFunction(ABC):
@@ -67,28 +66,3 @@ class CostFunction(ABC):
             codeword_guesses=self._run_and_get_codeword_guesses())
             for _ in range(self._options.plays)]
         ) / self._options.plays
-        # loss = 1 - self._compute_one_play_average_batch_success_probability(
-        #     codeword_guesses=self._run_and_get_codeword_guesses())
-        # if type(loss) == EagerTensor:
-        #     numpy_loss = loss.numpy()
-        #     # logger.debug(f'numpy_loss: {numpy_loss}')
-        #     # first_elem_loss = numpy_loss[0]
-        #     # logger.debug(f'first_elem_loss: {first_elem_loss}, type: {type(first_elem_loss)}')
-        #     return numpy_loss
-        # # logger.debug(f'loss: {loss}')
-        # return loss
-
-        # if not isinstance(self._options.engine, TFEngine):
-        #     raise ValueError("TF Backend can only run on TFEngine.")
-
-        # batch_error_probability = self._options.engine.run_tf_circuit_sampling(
-        #     circuit=self._options.circuit,
-        #     options=TFEngineRunOptions(
-        #         params=self._params,
-        #         input_batch=self._input_batch,
-        #         output_batch=self._output_batch,
-        #         shots=self._options.shots,
-        #         measuring_type=self._options.measuring_type,
-        #         running_type=RunningTypes.TRAINING))
-        # logger.debug(f'Batch Mean error: {batch_error_probability}')
-        # return batch_error_probability
