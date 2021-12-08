@@ -64,6 +64,7 @@ class TFOptimizer(ABC):
     def _update_tf_board_metrics(self, step: int) -> None:
         with self._train_summary_writer.as_default():
             tf.summary.scalar('loss', self._train_loss.result(), step=step)
+            tf.summary.scalar('avg.succ', self._train_succ.result(), step=step)
             for train_param, param_name in zip(self._train_params, self._params_name):
                 tf.summary.scalar(param_name, train_param.result(), step=step)
 
@@ -91,6 +92,7 @@ class TFOptimizer(ABC):
 
         # Define our metrics
         self._train_loss = tfMetrics.Mean('train_loss')
+        self._train_succ = tfMetrics.Mean('train_succ')
         self._train_params = [tfMetrics.Mean(f'train_param_{param_name}',
                                              dtype=tf.float32)
                               for param_name in self._params_name]
@@ -106,6 +108,7 @@ class TFOptimizer(ABC):
         self._opt.apply_gradients(zip(gradients, parameters))
 
         self._train_loss(loss)
+        self._train_succ(1 - loss)
         # logger.debug(f'parameters: {parameters}')
         for train_param, parameter in zip(self._train_params, parameters):
             train_param(parameter)
