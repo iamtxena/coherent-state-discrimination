@@ -5,6 +5,10 @@ import numpy as np
 import strawberryfields as sf
 import tensorflow as tf
 from loguru import logger
+from scipy.optimize import minimize
+from sklearn.linear_model import LinearRegression
+
+from model_wrapper import LinearRegressionWrapper
 
 # Hides info messages from TensorFlow.
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -77,20 +81,6 @@ def generate_nth_layer(layer_number, engine):
     return quantum_layer
 
 
-def build_model(name="predictor"):
-    """
-    Builds a tensorflow model layer by layer utilising the sequential API.
-    """
-    model = tf.keras.Sequential([
-        tf.keras.Input(shape=(NUM_MODES * NUM_VARIABLES + NUM_LAYERS, ), name="input-layer"),
-        tf.keras.layers.Dense(8, activation="relu", name="layer-1"),
-        tf.keras.layers.Dense(8, activation="relu", name="layer-2"),
-        tf.keras.layers.Dense(NUM_MODES * NUM_VARIABLES, activation="sigmoid", name="output-layer")
-    ], name=name)
-
-    return model
-
-
 def generate_random_codeword():
     """
     Generates a random codeword for `NUM_MODES` modes.
@@ -98,13 +88,15 @@ def generate_random_codeword():
     return tf.Variable(np.random.choice([-1, +1], size=NUM_MODES), dtype=tf.float32)
 
 
-@tf.function
-def loss_metric(prediction, target, true_tensor, false_tensor):
+def loss_metric(prediction, target):
     """
     Computes the numerical loss incurred on generating `prediction` instead of
     `target`.
     Both `prediction` and `target` are tensors.
     """
+    true_tensor = np.fill((NUM_MODES), True)
+    false_tensor = np.fill((NUM_MODES), False)
+
     indices_where_input_codeword_was_minus = tf.where(target == -1, true_tensor, false_tensor)
     indices_where_measurement_is_not_positive = tf.where(prediction <= 0, true_tensor, false_tensor)
 
@@ -121,9 +113,10 @@ def loss_metric(prediction, target, true_tensor, false_tensor):
         indices_where_measurement_is_not_negative
     )
 
-    combined_indices = tf.logical_and(combined_indices_1, combined_indices_2)
+    combined_indices = tf.logical_or(combined_indices_1, combined_indices_2)
+    sum_of_combined_indices = tf.reduce_sum(tf.cast(combined_indices, tf.float32))
 
-    return tf.reduce_sum(tf.cast(combined_indices, tf.float32))
+    return sum_of_combined_indices
 
 
 def step():
@@ -137,52 +130,42 @@ def step():
 
     input_codeword = generate_random_codeword()
 
-    with tf.GradientTape() as tape:
-        loss = tf.Variable(0.0)
+    loss = 0
 
-        for nth_layer in range(NUM_LAYERS):
-            one_hot_layer_vector = tf.one_hot(nth_layer, NUM_LAYERS)
+    for nth_layer in range(NUM_LAYERS):
+        one_hot_layer_vector = np.one_hot(nth_layer, NUM_LAYERS)
 
-            input_vector = tf.concat([previous_predictions, one_hot_layer_vector], 0)
-            input_vector = tf.expand_dims(input_vector, 0)
+        input_vector = np.concat([previous_predictions, one_hot_layer_vector], 0)
+        input_vector = np.expand_dims(input_vector, 0)
 
-            logger.debug(f"{input_vector =}")
+        logger.debug(f"{input_vector =}")
 
-            predicted_displacements = model(input_vector)
-            squeezed_predicted_displacements = tf.squeeze(predicted_displacements)
+        predicted_displacements = model(input_vector)
+        squeezed_predicted_displacements = np.squeeze(predicted_displacements)
 
-            measurement_of_nth_layer = layers[nth_layer](
-                input_codeword,
-                2 * SIGNAL_AMPLITUDE * squeezed_predicted_displacements)
+        measurement_of_nth_layer = layers[nth_layer](
+            input_codeword,
+            2 * SIGNAL_AMPLITUDE * squeezed_predicted_displacements)
 
-            logger.debug(f"{measurement_of_nth_layer.samples = }")
+        logger.debug(f"{measurement_of_nth_layer.samples = }")
 
-            true_tensor = tf.fill((NUM_MODES), True)
-            false_tensor = tf.fill((NUM_MODES), False)
+        loss += loss_metric(
+            measurement_of_nth_layer.samples,
+            input_codeword
+            ) / NUM_MODES
 
-            loss.assign_add(
-                loss_metric(
-                    measurement_of_nth_layer.samples,
-                    input_codeword,
-                    true_tensor,
-                    false_tensor
-                ) / NUM_MODES
-            )
+        previous_predictions = squeezed_predicted_displacements
 
-            previous_predictions = squeezed_predicted_displacements
-
-        logger.debug(f"Accumulated loss: {loss}")
+    logger.debug(f"Accumulated loss: {loss}")
 
     breakpoint()
-    gradients = tape.gradient(loss, model.trainable_variables)
-    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
 
 if __name__ == '__main__':
     # ML model to predict the displacement magnitude for each of the layers of
     # the Dolinar receiver.
     logger.info("Building model.")
-    model = build_model(f"predictor-l-{NUM_LAYERS}-alpha-{SIGNAL_AMPLITUDE}-modes-{NUM_MODES}")
+    model = LinearRegressionWrapper()
     logger.info("Done.")
 
     # Layers of the Dolinar receiver.
