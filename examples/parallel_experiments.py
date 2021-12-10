@@ -278,47 +278,50 @@ if __name__ == '__main__':
     # alphas = [0.1]
 
     # list_number_input_modes = list(range(6, 11))
-    list_number_input_modes = [4]
+    list_number_input_modes = [3]
+    list_squeezing = [False, True]
+    one_ancilla = 1
     for number_input_modes in list_number_input_modes:
+        for sqeezing_option in list_squeezing:
 
-        learning_steps = LearningSteps(default=300,
-                                       high=500,
-                                       extreme=60)
-        learning_rate = LearningRate(default=0.1,
-                                     high=0.01,
-                                     extreme=0.01)
-        cutoff_dim = CutOffDimensions(default=10,
-                                      high=15,
-                                      extreme=15)
+            learning_steps = LearningSteps(default=300,
+                                           high=500,
+                                           extreme=60)
+            learning_rate = LearningRate(default=0.1,
+                                         high=0.01,
+                                         extreme=0.01)
+            cutoff_dim = CutOffDimensions(default=10,
+                                          high=10,
+                                          extreme=15)
 
-        number_ancillas = 0
-        squeezing = True
+            number_ancillas = one_ancilla
+            squeezing = sqeezing_option
 
-        batch_size = 2**number_input_modes
-        shots = 100
-        plays = 1
-        number_layers = 1
+            batch_size = 2**number_input_modes
+            shots = 100
+            plays = 1
+            number_layers = 1
 
-        number_alphas = len(alphas)
+            number_alphas = len(alphas)
 
-        print(f'number alphas: {number_alphas}')
-        # seconds_to_sleep = 2 * 60 * 60
-        # print(f'going to sleep for {seconds_to_sleep}')
-        # sleep(seconds_to_sleep)
+            print(f'number alphas: {number_alphas}')
+            # seconds_to_sleep = 2 * 60 * 60
+            # print(f'going to sleep for {seconds_to_sleep}')
+            # sleep(seconds_to_sleep)
 
-        multiprocess_configuration = MultiProcessConfiguration(
-            alphas=alphas,
-            learning_steps=[learning_steps] * number_alphas,
-            learning_rate=[learning_rate] * number_alphas,
-            batch_size=[batch_size] * number_alphas,
-            shots=[shots] * number_alphas,
-            plays=[plays] * number_alphas,
-            cutoff_dim=[cutoff_dim] * number_alphas,
-            number_input_modes=[number_input_modes] * number_alphas,
-            number_layers=[number_layers] * number_alphas,
-            squeezing=[squeezing] * number_alphas,
-            number_ancillas=[number_ancillas] * number_alphas
-        )
+            multiprocess_configuration = MultiProcessConfiguration(
+                alphas=alphas,
+                learning_steps=[learning_steps] * number_alphas,
+                learning_rate=[learning_rate] * number_alphas,
+                batch_size=[batch_size] * number_alphas,
+                shots=[shots] * number_alphas,
+                plays=[plays] * number_alphas,
+                cutoff_dim=[cutoff_dim] * number_alphas,
+                number_input_modes=[number_input_modes] * number_alphas,
+                number_layers=[number_layers] * number_alphas,
+                squeezing=[squeezing] * number_alphas,
+                number_ancillas=[number_ancillas] * number_alphas
+            )
 
-    multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
-    # multi_fock_backend(multiprocess_configuration=multiprocess_configuration)
+        multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
+        # multi_fock_backend(multiprocess_configuration=multiprocess_configuration)

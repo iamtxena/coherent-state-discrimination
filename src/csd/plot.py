@@ -106,7 +106,7 @@ class Plot(ABC):
             ax.patch.set_facecolor('silver')
             # ax.patch.set_alpha(0.7)
         plt.subplots_adjust(hspace=0.4)
-        fig.patch.set_facecolor('grey')
+        fig.patch.set_facecolor('lightgrey')
         # fig.patch.set_alpha(0.7)
         suffix = "_probs_all" if not apply_log else "_logs_probs_all"
         self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
@@ -217,7 +217,7 @@ class Plot(ABC):
                  f"Success Probability decreasing rate for $\\alpha$={np.round(one_alpha, 2)}")
         # fig, axes = plt.subplots(figsize=[10, 8])
         # plt.title(title, fontsize=20)
-        # fig.patch.set_facecolor('grey')
+        # fig.patch.set_facecolor('lightgrey')
         # fig.patch.set_alpha(0.7)
         # axes.patch.set_facecolor('silver')
         # axes.patch.set_alpha(0.7)
@@ -307,9 +307,9 @@ class Plot(ABC):
 
         plt.legend(fancybox=True, bbox_to_anchor=(-0.3, 1.01), loc='upper left',
                    ncol=1, facecolor='silver', framealpha=0.7, fontsize='small')
-        fig.patch.set_facecolor('grey')
+        fig.patch.set_facecolor('lightgrey')
         # fig.patch.set_alpha(0.1)
-        axes.patch.set_facecolor('grey')
+        axes.patch.set_facecolor('lightgrey')
         # axes.patch.set_alpha(0.1)
         if xtics is not None:
             axes.set_xticks(xtics)
