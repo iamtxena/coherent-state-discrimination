@@ -4,14 +4,10 @@ import time
 from tqdm import tqdm
 import numpy as np
 import strawberryfields as sf
-import tensorflow as tf
 from loguru import logger
 from scipy.optimize import minimize
 
 from model_wrapper import LinearRegressionWrapper
-
-# Hides info messages from TensorFlow.
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # Number of layers of the Dolinar receiver. Selecting 4 as the most basic,
 # non-trivial case.
