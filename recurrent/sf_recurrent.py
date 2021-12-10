@@ -1,11 +1,10 @@
-import os
 import time
 
-from tqdm import tqdm
 import numpy as np
 import strawberryfields as sf
 from loguru import logger
 from scipy.optimize import minimize
+from tqdm import tqdm
 
 from model_wrapper import LinearRegressionWrapper
 
