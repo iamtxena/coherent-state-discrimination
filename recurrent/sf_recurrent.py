@@ -146,7 +146,7 @@ def train():
     Runs a single step of optimization for a single value of alpha across all
     layers of the Dolinar receiver.
     """
-    global model, optimizer, previous_predictions
+    global model, previous_predictions
 
     previous_predictions = np.random.normal(size=NUM_MODES * NUM_VARIABLES)
 
