@@ -1,12 +1,12 @@
 import os
 import time
 
+from tqdm import tqdm
 import numpy as np
 import strawberryfields as sf
 import tensorflow as tf
 from loguru import logger
 from scipy.optimize import minimize
-from sklearn.linear_model import LinearRegression
 
 from model_wrapper import LinearRegressionWrapper
 
@@ -30,8 +30,12 @@ SIGNAL_AMPLITUDE = 1.0
 ENGINE = sf.Engine("tf", backend_options={"cutoff_dim": 6})
 
 # Number of iterations to train for.
-NUM_ITERATIONS = 1000
+NUM_TRAINING_ITERATIONS = 500
+MAX_ITERATIONS = 20
 
+# Input and output sizes.
+INPUT_VECTOR_SIZE = NUM_MODES * NUM_VARIABLES + NUM_LAYERS
+OUTPUT_VECTOR_SIZE = NUM_MODES * NUM_VARIABLES
 
 def generate_nth_layer(layer_number, engine):
     """Generates the nth layer of the Dolinar receiver.
@@ -47,8 +51,8 @@ def generate_nth_layer(layer_number, engine):
     amplitudes =  np.ones(NUM_LAYERS) * (SIGNAL_AMPLITUDE / NUM_LAYERS)
 
     def quantum_layer(input_codeword, displacement_magnitudes_for_each_mode):
-        logger.debug(f"{input_codeword =}")
-        logger.debug(f"{displacement_magnitudes_for_each_mode =}")
+        # logger.debug(f"{input_codeword =}")
+        # logger.debug(f"{displacement_magnitudes_for_each_mode =}")
 
         program = sf.Program(NUM_MODES)
 
@@ -85,7 +89,7 @@ def generate_random_codeword():
     """
     Generates a random codeword for `NUM_MODES` modes.
     """
-    return tf.Variable(np.random.choice([-1, +1], size=NUM_MODES), dtype=tf.float32)
+    return np.random.choice([-1, +1], size=NUM_MODES)
 
 
 def loss_metric(prediction, target):
@@ -94,78 +98,90 @@ def loss_metric(prediction, target):
     `target`.
     Both `prediction` and `target` are tensors.
     """
-    true_tensor = np.fill((NUM_MODES), True)
-    false_tensor = np.fill((NUM_MODES), False)
+    true_tensor = np.ones((NUM_MODES))
+    false_tensor = np.zeros((NUM_MODES))
 
-    indices_where_input_codeword_was_minus = tf.where(target == -1, true_tensor, false_tensor)
-    indices_where_measurement_is_not_positive = tf.where(prediction <= 0, true_tensor, false_tensor)
+    indices_where_input_codeword_was_minus = np.where(target == -1, true_tensor, false_tensor)
+    indices_where_measurement_is_not_positive = np.where(prediction <= 0, true_tensor, false_tensor)
 
-    indices_where_input_codeword_was_plus = tf.where(target == +1, true_tensor, false_tensor)
-    indices_where_measurement_is_not_negative = tf.where(prediction >= 0, true_tensor, false_tensor)
+    indices_where_input_codeword_was_plus = np.where(target == +1, true_tensor, false_tensor)
+    indices_where_measurement_is_not_negative = np.where(prediction >= 0, true_tensor, false_tensor)
 
-    combined_indices_1 = tf.logical_and(
+    combined_indices_1 = np.logical_and(
         indices_where_input_codeword_was_minus,
         indices_where_measurement_is_not_positive
     )
 
-    combined_indices_2 = tf.logical_and(
+    combined_indices_2 = np.logical_and(
         indices_where_input_codeword_was_plus,
         indices_where_measurement_is_not_negative
     )
 
-    combined_indices = tf.logical_or(combined_indices_1, combined_indices_2)
-    sum_of_combined_indices = tf.reduce_sum(tf.cast(combined_indices, tf.float32))
+    combined_indices = np.logical_or(combined_indices_1, combined_indices_2)
+    sum_of_combined_indices = np.sum(np.sum(combined_indices))
 
-    return sum_of_combined_indices
+    return sum_of_combined_indices / NUM_MODES
 
+def training_error(weights, target, input_vector, layer_number):
+    global model, layers, previous_predictions
 
-def step():
+    model.set_learnable_parameteres_from_flattended_list(weights)
+    predicted_displacements = model(input_vector)
+
+    measurement_of_nth_layer = layers[layer_number](
+        target,
+        2 * SIGNAL_AMPLITUDE * predicted_displacements)
+
+    prediction = measurement_of_nth_layer.samples.numpy()[0]
+    previous_predictions = prediction
+    # logger.debug(f"{prediction = }, {target = }")
+
+    error = loss_metric(prediction, target)
+    # logger.debug(f"{error = }")
+
+    return error
+
+def train():
     """
     Runs a single step of optimization for a single value of alpha across all
     layers of the Dolinar receiver.
     """
-    global model, layers, optimizer
+    global model, optimizer, previous_predictions
 
-    previous_predictions = tf.random.normal([NUM_MODES * NUM_VARIABLES])
+    previous_predictions = np.random.normal(size=NUM_MODES * NUM_VARIABLES)
 
     input_codeword = generate_random_codeword()
 
-    loss = 0
-
     for nth_layer in range(NUM_LAYERS):
-        one_hot_layer_vector = np.one_hot(nth_layer, NUM_LAYERS)
+        # logger.debug(f"Optimising for layer {nth_layer + 1} of {NUM_LAYERS}")
 
-        input_vector = np.concat([previous_predictions, one_hot_layer_vector], 0)
+        one_hot_layer_vector = np.zeros(NUM_LAYERS)
+        one_hot_layer_vector[nth_layer] = 1
+
+        input_vector = np.concatenate([previous_predictions, one_hot_layer_vector])
         input_vector = np.expand_dims(input_vector, 0)
 
-        logger.debug(f"{input_vector =}")
+        result = minimize(
+            training_error,
+            model.get_learnable_parameters_as_flattened_list(),
+            (
+                input_codeword,
+                input_vector,
+                nth_layer
+            ),
+            options={'maxiter': MAX_ITERATIONS}
+        )
 
-        predicted_displacements = model(input_vector)
-        squeezed_predicted_displacements = np.squeeze(predicted_displacements)
-
-        measurement_of_nth_layer = layers[nth_layer](
-            input_codeword,
-            2 * SIGNAL_AMPLITUDE * squeezed_predicted_displacements)
-
-        logger.debug(f"{measurement_of_nth_layer.samples = }")
-
-        loss += loss_metric(
-            measurement_of_nth_layer.samples,
-            input_codeword
-            ) / NUM_MODES
-
-        previous_predictions = squeezed_predicted_displacements
-
-    logger.debug(f"Accumulated loss: {loss}")
-
-    breakpoint()
-
+        model.set_learnable_parameteres_from_flattended_list(result.x)
 
 if __name__ == '__main__':
     # ML model to predict the displacement magnitude for each of the layers of
     # the Dolinar receiver.
     logger.info("Building model.")
-    model = LinearRegressionWrapper()
+    model = LinearRegressionWrapper(
+        input_size=INPUT_VECTOR_SIZE,
+        output_size=OUTPUT_VECTOR_SIZE
+    )
     logger.info("Done.")
 
     # Layers of the Dolinar receiver.
@@ -173,13 +189,13 @@ if __name__ == '__main__':
     layers = [generate_nth_layer(n, ENGINE) for n in range(NUM_LAYERS)]
     logger.info("Done.")
 
-    # Using the Adam optimizer.
-    optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    # Global tracker.
+    previous_predictions = None
 
     # Training loop.
-    for _ in range(NUM_ITERATIONS):
-        start = time.time()
-        step()
-        end = time.time()
-        elapsed = (end - start) / 60.0
-        print(f"Step took {elapsed} seconds.")
+    start = time.time()
+    for _ in tqdm(range(NUM_TRAINING_ITERATIONS)):
+        train()
+    end = time.time()
+    elapsed = (end - start) / 60.0
+    print(f"Step took {elapsed} seconds.")
