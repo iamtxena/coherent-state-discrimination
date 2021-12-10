@@ -27,7 +27,7 @@ NUM_VARIABLES = 1
 SIGNAL_AMPLITUDE = 1.0
 
 # Fock backend.
-ENGINE = sf.Engine("tf", backend_options={"cutoff_dim": 6})
+ENGINE = sf.Engine("fock", backend_options={"cutoff_dim": 6})
 
 # Number of iterations to train for.
 NUM_TRAINING_ITERATIONS = 500
@@ -132,7 +132,7 @@ def training_error(weights, target, input_vector, layer_number):
         target,
         2 * SIGNAL_AMPLITUDE * predicted_displacements)
 
-    prediction = measurement_of_nth_layer.samples.numpy()[0]
+    prediction = measurement_of_nth_layer.samples[0]
     previous_predictions = prediction
     # logger.debug(f"{prediction = }, {target = }")
 
@@ -193,9 +193,10 @@ if __name__ == '__main__':
     previous_predictions = None
 
     # Training loop.
+    logger.info("Begin training.")
     start = time.time()
     for _ in tqdm(range(NUM_TRAINING_ITERATIONS)):
         train()
     end = time.time()
     elapsed = (end - start) / 60.0
-    print(f"Step took {elapsed} seconds.")
+    print(f"Training took {elapsed} seconds.")
