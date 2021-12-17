@@ -43,11 +43,16 @@ class LinearRegressionWrapper(_ModelWrapper):
     def set_learnable_parameteres_from_flattended_list(self, list_of_weights):
         assert len(list_of_weights) == self.serialized_length
 
-        self.model.coef_ = list_of_weights[:self.input_size * self.output_size].reshape(
+        coef = list_of_weights[:self.input_size * self.output_size].reshape(
             (self.output_size, self.input_size)
         )
+        intercept = list_of_weights[self.input_size * self.output_size: ]
 
-        self.model.intercept_ = list_of_weights[self.input_size * self.output_size: ]
+        self.model.coef_ = coef
+        assert np.allclose(self.model.coef_, coef)
+
+        self.model.intercept_ = intercept
+        assert np.allclose(self.model.intercept_, intercept)
 
         # logger.debug(f"{self.model.coef_.shape = }")
         # logger.debug(f"{self.model.intercept_.shape = }")

@@ -1,0 +1,11 @@
+{
+    "python.pythonPath": "/Users/Sayan/.pyenv/versions/3.9.7/bin/python",
+    "cSpell.words": [
+        "accs",
+        "Dgate",
+        "Fock",
+        "loguru",
+        "progs"
+    ],
+    "cmake.configureOnOpen": false
+}
