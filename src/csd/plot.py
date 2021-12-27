@@ -327,9 +327,10 @@ class Plot(ABC):
         return self._show_or_save_plot(save_plot, suffix, fig)
 
     def _set_interactive_labels_success_prob(self, plt_lines) -> Tuple[plt.Axes, List[str]]:
-        rax = plt.axes([0.0, 0.65, 0.1, 0.2])
-        labels = ["mode_1", "mode_2", "mode_3", "mode_4", "mode_5",
-                  "Ancillas: 0", "Ancillas: 1", "Squeezing: True", "Squeezing: False"]
+        rax = plt.axes([0.0, 0.5, 0.12, 0.35])
+        labels = ["mode_1", "mode_2", "mode_3", "mode_4", "mode_5", "mode_6",
+                  "Ancillas: 0", "Ancillas: 1", "Ancillas: 2", "Ancillas: 3",
+                  "Squeezing: True", "Squeezing: False"]
 
         [line.set_visible(False) for line in plt_lines if 'mode' in str(
             line.get_label()) or 'pHom' in str(line.get_label()) or 'pHel' in str(line.get_label())]
@@ -338,7 +339,7 @@ class Plot(ABC):
 
     def _set_interactive_labels_specific_alphas(self, plt_lines) -> Tuple[plt.Axes, List[str]]:
         rax = plt.axes([0.02, 0.7, 0.1, 0.2])
-        labels = ["Ancillas: 0", "Ancillas: 1", "Squeezing: True", "Squeezing: False"]
+        labels = ["Ancillas: 0", "Ancillas: 1", "Ancillas: 2", "Ancillas: 3", "Squeezing: True", "Squeezing: False"]
         [line.set_visible(False) for line in plt_lines if 'Squeez' in str(line.get_label())]
 
         return rax, labels
@@ -353,8 +354,10 @@ class Plot(ABC):
     def _interactive_plot(self, label: str, input_check, input_plt_lines, input_labels, specific_alphas) -> None:
 
         label_checks = input_check.get_status()
-        ancilla_0 = label_checks[-4]
-        ancilla_1 = label_checks[-3]
+        ancilla_0 = label_checks[-6]
+        ancilla_1 = label_checks[-5]
+        ancilla_2 = label_checks[-4]
+        ancilla_3 = label_checks[-3]
         squeezing_true = label_checks[-2]
         squeezing_false = label_checks[-1]
 
@@ -362,6 +365,8 @@ class Plot(ABC):
             self._set_line_visibility_for_specific_alphas(input_plt_lines,
                                                           ancilla_0,
                                                           ancilla_1,
+                                                          ancilla_2,
+                                                          ancilla_3,
                                                           squeezing_true,
                                                           squeezing_false)
         if not specific_alphas:
@@ -371,6 +376,8 @@ class Plot(ABC):
                                                 label_checks,
                                                 ancilla_0,
                                                 ancilla_1,
+                                                ancilla_2,
+                                                ancilla_3,
                                                 squeezing_true,
                                                 squeezing_false)
 
@@ -380,6 +387,8 @@ class Plot(ABC):
                                                  input_plt_lines,
                                                  ancilla_0,
                                                  ancilla_1,
+                                                 ancilla_2,
+                                                 ancilla_3,
                                                  squeezing_true,
                                                  squeezing_false):
         for line in input_plt_lines:
@@ -390,9 +399,17 @@ class Plot(ABC):
                 line.set_visible(True)
             if (squeezing_true and 'pSucc Squeez' in line_label and ancilla_1 and 'anc:1' in line_label):
                 line.set_visible(True)
+            if (squeezing_true and 'pSucc Squeez' in line_label and ancilla_2 and 'anc:2' in line_label):
+                line.set_visible(True)
+            if (squeezing_true and 'pSucc Squeez' in line_label and ancilla_3 and 'anc:3' in line_label):
+                line.set_visible(True)
             if (squeezing_false and 'pSucc No Squeez' in line_label and ancilla_0 and 'anc:0' in line_label):
                 line.set_visible(True)
             if (squeezing_false and 'pSucc No Squeez' in line_label and ancilla_1 and 'anc:1' in line_label):
+                line.set_visible(True)
+            if (squeezing_false and 'pSucc No Squeez' in line_label and ancilla_2 and 'anc:2' in line_label):
+                line.set_visible(True)
+            if (squeezing_false and 'pSucc No Squeez' in line_label and ancilla_3 and 'anc:3' in line_label):
                 line.set_visible(True)
 
     def _set_line_visibility_for_probs(self,
@@ -402,6 +419,8 @@ class Plot(ABC):
                                        label_checks,
                                        ancilla_0,
                                        ancilla_1,
+                                       ancilla_2,
+                                       ancilla_3,
                                        squeezing_true,
                                        squeezing_false):
         if 'mode' in label:
@@ -413,11 +432,23 @@ class Plot(ABC):
                 if (squeezing_true and label in line_label and 'squeez:True' in line_label and
                         ancilla_1 and 'anc:1' in line_label):
                     line.set_visible(not line.get_visible())
+                if (squeezing_true and label in line_label and 'squeez:True' in line_label and
+                        ancilla_2 and 'anc:2' in line_label):
+                    line.set_visible(not line.get_visible())
+                if (squeezing_true and label in line_label and 'squeez:True' in line_label and
+                        ancilla_3 and 'anc:3' in line_label):
+                    line.set_visible(not line.get_visible())
                 if (squeezing_false and label in line_label and 'squeez:False' in line_label and
                         ancilla_0 and 'anc:0' in line_label):
                     line.set_visible(not line.get_visible())
                 if (squeezing_false and label in line_label and 'squeez:False' in line_label and
                         ancilla_1 and 'anc:1' in line_label):
+                    line.set_visible(not line.get_visible())
+                if (squeezing_false and label in line_label and 'squeez:False' in line_label and
+                        ancilla_2 and 'anc:2' in line_label):
+                    line.set_visible(not line.get_visible())
+                if (squeezing_false and label in line_label and 'squeez:False' in line_label and
+                        ancilla_3 and 'anc:3' in line_label):
                     line.set_visible(not line.get_visible())
                 self._ideal_prob_visibility(label, line, line_label, 'Hom')
                 self._ideal_prob_visibility(label, line, line_label, 'Hel')
@@ -434,8 +465,21 @@ class Plot(ABC):
                         if (mode_label in line_label and squeez_text in line_label and
                                 ancilla_1 and 'anc:1' in line_label):
                             line.set_visible(not line.get_visible())
+                        if (mode_label in line_label and squeez_text in line_label and
+                                ancilla_2 and 'anc:2' in line_label):
+                            line.set_visible(not line.get_visible())
+                        if (mode_label in line_label and squeez_text in line_label and
+                                ancilla_3 and 'anc:3' in line_label):
+                            line.set_visible(not line.get_visible())
         if 'Ancillas' in label:
-            ancilla_text = 'anc:0' if 'Ancillas: 0' in label else 'anc:1'
+            if 'Ancillas: 0' in label:
+                ancilla_text = 'anc:0'
+            if 'Ancillas: 1' in label:
+                ancilla_text = 'anc:1'
+            if 'Ancillas: 2' in label:
+                ancilla_text = 'anc:2'
+            if 'Ancillas: 3' in label:
+                ancilla_text = 'anc:3'
             for index, label_check in enumerate(label_checks):
                 if label_check and index < 5:
                     mode_label = input_labels[index]
@@ -458,6 +502,8 @@ class Plot(ABC):
         if '_4' in label and ideal_label in line_label and '4' in line_label:
             line.set_visible(not line.get_visible())
         if '_5' in label and ideal_label in line_label and '5' in line_label:
+            line.set_visible(not line.get_visible())
+        if '_6' in label and ideal_label in line_label and '6' in line_label:
             line.set_visible(not line.get_visible())
 
     def distances(self,
