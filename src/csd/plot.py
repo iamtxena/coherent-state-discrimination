@@ -272,7 +272,7 @@ class Plot(ABC):
                     probs_labels.append(one_prob_label)
             probs_labels.append(IdealProbabilities(alphas=self._alphas, number_modes=number_mode).p_homos)
 
-        self._plot_computed_variables(wide=16 if interactive_plot else 15,
+        self._plot_computed_variables(wide=17 if interactive_plot else 15,
                                       lines=self._set_plot_lines(probs_labels=probs_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
@@ -292,9 +292,9 @@ class Plot(ABC):
                                  suffix=None,
                                  xtics: List[int] = None,
                                  specific_alphas: bool = False) -> None:
-        wide = 16 if interactive_plot else 15
+        wide = 17 if interactive_plot else 15
         fig, axes = plt.subplots(figsize=[wide, 8])
-        plt.subplots_adjust(left=0.3)
+        plt.subplots_adjust(left=0.16, right=0.75)
         plt.title(title, fontsize=20)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
@@ -305,8 +305,8 @@ class Plot(ABC):
             plt_line, = axes.plot(line[0], line[1], label=line[2], color=line[3], linestyle=line[4])
             plt_lines.append(plt_line)
 
-        plt.legend(fancybox=True, bbox_to_anchor=(-0.3, 1.01), loc='upper left',
-                   ncol=1, facecolor='silver', framealpha=0.7, fontsize='small')
+        plt.legend(fancybox=True, bbox_to_anchor=(1.43, 1.01), loc='upper right',
+                   ncol=2, facecolor='silver', framealpha=0.7, fontsize='small')
         fig.patch.set_facecolor('lightgrey')
         # fig.patch.set_alpha(0.1)
         axes.patch.set_facecolor('lightgrey')
