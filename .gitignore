@@ -134,3 +134,4 @@ tf*output.txt
 *bak*
 logs*
 examples/results/globals/alphas*
+data/certbot

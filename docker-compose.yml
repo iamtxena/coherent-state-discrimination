@@ -19,6 +19,7 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
       PUBLIC_POSTGRES_DB: ${PUBLIC_POSTGRES_DB}
+      EXTERNAL_PUBLIC_SERVICE_URL: ${EXTERNAL_PUBLIC_SERVICE_URL}
     depends_on:
       - postgres_db
     command: sh -c './scripts/wait-for.sh postgres_db:5432 -t 60 -- flask run'
@@ -60,8 +61,8 @@ services:
     # restart: always
     volumes:
       - ./services/nginx:/etc/nginx/conf.d
-      # - ./data/certbot/conf:/etc/letsencrypt
-      # - ./data/certbot/www:/var/www/certbot
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
     ports:
       - "80:80"
@@ -72,15 +73,15 @@ services:
     networks:
       - chengdu
 
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes:
-  #     - ./data/certbot/conf:/etc/letsencrypt
-  #     - ./data/certbot/www:/var/www/certbot
-  #   entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-  #   networks:
-  #     - chengdu
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - chengdu
 
 networks:
   chengdu:
