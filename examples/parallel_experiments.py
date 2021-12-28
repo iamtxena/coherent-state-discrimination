@@ -278,9 +278,9 @@ if __name__ == '__main__':
     # alphas = [0.1]
 
     # list_number_input_modes = list(range(6, 11))
-    list_number_input_modes = [3]
-    list_squeezing = [False, True]
-    one_ancilla = 1
+    list_number_input_modes = [4, 5]
+    list_squeezing = [True]
+    one_ancilla = 0
     for number_input_modes in list_number_input_modes:
         for sqeezing_option in list_squeezing:
 

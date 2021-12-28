@@ -30,7 +30,8 @@ def plot_computation_times() -> None:
 
 
 def plot_modes_probs(one_alpha: Optional[Union[float, None]] = None, apply_log=False) -> None:
-    GlobalResultManager().plot_modes_probs(one_alpha=one_alpha, save_plot=True, apply_log=apply_log)
+    GlobalResultManager().plot_modes_probs(one_alpha=one_alpha, save_plot=True,
+                                           apply_log=apply_log)
 
 
 if __name__ == '__main__':
@@ -43,10 +44,10 @@ if __name__ == '__main__':
     consolidate_results = True
     # # _consolidate_results()
     load_results(consolidate_results=consolidate_results)
-    plot_probabilities()
-    plot_distances()
-    plot_bit_error_rates()
-    plot_computation_times()
+    # plot_probabilities()
+    # plot_distances()
+    # plot_bit_error_rates()
+    # plot_computation_times()
     # plot_modes_probs(one_alpha=alphas[5])
     # plot_modes_probs(one_alpha=alphas[5], apply_log=True)
     plot_modes_probs()
