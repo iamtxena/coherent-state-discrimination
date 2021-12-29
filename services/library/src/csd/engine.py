@@ -1,7 +1,7 @@
 # engine.py
 from abc import ABC
 import strawberryfields as sf
-from strawberryfields.api import Result
+from strawberryfields.result import Result
 from strawberryfields.backends import BaseState
 from typeguard import typechecked
 from csd.codeword import CodeWord
