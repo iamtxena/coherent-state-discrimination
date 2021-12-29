@@ -135,3 +135,4 @@ tf*output.txt
 logs*
 examples/results/globals/alphas*
 data/certbot
+jupyterdata
