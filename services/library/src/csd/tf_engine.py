@@ -3,7 +3,7 @@ from typing import List
 from csd.batch import Batch
 from csd.codeword import CodeWord
 from .engine import Engine
-from strawberryfields.api import Result
+from strawberryfields.result import Result
 import tensorflow as tf
 from tensorflow.python.framework.ops import EagerTensor
 from csd.typings.typing import (CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions)
