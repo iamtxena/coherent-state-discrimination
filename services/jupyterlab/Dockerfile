@@ -1,4 +1,4 @@
-FROM python:3.9 as ubuntu-miniconda
+FROM python:3.9 as ubuntu-miniconda-cuda
 
 # Leave these args here to better use the Docker build cache
 ARG CONDA_VERSION=py39_4.10.3
@@ -31,6 +31,17 @@ RUN conda install scipy numpy matplotlib sympy
 
 RUN pip install --upgrade pip
 
+RUN apt install pciutils software-properties-common
+WORKDIR /root
+RUN wget https://developer.download.nvidia.com/compute/cuda/11.5.1/local_installers/cuda-repo-debian11-11-5-local_11.5.1-495.29.05-1_amd64.deb && \
+    dpkg -i cuda-repo-debian11-11-5-local_11.5.1-495.29.05-1_amd64.deb && \
+    apt-key add /var/cuda-repo-debian11-11-5-local/7fa2af80.pub && \
+    add-apt-repository contrib && \
+    apt-get update && \
+    apt-get -y install cuda
+RUN export PATH=/usr/local/cuda-11.5/bin${PATH:+:${PATH}} && \
+    export LD_LIBRARY_PATH=/usr/local/cuda-11.5/lib64\
+    ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 
 FROM ubuntu-miniconda as ubuntu-miniconda-jupyterlab
 
