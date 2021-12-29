@@ -9,3 +9,8 @@ toml
 typing-extensions
 pennylane
 pennylane-sf
+ipympl
+tensorflow
+typeguard
+nptyping
+strawberryfields
