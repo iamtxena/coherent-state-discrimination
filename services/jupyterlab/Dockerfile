@@ -8,11 +8,6 @@ RUN apt update
 RUN apt install bash
 RUN apt install git
 RUN apt install curl
-RUN curl -o rsvisa.deb https://scdn.rohde-schwarz.com/ur/pws/dl_downloads/dl_application/application_notes/1dc02___rs_v/rsvisa_5.12.3_amd64.deb
-RUN apt install -f -y ./rsvisa.deb
-#RUN apt install rsvisa
-
-# hadolint ignore=DL3018
 
 RUN curl https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh --output miniconda.sh && \
     bash miniconda.sh -b && \
@@ -57,8 +52,8 @@ COPY jupyter_notebook_config.py jupyter_notebook_config.py
 
 ARG CUSTOM_GITHUB_USER
 ARG CUSTOM_GITHUB_TOKEN
-WORKDIR /anaconda
-RUN cd /anaconda && \
+
+RUN cd /root && \
     git clone https://${CUSTOM_GITHUB_USER}:${CUSTOM_GITHUB_TOKEN}@github.com/iamtxena/coherent-state-discrimination.git && \
     cd coherent-state-discrimination && \
     git checkout using_ddbb && \
