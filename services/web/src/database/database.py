@@ -1,5 +1,6 @@
-from typing import List, Tuple
+from typing import Any, List, Tuple
 from flask_sqlalchemy import Pagination
+from sqlalchemy.orm.exc import NoResultFound
 
 from . import db
 
@@ -36,6 +37,32 @@ def edit_instance(model, id, **kwargs):
     if updated:
         commit_changes()
     return instance, updated
+
+
+def _compare_instance(instance, **kwargs):
+
+    for attr, new_value in kwargs.items():
+        if getattr(instance, attr) != new_value:
+            return None, False
+
+    return instance, True
+
+
+def find_instance(model, **kwargs):
+    instances = model.query.all()
+
+    for instance in instances:
+        instance, found = _compare_instance(instance, kwargs)
+        if found:
+            return instance
+    raise NoResultFound
+
+
+def add_instance_if_not_exist(model, **kwargs) -> Any:
+    try:
+        return find_instance(model, **kwargs)
+    except NoResultFound:
+        return add_instance(model, **kwargs)
 
 
 def commit_changes():
