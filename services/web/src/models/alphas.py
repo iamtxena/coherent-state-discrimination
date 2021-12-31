@@ -4,7 +4,8 @@ from src.database import db
 class Alpha(db.Model):
 
     __tablename__ = 'alphas'
-    alpha = db.Column(db.Float, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    alpha = db.Column(db.Float)
 
 
 def __init__(self,
@@ -15,4 +16,4 @@ def __init__(self,
 def __eq__(self, other) -> bool:
     if not isinstance(other, Alpha):
         return False
-    return (self.alpha == other.alpha)
+    return (self.id == other.id and self.alpha == other.alpha)

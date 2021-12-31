@@ -1,6 +1,6 @@
 from src.database import db
 from src.models.alphas import Alpha
-from src.models.architecture import Architecture
+from src.models.architectures import Architecture
 from src.models.additional_results import AdditionalResult
 
 
