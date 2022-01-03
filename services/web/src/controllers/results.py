@@ -1,6 +1,7 @@
 from abc import ABC
-from typing import Tuple, Union
+from typing import List, Tuple, Union
 import json
+from flask_sqlalchemy import Model
 from src.typings.execution_result import (ExecutionResultInput,
                                           TrainingExecutionResultInput,
                                           TrainingExecutionResult,
@@ -166,8 +167,58 @@ class ResultsController(ABC):
         )
         return alpha, architecture, additional_result
 
+    def get_best_training_execution_results_for_all_alphas(self) -> List[TrainingExecutionResult]:
+        alpha_values = self._get_all_alpha_values()
+        return [self._get_best_execution_result_for_one_alpha(model=TrainingResult, alpha=alpha)
+                for alpha in alpha_values]
+
+    def get_best_testing_execution_results_for_all_alphas(self) -> List[TestingExecutionResult]:
+        alpha_values = self._get_all_alpha_values()
+        return [self._get_best_execution_result_for_one_alpha(model=TestingResult, alpha=alpha)
+                for alpha in alpha_values]
+
     def get_best_training_execution_result_for_one_alpha(self, alpha: float) -> TrainingExecutionResult:
-        return None
+        return self._get_best_execution_result_for_one_alpha(model=TrainingResult, alpha=alpha)
 
     def get_best_testing_execution_result_for_one_alpha(self, alpha: float) -> TestingExecutionResult:
-        return None
+        return self._get_best_execution_result_for_one_alpha(model=TestingResult, alpha=alpha)
+
+    def _get_best_execution_result_for_one_alpha(self,
+                                                 model: Model,
+                                                 alpha: float) -> Union[TrainingResult, TestingResult]:
+        all_matching_alphas: List[Alpha] = Alpha.query.filter(Alpha.alpha == alpha).all()
+        return self._get_best_result_from_list_of_same_alphas(alphas=all_matching_alphas, model=model)
+
+    def _get_all_alpha_values(self) -> List[float]:
+        alphas: List[Alpha] = Alpha.query(Alpha.alpha).group_by(Alpha.alpha).all()
+        return [alpha.alpha for alpha in alphas]
+
+    def _get_distance_to_homodyne_probability_from_alpha_id(
+            self,
+            model: Union[TrainingResult, TestingResult],
+            alpha_id: int) -> Tuple[float, Union[TrainingResult, TestingResult]]:
+        result: Union[TrainingResult, TestingResult] = model.query.filter(model.alpha_id == alpha_id).all()[0]
+        additional_result: AdditionalResult = self._database.get_instance(
+            AdditionalResult, id=result.additional_result_id)
+        return additional_result.distance_to_homodyne_probability, result
+
+    def _get_best_result_from_list_of_same_alphas(
+            self,
+            alphas: List[Alpha],
+            model: Model) -> Union[TrainingResult, TestingResult]:
+        alpha_value = alphas[0].alpha
+        distance_to_homodyne_probability: Union[float, None] = None
+        best_result: Union[TrainingResult, TestingResult, None] = None
+        for alpha in alphas:
+            if alpha.alpha != alpha_value:
+                raise ValueError(f"alpha value {alpha.alpha} MUST be the same as {alpha_value}")
+            current_distance_to_homodyne_probability, result = self._get_distance_to_homodyne_probability_from_alpha_id(
+                model=model,
+                alpha_id=alpha.id)
+            if (distance_to_homodyne_probability is None or
+                    current_distance_to_homodyne_probability < distance_to_homodyne_probability):
+                distance_to_homodyne_probability = current_distance_to_homodyne_probability
+                best_result = result
+        if best_result is None:
+            raise ValueError(f"No result found for this alpha: {alpha_value}")
+        return best_result
