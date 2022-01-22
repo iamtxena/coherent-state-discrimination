@@ -83,7 +83,7 @@ class ResultsController(ABC):
             model=Architecture,
             number_modes=execution_result_input.number_modes,
             squeezing=execution_result_input.squeezing,
-            number_modes=execution_result_input.number_ancillas,
+            number_ancillas=execution_result_input.number_ancillas,
             number_layers=execution_result_input.number_layers
         )
         additional_result: AdditionalResult = self._database.add_instance_if_not_exist(
