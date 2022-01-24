@@ -25,7 +25,7 @@ class CodeBooks():
         return math.floor(math.pow(2, (batch.one_codeword.size * channel_max_communication_rate)))
 
     def _compute_channel_max_communication_rate(self, alpha: float) -> float:
-        x_value = 1 + math.exp(-2 * alpha**2) / 2
+        x_value = (1 + math.exp(-2 * alpha**2)) / 2
         return self._quantum_shannon_entropy(x=x_value)
 
     def _quantum_shannon_entropy(self, x: float) -> float:
