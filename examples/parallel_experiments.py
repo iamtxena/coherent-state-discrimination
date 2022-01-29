@@ -284,13 +284,13 @@ if __name__ == '__main__':
     for number_input_modes in list_number_input_modes:
         for sqeezing_option in list_squeezing:
 
-            learning_steps = LearningSteps(default=300,
-                                           high=500,
-                                           extreme=60)
+            learning_steps = LearningSteps(default=100,
+                                           high=300,
+                                           extreme=500)
             learning_rate = LearningRate(default=0.1,
                                          high=0.01,
                                          extreme=0.01)
-            cutoff_dim = CutOffDimensions(default=10,
+            cutoff_dim = CutOffDimensions(default=7,
                                           high=10,
                                           extreme=15)
 

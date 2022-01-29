@@ -19,6 +19,19 @@ class CodeBooks():
         self._codebook_maximum_size = self._compute_codebook_maximum_size(batch=batch)
         self._codebooks = self._generate_all_random_codebooks_with_specific_size(
             batch=batch, codebook_maximum_size=self._codebook_maximum_size)
+        self._alpha_value = batch.alpha
+
+    @property
+    def codebooks(self) -> List[List[CodeWord]]:
+        return self._codebooks
+
+    @property
+    def size(self) -> int:
+        return len(self._codebooks)
+
+    @property
+    def alpha(self) -> float:
+        return self._alpha_value
 
     def _compute_codebook_maximum_size(self, batch: Batch) -> int:
         channel_max_communication_rate = self._compute_channel_max_communication_rate(alpha=batch.alpha)

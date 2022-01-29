@@ -1,5 +1,6 @@
 from abc import ABC
 from csd.circuit import Circuit
+from csd.codebooks import CodeBooks
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
 # from csd.optimization_testing import OptimizationTesting
@@ -135,12 +136,16 @@ class CSD(ABC):
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
-        if self._current_batch is None:
-            raise ValueError("Current Batch must be initialized")
+        if self._current_codebook is None:
+            raise ValueError("Current Codebook must be initialized")
         if self._engine is None:
             raise ValueError("Engine must be initialized")
 
-        return CostFunction(batch=self._current_batch,
+        return CostFunction(batch=Batch(size=len(self._current_codebook),
+                                        word_size=self._training_circuit.number_modes,
+                                        alpha_value=self._alpha_value,
+                                        all_words=False,
+                                        input_batch=self._current_codebook),
                             params=params,
                             options=CostFunctionOptions(
                                 engine=self._engine,
@@ -199,12 +204,28 @@ class CSD(ABC):
             one_alpha_start_time = time()
             self._alpha_value = sample_alpha
             self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
-            self._engine = self._create_engine()
-            one_alpha_optimization_result = self._train_for_one_alpha()
-            one_alpha_success_probability = None
-            # one_alpha_success_probability = self._test_for_one_alpha(
-            #     optimized_parameters=one_alpha_optimization_result.optimized_parameters)
 
+            average_error_probability_all_codebooks = 0.0
+            codebooks = CodeBooks(batch=self._current_batch)
+
+            for codebook in codebooks.codebooks:
+                self._current_codebook = codebook
+                self._codebook_size = len(codebook)
+                self._engine = self._create_engine()
+                one_codebook_optimization_result = self._train_for_one_alpha_one_codebook()
+                one_alpha_success_probability = None
+                # one_alpha_success_probability = self._test_for_one_alpha(
+                #     optimized_parameters=one_alpha_optimization_result.optimized_parameters)
+                average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
+                logger.debug(
+                    f'Optimized and trained for alpha: {np.round(self._alpha_value, 2)} '
+                    f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_codebook_optimization_result)} '
+                    f"codebook_size:{self._codebook_size}")
+
+            average_error_probability_all_codebooks /= codebooks.size
+            one_alpha_optimization_result = OptimizationResult(
+                optimized_parameters=one_codebook_optimization_result.optimized_parameters,
+                error_probability=average_error_probability_all_codebooks)
             self._update_result(result=result,
                                 one_alpha_optimization_result=one_alpha_optimization_result,
                                 one_alpha_success_probability=one_alpha_success_probability)
@@ -292,12 +313,12 @@ class CSD(ABC):
             save_object_to_disk(obj=result, path='results')
 
     @timing
-    def _train_for_one_alpha(self) -> OptimizationResult:
+    def _train_for_one_alpha_one_codebook(self) -> OptimizationResult:
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
         logger.debug(f'Optimizing for alpha: {np.round(self._alpha_value, 2)} \n'
-                     f"batch_size:{self._batch_size} plays:{self._plays}"
+                     f"codebook_size:{self._codebook_size} plays:{self._plays}"
                      f" modes:{self._training_circuit.number_input_modes}"
                      f" ancillas: {self._training_circuit.number_ancillas} \n "
                      f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
@@ -369,7 +390,7 @@ class CSD(ABC):
                 number_modes=self._training_circuit.number_modes,
                 engine_backend=Backends.TENSORFLOW, options={
                     "cutoff_dim": current_cutoff,
-                    "batch_size": self._batch_size
+                    "batch_size": self._codebook_size if self._codebook_size > 1 else None
                 })
         return Engine(
             number_modes=self._training_circuit.number_modes,

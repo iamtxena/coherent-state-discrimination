@@ -83,13 +83,13 @@ if __name__ == '__main__':
     # alphas = alphas[10:]
 
     learning_steps = LearningSteps(default=100,
-                                   high=100,
+                                   high=300,
                                    extreme=1000)
     learning_rate = LearningRate(default=0.1,
                                  high=0.1,
                                  extreme=0.1)
-    cutoff_dim = CutOffDimensions(default=10,
-                                  high=20,
+    cutoff_dim = CutOffDimensions(default=7,
+                                  high=10,
                                   extreme=30)
 
     number_input_modes = 2
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         },
         'save_results': False,
         'save_plots': True,
-        'parallel_optimization': True
+        'parallel_optimization': False
     }))
     # execute_probabilities_fock_backend(csd=csd)
     # execute_probabilities_gaussian_backend(csd=csd)

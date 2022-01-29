@@ -17,15 +17,21 @@ class Batch():
                  size: int,
                  word_size: int,
                  alpha_value: Optional[float] = DEFAULT_ALPHA_VALUE,
-                 random_words: Optional[bool] = True):
+                 random_words: Optional[bool] = True,
+                 all_words: Optional[bool] = True,
+                 input_batch: Optional[List[CodeWord]] = None):
         self._alpha_value = alpha_value if alpha_value is not None else DEFAULT_ALPHA_VALUE
-        if random_words is None or random_words:
+        if (random_words is None or random_words) and all_words:
             self._batch = self._create_batch_with_random_word(batch_size=size,
                                                               word_size=word_size,
                                                               alpha_value=self._alpha_value)
-        if random_words is not None and not random_words:
+        if random_words is not None and not random_words and all_words:
             self._batch = generate_all_codewords(
                 word_size=word_size, alpha_value=self._alpha_value)
+        if not all_words and input_batch is None:
+            raise ValueError("Input batch must be initialized when all words is False")
+        if not all_words and input_batch is not None:
+            self._batch = input_batch
         self._batch_length = len(self._batch)
 
     def _create_batch_with_random_word(self, batch_size: int, word_size: int, alpha_value: float) -> List[CodeWord]:
