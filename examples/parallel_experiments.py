@@ -291,8 +291,8 @@ if __name__ == '__main__':
                                          high=0.01,
                                          extreme=0.01)
             cutoff_dim = CutOffDimensions(default=7,
-                                          high=10,
-                                          extreme=15)
+                                          high=15,
+                                          extreme=20)
 
             number_ancillas = one_ancilla
             squeezing = sqeezing_option

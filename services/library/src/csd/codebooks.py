@@ -35,7 +35,11 @@ class CodeBooks():
 
     def _compute_codebook_maximum_size(self, batch: Batch) -> int:
         channel_max_communication_rate = self._compute_channel_max_communication_rate(alpha=batch.alpha)
-        return math.floor(math.pow(2, (batch.one_codeword.size * channel_max_communication_rate)))
+        max_size = math.floor(math.pow(2, (batch.one_codeword.size * channel_max_communication_rate)))
+        # !!! TODO: hack to fix the numba and tf error when batch has size 1
+        if max_size == 1:
+            return 2
+        return max_size
 
     def _compute_channel_max_communication_rate(self, alpha: float) -> float:
         x_value = (1 + math.exp(-2 * alpha**2)) / 2
@@ -60,9 +64,16 @@ class CodeBooks():
             for codeword in selected_codebook:
                 index = remaining_codewords.index(codeword)
                 remaining_codewords.pop(index)
-            codebooks.append(selected_codebook)
+            if len(selected_codebook) > 1:
+                codebooks.append(selected_codebook)
+            if len(selected_codebook) == 1:
+                # TODO: fix the bug with numba and tf when batch is equal to 1
+                codebooks.append(remaining_codewords.copy() + remaining_codewords.copy())
 
-        if len(remaining_codewords) > 0:
+        if len(remaining_codewords) > 1:
             codebooks.append(remaining_codewords.copy())
+        if len(remaining_codewords) == 1:
+            # TODO: fix the bug with numba and tf when batch is equal to 1
+            codebooks.append(remaining_codewords.copy() + remaining_codewords.copy())
 
         return codebooks
