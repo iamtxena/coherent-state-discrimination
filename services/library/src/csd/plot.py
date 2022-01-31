@@ -518,7 +518,7 @@ class Plot(ABC):
         for number_mode in number_modes:
             for squeezing_option in squeezing_options:
                 for number_ancilla in number_ancillas:
-                    distances = [global_result.distance_to_homodyne_probability
+                    distances = [global_result.distance_to_helstrom_probability
                                  for global_result in global_results
                                  if (global_result.number_modes == number_mode and
                                      global_result.number_ancillas == number_ancilla and
@@ -531,9 +531,9 @@ class Plot(ABC):
                                       lines=self._set_plot_lines(probs_labels=distances_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
-                                      title="Distance to Homodyne Probability Results",
+                                      title="Distance to Helstrom Probability Results",
                                       xlabel="alpha values",
-                                      ylabel='Distance to Homodyne Probability',
+                                      ylabel='Distance to Helstrom Probability',
                                       suffix="_dist")
 
     def bit_error_rates(self,

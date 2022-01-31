@@ -1,7 +1,7 @@
 from typing import List, NamedTuple, Tuple
 import json
 
-from csd.ideal_probabilities import IdealHomodyneProbability
+from csd.ideal_probabilities import IdealHelstromProbability
 
 
 class GlobalResult(NamedTuple):
@@ -13,10 +13,10 @@ class GlobalResult(NamedTuple):
     number_ancillas: int
 
     @property
-    def distance_to_homodyne_probability(self) -> float:
-        return self.success_probability - IdealHomodyneProbability(
+    def distance_to_helstrom_probability(self) -> float:
+        return self.success_probability - IdealHelstromProbability(
             alpha=self.alpha,
-            number_modes=self.number_modes).homodyne_probability
+            number_modes=self.number_modes).helstrom_probability
 
     @property
     def bit_error_rate(self) -> float:
@@ -27,7 +27,7 @@ class GlobalResult(NamedTuple):
                 'success_probability',
                 'number_modes',
                 'time_in_seconds',
-                'distance_to_homodyne_probability',
+                'distance_to_helstrom_probability',
                 'bit_error_rate',
                 'squeezing',
                 'number_ancillas']
@@ -37,7 +37,7 @@ class GlobalResult(NamedTuple):
                 self.success_probability,
                 self.number_modes,
                 self.time_in_seconds,
-                self.distance_to_homodyne_probability,
+                self.distance_to_helstrom_probability,
                 self.bit_error_rate,
                 self.squeezing,
                 self.number_ancillas)
@@ -47,7 +47,7 @@ class GlobalResult(NamedTuple):
                 self.success_probability == other.success_probability and
                 self.number_modes == other.number_modes and
                 self.time_in_seconds == other.time_in_seconds and
-                self.distance_to_homodyne_probability == other.distance_to_homodyne_probability and
+                self.distance_to_helstrom_probability == other.distance_to_helstrom_probability and
                 self.bit_error_rate == other.bit_error_rate and
                 self.squeezing == other.squeezing and
                 self.number_ancillas == other.number_ancillas)
@@ -58,7 +58,7 @@ class GlobalResult(NamedTuple):
             "success_probability": self.success_probability,
             "number_modes": self.number_modes,
             "time_in_seconds": self.time_in_seconds,
-            "distance_to_homodyne_probability": self.distance_to_homodyne_probability,
+            "distance_to_helstrom_probability": self.distance_to_helstrom_probability,
             "bit_error_rate": self.bit_error_rate,
             "squeezing": self.squeezing,
             "number_ancillas": self.number_ancillas,

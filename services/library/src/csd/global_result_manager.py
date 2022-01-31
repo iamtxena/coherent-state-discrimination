@@ -225,21 +225,21 @@ class GlobalResultManager(ABC):
             for number_mode in self._number_modes:
                 for number_ancilla in self._number_ancillas:
                     for squeezing_option in squeezing_options:
-                        min_distance = 1.0
-                        min_result = None
+                        max_distance = -1.0
+                        max_result = None
                         for result in self._global_results:
                             if (result.alpha == alpha and
                                 result.number_modes == number_mode and
                                 result.number_ancillas == number_ancilla and
                                 result.squeezing == squeezing_option and
-                                    result.distance_to_homodyne_probability < min_distance):
-                                min_result = result
-                        if min_result is not None:
-                            self._selected_global_results.append(min_result)
+                                    result.distance_to_helstrom_probability > max_distance):
+                                max_result = result
+                        if max_result is not None:
+                            self._selected_global_results.append(max_result)
                             self._selected_log_global_results.append(
-                                GlobalResult(alpha=min_result.alpha,
-                                             success_probability=np.log(min_result.success_probability),
-                                             number_modes=min_result.number_modes,
-                                             time_in_seconds=min_result.time_in_seconds,
-                                             squeezing=min_result.squeezing,
-                                             number_ancillas=min_result.number_ancillas))
+                                GlobalResult(alpha=max_result.alpha,
+                                             success_probability=np.log(max_result.success_probability),
+                                             number_modes=max_result.number_modes,
+                                             time_in_seconds=max_result.time_in_seconds,
+                                             squeezing=max_result.squeezing,
+                                             number_ancillas=max_result.number_ancillas))
