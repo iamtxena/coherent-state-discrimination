@@ -8,7 +8,7 @@ import tensorflow as tf
 from tensorflow.python.framework.ops import EagerTensor
 from csd.typings.typing import (CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions)
 from csd.circuit import Circuit
-# from csd.config import logger
+from csd.config import logger
 
 
 class TFEngine(Engine):
@@ -30,11 +30,8 @@ class TFEngine(Engine):
     def _compute_max_probability_for_all_codewords(
             self,
             batch_success_probabilities: List[List[CodeWordSuccessProbability]]) -> List[CodeWordSuccessProbability]:
-        # logger.debug(f'batch_success_probabilities: {batch_success_probabilities}')
-        max_probs = [self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
-                     for codewords_success_probabilities in batch_success_probabilities]
-        # logger.debug(f'max_probs: {max_probs}')
-        return max_probs
+        return [self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
+                for codewords_success_probabilities in batch_success_probabilities]
 
     def _run_tf_circuit_probabilities(self,
                                       circuit: Circuit,
@@ -52,7 +49,6 @@ class TFEngine(Engine):
     def _compute_tf_fock_probabilities_for_all_codewords(self,
                                                          input_batch: Batch,
                                                          output_batch: Batch) -> List[List[CodeWordSuccessProbability]]:
-
         return [self._compute_one_batch_codewords_success_probabilities(
             input_codeword=input_codeword,
             index_input_batch=index_input_batch,
@@ -68,7 +64,8 @@ class TFEngine(Engine):
         success_probabilities_all_outcomes = self._compute_success_probabilities_all_outcomes(
             index_input_batch=index_input_batch)
         if len(success_probabilities_all_outcomes) != output_batch.size:
-            raise ValueError('success probability outcomes and output batch sizes differs.')
+            # logger.warning('success probability outcomes and output batch sizes differs.')
+            success_probabilities_all_outcomes = success_probabilities_all_outcomes[0:output_batch.size]
 
         return [CodeWordSuccessProbability(
             input_codeword=input_codeword,
@@ -201,14 +198,20 @@ class TFEngine(Engine):
                                      circuit: Circuit,
                                      options: TFEngineRunOptions) -> dict:
         all_values: Union[None, List[float], List[List[float]]] = None
-        if options['input_batch'].size == 1:
-            all_values = options['input_batch'].letters[0]
-        if options['input_batch'].size > 1:
+        if len(options['input_batch'].codewords) == 1:
+            all_values = [one_letter for one_letter_list in options['input_batch'].letters
+                          for one_letter in one_letter_list]
+        if len(options['input_batch'].codewords) > 1:
             all_values = options['input_batch'].letters
 
         if all_values is None:
             raise ValueError('all_values is None')
         for param in options['params']:
             all_values.append(param)
+
+        if len(circuit.parameters.keys()) != len(all_values):
+            logger.error(f"all_values: {all_values}")
+            logger.error(f"circuit.parameters.keys(): {circuit.parameters.keys()}")
+            raise ValueError('length parameters.keys() differes from all_values')
 
         return {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}

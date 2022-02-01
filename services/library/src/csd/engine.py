@@ -35,6 +35,11 @@ class Engine(ABC):
                                  backend_options=options)
         self._measurement_matrices = generate_measurement_matrices(num_modes=number_modes, cutoff_dim=self._cutoff_dim)
 
+    def set_engine(self,
+                   options: Optional[BackendOptions] = None) -> None:
+        self._engine = sf.Engine(backend=self._backend.value,
+                                 backend_options=options)
+
     @property
     def backend_name(self) -> str:
         return self._engine.backend_name
