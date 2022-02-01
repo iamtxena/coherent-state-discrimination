@@ -1,5 +1,5 @@
 # engine.py
-from typing import List
+from typing import List, Union
 from csd.batch import Batch
 from csd.codeword import CodeWord
 from .engine import Engine
@@ -200,7 +200,14 @@ class TFEngine(Engine):
     def _parse_tf_circuit_parameters(self,
                                      circuit: Circuit,
                                      options: TFEngineRunOptions) -> dict:
-        all_values = options['input_batch'].letters
+        all_values: Union[None, List[float], List[List[float]]] = None
+        if options['input_batch'].size == 1:
+            all_values = options['input_batch'].letters[0]
+        if options['input_batch'].size > 1:
+            all_values = options['input_batch'].letters
+
+        if all_values is None:
+            raise ValueError('all_values is None')
         for param in options['params']:
             all_values.append(param)
 
