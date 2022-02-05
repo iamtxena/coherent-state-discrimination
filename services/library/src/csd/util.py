@@ -187,13 +187,25 @@ def generate_measurement_matrices(num_modes: int, cutoff_dim: int) -> List[np.nd
             for outcome in outcomes]
 
 
+def extend_input_codebook_to_output_codebook(input_codebook: List[CodeWord], output_modes: int) -> List[CodeWord]:
+    if input_codebook[0].size > output_modes:
+        raise ValueError("input modes are greater than output modes.")
+    if input_codebook[0].size == output_modes:
+        return input_codebook
+    ancilla_modes = output_modes - input_codebook[0].size
+    ancilla_codewords = generate_all_codewords(word_size=ancilla_modes, alpha_value=input_codebook[0].alpha)
+    return [CodeWord(word=codeword.word + ancilla_codeword.word)
+            for codeword in input_codebook for ancilla_codeword in ancilla_codewords]
+
+
 def filter_outcomes_only_in_codebook(outcomes: List[Tuple[int, ...]],
                                      codebook: List[CodeWord]) -> List[Tuple[int, ...]]:
-    all_codewords = generate_all_codewords_from_codeword(codeword=codebook[0])
+    output_codebook = extend_input_codebook_to_output_codebook(input_codebook=codebook, output_modes=len(outcomes[0]))
+    all_codewords = generate_all_codewords_from_codeword(codeword=output_codebook[0])
     if len(all_codewords) != len(outcomes):
         raise ValueError("outcomes and all_codewords size mismatch.")
 
-    return [outcomes[all_codewords.index(codeword)] for codeword in codebook]
+    return [outcomes[all_codewords.index(codeword)] for codeword in output_codebook]
 
 
 def generate_measurement_matrices_only_in_codebook(

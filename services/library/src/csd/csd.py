@@ -141,8 +141,8 @@ class CSD(ABC):
         if self._engine is None:
             raise ValueError("Engine must be initialized")
 
-        return CostFunction(batch=Batch(size=len(self._current_codebook),
-                                        word_size=self._training_circuit.number_modes,
+        return CostFunction(batch=Batch(size=0,
+                                        word_size=0,
                                         alpha_value=self._alpha_value,
                                         all_words=False,
                                         input_batch=self._current_codebook),

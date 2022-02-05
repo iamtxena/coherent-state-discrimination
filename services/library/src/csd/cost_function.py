@@ -10,6 +10,7 @@ from csd.tf_engine import TFEngine
 from csd.typings.typing import (Backends, CodeWordSuccessProbability,
                                 EngineRunOptions, RunningTypes, TFEngineRunOptions)
 from csd.typings.cost_function import CostFunctionOptions
+from csd.util import extend_input_codebook_to_output_codebook
 # from csd.config import logger
 
 
@@ -21,11 +22,14 @@ class CostFunction(ABC):
         self._params = params
         self._options = options
         self._input_batch = batch
-        # self._output_batch = Batch(size=self._input_batch.size,
-        #                            word_size=self._options.circuit.number_modes,
-        #                            alpha_value=self._input_batch.alpha,
-        #                            random_words=False)
-        self._output_batch = batch
+        output_codebook = extend_input_codebook_to_output_codebook(
+            input_codebook=self._input_batch.codewords,
+            output_modes=options.circuit.number_modes)
+        self._output_batch = Batch(size=0,
+                                   word_size=0,
+                                   alpha_value=batch.alpha,
+                                   all_words=False,
+                                   input_batch=output_codebook)
 
     def _run_and_get_codeword_guesses(self) -> List[CodeWordSuccessProbability]:
         if self._options.backend_name == Backends.TENSORFLOW.value:
