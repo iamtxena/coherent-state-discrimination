@@ -38,7 +38,10 @@ class Optimize(ABC):
 
     def optimize(self,
                  cost_function: Callable,
-                 current_alpha: Optional[float] = 0.0) -> OptimizationResult:
+                 current_alpha: Optional[float] = 0.0,
+                 codebooks_info: dict = {}) -> OptimizationResult:
         if self._optimizer is None:
             raise ValueError("optimizer not initilized")
-        return self._optimizer.optimize(cost_function=cost_function, current_alpha=current_alpha)
+        return self._optimizer.optimize(cost_function=cost_function,
+                                        current_alpha=current_alpha,
+                                        codebooks_info=codebooks_info)

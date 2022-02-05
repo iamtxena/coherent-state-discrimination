@@ -15,7 +15,8 @@ class ScipyOptimizer(ABC):
         raise NotImplementedError()
 
     def optimize(self, cost_function: Callable,
-                 current_alpha: Optional[float] = 0.0) -> OptimizationResult:
+                 current_alpha: Optional[float] = 0.0,
+                 codebooks_info: dict = {}) -> OptimizationResult:
         logger.debug(f"Launching basic scipy optimization for alpha={current_alpha}")
         result: OptimizeResult = minimize(cost_function,
                                           self._params,

@@ -12,7 +12,7 @@ from tensorflow.keras import optimizers as tfOptimizers
 from tensorflow.keras import metrics as tfMetrics
 
 from csd.typings.typing import LearningRate, LearningSteps, OptimizationResult
-from csd.util import estimate_remaining_time, set_friendly_time
+from csd.util import estimate_remaining_time
 from csd.config import logger
 
 
@@ -34,8 +34,10 @@ class TFOptimizer(ABC):
             raise ValueError(f"params names length: {params_name.__len__()} does not match nparams: {nparams}")
         self._params_name = params_name[modes:]
 
-    def optimize(self, cost_function: Callable,
-                 current_alpha: Optional[float] = 0.0) -> OptimizationResult:
+    def optimize(self,
+                 cost_function: Callable,
+                 current_alpha: Optional[float] = 0.0,
+                 codebooks_info: dict = {}) -> OptimizationResult:
 
         self._current_alpha = current_alpha if current_alpha is not None else 0.0
 
@@ -48,13 +50,16 @@ class TFOptimizer(ABC):
         current_learning_steps = self._set_learning_values_by_alpha(self._current_alpha)
         logger.info(f"number of parameters: {len(parameters)}")
         for step in range(current_learning_steps):
+            step_init_time = time.time()
             loss, parameters = self._tf_optimize(cost_function=cost_function,
                                                  parameters=parameters)
 
             reset = self._print_time_when_necessary(learning_steps=current_learning_steps,
                                                     init_time=init_time,
                                                     step=step,
-                                                    optimized_parameters=parameters)
+                                                    step_init_time=step_init_time,
+                                                    optimized_parameters=parameters,
+                                                    codebooks_info=codebooks_info)
             init_time = time.time() if reset else init_time
             self._update_tf_board_metrics(step)
 
@@ -119,13 +124,25 @@ class TFOptimizer(ABC):
                                    learning_steps: int,
                                    init_time: float,
                                    step: int,
-                                   optimized_parameters: List[float]) -> bool:
+                                   step_init_time: float,
+                                   optimized_parameters: List[float],
+                                   codebooks_info: dict) -> bool:
+        codebook_size = 0
+        codebook_index = 0
+        if (codebooks_info is not None and 'size' in codebooks_info and 'current_index' in codebooks_info):
+            codebook_size = codebooks_info['size']
+            codebook_index = codebooks_info['current_index']
         reset = self._print_optimized_parameters_for_tf_backend_only(step, optimized_parameters)
         if reset:
-            self._print_one_loop_time(step=step, total_steps=learning_steps, one_loop_time=init_time)
-            logger.debug(estimate_remaining_time(total_iterations=learning_steps,
-                                                 current_iteration=step,
-                                                 init_time=init_time))
+            concept = (
+                f'ALPHA:{np.round(self._current_alpha, 2)} -> '
+                f'CODEBOOK[{codebook_index+1}/{codebook_size}] -> LEARNING STEPS')
+            logger.debug(estimate_remaining_time(
+                total_iterations=learning_steps,
+                current_iteration=step + 1,
+                init_time=init_time,
+                current_iteration_init_time=step_init_time,
+                concept=concept))
         return reset
 
     def _print_optimized_parameters_for_tf_backend_only(self,
@@ -137,9 +154,3 @@ class TFOptimizer(ABC):
                 step + 1, [param.numpy() for param in optimized_parameters]))
             return True
         return False
-
-    def _print_one_loop_time(self, step: int, total_steps: int, one_loop_time: float) -> None:
-        now = time.time()
-        logger.debug(f'Optimized for alpha: {np.round(self._current_alpha, 2)} took:'
-                     f"{set_friendly_time(time_interval=now-one_loop_time)}"
-                     f" steps: [{step+1}/{total_steps}]")

@@ -41,11 +41,11 @@ def set_friendly_time(time_interval: float) -> str:
     if minutes > 1:
         friendly_time += f'{minutes} minutes and '
     if seconds == 1:
-        friendly_time += f'{seconds} second.'
+        friendly_time += f'{seconds} second'
     if seconds > 1:
-        friendly_time += f'{seconds} seconds.'
+        friendly_time += f'{seconds} seconds'
     if seconds < 1:
-        friendly_time += f'{seconds} seconds.'
+        friendly_time += f'{seconds} seconds'
     return friendly_time
 
 
@@ -108,11 +108,21 @@ def generate_all_codewords(word_size: int, alpha_value: float) -> List[CodeWord]
             for word in itertools.product(letters, repeat=word_size)]
 
 
-def estimate_remaining_time(total_iterations: int, current_iteration: int, init_time: float) -> str:
+def estimate_remaining_time(
+        total_iterations: int,
+        current_iteration: int,
+        init_time: float,
+        current_iteration_init_time: float,
+        concept: str = '',) -> str:
     now = time()
     current_computation_time = now - init_time
     time_interval = (total_iterations - current_iteration) * current_computation_time / current_iteration
-    return (f'Estimated remaining time: {set_friendly_time(time_interval=time_interval)}')
+    current_iteration_time_interval = set_friendly_time(time_interval=current_computation_time)
+    return ('\n\n---------------------------------------------------------------------\n'
+            f'{concept}[{current_iteration}/{total_iterations}]: in {current_iteration_time_interval}'
+            f', current iteration in: {set_friendly_time(time_interval=now - current_iteration_init_time)}'
+            f', estimated remaining time: {set_friendly_time(time_interval=time_interval)}'
+            '\n---------------------------------------------------------------------\n\n')
 
 
 def strtobool(val: str) -> bool:

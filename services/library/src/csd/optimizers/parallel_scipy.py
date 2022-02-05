@@ -2,7 +2,7 @@ from abc import ABC
 from typing import Callable, Optional
 from optimparallel import minimize_parallel
 from scipy.optimize import OptimizeResult
-from multiprocessing import cpu_count
+# from multiprocessing import cpu_count
 from csd.config import logger
 from csd.typings.typing import OptimizationResult
 
@@ -14,7 +14,8 @@ class ParallelOptimizer(ABC):
 
     def optimize(self,
                  cost_function: Callable,
-                 current_alpha: Optional[float] = 1.0) -> OptimizationResult:
+                 current_alpha: Optional[float] = 1.0,
+                 codebooks_info: dict = {}) -> OptimizationResult:
         if self._params is None:
             raise ValueError("params not initialized")
         # max_workers = cpu_count()

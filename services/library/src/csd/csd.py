@@ -26,7 +26,7 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
 from csd.plot import Plot
 from csd.typings.cost_function import CostFunctionOptions
-from csd.util import timing, save_object_to_disk
+from csd.util import estimate_remaining_time, timing, save_object_to_disk
 from csd.batch import Batch
 from .cost_function import CostFunction
 
@@ -207,8 +207,14 @@ class CSD(ABC):
 
             average_error_probability_all_codebooks = 0.0
             codebooks = CodeBooks(batch=self._current_batch)
+            self._all_codebooks_size = codebooks.size
+            logger.debug(
+                f'Optimizing for alpha: {np.round(self._alpha_value, 2)} '
+                f'with {self._all_codebooks_size} codebooks.')
 
-            for codebook in codebooks.codebooks:
+            for index, codebook in enumerate(codebooks.codebooks):
+                one_codebook_start_time = time()
+                self._current_codebook_index = index
                 self._current_codebook = codebook
                 logger.debug(f"current codebook: {self._current_codebook}")
                 self._codebook_size = len(codebook)
@@ -218,8 +224,15 @@ class CSD(ABC):
                 # one_alpha_success_probability = self._test_for_one_alpha(
                 #     optimized_parameters=one_alpha_optimization_result.optimized_parameters)
                 average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
+                concept = (f'ALPHA:{np.round(self._alpha_value, 2)} -> CODEBOOK')
+                estimated_remaining_time = estimate_remaining_time(
+                    total_iterations=codebooks.size,
+                    current_iteration=index + 1,
+                    init_time=one_alpha_start_time,
+                    current_iteration_init_time=one_codebook_start_time,
+                    concept=concept)
                 logger.debug(
-                    f'Optimized and trained for alpha: {np.round(self._alpha_value, 2)} '
+                    f'{estimated_remaining_time} '
                     f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_codebook_optimization_result)} '
                     f"codebook_size:{self._codebook_size}")
 
@@ -327,7 +340,12 @@ class CSD(ABC):
 
         self._optimization = self._create_optimization()
         optimization_result = self._optimization.optimize(
-            cost_function=self._cost_function, current_alpha=self._alpha_value)
+            cost_function=self._cost_function,
+            current_alpha=self._alpha_value,
+            codebooks_info={
+                'size': self._all_codebooks_size,
+                'current_index': self._current_codebook_index
+            })
 
         logger.debug(f'Trained for alpha: {np.round(self._alpha_value, 2)}'
                      f' parameters: {optimization_result.optimized_parameters}'
