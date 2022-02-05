@@ -185,3 +185,24 @@ def generate_measurement_matrices(num_modes: int, cutoff_dim: int) -> List[np.nd
     outcomes = generate_all_outcomes(modes=num_modes)
     return [generate_measurement_matrix_one_outcome(outcome=outcome, cutoff_dim=cutoff_dim, zeros_matrix=zeros_matrix)
             for outcome in outcomes]
+
+
+def filter_outcomes_only_in_codebook(outcomes: List[Tuple[int, ...]],
+                                     codebook: List[CodeWord]) -> List[Tuple[int, ...]]:
+    all_codewords = generate_all_codewords_from_codeword(codeword=codebook[0])
+    if len(all_codewords) != len(outcomes):
+        raise ValueError("outcomes and all_codewords size mismatch.")
+
+    return [outcomes[all_codewords.index(codeword)] for codeword in codebook]
+
+
+def generate_measurement_matrices_only_in_codebook(
+        num_modes: int,
+        cutoff_dim: int,
+        codebook: List[CodeWord]) -> List[np.ndarray]:
+    matrix_shape = [cutoff_dim] * num_modes
+    zeros_matrix = np.zeros(matrix_shape, dtype=np.float32)
+    outcomes = generate_all_outcomes(modes=num_modes)
+    outcomes_in_codebook = filter_outcomes_only_in_codebook(outcomes, codebook)
+    return [generate_measurement_matrix_one_outcome(outcome=outcome, cutoff_dim=cutoff_dim, zeros_matrix=zeros_matrix)
+            for outcome in outcomes_in_codebook]

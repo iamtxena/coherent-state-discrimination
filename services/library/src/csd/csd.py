@@ -204,7 +204,7 @@ class CSD(ABC):
             one_alpha_start_time = time()
             self._alpha_value = sample_alpha
             self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
-            self._engine = self._create_engine()
+
             average_error_probability_all_codebooks = 0.0
             codebooks = CodeBooks(batch=self._current_batch)
 
@@ -212,10 +212,7 @@ class CSD(ABC):
                 self._current_codebook = codebook
                 logger.debug(f"current codebook: {self._current_codebook}")
                 self._codebook_size = len(codebook)
-                self._engine.set_engine(options={
-                    "cutoff_dim": self._current_cutoff,
-                    "batch_size": self._codebook_size if self._codebook_size > 1 else None
-                })
+                self._engine = self._create_engine()
                 one_codebook_optimization_result = self._train_for_one_alpha_one_codebook()
                 one_alpha_success_probability = None
                 # one_alpha_success_probability = self._test_for_one_alpha(
@@ -381,8 +378,10 @@ class CSD(ABC):
             raise ValueError("Run configuration not specified")
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
-        if self._current_batch is None:
-            raise ValueError("_current_batch must be initialized")
+        if self._current_codebook is None:
+            raise ValueError("_current_codebook must be initialized")
+        if self._codebook_size is None:
+            raise ValueError("_codebook_size must be initialized")
 
         self._current_cutoff = self._cutoff_dim.default
 
@@ -396,13 +395,15 @@ class CSD(ABC):
                 number_modes=self._training_circuit.number_modes,
                 engine_backend=Backends.TENSORFLOW, options={
                     "cutoff_dim": self._current_cutoff,
-                    "batch_size": self._current_batch.size if self._current_batch.size > 1 else None
-                })
+                    "batch_size": self._codebook_size if self._codebook_size > 1 else None
+                },
+                codebook=self._current_codebook)
         return Engine(
             number_modes=self._training_circuit.number_modes,
             engine_backend=self._run_configuration['run_backend'], options={
                 "cutoff_dim": self._current_cutoff
-            })
+            },
+            codebook=self._current_codebook)
 
     def _backend_is_tf(self):
         return self._run_configuration['run_backend'] == Backends.TENSORFLOW

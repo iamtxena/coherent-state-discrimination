@@ -41,7 +41,10 @@ class TFEngine(Engine):
 
         options['shots'] = 0
         result = self._run_tf_circuit(circuit=circuit, options=options)
-        self._all_fock_probs = result.state.all_fock_probs()
+        self._all_fock_probs = [result.state.all_fock_probs()] if self.only_one_codeword(
+            input_batch=options['input_batch']) else result.state.all_fock_probs()
+        # logger.debug(f'all_fock_probs: {self._all_fock_probs}')
+        # logger.debug(f'len all_fock_probs: {len(self._all_fock_probs)}')
 
         return self._compute_tf_fock_probabilities_for_all_codewords(input_batch=options['input_batch'],
                                                                      output_batch=options['output_batch'])
@@ -63,9 +66,11 @@ class TFEngine(Engine):
 
         success_probabilities_all_outcomes = self._compute_success_probabilities_all_outcomes(
             index_input_batch=index_input_batch)
+        # logger.debug(f'success_probabilities_all_outcomes: {success_probabilities_all_outcomes}')
         if len(success_probabilities_all_outcomes) != output_batch.size:
-            # logger.warning('success probability outcomes and output batch sizes differs.')
-            success_probabilities_all_outcomes = success_probabilities_all_outcomes[0:output_batch.size]
+            raise ValueError('success probability outcomes and output_batch sizes differs')
+
+        # logger.debug(f'total sum: {sum(success_probabilities_all_outcomes)}')
 
         return [CodeWordSuccessProbability(
             input_codeword=input_codeword,
@@ -198,10 +203,10 @@ class TFEngine(Engine):
                                      circuit: Circuit,
                                      options: TFEngineRunOptions) -> dict:
         all_values: Union[None, List[float], List[List[float]]] = None
-        if len(options['input_batch'].codewords) == 1:
+        if self.only_one_codeword(input_batch=options['input_batch']):
             all_values = [one_letter for one_letter_list in options['input_batch'].letters
                           for one_letter in one_letter_list]
-        if len(options['input_batch'].codewords) > 1:
+        if not self.only_one_codeword(input_batch=options['input_batch']):
             all_values = options['input_batch'].letters
 
         if all_values is None:
@@ -215,3 +220,6 @@ class TFEngine(Engine):
             raise ValueError('length parameters.keys() differes from all_values')
 
         return {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}
+
+    def only_one_codeword(self, input_batch: Batch) -> bool:
+        return len(input_batch.codewords) == 1
