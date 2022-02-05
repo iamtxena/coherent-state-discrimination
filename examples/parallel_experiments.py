@@ -200,7 +200,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(8)
+    pool = Pool(4)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -274,12 +274,12 @@ if __name__ == '__main__':
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     # alphas.pop(5)
     # one_alpha = alphas[5]
-    # alphas = alphas[1:5]
     # alphas = [alphas[8]]
+    # alphas = [0.1]
 
     # list_number_input_modes = list(range(6, 11))
-    list_number_input_modes = [3]
-    list_squeezing = [True]
+    list_number_input_modes = [5]
+    list_squeezing = [False, True]
     one_ancilla = 0
     for number_input_modes in list_number_input_modes:
         for squeezing_option in list_squeezing:
@@ -295,7 +295,6 @@ if __name__ == '__main__':
                                           extreme=10)
 
             number_ancillas = one_ancilla
-
             batch_size = 2**number_input_modes
             shots = 100
             plays = 1
