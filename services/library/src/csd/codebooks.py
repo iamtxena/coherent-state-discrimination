@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 import math
-import random
+import itertools
 from typing import List
 
 from csd.codeword import CodeWord
@@ -17,8 +17,8 @@ class CodeBooks():
     def __init__(self,
                  batch: Batch):
         self._codebook_maximum_size = self._compute_codebook_maximum_size(batch=batch)
-        self._codebooks = self._generate_all_random_codebooks_with_specific_size(
-            batch=batch, codebook_maximum_size=self._codebook_maximum_size)
+        self._codebooks: List[List[CodeWord]] = list(self._generate_all_random_codebooks_with_specific_size(
+            batch=batch, codebook_maximum_size=self._codebook_maximum_size))
         self._alpha_value = batch.alpha
 
     @property
@@ -51,18 +51,5 @@ class CodeBooks():
             raise ValueError("codebook size must be smaller than batch size")
         if codebook_maximum_size == batch.size:
             return [batch.codewords]
-
-        remaining_codewords = batch.codewords.copy()
-        codebooks = []
-
-        while len(remaining_codewords) >= codebook_maximum_size:
-            selected_codebook = random.sample(remaining_codewords, codebook_maximum_size)
-            for codeword in selected_codebook:
-                index = remaining_codewords.index(codeword)
-                remaining_codewords.pop(index)
-                codebooks.append(selected_codebook)
-
-        if len(remaining_codewords) > 0:
-            codebooks.append(remaining_codewords.copy())
-
-        return codebooks
+        all_combinations = itertools.combinations(batch.codewords, codebook_maximum_size)
+        return [list(codewords) for codewords in all_combinations]
