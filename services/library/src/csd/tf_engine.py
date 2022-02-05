@@ -64,10 +64,10 @@ class TFEngine(Engine):
             index_input_batch: int,
             output_batch: Batch) -> List[CodeWordSuccessProbability]:
 
-        success_probabilities_all_outcomes = self._compute_success_probabilities_all_outcomes(
+        success_probabilities_codebook_outcomes = self._compute_success_probabilities_for_codebook_outcomes(
             index_input_batch=index_input_batch)
         # logger.debug(f'success_probabilities_all_outcomes: {success_probabilities_all_outcomes}')
-        if len(success_probabilities_all_outcomes) != output_batch.size:
+        if len(success_probabilities_codebook_outcomes) != output_batch.size:
             raise ValueError('success probability outcomes and output_batch sizes differs')
 
         # logger.debug(f'total sum: {sum(success_probabilities_all_outcomes)}')
@@ -80,7 +80,22 @@ class TFEngine(Engine):
             success_probability=success_probabilities_one_outcome,
             counts=tf.Variable(0))
             for success_probabilities_one_outcome, output_codeword in
-            zip(success_probabilities_all_outcomes, output_batch.codewords)]
+            zip(success_probabilities_codebook_outcomes, output_batch.codewords)]
+
+    def _scale_success_probabilites_to_codebook_outcomes(
+            self,
+            success_probabilities_all_outcomes: List[EagerTensor]) -> List[EagerTensor]:
+        result = tf.divide(success_probabilities_all_outcomes, tf.reduce_sum(success_probabilities_all_outcomes))
+        # logger.debug(f'sum probabilities BEFORE scaled: {sum(success_probabilities_all_outcomes)}')
+        # logger.debug(f'probabilities scaled: {sum(result)}')
+        # logger.debug(f'sum probabilities scaled: {sum(result)}')
+        return result
+
+    def _compute_success_probabilities_for_codebook_outcomes(self, index_input_batch: int) -> List[EagerTensor]:
+        success_probabilities_all_outcomes = self._compute_success_probabilities_all_outcomes(
+            index_input_batch=index_input_batch)
+        return self._scale_success_probabilites_to_codebook_outcomes(
+            success_probabilities_all_outcomes=success_probabilities_all_outcomes)
 
     def _compute_success_probabilities_all_outcomes(self, index_input_batch: int) -> List[EagerTensor]:
         return [tf.reduce_sum(tf.math.multiply(measurement_matrix, self._all_fock_probs[index_input_batch]))
