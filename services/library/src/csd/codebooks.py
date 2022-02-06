@@ -3,11 +3,15 @@
 from dataclasses import dataclass
 import math
 import itertools
+import random
 from typing import List
 
 from csd.codeword import CodeWord
 
 from .batch import Batch
+from csd.config import logger
+
+DEFAULT_MAX_COMBINATIONS = 120
 
 
 @dataclass
@@ -15,7 +19,9 @@ class CodeBooks():
     """Class for managing the codebooks from a given batch."""
 
     def __init__(self,
-                 batch: Batch):
+                 batch: Batch,
+                 max_combinations: int = DEFAULT_MAX_COMBINATIONS):
+        self._max_combinations = max_combinations
         self._codebook_maximum_size = self._compute_codebook_maximum_size(batch=batch)
         self._codebooks: List[List[CodeWord]] = list(self._generate_all_random_codebooks_with_specific_size(
             batch=batch, codebook_maximum_size=self._codebook_maximum_size))
@@ -51,5 +57,16 @@ class CodeBooks():
             raise ValueError("codebook size must be smaller than batch size")
         if codebook_maximum_size == batch.size:
             return [batch.codewords]
-        all_combinations = itertools.combinations(batch.codewords, codebook_maximum_size)
-        return [list(codewords) for codewords in all_combinations]
+
+        total_combinations = self._compute_all_combinations(batch=batch, codebook_maximum_size=codebook_maximum_size)
+
+        logger.debug(f'Total combinations: {total_combinations} and max combinations: {self._max_combinations}')
+        if total_combinations <= self._max_combinations:
+            all_combinations = itertools.combinations(batch.codewords, codebook_maximum_size)
+            return [list(codewords) for codewords in all_combinations]
+
+        return [random.choices(batch.codewords, k=codebook_maximum_size) for _ in range(0, self._max_combinations)]
+
+    def _compute_all_combinations(self, batch: Batch, codebook_maximum_size: int) -> int:
+        return int(math.factorial(batch.size) /
+                   (math.factorial(batch.size - codebook_maximum_size) * math.factorial(codebook_maximum_size)))

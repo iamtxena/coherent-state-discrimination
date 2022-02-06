@@ -30,6 +30,7 @@ class MultiProcessConfiguration(NamedTuple):
     number_layers: List[int]
     squeezing: List[bool]
     number_ancillas: List[int]
+    max_combinations: List[int]
 
 
 class LaunchExecutionConfiguration(NamedTuple):
@@ -46,6 +47,7 @@ class LaunchExecutionConfiguration(NamedTuple):
     squeezing: bool
     number_ancillas: int
     alpha: float
+    max_combinations: int
 
 
 def _set_plot_label(plot_label_backend: Backends, measuring_type: MeasuringTypes) -> str:
@@ -111,7 +113,8 @@ def launch_execution(configuration: LaunchExecutionConfiguration) -> ResultExecu
         },
         'save_results': False,
         'save_plots': False,
-        'parallel_optimization': True
+        'parallel_optimization': True,
+        'max_combinations': configuration.max_combinations,
     }))
     return csd.execute(configuration=RunConfiguration({
         'run_backend': configuration.launch_backend,
@@ -135,6 +138,7 @@ def uncurry_launch_execution(t) -> ResultExecution:
         squeezing=t[10],
         number_ancillas=t[11],
         alpha=t[12],
+        max_combinations=t[13]
     )
     return launch_execution(configuration=one_execution_configuration)
 
@@ -200,7 +204,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(4)
+    pool = Pool(1)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -240,7 +244,8 @@ def _build_iterator(multiprocess_configuration: MultiProcessConfiguration,
                multiprocess_configuration.number_layers,
                multiprocess_configuration.squeezing,
                multiprocess_configuration.number_ancillas,
-               multiprocess_configuration.alphas)
+               multiprocess_configuration.alphas,
+               multiprocess_configuration.max_combinations)
 
 
 def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
@@ -274,12 +279,12 @@ if __name__ == '__main__':
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     # alphas.pop(5)
     # one_alpha = alphas[5]
-    # alphas = [alphas[8]]
+    alphas = [alphas[8]]
     # alphas = [0.1]
 
     # list_number_input_modes = list(range(6, 11))
-    list_number_input_modes = [5]
-    list_squeezing = [False, True]
+    list_number_input_modes = [4]
+    list_squeezing = [False]
     one_ancilla = 0
     for number_input_modes in list_number_input_modes:
         for squeezing_option in list_squeezing:
@@ -299,6 +304,7 @@ if __name__ == '__main__':
             shots = 100
             plays = 1
             number_layers = 1
+            max_combinations = 40
 
             number_alphas = len(alphas)
 
@@ -320,7 +326,8 @@ if __name__ == '__main__':
                 number_input_modes=[number_input_modes] * number_alphas,
                 number_layers=[number_layers] * number_alphas,
                 squeezing=[squeezing_option] * number_alphas,
-                number_ancillas=[number_ancillas] * number_alphas
+                number_ancillas=[number_ancillas] * number_alphas,
+                max_combinations=[max_combinations] * number_alphas
             )
 
             multi_tf_backend(multiprocess_configuration=multiprocess_configuration)

@@ -72,6 +72,7 @@ class CSDConfiguration(TypedDict, total=False):
     save_plots: bool
     architecture: Architecture
     parallel_optimization: bool
+    max_combinations: int
 
 
 class Backends(enum.Enum):
