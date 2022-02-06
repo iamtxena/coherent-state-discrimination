@@ -1,7 +1,9 @@
 import time
 
+from csd.util import CodeBookLogInformation
+
 from .tf import TFOptimizer
-from typing import Callable, Optional
+from typing import Callable, Optional, Union
 import tensorflow as tf
 from multiprocessing import Pool
 
@@ -50,7 +52,8 @@ class ParallelTFOptimizer(TFOptimizer):
         return fun(t[1], t[2], t[3], t[4], t[5])
 
     def optimize(self, cost_function: Callable,
-                 current_alpha: Optional[float] = 0.0) -> OptimizationResult:
+                 current_alpha: Optional[float] = 0.0,
+                 codebook_log_info: Union[CodeBookLogInformation, None] = None) -> OptimizationResult:
 
         self._current_alpha = current_alpha if current_alpha is not None else 0.0
 

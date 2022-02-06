@@ -1,5 +1,6 @@
 from abc import ABC
-from typing import Callable, Optional
+from typing import Callable, Optional, Union
+from csd.util import CodeBookLogInformation
 from scipy.optimize import minimize, OptimizeResult
 from csd.config import logger
 from csd.typings.typing import OptimizationResult
@@ -16,7 +17,7 @@ class ScipyOptimizer(ABC):
 
     def optimize(self, cost_function: Callable,
                  current_alpha: Optional[float] = 0.0,
-                 codebooks_info: dict = {}) -> OptimizationResult:
+                 codebook_log_info: Union[CodeBookLogInformation, None] = None) -> OptimizationResult:
         logger.debug(f"Launching basic scipy optimization for alpha={current_alpha}")
         result: OptimizeResult = minimize(cost_function,
                                           self._params,

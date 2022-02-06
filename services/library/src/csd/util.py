@@ -1,6 +1,6 @@
 from functools import wraps
 from time import time
-from typing import List, Optional, Tuple
+from typing import List, NamedTuple, Optional, Tuple
 from csd.codeword import CodeWord
 from csd.config import logger
 import numpy as np
@@ -12,6 +12,21 @@ import itertools
 SECONDS_PER_MINUTE = 60
 MINUTES_PER_HOUR = 60
 HOURS_PER_DAY = 24
+
+
+class CodeBookLogInformation(NamedTuple):
+    alpha_value: float
+    alpha_init_time: float
+    codebooks_size: int
+    codebook_iteration: int
+    codebook_current_iteration_init_time: float
+
+
+class CodebookLearningStepsLogInformation(NamedTuple):
+    total_steps: int
+    step_iteration: int
+    learning_init_time: float
+    step_current_iteration_init_time: float
 
 
 def set_friendly_time(time_interval: float) -> str:
@@ -119,10 +134,56 @@ def estimate_remaining_time(
     time_interval = (total_iterations - current_iteration) * current_computation_time / current_iteration
     current_iteration_time_interval = set_friendly_time(time_interval=current_computation_time)
     return ('\n\n---------------------------------------------------------------------\n'
-            f'{concept}[{current_iteration}/{total_iterations}]: in {current_iteration_time_interval}'
+            f'{concept}[{current_iteration}/{total_iterations}]: in {current_iteration_time_interval}\n'
             f', current iteration in: {set_friendly_time(time_interval=now - current_iteration_init_time)}'
             f', estimated remaining time: {set_friendly_time(time_interval=time_interval)}'
             '\n---------------------------------------------------------------------\n\n')
+
+
+def print_codebook_log(log_info: CodeBookLogInformation) -> None:
+    now = time()
+    total_computation_time = now - log_info.alpha_init_time
+    current_iteration_time = now - log_info.codebook_current_iteration_init_time
+    remaining_time = ((log_info.codebooks_size - (log_info.codebook_iteration + 1)) *
+                      total_computation_time / (log_info.codebook_iteration + 1))
+    text = (
+        '\n\n---------------------------------------------------------------------\n'
+        f'  ALPHA:{log_info.alpha_value} -> '
+        f'CODEBOOK[{log_info.codebook_iteration+1}/{log_info.codebooks_size}]: \n\n'
+        f'  TOTAL computation time: {set_friendly_time(time_interval=total_computation_time)}\n'
+        f'  Current codebook iteration time: {set_friendly_time(time_interval=current_iteration_time)}\n'
+        f'  Estimated codebook REMAINING time: {set_friendly_time(time_interval=remaining_time)}'
+        '\n---------------------------------------------------------------------\n\n'
+    )
+    logger.info(text)
+
+
+def print_codebook_learning_steps_log(codebook_log_info: CodeBookLogInformation,
+                                      learning_log_info: CodebookLearningStepsLogInformation) -> None:
+    now = time()
+    total_computation_time = now - codebook_log_info.alpha_init_time
+    current_iteration_time = now - codebook_log_info.codebook_current_iteration_init_time
+    remaining_time = ((codebook_log_info.codebooks_size - (codebook_log_info.codebook_iteration + 1)) *
+                      total_computation_time / (codebook_log_info.codebook_iteration + 1))
+    total_learning_computation_time = now - learning_log_info.learning_init_time
+    current_learning_iteration_time = set_friendly_time(
+        time_interval=(now - learning_log_info.step_current_iteration_init_time))
+    learning_remaining_time = ((learning_log_info.total_steps - (learning_log_info.step_iteration + 1)) *
+                               total_learning_computation_time / (learning_log_info.step_iteration + 1))
+    text = (
+        '\n\n---------------------------------------------------------------------\n'
+        f'  ALPHA:{codebook_log_info.alpha_value} -> '
+        f'CODEBOOK[{codebook_log_info.codebook_iteration+1}/{codebook_log_info.codebooks_size}] -> '
+        f'LEARNING_STEPS[{learning_log_info.step_iteration+1}/{learning_log_info.total_steps}]: \n\n'
+        f'  TOTAL computation time: {set_friendly_time(time_interval=total_computation_time)}\n'
+        f'  Current codebook iteration time: {set_friendly_time(time_interval=current_iteration_time)}\n'
+        f'  Estimated codebook REMAINING time: {set_friendly_time(time_interval=remaining_time)}\n\n'
+        f'  TOTAL learning computation time: {set_friendly_time(time_interval=total_learning_computation_time)}\n'
+        f'  Current learning block step iteration time: {current_learning_iteration_time}\n'
+        f'  Estimated learning REMAINING time: {set_friendly_time(time_interval=learning_remaining_time)}'
+        '\n---------------------------------------------------------------------\n\n'
+    )
+    logger.info(text)
 
 
 def strtobool(val: str) -> bool:

@@ -1,6 +1,6 @@
 from abc import ABC
 import time
-from typing import Callable, List, Optional, Tuple
+from typing import Callable, List, Optional, Tuple, Union
 import tensorflow as tf
 import numpy as np
 import os
@@ -12,7 +12,7 @@ from tensorflow.keras import optimizers as tfOptimizers
 from tensorflow.keras import metrics as tfMetrics
 
 from csd.typings.typing import LearningRate, LearningSteps, OptimizationResult
-from csd.util import estimate_remaining_time
+from csd.util import (CodeBookLogInformation, CodebookLearningStepsLogInformation, print_codebook_learning_steps_log)
 from csd.config import logger
 
 
@@ -37,7 +37,7 @@ class TFOptimizer(ABC):
     def optimize(self,
                  cost_function: Callable,
                  current_alpha: Optional[float] = 0.0,
-                 codebooks_info: dict = {}) -> OptimizationResult:
+                 codebook_log_info: Union[CodeBookLogInformation, None] = None) -> OptimizationResult:
 
         self._current_alpha = current_alpha if current_alpha is not None else 0.0
 
@@ -59,7 +59,7 @@ class TFOptimizer(ABC):
                                                     step=step,
                                                     step_init_time=step_init_time,
                                                     optimized_parameters=parameters,
-                                                    codebooks_info=codebooks_info)
+                                                    codebook_log_info=codebook_log_info)
             init_time = time.time() if reset else init_time
             self._update_tf_board_metrics(step)
 
@@ -126,23 +126,18 @@ class TFOptimizer(ABC):
                                    step: int,
                                    step_init_time: float,
                                    optimized_parameters: List[float],
-                                   codebooks_info: dict) -> bool:
-        codebook_size = 0
-        codebook_index = 0
-        if (codebooks_info is not None and 'size' in codebooks_info and 'current_index' in codebooks_info):
-            codebook_size = codebooks_info['size']
-            codebook_index = codebooks_info['current_index']
+                                   codebook_log_info: Union[CodeBookLogInformation, None] = None) -> bool:
+
         reset = self._print_optimized_parameters_for_tf_backend_only(step, optimized_parameters)
-        if reset:
-            concept = (
-                f'ALPHA:{np.round(self._current_alpha, 2)} -> '
-                f'CODEBOOK[{codebook_index+1}/{codebook_size}] -> LEARNING STEPS')
-            logger.debug(estimate_remaining_time(
-                total_iterations=learning_steps,
-                current_iteration=step + 1,
-                init_time=init_time,
-                current_iteration_init_time=step_init_time,
-                concept=concept))
+        if reset and codebook_log_info is not None:
+            learning_log_info = CodebookLearningStepsLogInformation(
+                total_steps=learning_steps,
+                step_iteration=step,
+                learning_init_time=init_time,
+                step_current_iteration_init_time=step_init_time
+            )
+            print_codebook_learning_steps_log(codebook_log_info=codebook_log_info,
+                                              learning_log_info=learning_log_info)
         return reset
 
     def _print_optimized_parameters_for_tf_backend_only(self,

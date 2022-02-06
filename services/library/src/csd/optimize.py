@@ -2,6 +2,7 @@ from abc import ABC
 from typing import Callable, List, Union, Optional
 from csd.optimizers.parallel_tf import ParallelTFOptimizer
 from csd.typings.typing import LearningRate, LearningSteps, OptimizationBackends, OptimizationResult
+from csd.util import CodeBookLogInformation
 from .optimizers.tf import TFOptimizer
 from .optimizers.scipy import ScipyOptimizer
 from .optimizers.parallel_scipy import ParallelOptimizer
@@ -39,9 +40,9 @@ class Optimize(ABC):
     def optimize(self,
                  cost_function: Callable,
                  current_alpha: Optional[float] = 0.0,
-                 codebooks_info: dict = {}) -> OptimizationResult:
+                 codebook_log_info: Union[CodeBookLogInformation, None] = None) -> OptimizationResult:
         if self._optimizer is None:
             raise ValueError("optimizer not initilized")
         return self._optimizer.optimize(cost_function=cost_function,
                                         current_alpha=current_alpha,
-                                        codebooks_info=codebooks_info)
+                                        codebook_log_info=codebook_log_info)
