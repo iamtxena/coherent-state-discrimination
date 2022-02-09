@@ -709,7 +709,7 @@ class Plot(ABC):
                     color = 'lightcyan'
             if label.find('mode_7') != -1:
                 if label.find('anc:0') != -1:
-                    color = 'steelbule'
+                    color = 'steelblue'
                 if label.find('anc:1') != -1:
                     color = 'deepskyblue'
                 if label.find('anc:2') != -1:
