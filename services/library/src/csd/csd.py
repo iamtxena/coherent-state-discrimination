@@ -18,7 +18,7 @@ from csd.typings.typing import (Backends,
                                 MeasuringTypes,
                                 ResultExecution,
                                 Architecture, RunningTypes)
-from typing import Optional, Union, cast, List
+from typing import Optional, Tuple, Union, cast, List
 import numpy as np
 from time import time
 from csd.config import logger
@@ -214,6 +214,8 @@ class CSD(ABC):
             logger.debug(
                 f'Optimizing for alpha: {np.round(self._alpha_value, 2)} '
                 f'with {self._all_codebooks_size} codebooks.')
+            best_success_probability = 0.0
+            worst_success_probability = 1.0
 
             for index, codebook in enumerate(codebooks.codebooks):
                 one_codebook_start_time = time()
@@ -245,6 +247,11 @@ class CSD(ABC):
                 logger.debug(
                     f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_codebook_optimization_result)} '
                     f"codebook_size:{self._codebook_size}")
+                best_success_probability, worst_success_probability = self._update_best_and_worst_success_probability(
+                    current_success_probability=self._get_succ_prob(
+                        one_alpha_success_probability, one_codebook_optimization_result),
+                    best_success_probability=best_success_probability,
+                    worst_success_probability=worst_success_probability)
 
             average_error_probability_all_codebooks /= codebooks.size
             one_alpha_optimization_result = OptimizationResult(
@@ -265,12 +272,27 @@ class CSD(ABC):
                          f" ancillas: {self._training_circuit.number_ancillas} steps: {self._learning_steps}, "
                          f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}"
                          f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
+            logger.debug(
+                f'BEST success probability: {best_success_probability} , '
+                f'WORST success probability: {worst_success_probability}')
 
         self._update_result_with_total_time(result=result, start_time=start_time)
         self._save_results_to_file(result=result)
         self._save_plot_to_file(result=result)
 
         return result
+
+    def _update_best_and_worst_success_probability(self,
+                                                   current_success_probability: float,
+                                                   best_success_probability: float,
+                                                   worst_success_probability: float) -> Tuple[float, float]:
+        updated_best_success_probability = best_success_probability
+        updated_worst_success_probability = worst_success_probability
+        if current_success_probability > best_success_probability:
+            updated_best_success_probability = current_success_probability
+        if current_success_probability < worst_success_probability:
+            updated_worst_success_probability = current_success_probability
+        return updated_best_success_probability, updated_worst_success_probability
 
     # def _test_for_one_alpha(self, optimized_parameters: List[float]) -> EagerTensor:
     #     if self._testing_circuit is None:
