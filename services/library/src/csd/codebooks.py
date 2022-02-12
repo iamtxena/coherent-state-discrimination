@@ -82,10 +82,15 @@ class CodeBooks():
     def _generate_all_codebooks_with_linear_codes(self,
                                                   batch: Batch,
                                                   information_bits: int) -> List[List[CodeWord]]:
-        options = [0, 1]
+
+        print(f'information bits: {information_bits}')
         rows = k = information_bits
         n = batch.one_codeword.size
         columns = n - k
+        if not information_bits > 0:
+            logger.warning(f'information bits are less than 1. value={information_bits}')
+            return []
+        options = [0, 1]
 
         k_identity = np.identity(k)
         all_columns = list([*itertools.product(options, repeat=columns)])
