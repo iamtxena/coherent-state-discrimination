@@ -83,7 +83,6 @@ class CodeBooks():
                                                   batch: Batch,
                                                   information_bits: int) -> List[List[CodeWord]]:
 
-        print(f'information bits: {information_bits}')
         rows = k = information_bits
         n = batch.one_codeword.size
         columns = n - k
