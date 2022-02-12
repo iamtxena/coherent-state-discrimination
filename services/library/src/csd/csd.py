@@ -253,6 +253,10 @@ class CSD(ABC):
                     best_success_probability=best_success_probability,
                     worst_success_probability=worst_success_probability)
 
+            if not codebooks.size > 0:
+                logger.warning('codebooks size is 0. Going to next iteration.')
+                continue
+
             average_error_probability_all_codebooks /= codebooks.size
             one_alpha_optimization_result = OptimizationResult(
                 optimized_parameters=one_codebook_optimization_result.optimized_parameters,
