@@ -75,7 +75,7 @@ ARG CUSTOM_GITHUB_TOKEN
 RUN cd /root && \
     git clone https://${CUSTOM_GITHUB_USER}:${CUSTOM_GITHUB_TOKEN}@github.com/iamtxena/coherent-state-discrimination.git && \
     cd coherent-state-discrimination && \
-    git checkout using_ddbb && \
+    git checkout codebooks_linear_codes && \
     cd services/library && \
     pip install .
 
