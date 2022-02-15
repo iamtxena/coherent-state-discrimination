@@ -1,6 +1,7 @@
 from abc import ABC
 from csd.circuit import Circuit
 from csd.codebooks import CodeBooks
+from csd.codeword import CodeWord
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
 # from csd.optimization_testing import OptimizationTesting
@@ -216,6 +217,7 @@ class CSD(ABC):
                 f'with {self._all_codebooks_size} codebooks.')
             best_success_probability = 0.0
             worst_success_probability = 1.0
+            best_codebook = codebooks.codebooks[0].copy()
 
             for index, codebook in enumerate(codebooks.codebooks):
                 one_codebook_start_time = time()
@@ -247,11 +249,15 @@ class CSD(ABC):
                 logger.debug(
                     f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_codebook_optimization_result)} '
                     f"codebook_size:{self._codebook_size}")
-                best_success_probability, worst_success_probability = self._update_best_and_worst_success_probability(
+                (best_success_probability,
+                 worst_success_probability,
+                 best_codebook) = self._update_best_and_worst_success_probability(
                     current_success_probability=self._get_succ_prob(
                         one_alpha_success_probability, one_codebook_optimization_result),
                     best_success_probability=best_success_probability,
-                    worst_success_probability=worst_success_probability)
+                    worst_success_probability=worst_success_probability,
+                    current_codebook=self._current_codebook,
+                    best_codebook=best_codebook)
 
             if not codebooks.size > 0:
                 logger.warning('codebooks size is 0. Going to next iteration.')
@@ -277,8 +283,10 @@ class CSD(ABC):
                          f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}"
                          f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
             logger.debug(
+                f'alpha: {np.round(self._alpha_value, 2)} '
                 f'BEST success probability: {best_success_probability} , '
-                f'WORST success probability: {worst_success_probability}')
+                f'WORST success probability: {worst_success_probability}\n'
+                f'Best codebook: {best_codebook}')
 
         self._update_result_with_total_time(result=result, start_time=start_time)
         self._save_results_to_file(result=result)
@@ -289,14 +297,19 @@ class CSD(ABC):
     def _update_best_and_worst_success_probability(self,
                                                    current_success_probability: float,
                                                    best_success_probability: float,
-                                                   worst_success_probability: float) -> Tuple[float, float]:
+                                                   worst_success_probability: float,
+                                                   current_codebook: List[CodeWord],
+                                                   best_codebook: List[CodeWord]) -> Tuple[
+                                                       float, float, List[CodeWord]]:
         updated_best_success_probability = best_success_probability
         updated_worst_success_probability = worst_success_probability
+        new_best_codebook = best_codebook.copy()
         if current_success_probability > best_success_probability:
             updated_best_success_probability = current_success_probability
+            new_best_codebook = current_codebook.copy()
         if current_success_probability < worst_success_probability:
             updated_worst_success_probability = current_success_probability
-        return updated_best_success_probability, updated_worst_success_probability
+        return updated_best_success_probability, updated_worst_success_probability, new_best_codebook
 
     # def _test_for_one_alpha(self, optimized_parameters: List[float]) -> EagerTensor:
     #     if self._testing_circuit is None:
