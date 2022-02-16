@@ -1,14 +1,18 @@
 import time
+from tkinter import N
 
 import numpy as np
 import strawberryfields as sf
 from loguru import logger
-from scipy.optimize import minimize
+# from scipy.optimize import minimize
+from optimparallel import minimize_parallel as minimize
 from tqdm import tqdm
 import wandb
 
 from model_wrapper import LinearRegressionWrapper
 
+# TODO: Use probabilities.
+# TODO: Figure out optimparallel.
 
 def generate_nth_layer(layer_number, engine):
     """Generates the nth layer of the Dolinar receiver.
@@ -96,40 +100,37 @@ def loss_metric(prediction, target):
 
     return sum_of_combined_indices / config.NUM_MODES
 
-def training_error(weights, target, input_vector, layer_number):
-    global model, layers, previous_predictions, accumulated_loss
-
+def training_error(weights, target, input_vector, layer_number, model, layers):
     model.set_learnable_parameteres_from_flattended_list(weights)
     predicted_displacements = model(input_vector)
 
+    # TODO: Repeat sampling 100 times.
     measurement_of_nth_layer = layers[layer_number](
         target,
         2 * config.SIGNAL_AMPLITUDE * predicted_displacements)
 
     prediction = measurement_of_nth_layer.samples[0]
-    previous_predictions = prediction
     # logger.debug(f"{prediction = }, {target = }")
 
     error = loss_metric(prediction, target)
-    accumulated_loss += error
 
-    wandb.log({"accumulated_training_error": accumulated_loss})
+    wandb.log({"error": error})
 
     return error
 
-def train():
+# FIXME: Remove globals.
+def train(model, layers):
     """
     Runs a single step of optimization for a single value of alpha across all
     layers of the Dolinar receiver.
     """
-    global model, previous_predictions
-
     input_codeword = generate_random_codeword()
     # logger.debug(f"{input_codeword = }")
 
     # Sample multiple times from the circuit with the same input codeword.
+    # TODO: NUM_REPEAT -- 1
     for _ in range(config.NUM_REPEAT):
-        previous_predictions = np.random.normal(size=config.NUM_MODES * config.NUM_VARIABLES)
+        previous_prediction = np.random.normal(size=config.NUM_MODES * config.NUM_VARIABLES)
 
         for nth_layer in range(config.NUM_LAYERS):
             # logger.debug(f"Optimising for layer {nth_layer + 1} of {NUM_LAYERS}")
@@ -137,9 +138,10 @@ def train():
             one_hot_layer_vector = np.zeros(config.NUM_LAYERS)
             one_hot_layer_vector[nth_layer] = 1
 
-            input_vector = np.concatenate([previous_predictions, one_hot_layer_vector])
+            input_vector = np.concatenate([previous_prediction, one_hot_layer_vector])
             input_vector = np.expand_dims(input_vector, 0)
 
+            # TODO: Use weights to compute previous_prediction for layer 1...n-1 for layer n.
 
             result = minimize(
                 training_error,
@@ -147,16 +149,24 @@ def train():
                 (
                     input_codeword,
                     input_vector,
-                    nth_layer
+                    nth_layer,
+                    model,
+                    layers
                 ),
                 options={'maxiter': config.MAX_ITERATIONS}
             )
 
             model.set_learnable_parameteres_from_flattended_list(result.x)
 
-def evaluate(step):
-    global model
+            predicted_displacements = model(input_vector)
 
+            measurement_of_nth_layer = layers[nth_layer](
+                input_codeword,
+                2 * config.SIGNAL_AMPLITUDE * predicted_displacements)
+
+            previous_prediction = measurement_of_nth_layer.samples[0]
+
+def evaluate(step, model, layers):
     codewords = []
     for i in range(2 ** config.NUM_MODES):
         string_in_binary = bin(i)[2:]
@@ -210,7 +220,7 @@ def evaluate(step):
 if __name__ == '__main__':
     # Number of layers of the Dolinar receiver. Selecting 4 as the most basic,
     # non-trivial case.
-    NUM_LAYERS = 3 # 1,2,3
+    NUM_LAYERS = 2 # 1,2,3
 
     # Number of quantum modes. Basic 2-mode case.
     NUM_MODES = 2
@@ -232,9 +242,9 @@ if __name__ == '__main__':
             "INPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES + NUM_LAYERS,
             "OUTPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES,
 
-            "NUM_REPEAT": 10,
+            "NUM_REPEAT": 25,
             "NUM_TRAINING_ITERATIONS": 50,
-            "MAX_ITERATIONS": 5000,
+            "MAX_ITERATIONS": 100,
         }
     )
 
@@ -258,10 +268,6 @@ if __name__ == '__main__':
     layers = [generate_nth_layer(n, ENGINE) for n in range(config.NUM_LAYERS)]
     logger.info("Done.")
 
-    # Global tracker.
-    previous_predictions = None
-    accumulated_loss = 0.0
-
     wandb.log({"average_accuracy": 0.0})
 
     # Training loop (with evaluation).
@@ -269,10 +275,10 @@ if __name__ == '__main__':
     start = time.time()
 
     for step in tqdm(range(config.NUM_TRAINING_ITERATIONS)):
-        train()
+        train(model, layers)
 
         # Evaluate.
-        evaluate(step)
+        evaluate(step, model, layers)
 
     end = time.time()
     elapsed = (end - start)
