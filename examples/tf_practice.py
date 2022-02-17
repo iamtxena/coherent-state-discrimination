@@ -9,11 +9,11 @@ import tensorflow as tf
 
 ALPHA = 0.7
 STEPS = 200
-BATCH_SIZE = 10
+BATCH_SIZE = 1
 # ALPHAS = list(np.arange(0.05, 1.5, 0.05))
 # ALPHAS = [0.6, 0.7]
 # ALPHAS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
-ALPHAS = [0.1, 0.2]
+ALPHAS = [0.7]
 
 
 def orig_tf() -> None:
@@ -27,11 +27,11 @@ def orig_tf() -> None:
 
         for step in range(steps):
             batch = [1 if random.random() > threshold else -1 for _ in range(batch_size)]
-            alpha_val = sample_alpha * np.array(batch)
+            alpha_val = sample_alpha * np.array(batch)[0]
 
             eng = sf.Engine(backend="tf", backend_options={
                 "cutoff_dim": 7,
-                "batch_size": len(alpha_val),
+                # "batch_size": len(alpha_val) if len(alpha_val) > 1 else None,
             })
 
             circuit = sf.Program(1)
@@ -60,9 +60,15 @@ def orig_tf() -> None:
 
                 for i, mult in enumerate(batch):
                     if mult == 1:
-                        loss += p_one[i]
+                        if len(batch) > 1:
+                            loss += p_one[i]
+                        else:
+                            loss += p_one
                     else:
-                        loss += p_zero[i]
+                        if len(batch) > 1:
+                            loss += p_zero[i]
+                        else:
+                            loss += p_zero
 
                 loss /= len(batch)
 
@@ -154,7 +160,7 @@ def test_tf_2() -> None:
 
 
 if __name__ == '__main__':
-    test_tf()
+    # test_tf()
     orig_tf()
 
     # test_gaus_sampling()
