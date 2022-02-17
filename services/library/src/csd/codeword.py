@@ -112,3 +112,13 @@ class CodeWord():
         if not hasattr(other, 'word'):
             return False
         return self.word == other.word
+
+    @property
+    def binary_code(self) -> List[int]:
+        """ Returns a list of 0 where there is alpha_value
+            and 1 otherwise.
+
+        Returns:
+            List[int]: the generated list
+        """
+        return [0 if letter == self.alpha else 1 for letter in self.word]

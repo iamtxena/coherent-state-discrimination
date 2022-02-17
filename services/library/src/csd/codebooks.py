@@ -43,6 +43,10 @@ class CodeBooks():
     def alpha(self) -> float:
         return self._alpha_value
 
+    @property
+    def binary_codes(self) -> List[List[int]]:
+        return [codeword.binary_code for codebook in self._codebooks for codeword in codebook]
+
     def _compute_codebook_maximum_size(self, batch: Batch) -> int:
         channel_max_communication_rate = self._compute_channel_max_communication_rate(alpha=batch.alpha)
         return math.floor(math.pow(2, (batch.one_codeword.size * channel_max_communication_rate)))
