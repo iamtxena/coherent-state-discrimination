@@ -31,7 +31,7 @@ def _generate_best_codebook(success_probability: float,
     if cbs.size <= 0:
         return None
     cb = random.choice(cbs.codebooks)
-    random_measurement = [[random.choice([0, 1]) for _ in range(codeword.size)] for codeword in cb]
+    random_measurement = random.choice(cbs.codebooks)
     return BestCodeBook(codebook=cb,
                         measurements=random_measurement,
                         success_probability=success_probability,

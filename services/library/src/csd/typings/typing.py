@@ -107,6 +107,7 @@ class RunConfiguration(TypedDict, total=False):
 class OptimizationResult(NamedTuple):
     optimized_parameters: List[float]
     error_probability: float
+    measurements: List[CodeWord]
 
 
 class OneProcessResultExecution(TypedDict):

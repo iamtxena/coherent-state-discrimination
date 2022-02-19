@@ -297,7 +297,7 @@ if __name__ == '__main__':
 
     # list_number_input_modes = list(range(6, 11))
     list_number_input_modes = [2]
-    list_squeezing = [False, True]
+    list_squeezing = [False]
     one_ancilla = 0
     for number_input_modes in list_number_input_modes:
         for squeezing_option in list_squeezing:

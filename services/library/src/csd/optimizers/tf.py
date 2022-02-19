@@ -1,6 +1,7 @@
 from abc import ABC
 import time
 from typing import Callable, List, Optional, Tuple, Union
+from csd.codeword import CodeWord
 import tensorflow as tf
 import numpy as np
 import os
@@ -51,8 +52,8 @@ class TFOptimizer(ABC):
         logger.info(f"number of parameters: {len(parameters)}")
         for step in range(current_learning_steps):
             step_init_time = time.time()
-            loss, parameters = self._tf_optimize(cost_function=cost_function,
-                                                 parameters=parameters)
+            loss, parameters, measurements = self._tf_optimize(cost_function=cost_function,
+                                                               parameters=parameters)
 
             reset = self._print_time_when_necessary(learning_steps=current_learning_steps,
                                                     init_time=init_time,
@@ -64,7 +65,8 @@ class TFOptimizer(ABC):
             self._update_tf_board_metrics(step)
 
         return OptimizationResult(optimized_parameters=[param.numpy() for param in parameters],
-                                  error_probability=loss.numpy())
+                                  error_probability=loss.numpy(),
+                                  measurements=measurements)
 
     def _update_tf_board_metrics(self, step: int) -> None:
         with self._train_summary_writer.as_default():
@@ -104,10 +106,12 @@ class TFOptimizer(ABC):
 
     def _tf_optimize(self,
                      cost_function: Callable,
-                     parameters: List[Variable]) -> Tuple[EagerTensor, List[Variable]]:
+                     parameters: List[Variable]) -> Tuple[EagerTensor,
+                                                          List[Variable],
+                                                          List[CodeWord]]:
 
         with tf.GradientTape() as tape:
-            loss = cost_function(params=parameters)
+            loss, measurements = cost_function(params=parameters)
 
         gradients = tape.gradient(loss, parameters)
         self._opt.apply_gradients(zip(gradients, parameters))
@@ -118,7 +122,7 @@ class TFOptimizer(ABC):
         for train_param, parameter in zip(self._train_params, parameters):
             train_param(parameter)
 
-        return loss, parameters
+        return loss, parameters, measurements
 
     def _print_time_when_necessary(self,
                                    learning_steps: int,

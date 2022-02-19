@@ -1,6 +1,6 @@
 # cost_function.py
 from abc import ABC
-from typing import List, Union
+from typing import List, Tuple, Union
 # import numpy as np
 
 from tensorflow.python.framework.ops import EagerTensor
@@ -30,6 +30,14 @@ class CostFunction(ABC):
                                    alpha_value=batch.alpha,
                                    all_words=False,
                                    input_batch=output_codebook)
+        self._codeword_guesses: Union[None, List[CodeWordSuccessProbability]] = None
+
+    @property
+    def measurements(self) -> List[CodeWord]:
+        if self._codeword_guesses is None:
+            raise ValueError("codeword guesses still not computed")
+        return [codeword_sucess_probability.guessed_codeword
+                for codeword_sucess_probability in self._codeword_guesses]
 
     def _run_and_get_codeword_guesses(self) -> List[CodeWordSuccessProbability]:
         if self._options.backend_name == Backends.TENSORFLOW.value:
@@ -59,6 +67,8 @@ class CostFunction(ABC):
             self,
             codeword_guesses: List[CodeWordSuccessProbability]) -> Union[float, EagerTensor]:
 
+        self._codeword_guesses = codeword_guesses
+
         success_probability_from_guesses = [
             codeword_success_prob.success_probability
             if batch_codeword == codeword_success_prob.guessed_codeword
@@ -66,8 +76,9 @@ class CostFunction(ABC):
             for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
         return sum(success_probability_from_guesses) / self._input_batch.size
 
-    def run_and_compute_average_batch_error_probability(self) -> Union[float, EagerTensor]:
-        return 1 - sum([self._compute_one_play_average_batch_success_probability(
+    def run_and_compute_average_batch_error_probability(self) -> Tuple[Union[float, EagerTensor], List[CodeWord]]:
+        loss = 1 - sum([self._compute_one_play_average_batch_success_probability(
             codeword_guesses=self._run_and_get_codeword_guesses())
             for _ in range(self._options.plays)]
         ) / self._options.plays
+        return loss, self.measurements

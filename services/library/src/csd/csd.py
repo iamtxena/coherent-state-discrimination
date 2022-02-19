@@ -1,4 +1,5 @@
 from abc import ABC
+from csd.best_codebook import BestCodeBook
 from csd.circuit import Circuit
 from csd.codebooks import CodeBooks
 from csd.codeword import CodeWord
@@ -7,6 +8,7 @@ from csd.global_result_manager import GlobalResultManager
 from csd.ideal_probabilities import IdealLinearCodesHelstromProbability, IdealLinearCodesHomodyneProbability
 # from csd.optimization_testing import OptimizationTesting
 from csd.tf_engine import TFEngine
+from csd.top5_best_codebooks import Top5_BestCodeBooks
 from csd.typings.global_result import GlobalResult
 # from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (Backends,
@@ -218,9 +220,7 @@ class CSD(ABC):
             logger.debug(
                 f'Optimizing for alpha: {np.round(self._alpha_value, 2)} '
                 f'with {self._all_codebooks_size} codebooks.')
-            best_success_probability = 0.0
-            worst_success_probability = 1.0
-            best_codebook = codebooks.codebooks[0].copy() if len(codebooks.codebooks) > 0 else []
+            top5_codebooks = Top5_BestCodeBooks()
 
             for index, codebook in enumerate(codebooks.codebooks):
                 one_codebook_start_time = time()
@@ -241,10 +241,20 @@ class CSD(ABC):
                 # one_alpha_success_probability = self._test_for_one_alpha(
                 #     optimized_parameters=one_alpha_optimization_result.optimized_parameters)
                 average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
-                average_ideal_homodyne_probability_all_codebooks += IdealLinearCodesHomodyneProbability(
+                homodyne_probability = IdealLinearCodesHomodyneProbability(
                     codebook=self._current_codebook).homodyne_probability
-                average_ideal_helstrom_probability_all_codebooks += IdealLinearCodesHelstromProbability(
+                average_ideal_homodyne_probability_all_codebooks += homodyne_probability
+                helstrom_probability = IdealLinearCodesHelstromProbability(
                     codebook=self._current_codebook).helstrom_probability
+                average_ideal_helstrom_probability_all_codebooks += helstrom_probability
+
+                top5_codebooks.add(potential_best_codebook=BestCodeBook(
+                    codebook=self._current_codebook,
+                    measurements=one_codebook_optimization_result.measurements,
+                    success_probability=self._get_succ_prob(
+                        one_alpha_success_probability, one_codebook_optimization_result),
+                    helstrom_probability=helstrom_probability,
+                    homodyne_probability=homodyne_probability))
                 self._current_codebook_log_info = CodeBookLogInformation(
                     alpha_value=np.round(self._alpha_value, 2),
                     alpha_init_time=one_alpha_start_time,
@@ -256,15 +266,6 @@ class CSD(ABC):
                 logger.debug(
                     f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_codebook_optimization_result)} '
                     f"codebook_size:{self._codebook_size}")
-                (best_success_probability,
-                 worst_success_probability,
-                 best_codebook) = self._update_best_and_worst_success_probability(
-                    current_success_probability=self._get_succ_prob(
-                        one_alpha_success_probability, one_codebook_optimization_result),
-                    best_success_probability=best_success_probability,
-                    worst_success_probability=worst_success_probability,
-                    current_codebook=self._current_codebook,
-                    best_codebook=best_codebook)
 
             if not codebooks.size > 0:
                 logger.warning('codebooks size is 0. Going to next iteration.')
@@ -275,7 +276,8 @@ class CSD(ABC):
             average_ideal_helstrom_probability_all_codebooks /= codebooks.size
             one_alpha_optimization_result = OptimizationResult(
                 optimized_parameters=one_codebook_optimization_result.optimized_parameters,
-                error_probability=average_error_probability_all_codebooks)
+                error_probability=average_error_probability_all_codebooks,
+                measurements=one_codebook_optimization_result.measurements)
             self._update_result(result=result,
                                 one_alpha_optimization_result=one_alpha_optimization_result,
                                 one_alpha_success_probability=one_alpha_success_probability,
@@ -300,15 +302,31 @@ class CSD(ABC):
                 f'alpha: {np.round(self._alpha_value, 2)} '
                 f'IDEAL HELSTROM: {average_ideal_homodyne_probability_all_codebooks} ,'
                 f'IDEAL DOMODYNE: {average_ideal_helstrom_probability_all_codebooks} ,'
-                f'BEST success probability: {best_success_probability} , '
-                f'WORST success probability: {worst_success_probability}\n'
-                f'Best codebook: {best_codebook}')
+                f'BEST success probability: {top5_codebooks.first.success_probability}\n'
+                f'Best codebook: {top5_codebooks.first}\n\n')
+            self._print_top5_codebooks(top5_codebooks=top5_codebooks)
 
         self._update_result_with_total_time(result=result, start_time=start_time)
         self._save_results_to_file(result=result)
         self._save_plot_to_file(result=result)
 
         return result
+
+    def _print_top5_codebooks(self, top5_codebooks: Top5_BestCodeBooks) -> None:
+        first = f'FIRST: {top5_codebooks.first}\n\n' if top5_codebooks.size >= 1 else ''
+        second = f'SECOND: {top5_codebooks.second}\n\n' if top5_codebooks.size >= 2 else ''
+        third = f'THIRD: {top5_codebooks.third}\n\n' if top5_codebooks.size >= 3 else ''
+        fourth = f'FOURTH: {top5_codebooks.fourth}\n\n' if top5_codebooks.size >= 4 else ''
+        fifth = f'FIFTH: {top5_codebooks.fifth}\n\n' if top5_codebooks.size >= 5 else ''
+
+        logger.debug('\n\n************************************\n'
+                     f'TOP{top5_codebooks.size} codebooks: \n\n'
+                     f'{first}'
+                     f'{second}'
+                     f'{third}'
+                     f'{fourth}'
+                     f'{fifth}'
+                     '************************************\n')
 
     def _update_best_and_worst_success_probability(self,
                                                    current_success_probability: float,
