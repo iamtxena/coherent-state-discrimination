@@ -1,11 +1,11 @@
 # plot.py
 
 from abc import ABC
-from typing import List, Optional, Tuple
+from typing import Any, List, Optional, Tuple
 import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
 # from typeguard import typechecked
-from csd.ideal_probabilities import IdealHelstromProbability, IdealHomodyneProbability, IdealProbabilities
+from csd.ideal_probabilities import IdealProbabilities
 from csd.typings.global_result import GlobalResult
 from csd.typings.typing import ResultExecution
 from csd.util import set_current_time, _fix_path, set_friendly_time
@@ -47,8 +47,11 @@ class Plot(ABC):
 
             probs_labels = []
             for number_mode in number_modes:
-                self._compute_hels_homo_probs(apply_log, one_alpha, homodyne_probabilities,
-                                              helstrom_probabilities, number_mode)
+                self._compute_hels_homo_probs(apply_log=apply_log if apply_log is not None else False,
+                                              number_mode=number_mode,
+                                              global_results=global_results,
+                                              helstrom_probabilities=helstrom_probabilities,
+                                              homodyne_probabilities=homodyne_probabilities)
                 squeezed_probabilities_mode_i = []
                 non_squeezed_probabilities_mode_i = []
                 for ancilla_i in number_ancillas:
@@ -113,14 +116,20 @@ class Plot(ABC):
                                 suffix=suffix, fig=fig)
 
     def _compute_hels_homo_probs(self,
-                                 apply_log, one_alpha,
-                                 homodyne_probabilities,
-                                 helstrom_probabilities,
-                                 number_mode):
-        homodyne_probability = IdealHomodyneProbability(
-            alpha=one_alpha, number_modes=number_mode).homodyne_probability
-        helstrom_probability = IdealHelstromProbability(
-            alpha=one_alpha, number_modes=number_mode).helstrom_probability
+                                 apply_log: bool,
+                                 number_mode: int,
+                                 global_results: List[GlobalResult],
+                                 helstrom_probabilities: List[float],
+                                 homodyne_probabilities: List[float]) -> None:
+        homodyne_probability_all = [global_result.homodyne_probability
+                                    for global_result in global_results
+                                    if (global_result.number_modes == number_mode)]
+        homodyne_probability = sum(homodyne_probability_all) / len(homodyne_probability_all)
+        helstrom_probability_all = [global_result.helstrom_probability
+                                    for global_result in global_results
+                                    if (global_result.number_modes == number_mode)]
+        helstrom_probability = sum(helstrom_probability_all) / len(helstrom_probability_all)
+
         homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
         helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
 
@@ -175,8 +184,11 @@ class Plot(ABC):
 
         probs_labels = []
         for number_mode in number_modes:
-            self._compute_hels_homo_probs(apply_log, one_alpha, homodyne_probabilities,
-                                          helstrom_probabilities, number_mode)
+            self._compute_hels_homo_probs(apply_log=apply_log if apply_log is not None else False,
+                                          number_mode=number_mode,
+                                          global_results=global_results,
+                                          helstrom_probabilities=helstrom_probabilities,
+                                          homodyne_probabilities=homodyne_probabilities)
             squeezed_probabilities_mode_i = []
             non_squeezed_probabilities_mode_i = []
             for ancilla_i in number_ancillas:
@@ -600,11 +612,14 @@ class Plot(ABC):
                                    save_plot: Optional[bool] = False,
                                    interactive_plot: Optional[bool] = False) -> None:
 
-        executions_probs_labels = [self._ideal_probabilities.p_homos,
-                                   self._ideal_probabilities.p_ken_op,
-                                   self._ideal_probabilities.p_hels]
+        executions_probs_labels = []
+        # executions_probs_labels = [self._ideal_probabilities.p_ken_op]
 
         if executions is not None:
+            executions_probs_labels += [(execution['p_helstrom'], f"$pHel(a)^{execution['number_modes'][0]}$")
+                                        for execution in executions]
+            executions_probs_labels += [(execution['p_homodyne'], f"$pHom(a)^{execution['number_modes'][0]}$")
+                                        for execution in executions]
             executions_probs_labels += [(execution['p_succ'], execution['plot_label'])
                                         for execution in executions]
             self._plot_title(execution=executions[0])
@@ -626,7 +641,7 @@ class Plot(ABC):
         plt.title(f"{execution['plot_title']}{total_time}{total_time_per_alpha}", fontsize=8)
 
     def _set_plot_lines(self,
-                        probs_labels: List[Tuple[List[float], str]]) -> List[List[object]]:
+                        probs_labels: List[Tuple[List[float], str]]) -> List[List[Any]]:
 
         lines = []
         for prob, label in probs_labels:

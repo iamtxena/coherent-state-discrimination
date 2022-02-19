@@ -4,6 +4,7 @@ from csd.codebooks import CodeBooks
 from csd.codeword import CodeWord
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
+from csd.ideal_probabilities import IdealLinearCodesHelstromProbability, IdealLinearCodesHomodyneProbability
 # from csd.optimization_testing import OptimizationTesting
 from csd.tf_engine import TFEngine
 from csd.typings.global_result import GlobalResult
@@ -210,6 +211,8 @@ class CSD(ABC):
             self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
 
             average_error_probability_all_codebooks = 0.0
+            average_ideal_homodyne_probability_all_codebooks = 0.0
+            average_ideal_helstrom_probability_all_codebooks = 0.0
             codebooks = CodeBooks(batch=self._current_batch, max_combinations=self._max_combinations)
             self._all_codebooks_size = codebooks.size
             logger.debug(
@@ -217,7 +220,7 @@ class CSD(ABC):
                 f'with {self._all_codebooks_size} codebooks.')
             best_success_probability = 0.0
             worst_success_probability = 1.0
-            best_codebook = codebooks.codebooks[0].copy()
+            best_codebook = codebooks.codebooks[0].copy() if len(codebooks.codebooks) > 0 else []
 
             for index, codebook in enumerate(codebooks.codebooks):
                 one_codebook_start_time = time()
@@ -238,6 +241,10 @@ class CSD(ABC):
                 # one_alpha_success_probability = self._test_for_one_alpha(
                 #     optimized_parameters=one_alpha_optimization_result.optimized_parameters)
                 average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
+                average_ideal_homodyne_probability_all_codebooks += IdealLinearCodesHomodyneProbability(
+                    codebook=self._current_codebook).homodyne_probability
+                average_ideal_helstrom_probability_all_codebooks += IdealLinearCodesHelstromProbability(
+                    codebook=self._current_codebook).helstrom_probability
                 self._current_codebook_log_info = CodeBookLogInformation(
                     alpha_value=np.round(self._alpha_value, 2),
                     alpha_init_time=one_alpha_start_time,
@@ -264,16 +271,23 @@ class CSD(ABC):
                 continue
 
             average_error_probability_all_codebooks /= codebooks.size
+            average_ideal_homodyne_probability_all_codebooks /= codebooks.size
+            average_ideal_helstrom_probability_all_codebooks /= codebooks.size
             one_alpha_optimization_result = OptimizationResult(
                 optimized_parameters=one_codebook_optimization_result.optimized_parameters,
                 error_probability=average_error_probability_all_codebooks)
             self._update_result(result=result,
                                 one_alpha_optimization_result=one_alpha_optimization_result,
-                                one_alpha_success_probability=one_alpha_success_probability)
+                                one_alpha_success_probability=one_alpha_success_probability,
+                                helstrom_probability=average_ideal_helstrom_probability_all_codebooks,
+                                homodyne_probability=average_ideal_homodyne_probability_all_codebooks,
+                                number_mode=self._training_circuit.number_input_modes)
             self._write_result(alpha=sample_alpha,
                                one_alpha_start_time=one_alpha_start_time,
                                success_probability=self._get_succ_prob(
-                                   one_alpha_success_probability, one_alpha_optimization_result))
+                                   one_alpha_success_probability, one_alpha_optimization_result),
+                               helstrom_probability=average_ideal_helstrom_probability_all_codebooks,
+                               homodyne_probability=average_ideal_homodyne_probability_all_codebooks)
 
             logger.debug(f'Optimized and trained for alpha: {np.round(self._alpha_value, 2)} '
                          f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_alpha_optimization_result)} '
@@ -284,6 +298,8 @@ class CSD(ABC):
                          f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
             logger.debug(
                 f'alpha: {np.round(self._alpha_value, 2)} '
+                f'IDEAL HELSTROM: {average_ideal_homodyne_probability_all_codebooks} ,'
+                f'IDEAL DOMODYNE: {average_ideal_helstrom_probability_all_codebooks} ,'
                 f'BEST success probability: {best_success_probability} , '
                 f'WORST success probability: {worst_success_probability}\n'
                 f'Best codebook: {best_codebook}')
@@ -335,7 +351,9 @@ class CSD(ABC):
     def _write_result(self,
                       alpha: float,
                       one_alpha_start_time: float,
-                      success_probability: float):
+                      success_probability: float,
+                      helstrom_probability: float,
+                      homodyne_probability: float):
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
@@ -344,7 +362,9 @@ class CSD(ABC):
                                                         number_modes=self._training_circuit.number_input_modes,
                                                         time_in_seconds=time() - one_alpha_start_time,
                                                         squeezing=self._architecture['squeezing'],
-                                                        number_ancillas=self._training_circuit.number_ancillas))
+                                                        number_ancillas=self._training_circuit.number_ancillas,
+                                                        helstrom_probability=helstrom_probability,
+                                                        homodyne_probability=homodyne_probability))
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()
@@ -402,7 +422,10 @@ class CSD(ABC):
     def _update_result(self,
                        result: ResultExecution,
                        one_alpha_optimization_result: OptimizationResult,
-                       one_alpha_success_probability: EagerTensor):
+                       one_alpha_success_probability: EagerTensor,
+                       helstrom_probability: float,
+                       homodyne_probability: float,
+                       number_mode: int):
         # logger.debug(f'Tested for alpha: {np.round(self._alpha_value, 2)}'
         #              f' parameters: {one_alpha_optimization_result.optimized_parameters}'
         #              f' p_succ: {one_alpha_success_probability.numpy()}')
@@ -411,6 +434,9 @@ class CSD(ABC):
         result['opt_params'].append(list(one_alpha_optimization_result.optimized_parameters))
         result['p_err'].append(one_alpha_optimization_result.error_probability)
         result['p_succ'].append(self._get_succ_prob(one_alpha_success_probability, one_alpha_optimization_result))
+        result['p_helstrom'].append(helstrom_probability)
+        result['p_homodyne'].append(homodyne_probability)
+        result['number_modes'].append(number_mode)
 
     def _init_result(self):
         if self._training_circuit is None:
@@ -432,7 +458,10 @@ class CSD(ABC):
                                                layers=self._architecture['number_layers'],
                                                squeezing=self._architecture['squeezing'],
                                                ancillas=self._training_circuit.number_ancillas,),
-            'total_time': 0.0
+            'total_time': 0.0,
+            'p_helstrom': [],
+            'p_homodyne': [],
+            'number_modes': []
         }
 
         return result

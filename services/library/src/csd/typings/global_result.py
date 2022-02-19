@@ -1,8 +1,6 @@
 from typing import List, NamedTuple, Tuple
 import json
 
-from csd.ideal_probabilities import IdealHelstromProbability
-
 
 class GlobalResult(NamedTuple):
     alpha: float
@@ -11,12 +9,12 @@ class GlobalResult(NamedTuple):
     time_in_seconds: float
     squeezing: bool
     number_ancillas: int
+    helstrom_probability: float
+    homodyne_probability: float
 
     @property
     def distance_to_helstrom_probability(self) -> float:
-        return self.success_probability - IdealHelstromProbability(
-            alpha=self.alpha,
-            number_modes=self.number_modes).helstrom_probability
+        return self.success_probability - self.helstrom_probability
 
     @property
     def bit_error_rate(self) -> float:
@@ -30,9 +28,11 @@ class GlobalResult(NamedTuple):
                 'distance_to_helstrom_probability',
                 'bit_error_rate',
                 'squeezing',
-                'number_ancillas']
+                'number_ancillas',
+                'helstrom_probability',
+                'homodyne_probability']
 
-    def values(self) -> Tuple[float, float, int, float, float, float, bool, int]:
+    def values(self) -> Tuple[float, float, int, float, float, float, bool, int, float, float]:
         return (self.alpha,
                 self.success_probability,
                 self.number_modes,
@@ -40,7 +40,9 @@ class GlobalResult(NamedTuple):
                 self.distance_to_helstrom_probability,
                 self.bit_error_rate,
                 self.squeezing,
-                self.number_ancillas)
+                self.number_ancillas,
+                self.helstrom_probability,
+                self.homodyne_probability)
 
     def __eq__(self, other) -> bool:
         return (self.alpha == other.alpha and
@@ -50,7 +52,9 @@ class GlobalResult(NamedTuple):
                 self.distance_to_helstrom_probability == other.distance_to_helstrom_probability and
                 self.bit_error_rate == other.bit_error_rate and
                 self.squeezing == other.squeezing and
-                self.number_ancillas == other.number_ancillas)
+                self.number_ancillas == other.number_ancillas and
+                self.helstrom_probability == other.helstrom_probability and
+                self.homodyne_probability == other.homodyne_probability)
 
     def __str__(self) -> str:
         return json.dumps({
@@ -62,6 +66,8 @@ class GlobalResult(NamedTuple):
             "bit_error_rate": self.bit_error_rate,
             "squeezing": self.squeezing,
             "number_ancillas": self.number_ancillas,
+            "helstrom_probability": self.helstrom_probability,
+            "homodyne_probability": self.homodyne_probability
         })
 
     def __repr__(self) -> str:

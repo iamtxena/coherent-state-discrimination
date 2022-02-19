@@ -113,6 +113,8 @@ class OneProcessResultExecution(TypedDict):
     opt_params: List[Union[List[float], EagerTensor]]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]
+    p_helstrom: List[float]
+    p_homodyne: List[float]
 
 
 class ResultExecution(TypedDict):
@@ -126,6 +128,9 @@ class ResultExecution(TypedDict):
     plot_label: str
     plot_title: str
     total_time: float
+    p_helstrom: List[float]
+    p_homodyne: List[float]
+    number_modes: List[int]
 
 
 class EngineRunOptions(TypedDict):

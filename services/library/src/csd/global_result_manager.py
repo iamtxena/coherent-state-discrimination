@@ -43,7 +43,9 @@ class GlobalResultManager(ABC):
                                              number_modes=1,
                                              time_in_seconds=1,
                                              squeezing=False,
-                                             number_ancillas=0).header())
+                                             number_ancillas=0,
+                                             helstrom_probability=0.0,
+                                             homodyne_probability=0.0).header())
         return results_file
 
     def write_result(self, global_result: GlobalResult) -> None:
@@ -71,7 +73,9 @@ class GlobalResultManager(ABC):
                                          number_modes=1,
                                          time_in_seconds=1,
                                          squeezing=False,
-                                         number_ancillas=0).header())
+                                         number_ancillas=0,
+                                         helstrom_probability=0.0,
+                                         homodyne_probability=0.0).header())
         return global_results_file
 
     def _transfer_alpha_results_to_global_file(self, global_results_file: str, alpha_file: str) -> None:
@@ -84,7 +88,10 @@ class GlobalResultManager(ABC):
                                           number_modes=int(row[2]),
                                           time_in_seconds=float(row[3]),
                                           squeezing=strtobool(row[6] if len(row) >= 7 else 'False'),
-                                          number_ancillas=int(row[7] if len(row) >= 8 else 0)) for row in reader]
+                                          number_ancillas=int(row[7] if len(row) >= 8 else 0),
+                                          helstrom_probability=float(row[8] if len(row) >= 9 else 0.0),
+                                          homodyne_probability=float(row[9] if len(row) >= 10 else 0.0))
+                             for row in reader]
             new_results = self._filter_only_new_results(loaded_results=alpha_results)
             with open(global_results_file, 'a+', newline='') as write_obj:
                 writer = csv.writer(write_obj)
@@ -114,7 +121,9 @@ class GlobalResultManager(ABC):
                                                  number_modes=int(row[2]),
                                                  time_in_seconds=float(row[3]),
                                                  squeezing=strtobool(row[6]),
-                                                 number_ancillas=int(row[7])) for row in reader]
+                                                 number_ancillas=int(row[7]),
+                                                 helstrom_probability=float(row[8]),
+                                                 homodyne_probability=float(row[9])) for row in reader]
 
     def _create_unique_alphas(self):
         self._alphas = [result.alpha for result in self._global_results]
@@ -242,4 +251,6 @@ class GlobalResultManager(ABC):
                                              number_modes=max_result.number_modes,
                                              time_in_seconds=max_result.time_in_seconds,
                                              squeezing=max_result.squeezing,
-                                             number_ancillas=max_result.number_ancillas))
+                                             number_ancillas=max_result.number_ancillas,
+                                             helstrom_probability=max_result.helstrom_probability,
+                                             homodyne_probability=max_result.homodyne_probability))

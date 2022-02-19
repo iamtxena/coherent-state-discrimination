@@ -289,3 +289,18 @@ def generate_measurement_matrices_only_in_codebook(
     outcomes_in_codebook = filter_outcomes_only_in_codebook(outcomes, codebook)
     return [generate_measurement_matrix_one_outcome(outcome=outcome, cutoff_dim=cutoff_dim, zeros_matrix=zeros_matrix)
             for outcome in outcomes_in_codebook]
+
+
+def filter_number_modes_from_codebook(codebook: List[CodeWord]) -> int:
+    number_codebooks = len(codebook)
+    if number_codebooks <= 0:
+        return 0
+    orig_number_modes = codebook[0].size
+    if number_codebooks == 1:
+        return orig_number_modes
+    binary_codebook = [codeword.binary_code for codeword in codebook]
+    summed_codes = list(map(sum, zip(*binary_codebook)))
+    zero_constant_modes = summed_codes.count(0)
+    one_constant_modes = summed_codes.count(number_codebooks)
+
+    return orig_number_modes - zero_constant_modes - one_constant_modes

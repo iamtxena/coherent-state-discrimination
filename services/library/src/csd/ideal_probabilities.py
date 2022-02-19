@@ -3,6 +3,8 @@
 from abc import ABC
 from typing import List, NamedTuple, Tuple
 import math
+from csd.codeword import CodeWord
+from csd.util import filter_number_modes_from_codebook
 from scipy.optimize import minimize
 
 
@@ -76,3 +78,25 @@ class IdealHelstromProbability(NamedTuple):
     @property
     def helstrom_probability(self) -> float:
         return compute_helstrom_probability(a=self.alpha, number_modes=self.number_modes)
+
+
+class IdealLinearCodesHomodyneProbability(NamedTuple):
+    codebook: List[CodeWord]
+
+    @property
+    def homodyne_probability(self) -> float:
+        if len(self.codebook) <= 0:
+            return 0.0
+        filtered_number_modes = filter_number_modes_from_codebook(codebook=self.codebook)
+        return compute_homodyne_probability(a=self.codebook[0].alpha, number_modes=filtered_number_modes)
+
+
+class IdealLinearCodesHelstromProbability(NamedTuple):
+    codebook: List[CodeWord]
+
+    @property
+    def helstrom_probability(self) -> float:
+        if len(self.codebook) <= 0:
+            return 0.0
+        filtered_number_modes = filter_number_modes_from_codebook(codebook=self.codebook)
+        return compute_helstrom_probability(a=self.codebook[0].alpha, number_modes=filtered_number_modes)

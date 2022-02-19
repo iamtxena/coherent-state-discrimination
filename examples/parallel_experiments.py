@@ -147,10 +147,17 @@ def update_execution_result(acumulated_one_process_result: OneProcessResultExecu
                             input_result: ResultExecution) -> OneProcessResultExecution:
     new_one_process_result = acumulated_one_process_result.copy()
 
-    for opt_param, p_err, p_succ in zip(input_result['opt_params'], input_result['p_err'], input_result['p_succ']):
+    for opt_param, p_err, p_succ, p_hels, p_homo in zip(
+            input_result['opt_params'],
+            input_result['p_err'],
+            input_result['p_succ'],
+            input_result['p_helstrom'],
+            input_result['p_homodyne']):
         new_one_process_result['opt_params'].append(opt_param)
         new_one_process_result['p_err'].append(p_err)
         new_one_process_result['p_succ'].append(p_succ)
+        new_one_process_result['p_helstrom'].append(p_hels)
+        new_one_process_result['p_homodyne'].append(p_homo)
 
     return new_one_process_result
 
@@ -162,7 +169,9 @@ def create_full_execution_result(full_backend: Backends,
     acumulated_one_process_result = OneProcessResultExecution({
         'opt_params': [],
         'p_err': [],
-        'p_succ': []
+        'p_succ': [],
+        'p_helstrom': [],
+        'p_homodyne': [],
     })
     for result in results:
         acumulated_one_process_result = update_execution_result(
@@ -190,7 +199,10 @@ def create_full_execution_result(full_backend: Backends,
                                       learning_rate=multiprocess_configuration.learning_rate[0],
                                       learning_steps=multiprocess_configuration.learning_steps[0],
                                       cutoff_dim=multiprocess_configuration.cutoff_dim[0]),
-        'total_time': 0.0
+        'total_time': 0.0,
+        'p_helstrom': acumulated_one_process_result['p_helstrom'],
+        'p_homodyne': acumulated_one_process_result['p_homodyne'],
+        'number_modes': multiprocess_configuration.number_input_modes
     })
 
 
@@ -204,7 +216,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(3)
+    pool = Pool(8)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -280,11 +292,12 @@ if __name__ == '__main__':
     # alphas.pop(5)
     # one_alpha = alphas[5]
     # alphas = [alphas[8]]
-    # alphas = alphas[-2:]
+    # alphas = alphas[:-3]
+    # alphas = alphas[4:]
 
     # list_number_input_modes = list(range(6, 11))
     list_number_input_modes = [2]
-    list_squeezing = [True]
+    list_squeezing = [False, True]
     one_ancilla = 0
     for number_input_modes in list_number_input_modes:
         for squeezing_option in list_squeezing:
