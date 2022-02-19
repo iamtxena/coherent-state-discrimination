@@ -10,7 +10,7 @@ from csd.codeword import CodeWord
 class BestCodeBook():
     """Class for managing the best codebook."""
     codebook: List[CodeWord]
-    measurement: List[List[int]]
+    measurements: List[List[int]]
     success_probability: float
     helstrom_probability: float
     homodyne_probability: float
