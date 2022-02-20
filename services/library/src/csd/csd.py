@@ -6,10 +6,12 @@ from csd.codeword import CodeWord
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
 from csd.ideal_probabilities import IdealLinearCodesHelstromProbability, IdealLinearCodesHomodyneProbability
+from csd.optimization_testing import OptimizationTesting
 # from csd.optimization_testing import OptimizationTesting
 from csd.tf_engine import TFEngine
 from csd.top5_best_codebooks import Top5_BestCodeBooks
 from csd.typings.global_result import GlobalResult
+from csd.typings.optimization_testing import OptimizationTestingOptions
 # from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (Backends,
                                 CSDConfiguration,
@@ -177,7 +179,7 @@ class CSD(ABC):
 
         self._run_configuration = configuration.copy()
         self._training_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
-        # self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
+        self._testing_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
         result = self._init_result()
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
@@ -203,8 +205,8 @@ class CSD(ABC):
                         random_words: bool):
         if self._training_circuit is None:
             raise ValueError("Training circuit must be initialized")
-        # if self._testing_circuit is None:
-        #     raise ValueError("Testing circuit must be initialized")
+        if self._testing_circuit is None:
+            raise ValueError("Testing circuit must be initialized")
 
         start_time = time()
         for sample_alpha in self._alphas:
@@ -237,9 +239,8 @@ class CSD(ABC):
                     codebook_current_iteration_init_time=one_codebook_start_time
                 )
                 one_codebook_optimization_result = self._train_for_one_alpha_one_codebook()
-                one_alpha_success_probability = None
-                # one_alpha_success_probability = self._test_for_one_alpha(
-                #     optimized_parameters=one_alpha_optimization_result.optimized_parameters)
+                one_alpha_success_probability, measurements = self._test_for_one_alpha_one_codebook(
+                    optimized_parameters=one_codebook_optimization_result.optimized_parameters)
                 average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
                 homodyne_probability = IdealLinearCodesHomodyneProbability(
                     codebook=self._current_codebook).homodyne_probability
@@ -250,7 +251,8 @@ class CSD(ABC):
 
                 top5_codebooks.add(potential_best_codebook=BestCodeBook(
                     codebook=self._current_codebook,
-                    measurements=one_codebook_optimization_result.measurements,
+                    measurements=measurements if measurements is not None
+                    else one_codebook_optimization_result.measurements,
                     success_probability=self._get_succ_prob(
                         one_alpha_success_probability, one_codebook_optimization_result),
                     helstrom_probability=helstrom_probability,
@@ -347,26 +349,33 @@ class CSD(ABC):
             updated_worst_success_probability = current_success_probability
         return updated_best_success_probability, updated_worst_success_probability, new_best_codebook
 
-    # def _test_for_one_alpha(self, optimized_parameters: List[float]) -> EagerTensor:
-    #     if self._testing_circuit is None:
-    #         raise ValueError("Circuit must be initialized")
-    #     if self._run_configuration is None:
-    #         raise ValueError("Run configuration not specified")
-    #     if self._current_batch is None:
-    #         raise ValueError("Current Batch must be initialized")
-    #     # list_optimized_parameters = [one_parameter.numpy() for one_parameter in optimized_parameters]
-    #     # optimized_parameters = [-self._alpha_value]
-    #     logger.debug(
-    #         f'Going to train with the optimized parameters: {optimized_parameters}')
+    def _test_for_one_alpha_one_codebook(self, optimized_parameters: List[float]) -> Tuple[EagerTensor, List[CodeWord]]:
+        if self._testing_circuit is None:
+            raise ValueError("Circuit must be initialized")
+        if self._run_configuration is None:
+            raise ValueError("Run configuration not specified")
+        if self._current_batch is None:
+            raise ValueError("Current Batch must be initialized")
+        if self._current_codebook is None:
+            raise ValueError("Current codebook must be initialized")
+        # list_optimized_parameters = [one_parameter.numpy() for one_parameter in optimized_parameters]
+        # optimized_parameters = [-self._alpha_value]
+        logger.debug(
+            f'Going to test with the trained optimized parameters: {optimized_parameters}')
 
-    #     return OptimizationTesting(batch=self._current_batch,
-    #                                params=optimized_parameters,
-    #                                options=OptimizationTestingOptions(
-    #                                    engine=self._engine,
-    #                                    circuit=self._testing_circuit,
-    #                                    backend_name=self._engine.backend_name,
-    #                                    shots=self._shots,
-    #                                    plays=self._plays)).run_and_compute_average_batch_success_probability()
+        return OptimizationTesting(batch=Batch(size=0,
+                                               word_size=0,
+                                               alpha_value=self._alpha_value,
+                                               all_words=False,
+                                               input_batch=self._current_codebook),
+                                   params=optimized_parameters,
+                                   options=OptimizationTestingOptions(
+                                       engine=self._engine,
+                                       circuit=self._testing_circuit,
+                                       backend_name=self._engine.backend_name,
+                                       measuring_type=self._run_configuration['measuring_type'],
+                                       shots=self._shots,
+                                       plays=self._plays)).run_and_compute_average_batch_success_probability()
 
     def _write_result(self,
                       alpha: float,

@@ -164,7 +164,8 @@ class GlobalResultManager(ABC):
 
     def plot_success_probabilities(self,
                                    save_plot: bool = False,
-                                   interactive_plot: bool = False) -> None:
+                                   interactive_plot: bool = False,
+                                   best_codebook: Optional[bool] = False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
@@ -174,7 +175,8 @@ class GlobalResultManager(ABC):
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
             save_plot=save_plot,
-            interactive_plot=interactive_plot)
+            interactive_plot=interactive_plot,
+            best_codebook=best_codebook)
 
     def plot_distances(self, save_plot=False,
                        interactive_plot: bool = False) -> None:
@@ -221,7 +223,8 @@ class GlobalResultManager(ABC):
                          apply_log=False,
                          interactive_plot: bool = False,
                          squeezing: bool = True,
-                         non_squeezing: bool = False) -> None:
+                         non_squeezing: bool = False,
+                         best_codebook: Optional[bool] = False) -> None:
         if (not hasattr(self, '_selected_global_results') or
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
@@ -235,7 +238,8 @@ class GlobalResultManager(ABC):
                 global_results=(self._selected_global_results if not apply_log else self._selected_log_global_results),
                 save_plot=save_plot,
                 apply_log=apply_log,
-                interactive_plot=interactive_plot)
+                interactive_plot=interactive_plot,
+                best_codebook=best_codebook)
             return
 
         Plot(alphas=self._alphas).success_probabilities_all_alphas(
@@ -246,7 +250,8 @@ class GlobalResultManager(ABC):
             apply_log=apply_log,
             interactive_plot=interactive_plot,
             squeezing=squeezing,
-            non_squeezing=non_squeezing)
+            non_squeezing=non_squeezing,
+            best_codebook=best_codebook)
 
     def _select_global_results(self) -> None:
         self._selected_global_results = []

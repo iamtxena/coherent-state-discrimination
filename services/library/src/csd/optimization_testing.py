@@ -1,8 +1,11 @@
 # cost_function.py
 from abc import ABC
-from typing import List
+from typing import List, Tuple, Union
+from csd.codeword import CodeWord
+from csd.util import extend_input_codebook_to_output_codebook
 
 from tensorflow.python.framework.ops import EagerTensor
+import tensorflow as tf
 from csd.batch import Batch
 from csd.tf_engine import TFEngine
 from csd.typings.optimization_testing import OptimizationTestingOptions
@@ -18,29 +21,43 @@ class OptimizationTesting(ABC):
         self._params = params
         self._options = options
         self._input_batch = batch
-        self._output_batch = Batch(size=self._input_batch.size,
-                                   word_size=self._options.circuit.number_modes,
-                                   alpha_value=self._input_batch.alpha,
-                                   random_words=False)
+        output_codebook = extend_input_codebook_to_output_codebook(
+            input_codebook=self._input_batch.codewords,
+            output_modes=options.circuit.number_modes)
+        self._output_batch = Batch(size=0,
+                                   word_size=0,
+                                   alpha_value=batch.alpha,
+                                   all_words=False,
+                                   input_batch=output_codebook)
+        self._codeword_guesses: Union[None, List[CodeWordSuccessProbability]] = None
+
+    @property
+    def measurements(self) -> List[CodeWord]:
+        if self._codeword_guesses is None:
+            raise ValueError("codeword guesses still not computed")
+        return [codeword_sucess_probability.guessed_codeword
+                for codeword_sucess_probability in self._codeword_guesses]
 
     def _run_and_get_codeword_guesses(self) -> List[CodeWordSuccessProbability]:
         if self._options.backend_name != Backends.TENSORFLOW.value:
             raise ValueError("TF Backend is the only supported.")
         if not isinstance(self._options.engine, TFEngine):
             raise ValueError("TF Backend can only run on TFEngine.")
-        return self._options.engine.run_tf_circuit_training(
+        return self._options.engine.run_tf_circuit_checking_measuring_type(
             circuit=self._options.circuit,
             options=TFEngineRunOptions(
-                params=self._params,
+                params=[tf.Variable(param) for param in self._params],
                 input_batch=self._input_batch,
                 output_batch=self._output_batch,
                 shots=self._options.shots,
                 running_type=RunningTypes.TRAINING,
-                measuring_type=None))
+                measuring_type=self._options.measuring_type))
 
     def _compute_one_play_average_batch_success_probability(
             self,
             codeword_guesses: List[CodeWordSuccessProbability]) -> EagerTensor:
+
+        self._codeword_guesses = codeword_guesses
 
         success_probability_from_guesses = [
             codeword_success_prob.success_probability
@@ -49,12 +66,12 @@ class OptimizationTesting(ABC):
             for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
         return sum(success_probability_from_guesses) / self._input_batch.size
 
-    def run_and_compute_average_batch_success_probability(self) -> EagerTensor:
+    def run_and_compute_average_batch_success_probability(self) -> Tuple[EagerTensor, List[CodeWord]]:
 
         batch_success_probability = sum([self._compute_one_play_average_batch_success_probability(
             codeword_guesses=self._run_and_get_codeword_guesses())
             for _ in range(self._options.plays)]
         ) / self._options.plays
 
-        logger.debug(f'Trained batch_success_probability: {batch_success_probability}')
-        return batch_success_probability
+        logger.debug(f'TESTING Success probability from trained parameters: {batch_success_probability}')
+        return batch_success_probability, self.measurements

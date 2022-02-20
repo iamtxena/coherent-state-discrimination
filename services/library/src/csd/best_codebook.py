@@ -38,9 +38,9 @@ class BestCodeBook():
 
     def to_dict(self) -> dict:
         return {
-            'alpha': self.alpha,
+            'alpha': float(self.alpha),
             'modes': self.modes,
-            'best_success_probability': self.success_probability,
+            'best_success_probability': float(self.success_probability),
             'helstrom_probability': self.helstrom_probability,
             'homodyne_probability': self.homodyne_probability,
             'best_codebook': [codeword.binary_code for codeword in self.codebook],

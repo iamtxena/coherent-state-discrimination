@@ -5,7 +5,6 @@ from typing import Any, List, Optional, Tuple
 import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
 # from typeguard import typechecked
-from csd.ideal_probabilities import IdealProbabilities
 from csd.typings.global_result import GlobalResult
 from csd.typings.typing import ResultExecution
 from csd.util import set_current_time, _fix_path, set_friendly_time
@@ -22,7 +21,6 @@ class Plot(ABC):
     def __init__(self, alphas: List[float] = None, number_modes: int = 1):
         if alphas is None:
             raise ValueError("alphas not set.")
-        self._ideal_probabilities = IdealProbabilities(alphas=alphas, number_modes=number_modes)
         self._alphas = alphas
 
     def success_probabilities_all_alphas(self,
@@ -34,9 +32,15 @@ class Plot(ABC):
                                          squeezing: Optional[bool] = True,
                                          non_squeezing: Optional[bool] = False,
                                          plot_ancillas: Optional[bool] = False,
-                                         interactive_plot: Optional[bool] = False) -> None:
+                                         interactive_plot: Optional[bool] = False,
+                                         best_codebook: Optional[bool] = False) -> None:
+        if best_codebook is None:
+            best_codebook = False
         fig = plt.figure(figsize=(25, 20))
-        fig.suptitle("Average Success Probability" if not apply_log else "Success Probability decreasing rate",
+        suptitle_prefix = "Average" if not best_codebook else 'Best Codebook'
+        apply_log_prefix = "" if not best_codebook else 'Best Codebook '
+        fig.suptitle(f"{suptitle_prefix} Success Probability" if not apply_log
+                     else f"{apply_log_prefix}Success Probability decreasing rate",
                      fontsize=20)
 
         for idx, one_alpha in enumerate(self._alphas):
@@ -51,17 +55,21 @@ class Plot(ABC):
                                               number_mode=number_mode,
                                               global_results=global_results,
                                               helstrom_probabilities=helstrom_probabilities,
-                                              homodyne_probabilities=homodyne_probabilities)
+                                              homodyne_probabilities=homodyne_probabilities,
+                                              best_codebook=best_codebook)
                 squeezed_probabilities_mode_i = []
                 non_squeezed_probabilities_mode_i = []
                 for ancilla_i in number_ancillas:
                     squeezed_probability_ancilla_i = [global_result.success_probability
+                                                      if not best_codebook else global_result.best_success_probability
                                                       for global_result in global_results
                                                       if (global_result.number_modes == number_mode and
                                                           global_result.number_ancillas == ancilla_i and
                                                           global_result.squeezing and
                                                           global_result.alpha == one_alpha)]
                     non_squeezed_probability_ancilla_i = [global_result.success_probability
+                                                          if not best_codebook
+                                                          else global_result.best_success_probability
                                                           for global_result in global_results
                                                           if (global_result.number_modes == number_mode and
                                                               global_result.number_ancillas == ancilla_i and
@@ -102,16 +110,21 @@ class Plot(ABC):
                 plt_line, = ax.plot(line[0], line[1], label=line[2], color=line[3], linestyle=line[4])
                 plt_lines.append(plt_line)
 
+            set_ylabel_prefix = "Average" if not best_codebook else 'Best Codebook'
+            set_ylabel_apply_log_prefix = "" if not best_codebook else 'Best Codebook '
             ax.set_xticks(number_modes)
             ax.legend(facecolor='silver', framealpha=0.7)
             ax.set_xlabel('number modes')
-            ax.set_ylabel('Average Success Probabilities' if not apply_log else 'Success Probability decreasing rate')
+            ax.set_ylabel(
+                f'{set_ylabel_prefix} Success Probabilities'
+                if not apply_log else f'{set_ylabel_apply_log_prefix}Success Probability decreasing rate')
             ax.patch.set_facecolor('silver')
             # ax.patch.set_alpha(0.7)
         plt.subplots_adjust(hspace=0.4)
         fig.patch.set_facecolor('lightgrey')
         # fig.patch.set_alpha(0.7)
-        suffix = "_probs_all" if not apply_log else "_logs_probs_all"
+        prefix_suffix = 'best_' if not best_codebook else ''
+        suffix = f"_{prefix_suffix}probs_all" if not apply_log else f"_logs_{prefix_suffix}probs_all"
         self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
                                 suffix=suffix, fig=fig)
 
@@ -120,18 +133,42 @@ class Plot(ABC):
                                  number_mode: int,
                                  global_results: List[GlobalResult],
                                  helstrom_probabilities: List[float],
-                                 homodyne_probabilities: List[float]) -> None:
-        homodyne_probability_all = [global_result.homodyne_probability
-                                    for global_result in global_results
-                                    if (global_result.number_modes == number_mode)]
-        homodyne_probability = sum(homodyne_probability_all) / len(homodyne_probability_all)
-        helstrom_probability_all = [global_result.helstrom_probability
-                                    for global_result in global_results
-                                    if (global_result.number_modes == number_mode)]
-        helstrom_probability = sum(helstrom_probability_all) / len(helstrom_probability_all)
+                                 homodyne_probabilities: List[float],
+                                 alphas: List[float] = [],
+                                 best_codebook: Optional[bool] = False) -> None:
+        if best_codebook is None:
+            best_codebook = False
+        if alphas is None or len(alphas) == 0:
+            homodyne_probability_all = [global_result.homodyne_probability
+                                        if not best_codebook else global_result.best_homodyne_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode)]
+            homodyne_probability = sum(homodyne_probability_all) / len(homodyne_probability_all)
+            helstrom_probability_all = [global_result.helstrom_probability
+                                        if not best_codebook else global_result.best_helstrom_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode)]
+            helstrom_probability = sum(helstrom_probability_all) / len(helstrom_probability_all)
 
-        homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
-        helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
+            homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
+            helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
+            return
+        for alpha in alphas:
+            homodyne_probability_all = [global_result.homodyne_probability
+                                        if not best_codebook else global_result.best_homodyne_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode and global_result.alpha == alpha)]
+            homodyne_probability = (sum(homodyne_probability_all) / len(homodyne_probability_all)
+                                    if len(homodyne_probability_all) > 0 else 0.0)
+            helstrom_probability_all = [global_result.helstrom_probability
+                                        if not best_codebook else global_result.best_helstrom_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode and global_result.alpha == alpha)]
+            helstrom_probability = (sum(helstrom_probability_all) / len(helstrom_probability_all)
+                                    if len(helstrom_probability_all) > 0 else 0.0)
+
+            homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
+            helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
 
     def _plot_lines_with_appropiate_colors(self,
                                            number_modes: List[int],
@@ -176,7 +213,10 @@ class Plot(ABC):
                                         global_results: List[GlobalResult],
                                         save_plot: Optional[bool] = False,
                                         apply_log: Optional[bool] = False,
-                                        interactive_plot: Optional[bool] = False) -> None:
+                                        interactive_plot: Optional[bool] = False,
+                                        best_codebook: Optional[bool] = False) -> None:
+        if best_codebook is None:
+            best_codebook = False
         homodyne_probabilities: List[float] = []
         helstrom_probabilities: List[float] = []
         squeezed_probabilities = []
@@ -188,17 +228,20 @@ class Plot(ABC):
                                           number_mode=number_mode,
                                           global_results=global_results,
                                           helstrom_probabilities=helstrom_probabilities,
-                                          homodyne_probabilities=homodyne_probabilities)
+                                          homodyne_probabilities=homodyne_probabilities,
+                                          best_codebook=best_codebook)
             squeezed_probabilities_mode_i = []
             non_squeezed_probabilities_mode_i = []
             for ancilla_i in number_ancillas:
                 squeezed_probability_ancilla_i = [global_result.success_probability
+                                                  if not best_codebook else global_result.best_success_probability
                                                   for global_result in global_results
                                                   if (global_result.number_modes == number_mode and
                                                       global_result.number_ancillas == ancilla_i and
                                                       global_result.squeezing and
                                                       global_result.alpha == one_alpha)]
                 non_squeezed_probability_ancilla_i = [global_result.success_probability
+                                                      if not best_codebook else global_result.best_success_probability
                                                       for global_result in global_results
                                                       if (global_result.number_modes == number_mode and
                                                           global_result.number_ancillas == ancilla_i and
@@ -224,9 +267,11 @@ class Plot(ABC):
             probs_labels.append((non_sq_prob_ancilla_i, f"pSucc No Squeez anc:{ancilla_i}"))
         probs_labels.append((homodyne_probabilities, "pSucc Homodyne"))
         probs_labels.append((helstrom_probabilities, "pSucc Helstrom"))
-        title = (f"Avg. Success Probability for $\\alpha$={np.round(one_alpha, 2)}"
+        title_prefix = "Average" if not best_codebook else 'Best Codebook'
+        apply_log_title_prefix = '' if not best_codebook else 'Best Codebook '
+        title = (f"{title_prefix} Success Probability for $\\alpha$={np.round(one_alpha, 2)}"
                  if not apply_log else
-                 f"Success Probability decreasing rate for $\\alpha$={np.round(one_alpha, 2)}")
+                 f"{apply_log_title_prefix}Success Probability decreasing rate for $\\alpha$={np.round(one_alpha, 2)}")
         # fig, axes = plt.subplots(figsize=[10, 8])
         # plt.title(title, fontsize=20)
         # fig.patch.set_facecolor('lightgrey')
@@ -244,16 +289,20 @@ class Plot(ABC):
 
         # self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
         #                         suffix=suffix, fig=fig)
-        suffix = (f"_probs_{str(np.round(one_alpha, 2))}"
-                  if not apply_log else f"_logs_probs_{str(np.round(one_alpha, 2))}")
+        prefix_suffix = 'best_' if not best_codebook else ''
+        suffix = (f"_{prefix_suffix}probs_{str(np.round(one_alpha, 2))}"
+                  if not apply_log else f"_logs_{prefix_suffix}probs_{str(np.round(one_alpha, 2))}")
+        ylable_prefix = 'Average' if not best_codebook else 'Best Codebook'
+        apply_log_ylable_prefix = '' if not best_codebook else 'Best Codebook '
         self._plot_computed_variables(wide=10,
                                       lines=self._plot_lines_with_appropiate_colors(number_modes, probs_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
                                       title=title,
                                       xlabel='number modes',
-                                      ylabel=('Average Success Probabilities'
-                                              if not apply_log else 'Success Probability decreasing rate'),
+                                      ylabel=(f'{ylable_prefix} Success Probabilities'
+                                              if not apply_log
+                                              else f'{apply_log_ylable_prefix}Success Probability decreasing rate'),
                                       suffix=suffix,
                                       xtics=number_modes,
                                       specific_alphas=True)
@@ -263,35 +312,57 @@ class Plot(ABC):
                               number_ancillas: List[int],
                               global_results: List[GlobalResult],
                               save_plot: Optional[bool] = False,
-                              interactive_plot: Optional[bool] = False) -> None:
+                              interactive_plot: Optional[bool] = False,
+                              best_codebook: Optional[bool] = False) -> None:
         probs_labels = []
         squeezing_options = [False, True]
+        if best_codebook is None:
+            best_codebook = False
         for number_mode in number_modes:
-            probs_labels.append(IdealProbabilities(alphas=self._alphas, number_modes=number_mode).p_hels)
+            homodyne_probabilities: List[float] = []
+            helstrom_probabilities: List[float] = []
+            self._compute_hels_homo_probs(apply_log=False,
+                                          number_mode=number_mode,
+                                          global_results=global_results,
+                                          helstrom_probabilities=helstrom_probabilities,
+                                          homodyne_probabilities=homodyne_probabilities,
+                                          alphas=self._alphas,
+                                          best_codebook=best_codebook)
+
+            probs_labels.append((helstrom_probabilities, f'$pHel(a)^{number_mode}$'))
             for squeezing_option in squeezing_options:
 
                 for number_ancilla in number_ancillas:
-                    probs = [global_result.success_probability
-                             for global_result in global_results
-                             if (global_result.number_modes == number_mode and
-                                 global_result.number_ancillas == number_ancilla and
-                                 global_result.squeezing == squeezing_option)]
+                    probs: List[float] = []
+                    for alpha in self._alphas:
+                        one_alpha_probs = [global_result.success_probability
+                                           if not best_codebook else global_result.best_success_probability
+                                           for global_result in global_results
+                                           if (global_result.alpha == alpha and
+                                               global_result.number_modes == number_mode and
+                                               global_result.number_ancillas == number_ancilla and
+                                               global_result.squeezing == squeezing_option)]
+                        one_alpha_prob = (sum(one_alpha_probs) / len(one_alpha_probs)
+                                          if len(one_alpha_probs) > 0 else 0.0)
+                        probs.append(one_alpha_prob)
 
                     probs.extend([0.0] * (len(self._alphas) - len(probs)))
                     if len(probs) > len(self._alphas):
                         raise ValueError(f"len(probs): {len(probs)}")
                     one_prob_label = (probs, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
                     probs_labels.append(one_prob_label)
-            probs_labels.append(IdealProbabilities(alphas=self._alphas, number_modes=number_mode).p_homos)
-
+            probs_labels.append((homodyne_probabilities, f'$pHom(a)^{number_mode}$'))
+        title_prefix = 'Average' if not best_codebook else 'Best Codebook'
+        ylable_prefix = 'Average' if not best_codebook else 'Best Codebook'
+        suffix_prefix = '' if not best_codebook else 'best_'
         self._plot_computed_variables(wide=17 if interactive_plot else 15,
                                       lines=self._set_plot_lines(probs_labels=probs_labels),
                                       save_plot=save_plot if save_plot is not None else False,
                                       interactive_plot=interactive_plot if interactive_plot is not None else False,
-                                      title="Average Success Probability Results",
+                                      title=f"{title_prefix} Success Probability Results",
                                       xlabel="alpha values",
-                                      ylabel='Average Success Probabilities',
-                                      suffix="_probs")
+                                      ylabel=f'{ylable_prefix} Success Probabilities',
+                                      suffix=f"_{suffix_prefix}probs")
 
     def _plot_computed_variables(self,
                                  wide: int,
