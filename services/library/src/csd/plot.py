@@ -5,7 +5,6 @@ from typing import Any, List, Optional, Tuple
 import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
 # from typeguard import typechecked
-from csd.ideal_probabilities import IdealProbabilities
 from csd.typings.global_result import GlobalResult
 from csd.typings.typing import ResultExecution
 from csd.util import set_current_time, _fix_path, set_friendly_time
@@ -22,7 +21,6 @@ class Plot(ABC):
     def __init__(self, alphas: List[float] = None, number_modes: int = 1):
         if alphas is None:
             raise ValueError("alphas not set.")
-        self._ideal_probabilities = IdealProbabilities(alphas=alphas, number_modes=number_modes)
         self._alphas = alphas
 
     def success_probabilities_all_alphas(self,
@@ -120,18 +118,35 @@ class Plot(ABC):
                                  number_mode: int,
                                  global_results: List[GlobalResult],
                                  helstrom_probabilities: List[float],
-                                 homodyne_probabilities: List[float]) -> None:
-        homodyne_probability_all = [global_result.homodyne_probability
-                                    for global_result in global_results
-                                    if (global_result.number_modes == number_mode)]
-        homodyne_probability = sum(homodyne_probability_all) / len(homodyne_probability_all)
-        helstrom_probability_all = [global_result.helstrom_probability
-                                    for global_result in global_results
-                                    if (global_result.number_modes == number_mode)]
-        helstrom_probability = sum(helstrom_probability_all) / len(helstrom_probability_all)
+                                 homodyne_probabilities: List[float],
+                                 alphas: List[float] = []) -> None:
+        if alphas is None or len(alphas) == 0:
+            homodyne_probability_all = [global_result.homodyne_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode)]
+            homodyne_probability = sum(homodyne_probability_all) / len(homodyne_probability_all)
+            helstrom_probability_all = [global_result.helstrom_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode)]
+            helstrom_probability = sum(helstrom_probability_all) / len(helstrom_probability_all)
 
-        homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
-        helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
+            homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
+            helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
+            return
+        for alpha in alphas:
+            homodyne_probability_all = [global_result.homodyne_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode and global_result.alpha == alpha)]
+            homodyne_probability = (sum(homodyne_probability_all) / len(homodyne_probability_all)
+                                    if len(homodyne_probability_all) > 0 else 0.0)
+            helstrom_probability_all = [global_result.helstrom_probability
+                                        for global_result in global_results
+                                        if (global_result.number_modes == number_mode and global_result.alpha == alpha)]
+            helstrom_probability = (sum(helstrom_probability_all) / len(helstrom_probability_all)
+                                    if len(helstrom_probability_all) > 0 else 0.0)
+
+            homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
+            helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
 
     def _plot_lines_with_appropiate_colors(self,
                                            number_modes: List[int],
@@ -267,22 +282,37 @@ class Plot(ABC):
         probs_labels = []
         squeezing_options = [False, True]
         for number_mode in number_modes:
-            probs_labels.append(IdealProbabilities(alphas=self._alphas, number_modes=number_mode).p_hels)
+            homodyne_probabilities: List[float] = []
+            helstrom_probabilities: List[float] = []
+            self._compute_hels_homo_probs(apply_log=False,
+                                          number_mode=number_mode,
+                                          global_results=global_results,
+                                          helstrom_probabilities=helstrom_probabilities,
+                                          homodyne_probabilities=homodyne_probabilities,
+                                          alphas=self._alphas)
+
+            probs_labels.append((helstrom_probabilities, f'$pHel(a)^{number_mode}$'))
             for squeezing_option in squeezing_options:
 
                 for number_ancilla in number_ancillas:
-                    probs = [global_result.success_probability
-                             for global_result in global_results
-                             if (global_result.number_modes == number_mode and
-                                 global_result.number_ancillas == number_ancilla and
-                                 global_result.squeezing == squeezing_option)]
+                    probs: List[float] = []
+                    for alpha in self._alphas:
+                        one_alpha_probs = [global_result.success_probability
+                                           for global_result in global_results
+                                           if (global_result.alpha == alpha and
+                                               global_result.number_modes == number_mode and
+                                               global_result.number_ancillas == number_ancilla and
+                                               global_result.squeezing == squeezing_option)]
+                        one_alpha_prob = (sum(one_alpha_probs) / len(one_alpha_probs)
+                                          if len(one_alpha_probs) > 0 else 0.0)
+                        probs.append(one_alpha_prob)
 
                     probs.extend([0.0] * (len(self._alphas) - len(probs)))
                     if len(probs) > len(self._alphas):
                         raise ValueError(f"len(probs): {len(probs)}")
                     one_prob_label = (probs, f"mode_{number_mode} squeez:{squeezing_option} anc:{number_ancilla}")
                     probs_labels.append(one_prob_label)
-            probs_labels.append(IdealProbabilities(alphas=self._alphas, number_modes=number_mode).p_homos)
+            probs_labels.append((homodyne_probabilities, f'$pHom(a)^{number_mode}$'))
 
         self._plot_computed_variables(wide=17 if interactive_plot else 15,
                                       lines=self._set_plot_lines(probs_labels=probs_labels),
