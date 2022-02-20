@@ -11,6 +11,11 @@ class GlobalResult(NamedTuple):
     number_ancillas: int
     helstrom_probability: float
     homodyne_probability: float
+    best_success_probability: float
+    best_helstrom_probability: float
+    best_homodyne_probability: float
+    best_codebook: List[List[int]]
+    best_measurements: List[List[int]]
 
     @property
     def distance_to_helstrom_probability(self) -> float:
@@ -30,9 +35,16 @@ class GlobalResult(NamedTuple):
                 'squeezing',
                 'number_ancillas',
                 'helstrom_probability',
-                'homodyne_probability']
+                'homodyne_probability',
+                'best_success_probability',
+                'best_helstrom_probability',
+                'best_homodyne_probability',
+                'best_codebook',
+                'best_measurements']
 
-    def values(self) -> Tuple[float, float, int, float, float, float, bool, int, float, float]:
+    def values(self) -> Tuple[float, float, int, float, float,
+                              float, bool, int, float, float,
+                              float, float, float, List[List[int]], List[List[int]]]:
         return (self.alpha,
                 self.success_probability,
                 self.number_modes,
@@ -42,7 +54,12 @@ class GlobalResult(NamedTuple):
                 self.squeezing,
                 self.number_ancillas,
                 self.helstrom_probability,
-                self.homodyne_probability)
+                self.homodyne_probability,
+                self.best_success_probability,
+                self.best_helstrom_probability,
+                self.best_homodyne_probability,
+                self.best_codebook,
+                self.best_measurements)
 
     def __eq__(self, other) -> bool:
         return (self.alpha == other.alpha and
@@ -54,7 +71,12 @@ class GlobalResult(NamedTuple):
                 self.squeezing == other.squeezing and
                 self.number_ancillas == other.number_ancillas and
                 self.helstrom_probability == other.helstrom_probability and
-                self.homodyne_probability == other.homodyne_probability)
+                self.homodyne_probability == other.homodyne_probability and
+                self.best_success_probability == other.best_success_probability and
+                self.best_helstrom_probability == other.best_helstrom_probability and
+                self.best_homodyne_probability == other.best_homodyne_probability and
+                self.best_codebook == other.best_codebook and
+                self.best_measurements == other.best_measurements)
 
     def __str__(self) -> str:
         return json.dumps({
@@ -67,7 +89,12 @@ class GlobalResult(NamedTuple):
             "squeezing": self.squeezing,
             "number_ancillas": self.number_ancillas,
             "helstrom_probability": self.helstrom_probability,
-            "homodyne_probability": self.homodyne_probability
+            "homodyne_probability": self.homodyne_probability,
+            "best_success_probability": self.best_success_probability,
+            "best_helstrom_probability": self.best_helstrom_probability,
+            "best_homodyne_probability": self.best_homodyne_probability,
+            "best_codebook": self.best_codebook,
+            "best_measurements": self.best_measurements,
         })
 
     def __repr__(self) -> str:

@@ -1,5 +1,6 @@
 
 from abc import ABC
+import json
 import os
 from pathlib import Path
 import csv
@@ -45,7 +46,12 @@ class GlobalResultManager(ABC):
                                              squeezing=False,
                                              number_ancillas=0,
                                              helstrom_probability=0.0,
-                                             homodyne_probability=0.0).header())
+                                             homodyne_probability=0.0,
+                                             best_success_probability=0.0,
+                                             best_helstrom_probability=0.0,
+                                             best_homodyne_probability=0.0,
+                                             best_codebook=[],
+                                             best_measurements=[]).header())
         return results_file
 
     def write_result(self, global_result: GlobalResult) -> None:
@@ -75,7 +81,12 @@ class GlobalResultManager(ABC):
                                          squeezing=False,
                                          number_ancillas=0,
                                          helstrom_probability=0.0,
-                                         homodyne_probability=0.0).header())
+                                         homodyne_probability=0.0,
+                                         best_success_probability=0.0,
+                                         best_helstrom_probability=0.0,
+                                         best_homodyne_probability=0.0,
+                                         best_codebook=[],
+                                         best_measurements=[]).header())
         return global_results_file
 
     def _transfer_alpha_results_to_global_file(self, global_results_file: str, alpha_file: str) -> None:
@@ -90,7 +101,12 @@ class GlobalResultManager(ABC):
                                           squeezing=strtobool(row[6] if len(row) >= 7 else 'False'),
                                           number_ancillas=int(row[7] if len(row) >= 8 else 0),
                                           helstrom_probability=float(row[8] if len(row) >= 9 else 0.0),
-                                          homodyne_probability=float(row[9] if len(row) >= 10 else 0.0))
+                                          homodyne_probability=float(row[9] if len(row) >= 10 else 0.0),
+                                          best_success_probability=float(row[10] if len(row) >= 11 else 0.0),
+                                          best_helstrom_probability=float(row[11] if len(row) >= 12 else 0.0),
+                                          best_homodyne_probability=float(row[12] if len(row) >= 13 else 0.0),
+                                          best_codebook=json.loads(row[13]) if len(row) >= 14 else [],
+                                          best_measurements=json.loads(row[14]) if len(row) >= 15 else [])
                              for row in reader]
             new_results = self._filter_only_new_results(loaded_results=alpha_results)
             with open(global_results_file, 'a+', newline='') as write_obj:
@@ -123,7 +139,13 @@ class GlobalResultManager(ABC):
                                                  squeezing=strtobool(row[6]),
                                                  number_ancillas=int(row[7]),
                                                  helstrom_probability=float(row[8]),
-                                                 homodyne_probability=float(row[9])) for row in reader]
+                                                 homodyne_probability=float(row[9]),
+                                                 best_success_probability=float(row[10] if len(row) >= 11 else 0.0),
+                                                 best_helstrom_probability=float(row[11] if len(row) >= 12 else 0.0),
+                                                 best_homodyne_probability=float(row[12] if len(row) >= 13 else 0.0),
+                                                 best_codebook=json.loads(row[13]) if len(row) >= 14 else [],
+                                                 best_measurements=json.loads(row[14]) if len(row) >= 15 else [])
+                                    for row in reader]
 
     def _create_unique_alphas(self):
         self._alphas = [result.alpha for result in self._global_results]
@@ -253,4 +275,9 @@ class GlobalResultManager(ABC):
                                              squeezing=max_result.squeezing,
                                              number_ancillas=max_result.number_ancillas,
                                              helstrom_probability=max_result.helstrom_probability,
-                                             homodyne_probability=max_result.homodyne_probability))
+                                             homodyne_probability=max_result.homodyne_probability,
+                                             best_success_probability=max_result.best_success_probability,
+                                             best_helstrom_probability=max_result.best_helstrom_probability,
+                                             best_homodyne_probability=max_result.best_homodyne_probability,
+                                             best_codebook=max_result.best_codebook,
+                                             best_measurements=max_result.best_measurements))

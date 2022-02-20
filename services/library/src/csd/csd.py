@@ -289,7 +289,8 @@ class CSD(ABC):
                                success_probability=self._get_succ_prob(
                                    one_alpha_success_probability, one_alpha_optimization_result),
                                helstrom_probability=average_ideal_helstrom_probability_all_codebooks,
-                               homodyne_probability=average_ideal_homodyne_probability_all_codebooks)
+                               homodyne_probability=average_ideal_homodyne_probability_all_codebooks,
+                               best_codebook=top5_codebooks.first)
 
             logger.debug(f'Optimized and trained for alpha: {np.round(self._alpha_value, 2)} '
                          f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_alpha_optimization_result)} '
@@ -320,7 +321,8 @@ class CSD(ABC):
         fifth = f'FIFTH: {top5_codebooks.fifth}\n\n' if top5_codebooks.size >= 5 else ''
 
         logger.debug('\n\n************************************\n'
-                     f'TOP{top5_codebooks.size} codebooks: \n\n'
+                     f'** TOP{top5_codebooks.size} codebooks: \n'
+                     '************************************\n\n'
                      f'{first}'
                      f'{second}'
                      f'{third}'
@@ -371,7 +373,8 @@ class CSD(ABC):
                       one_alpha_start_time: float,
                       success_probability: float,
                       helstrom_probability: float,
-                      homodyne_probability: float):
+                      homodyne_probability: float,
+                      best_codebook: BestCodeBook):
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
@@ -382,7 +385,12 @@ class CSD(ABC):
                                                         squeezing=self._architecture['squeezing'],
                                                         number_ancillas=self._training_circuit.number_ancillas,
                                                         helstrom_probability=helstrom_probability,
-                                                        homodyne_probability=homodyne_probability))
+                                                        homodyne_probability=homodyne_probability,
+                                                        best_success_probability=best_codebook.success_probability,
+                                                        best_helstrom_probability=best_codebook.helstrom_probability,
+                                                        best_homodyne_probability=best_codebook.homodyne_probability,
+                                                        best_codebook=best_codebook.binary_codebook,
+                                                        best_measurements=best_codebook.binary_measurements))
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()
