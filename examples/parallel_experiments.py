@@ -296,8 +296,8 @@ if __name__ == '__main__':
     # alphas = alphas[4:]
 
     # list_number_input_modes = list(range(6, 11))
-    list_number_input_modes = [2]
-    list_squeezing = [False]
+    list_number_input_modes = [2, 3, 4]
+    list_squeezing = [False, True]
     one_ancilla = 0
     for number_input_modes in list_number_input_modes:
         for squeezing_option in list_squeezing:
@@ -314,7 +314,7 @@ if __name__ == '__main__':
 
             number_ancillas = one_ancilla
             batch_size = 2**number_input_modes
-            shots = 100
+            shots = 1
             plays = 1
             number_layers = 1
             max_combinations = 2000
