@@ -1,0 +1,3 @@
+alpha,success_probability,number_modes,time_in_seconds,distance_to_helstrom_probability,bit_error_rate,squeezing,number_ancillas,helstrom_probability,homodyne_probability,best_success_probability,best_helstrom_probability,best_homodyne_probability,best_codebook,best_measurements
+0.18125,0.9962424,5,671.7933881282806,0.6635764613851907,0.0007515192031860351,False,0,0.3326659425988792,0.291111221713908,0.9977261,0.20815505236542708,0.16936195454290406,"[[0, 0, 0, 0, 0], [1, 1, 1, 0, 1]]","[[0, 0, 0, 0, 0], [1, 1, 1, 0, 1]]"
+0.18125,0.9999248,5,766.7043900489807,0.6672588363394143,1.5044212341308594e-05,True,0,0.3326659425988792,0.291111221713908,0.9999248,0.14059947393954028,0.1086475209558542,"[[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]]","[[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]]"

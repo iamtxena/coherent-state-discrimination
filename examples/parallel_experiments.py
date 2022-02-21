@@ -2,6 +2,7 @@ from multiprocessing import Pool  # , cpu_count
 from time import time  # , sleep
 from typing import Iterator, List, NamedTuple
 from csd import CSD
+from csd.global_result_manager import GlobalResultManager
 from csd.plot import Plot
 from csd.typings.typing import (CutOffDimensions,
                                 LearningRate,
@@ -16,6 +17,9 @@ import numpy as np
 from csd.util import timing
 import os
 # from csd.config import logger
+
+TESTING = False
+PATH_RESULTS = GlobalResultManager(testing=TESTING)._base_dir_path
 
 
 class MultiProcessConfiguration(NamedTuple):
@@ -207,7 +211,7 @@ def create_full_execution_result(full_backend: Backends,
 
 
 def plot_results(alphas: List[float], execution_result: ResultExecution, number_input_modes: int) -> None:
-    plot = Plot(alphas=alphas, number_modes=number_input_modes)
+    plot = Plot(alphas=alphas, number_modes=number_input_modes, path=PATH_RESULTS)
     plot.plot_success_probabilities(executions=[execution_result], save_plot=True)
 
 
@@ -296,8 +300,9 @@ if __name__ == '__main__':
     # alphas = alphas[4:]
 
     # list_number_input_modes = list(range(6, 11))
-    list_number_input_modes = [2, 3, 4]
-    list_squeezing = [False, True]
+
+    list_number_input_modes = [2]
+    list_squeezing = [False]
     one_ancilla = 0
     for number_input_modes in list_number_input_modes:
         for squeezing_option in list_squeezing:

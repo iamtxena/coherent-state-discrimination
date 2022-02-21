@@ -18,10 +18,11 @@ class Plot(ABC):
     """
 
     # @typechecked
-    def __init__(self, alphas: List[float] = None, number_modes: int = 1):
+    def __init__(self, path: str, alphas: List[float] = None, number_modes: int = 1):
         if alphas is None:
             raise ValueError("alphas not set.")
         self._alphas = alphas
+        self._path = path
 
     def success_probabilities_all_alphas(self,
                                          number_modes: List[int],
@@ -429,7 +430,7 @@ class Plot(ABC):
 
     def _show_or_save_plot(self, save_plot: bool, suffix: str, fig: plt.Figure) -> None:
         if save_plot:
-            fixed_path = _fix_path('results')
+            fixed_path = _fix_path(path=self._path)
             fig.savefig(f'{fixed_path}plot_{set_current_time()}{suffix}.png')
             return
         plt.show()

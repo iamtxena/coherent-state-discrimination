@@ -208,6 +208,10 @@ class CSD(ABC):
         if self._testing_circuit is None:
             raise ValueError("Testing circuit must be initialized")
 
+        # change it when you are not testing the optimized parameters
+        self._testing = False
+        self._path_results = GlobalResultManager(testing=self._testing)._base_dir_path
+
         start_time = time()
         for sample_alpha in self._alphas:
             one_alpha_start_time = time()
@@ -239,8 +243,12 @@ class CSD(ABC):
                     codebook_current_iteration_init_time=one_codebook_start_time
                 )
                 one_codebook_optimization_result = self._train_for_one_alpha_one_codebook()
-                one_alpha_success_probability, measurements = self._test_for_one_alpha_one_codebook(
-                    optimized_parameters=one_codebook_optimization_result.optimized_parameters)
+                if self._testing:
+                    one_alpha_success_probability, measurements = self._test_for_one_alpha_one_codebook(
+                        optimized_parameters=one_codebook_optimization_result.optimized_parameters)
+                if not self._testing:
+                    one_alpha_success_probability = None
+                    measurements = []
                 average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
                 homodyne_probability = IdealLinearCodesHomodyneProbability(
                     codebook=self._current_codebook).homodyne_probability
@@ -251,7 +259,7 @@ class CSD(ABC):
 
                 top5_codebooks.add(potential_best_codebook=BestCodeBook(
                     codebook=self._current_codebook,
-                    measurements=measurements if measurements is not None
+                    measurements=measurements if measurements is not None and len(measurements) > 0
                     else one_codebook_optimization_result.measurements,
                     success_probability=self._get_succ_prob(
                         one_alpha_success_probability, one_codebook_optimization_result),
@@ -387,19 +395,20 @@ class CSD(ABC):
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
-        GlobalResultManager().write_result(GlobalResult(alpha=alpha,
-                                                        success_probability=success_probability,
-                                                        number_modes=self._training_circuit.number_input_modes,
-                                                        time_in_seconds=time() - one_alpha_start_time,
-                                                        squeezing=self._architecture['squeezing'],
-                                                        number_ancillas=self._training_circuit.number_ancillas,
-                                                        helstrom_probability=helstrom_probability,
-                                                        homodyne_probability=homodyne_probability,
-                                                        best_success_probability=best_codebook.success_probability,
-                                                        best_helstrom_probability=best_codebook.helstrom_probability,
-                                                        best_homodyne_probability=best_codebook.homodyne_probability,
-                                                        best_codebook=best_codebook.binary_codebook,
-                                                        best_measurements=best_codebook.binary_measurements))
+        GlobalResultManager(testing=self._testing).write_result(
+            GlobalResult(alpha=alpha,
+                         success_probability=success_probability,
+                         number_modes=self._training_circuit.number_input_modes,
+                         time_in_seconds=time() - one_alpha_start_time,
+                         squeezing=self._architecture['squeezing'],
+                         number_ancillas=self._training_circuit.number_ancillas,
+                         helstrom_probability=helstrom_probability,
+                         homodyne_probability=homodyne_probability,
+                         best_success_probability=best_codebook.success_probability,
+                         best_helstrom_probability=best_codebook.helstrom_probability,
+                         best_homodyne_probability=best_codebook.homodyne_probability,
+                         best_codebook=best_codebook.binary_codebook,
+                         best_measurements=best_codebook.binary_measurements))
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()
@@ -421,14 +430,14 @@ class CSD(ABC):
     def _save_plot_to_file(self, result):
         if self._save_plots:
             if self._plot is None:
-                self._plot = Plot(alphas=self._alphas)
+                self._plot = Plot(alphas=self._alphas, path=self._path_results)
             logger.info("Save plot to file")
             self._plot.plot_success_probabilities(executions=[result], save_plot=True)
 
     def _save_results_to_file(self, result):
         if self._save_results:
             logger.info("Save results to file")
-            save_object_to_disk(obj=result, path='results')
+            save_object_to_disk(obj=result, path=self._path_results)
 
     @timing
     def _train_for_one_alpha_one_codebook(self) -> OptimizationResult:
@@ -629,7 +638,7 @@ class CSD(ABC):
         if self._alphas is None:
             self._alphas = alphas
         if self._plot is None:
-            self._plot = Plot(alphas=self._alphas)
+            self._plot = Plot(alphas=self._alphas, path=self._path_results)
         if measuring_types is None:
             self._plot.plot_success_probabilities()
             return None

@@ -13,19 +13,25 @@ from csd.util import strtobool
 from csd.typings.global_result import GlobalResult
 # from csd.config import logger
 
-RESULTS_PATH = "results/globals/"
+TRAINING_RESULTS = "training_results"
+TESTING_RESULTS = "testing_results"
+TRAINING_RESULTS_PATH = f'{TRAINING_RESULTS}/globals/'
+TESTING_RESULTS_PATH = f'{TESTING_RESULTS}/globals/'
+# RESULTS_PATH = "results/globals/"
 ALPHAS_PATH = "alphas/"
 RESULTS_FILENAME = "global_results"
 
 
 class GlobalResultManager(ABC):
 
-    def __init__(self):
+    def __init__(self, testing: bool = True):
+        self._global_results_path = f'{TESTING_RESULTS_PATH}' if testing else f'{TRAINING_RESULTS_PATH}'
+        self._base_dir_path = f'{TESTING_RESULTS}' if testing else f'{TRAINING_RESULTS}'
         self._global_results_file = self._check_if_file_exists()
 
     def _check_if_file_exists(self, global_result: Union[GlobalResult, None] = None) -> str:
-        global_results_path = f'{RESULTS_PATH}'
-        results_file = f'{RESULTS_PATH}'
+        global_results_path = self._global_results_path
+        results_file = self._global_results_path
 
         if global_result is None:
             results_file += RESULTS_FILENAME
@@ -66,8 +72,9 @@ class GlobalResultManager(ABC):
     def _consolidate_results(self) -> None:
         # global_results_file = self._reset_global_results_file()
         global_results_file = self._check_if_file_exists()
+        results_path = self._global_results_path
 
-        for alpha_file in glob.glob(f"{RESULTS_PATH}{ALPHAS_PATH}*.csv"):
+        for alpha_file in glob.glob(f"{results_path}{ALPHAS_PATH}*.csv"):
             self._transfer_alpha_results_to_global_file(global_results_file, alpha_file)
 
     def _reset_global_results_file(self):
@@ -170,7 +177,7 @@ class GlobalResultManager(ABC):
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
             self.load_results()
-        return Plot(alphas=self._alphas).success_probabilities(
+        return Plot(alphas=self._alphas, path=self._base_dir_path).success_probabilities(
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
@@ -184,7 +191,7 @@ class GlobalResultManager(ABC):
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
             self.load_results()
-        Plot(alphas=self._alphas).distances(
+        Plot(alphas=self._alphas, path=self._base_dir_path).distances(
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
@@ -197,7 +204,7 @@ class GlobalResultManager(ABC):
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
             self.load_results()
-        Plot(alphas=self._alphas).bit_error_rates(
+        Plot(alphas=self._alphas, path=self._base_dir_path).bit_error_rates(
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
@@ -210,7 +217,7 @@ class GlobalResultManager(ABC):
             not hasattr(self, '_number_modes') or
                 not hasattr(self, '_alphas')):
             self.load_results()
-        Plot(alphas=self._alphas).times(
+        Plot(alphas=self._alphas, path=self._base_dir_path).times(
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=self._selected_global_results,
@@ -231,7 +238,7 @@ class GlobalResultManager(ABC):
             self.load_results()
 
         if one_alpha is not None:
-            Plot(alphas=[one_alpha]).success_probabilities_one_alpha(
+            Plot(alphas=[one_alpha], path=self._base_dir_path).success_probabilities_one_alpha(
                 one_alpha=one_alpha,
                 number_modes=self._number_modes,
                 number_ancillas=self._number_ancillas,
@@ -242,7 +249,7 @@ class GlobalResultManager(ABC):
                 best_codebook=best_codebook)
             return
 
-        Plot(alphas=self._alphas).success_probabilities_all_alphas(
+        Plot(alphas=self._alphas, path=self._base_dir_path).success_probabilities_all_alphas(
             number_modes=self._number_modes,
             number_ancillas=self._number_ancillas,
             global_results=(self._selected_global_results if not apply_log else self._selected_log_global_results),
