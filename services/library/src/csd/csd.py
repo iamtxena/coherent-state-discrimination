@@ -358,14 +358,14 @@ class CSD(ABC):
                 f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}"
                 f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
             logger.debug(
-                f'alpha: {np.round(self._alpha_value, 2)} '
-                f'TRAINING IDEAL HELSTROM: {training_average_ideal_homodyne_probability_all_codebooks} ,'
-                f'TRAINING IDEAL HOMODYNE: {training_average_ideal_helstrom_probability_all_codebooks} ,'
-                f'TESTING IDEAL HELSTROM: {testing_average_ideal_homodyne_probability_all_codebooks} ,'
-                f'TESTING IDEAL HOMODYNE: {testing_average_ideal_helstrom_probability_all_codebooks} ,'
+                f'alpha: {np.round(self._alpha_value, 2)}\n'
+                f'TRAINING IDEAL HELSTROM: {training_average_ideal_homodyne_probability_all_codebooks}\n'
+                f'TRAINING IDEAL HOMODYNE: {training_average_ideal_helstrom_probability_all_codebooks}\n'
+                f'TESTING IDEAL HELSTROM: {testing_average_ideal_homodyne_probability_all_codebooks}\n'
+                f'TESTING IDEAL HOMODYNE: {testing_average_ideal_helstrom_probability_all_codebooks}\n'
                 f'BEST TRAINING success probability: {top5_training_codebooks.first.success_probability}\n'
                 f'BEST TESTING success probability: {top5_testing_codebooks.first.success_probability}\n'
-                f'Best TRAINING codebook: {top5_training_codebooks.first}'
+                f'Best TRAINING codebook: {top5_training_codebooks.first}\n'
                 f'Best TESTING codebook: {top5_testing_codebooks.first}\n\n')
             self._print_top5_codebooks(top5_codebooks=top5_training_codebooks, testing=False)
             self._print_top5_codebooks(top5_codebooks=top5_testing_codebooks, testing=True)
@@ -473,10 +473,17 @@ class CSD(ABC):
                               f"_modes_{self._training_circuit.number_input_modes}"
                               f"_squeezing_{self._architecture['squeezing']}"
                               f"_ancillas_{self._training_circuit.number_ancillas}/")
-            logger.info("\n\n****************************************\n\n"
-                        "CIRCUIT: \n\n")
+
+            print("\n\n****************************************\n\n"
+                  "CIRCUIT for "
+                  f'alpha: {np.round(self._alpha_value, 2)}'
+                  f" codebook_size:{self._codebook_size}"
+                  f" modes:{self._training_circuit.number_input_modes}"
+                  f" ancillas: {self._training_circuit.number_ancillas} \n "
+                  f" cutoff_dim: {self._cutoff_dim}"
+                  f" squeezing: {self._architecture['squeezing']}: \n")
             best_codebook.program.print()
-            logger.info("\n\n****************************************\n\n")
+            print("\n\n****************************************\n\n")
             best_codebook.program.draw_circuit(tex_dir=directory_name, write_to_file=True)
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
