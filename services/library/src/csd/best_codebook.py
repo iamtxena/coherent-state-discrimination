@@ -1,8 +1,8 @@
 # best_codebook.py
 
 from dataclasses import dataclass
-from typing import List
-
+from typing import List, Union
+from tensorflow.python.framework.ops import EagerTensor
 from csd.codeword import CodeWord
 import json
 
@@ -15,6 +15,12 @@ class BestCodeBook():
     success_probability: float
     helstrom_probability: float
     homodyne_probability: float
+    optimized_parameters: List[Union[List[float], EagerTensor]]
+
+    @property
+    def parsed_optimized_parameters(self) -> List[List[float]]:
+        return [[param if isinstance(param, float) else float(param.numpy())
+                for param in params] for params in self.optimized_parameters]
 
     @property
     def modes(self) -> int:
@@ -45,6 +51,7 @@ class BestCodeBook():
             'homodyne_probability': self.homodyne_probability,
             'best_codebook': [codeword.binary_code for codeword in self.codebook],
             'measurements': [codeword.binary_code for codeword in self.measurements],
+            'optimized_parameters': self.parsed_optimized_parameters
         }
 
     def __str__(self) -> str:

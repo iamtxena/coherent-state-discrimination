@@ -16,6 +16,7 @@ class GlobalResult(NamedTuple):
     best_homodyne_probability: float
     best_codebook: List[List[int]]
     best_measurements: List[List[int]]
+    best_optimized_parameters: List[List[float]]
 
     @property
     def distance_to_helstrom_probability(self) -> float:
@@ -40,11 +41,13 @@ class GlobalResult(NamedTuple):
                 'best_helstrom_probability',
                 'best_homodyne_probability',
                 'best_codebook',
-                'best_measurements']
+                'best_measurements',
+                'best_optimized_parameters']
 
     def values(self) -> Tuple[float, float, int, float, float,
                               float, bool, int, float, float,
-                              float, float, float, List[List[int]], List[List[int]]]:
+                              float, float, float, List[List[int]], List[List[int]],
+                              List[List[float]]]:
         return (self.alpha,
                 self.success_probability,
                 self.number_modes,
@@ -59,7 +62,8 @@ class GlobalResult(NamedTuple):
                 self.best_helstrom_probability,
                 self.best_homodyne_probability,
                 self.best_codebook,
-                self.best_measurements)
+                self.best_measurements,
+                self.best_optimized_parameters)
 
     def __eq__(self, other) -> bool:
         return (self.alpha == other.alpha and
@@ -76,7 +80,8 @@ class GlobalResult(NamedTuple):
                 self.best_helstrom_probability == other.best_helstrom_probability and
                 self.best_homodyne_probability == other.best_homodyne_probability and
                 self.best_codebook == other.best_codebook and
-                self.best_measurements == other.best_measurements)
+                self.best_measurements == other.best_measurements and
+                self.best_optimized_parameters == other.best_optimized_parameters)
 
     def __str__(self) -> str:
         return json.dumps({
@@ -95,6 +100,7 @@ class GlobalResult(NamedTuple):
             "best_homodyne_probability": self.best_homodyne_probability,
             "best_codebook": self.best_codebook,
             "best_measurements": self.best_measurements,
+            "best_optimized_parameters": self.best_optimized_parameters
         })
 
     def __repr__(self) -> str:

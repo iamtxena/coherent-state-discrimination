@@ -57,7 +57,8 @@ class GlobalResultManager(ABC):
                                              best_helstrom_probability=0.0,
                                              best_homodyne_probability=0.0,
                                              best_codebook=[],
-                                             best_measurements=[]).header())
+                                             best_measurements=[],
+                                             best_optimized_parameters=[]).header())
         return results_file
 
     def write_result(self, global_result: GlobalResult) -> None:
@@ -93,7 +94,8 @@ class GlobalResultManager(ABC):
                                          best_helstrom_probability=0.0,
                                          best_homodyne_probability=0.0,
                                          best_codebook=[],
-                                         best_measurements=[]).header())
+                                         best_measurements=[],
+                                         best_optimized_parameters=[]).header())
         return global_results_file
 
     def _transfer_alpha_results_to_global_file(self, global_results_file: str, alpha_file: str) -> None:
@@ -113,7 +115,8 @@ class GlobalResultManager(ABC):
                                           best_helstrom_probability=float(row[11] if len(row) >= 12 else 0.0),
                                           best_homodyne_probability=float(row[12] if len(row) >= 13 else 0.0),
                                           best_codebook=json.loads(row[13]) if len(row) >= 14 else [],
-                                          best_measurements=json.loads(row[14]) if len(row) >= 15 else [])
+                                          best_measurements=json.loads(row[14]) if len(row) >= 15 else [],
+                                          best_optimized_parameters=json.loads(row[15]) if len(row) >= 16 else [])
                              for row in reader]
             new_results = self._filter_only_new_results(loaded_results=alpha_results)
             with open(global_results_file, 'a+', newline='') as write_obj:
@@ -139,20 +142,22 @@ class GlobalResultManager(ABC):
             reader = csv.reader(f)
             next(reader)
 
-            self._global_results = [GlobalResult(alpha=float(row[0]),
-                                                 success_probability=float(row[1]),
-                                                 number_modes=int(row[2]),
-                                                 time_in_seconds=float(row[3]),
-                                                 squeezing=strtobool(row[6]),
-                                                 number_ancillas=int(row[7]),
-                                                 helstrom_probability=float(row[8]),
-                                                 homodyne_probability=float(row[9]),
-                                                 best_success_probability=float(row[10] if len(row) >= 11 else 0.0),
-                                                 best_helstrom_probability=float(row[11] if len(row) >= 12 else 0.0),
-                                                 best_homodyne_probability=float(row[12] if len(row) >= 13 else 0.0),
-                                                 best_codebook=json.loads(row[13]) if len(row) >= 14 else [],
-                                                 best_measurements=json.loads(row[14]) if len(row) >= 15 else [])
-                                    for row in reader]
+            self._global_results = [GlobalResult(
+                alpha=float(row[0]),
+                success_probability=float(row[1]),
+                number_modes=int(row[2]),
+                time_in_seconds=float(row[3]),
+                squeezing=strtobool(row[6]),
+                number_ancillas=int(row[7]),
+                helstrom_probability=float(row[8]),
+                homodyne_probability=float(row[9]),
+                best_success_probability=float(row[10] if len(row) >= 11 else 0.0),
+                best_helstrom_probability=float(row[11] if len(row) >= 12 else 0.0),
+                best_homodyne_probability=float(row[12] if len(row) >= 13 else 0.0),
+                best_codebook=json.loads(row[13]) if len(row) >= 14 else [],
+                best_measurements=json.loads(row[14]) if len(row) >= 15 else [],
+                best_optimized_parameters=json.loads(row[15]) if len(row) >= 16 else [])
+                for row in reader]
 
     def _create_unique_alphas(self):
         self._alphas = [result.alpha for result in self._global_results]
@@ -292,4 +297,5 @@ class GlobalResultManager(ABC):
                                              best_helstrom_probability=max_result.best_helstrom_probability,
                                              best_homodyne_probability=max_result.best_homodyne_probability,
                                              best_codebook=max_result.best_codebook,
-                                             best_measurements=max_result.best_measurements))
+                                             best_measurements=max_result.best_measurements,
+                                             best_optimized_parameters=max_result.best_optimized_parameters))
