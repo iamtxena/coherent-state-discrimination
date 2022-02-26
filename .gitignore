@@ -136,3 +136,5 @@ logs*
 examples/results/globals/alphas*
 data/certbot
 jupyterdata
+circuit_tex
+examples/testing_results/plot_*
