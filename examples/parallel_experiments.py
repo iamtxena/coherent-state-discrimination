@@ -307,7 +307,7 @@ if __name__ == '__main__':
     for number_input_modes in list_number_input_modes:
         for squeezing_option in list_squeezing:
 
-            learning_steps = LearningSteps(default=10,
+            learning_steps = LearningSteps(default=100,
                                            high=150,
                                            extreme=300)
             learning_rate = LearningRate(default=0.1,
