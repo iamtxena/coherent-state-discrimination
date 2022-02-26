@@ -1,8 +1,7 @@
 # best_codebook.py
 
 from dataclasses import dataclass
-from typing import List, Union
-from tensorflow.python.framework.ops import EagerTensor
+from typing import List
 from csd.codeword import CodeWord
 import json
 import strawberryfields as sf
@@ -16,13 +15,15 @@ class BestCodeBook():
     success_probability: float
     helstrom_probability: float
     homodyne_probability: float
-    optimized_parameters: List[Union[List[float], EagerTensor]]
+    optimized_parameters: List[float]
     program: sf.Program
 
     @property
-    def parsed_optimized_parameters(self) -> List[List[float]]:
-        return [[param if isinstance(param, float) else float(param.numpy())
-                for param in params] for params in self.optimized_parameters]
+    def parsed_optimized_parameters(self) -> List[float]:
+        print(self.optimized_parameters)
+        # return [[param if isinstance(param, float) else float(param.numpy())
+        #         for param in params] for params in self.optimized_parameters]
+        return [float(param) for param in self.optimized_parameters]
 
     @property
     def modes(self) -> int:

@@ -180,7 +180,8 @@ class CSD(ABC):
         self._run_configuration = configuration.copy()
         self._training_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
         self._testing_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
-        result = self._init_result()
+        training_result = self._init_result()
+        testing_result = self._init_result()
 
         logger.debug(f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
                      " with measuring_type: "
@@ -191,7 +192,8 @@ class CSD(ABC):
                      f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
                      f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
 
-        return self._train_and_test(result=result,
+        return self._train_and_test(training_result=training_result,
+                                    testing_result=testing_result,
                                     random_words=(not self._backend_is_tf()))
 
     def _get_succ_prob(self,
@@ -201,7 +203,8 @@ class CSD(ABC):
                 else 1 - one_alpha_optimization_result.error_probability)
 
     def _train_and_test(self,
-                        result: ResultExecution,
+                        training_result: ResultExecution,
+                        testing_result: ResultExecution,
                         random_words: bool):
         if self._training_circuit is None:
             raise ValueError("Training circuit must be initialized")
@@ -209,8 +212,8 @@ class CSD(ABC):
             raise ValueError("Testing circuit must be initialized")
 
         # change it when you are not testing the optimized parameters
-        self._testing = False
-        self._path_results = GlobalResultManager(testing=self._testing)._base_dir_path
+        self._training_path_results = GlobalResultManager(testing=False)._base_dir_path
+        self._testing_path_results = GlobalResultManager(testing=True)._base_dir_path
 
         start_time = time()
         for sample_alpha in self._alphas:
@@ -218,15 +221,19 @@ class CSD(ABC):
             self._alpha_value = sample_alpha
             self._current_batch = self._create_batch_for_alpha(alpha_value=self._alpha_value, random_words=random_words)
 
-            average_error_probability_all_codebooks = 0.0
-            average_ideal_homodyne_probability_all_codebooks = 0.0
-            average_ideal_helstrom_probability_all_codebooks = 0.0
+            training_average_error_probability_all_codebooks = 0.0
+            training_average_ideal_homodyne_probability_all_codebooks = 0.0
+            training_average_ideal_helstrom_probability_all_codebooks = 0.0
+            testing_average_error_probability_all_codebooks = 0.0
+            testing_average_ideal_homodyne_probability_all_codebooks = 0.0
+            testing_average_ideal_helstrom_probability_all_codebooks = 0.0
             codebooks = CodeBooks(batch=self._current_batch, max_combinations=self._max_combinations)
             self._all_codebooks_size = codebooks.size
             logger.debug(
                 f'Optimizing for alpha: {np.round(self._alpha_value, 2)} '
                 f'with {self._all_codebooks_size} codebooks.')
-            top5_codebooks = Top5_BestCodeBooks()
+            top5_training_codebooks = Top5_BestCodeBooks()
+            top5_testing_codebooks = Top5_BestCodeBooks()
 
             for index, codebook in enumerate(codebooks.codebooks):
                 one_codebook_start_time = time()
@@ -242,31 +249,45 @@ class CSD(ABC):
                     codebook_iteration=index,
                     codebook_current_iteration_init_time=one_codebook_start_time
                 )
+                # TRAINING RESULTS
                 one_codebook_optimization_result = self._train_for_one_alpha_one_codebook()
-                if self._testing:
-                    one_alpha_success_probability, measurements = self._test_for_one_alpha_one_codebook(
-                        optimized_parameters=one_codebook_optimization_result.optimized_parameters)
-                if not self._testing:
-                    one_alpha_success_probability = None
-                    measurements = []
-                average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
-                homodyne_probability = IdealLinearCodesHomodyneProbability(
+                training_average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
+                training_homodyne_probability = IdealLinearCodesHomodyneProbability(
                     codebook=self._current_codebook).homodyne_probability
-                average_ideal_homodyne_probability_all_codebooks += homodyne_probability
-                helstrom_probability = IdealLinearCodesHelstromProbability(
+                training_average_ideal_homodyne_probability_all_codebooks += training_homodyne_probability
+                training_helstrom_probability = IdealLinearCodesHelstromProbability(
                     codebook=self._current_codebook).helstrom_probability
-                average_ideal_helstrom_probability_all_codebooks += helstrom_probability
-
-                top5_codebooks.add(potential_best_codebook=BestCodeBook(
+                training_average_ideal_helstrom_probability_all_codebooks += training_helstrom_probability
+                top5_training_codebooks.add(potential_best_codebook=BestCodeBook(
                     codebook=self._current_codebook,
-                    measurements=measurements if measurements is not None and len(measurements) > 0
-                    else one_codebook_optimization_result.measurements,
+                    measurements=one_codebook_optimization_result.measurements,
+                    success_probability=self._get_succ_prob(None, one_codebook_optimization_result),
+                    helstrom_probability=training_helstrom_probability,
+                    homodyne_probability=training_homodyne_probability,
+                    optimized_parameters=one_codebook_optimization_result.optimized_parameters,
+                    program=self._training_circuit.circuit))
+
+                # TESTING RESULTS
+                one_alpha_success_probability, measurements = self._test_for_one_alpha_one_codebook(
+                    optimized_parameters=one_codebook_optimization_result.optimized_parameters)
+
+                testing_average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
+                testing_homodyne_probability = IdealLinearCodesHomodyneProbability(
+                    codebook=self._current_codebook).homodyne_probability
+                testing_average_ideal_homodyne_probability_all_codebooks += testing_homodyne_probability
+                testing_helstrom_probability = IdealLinearCodesHelstromProbability(
+                    codebook=self._current_codebook).helstrom_probability
+                testing_average_ideal_helstrom_probability_all_codebooks += testing_helstrom_probability
+
+                top5_testing_codebooks.add(potential_best_codebook=BestCodeBook(
+                    codebook=self._current_codebook,
+                    measurements=measurements,
                     success_probability=self._get_succ_prob(
                         one_alpha_success_probability, one_codebook_optimization_result),
-                    helstrom_probability=helstrom_probability,
-                    homodyne_probability=homodyne_probability,
+                    helstrom_probability=testing_helstrom_probability,
+                    homodyne_probability=testing_homodyne_probability,
                     optimized_parameters=one_codebook_optimization_result.optimized_parameters,
-                    program=self._testing_circuit.circuit if self._testing else self._training_circuit.circuit))
+                    program=self._testing_circuit.circuit))
                 self._current_codebook_log_info = CodeBookLogInformation(
                     alpha_value=np.round(self._alpha_value, 2),
                     alpha_init_time=one_alpha_start_time,
@@ -283,57 +304,94 @@ class CSD(ABC):
                 logger.warning('codebooks size is 0. Going to next iteration.')
                 continue
 
-            average_error_probability_all_codebooks /= codebooks.size
-            average_ideal_homodyne_probability_all_codebooks /= codebooks.size
-            average_ideal_helstrom_probability_all_codebooks /= codebooks.size
-            one_alpha_optimization_result = OptimizationResult(
+            training_average_error_probability_all_codebooks /= codebooks.size
+            training_average_ideal_homodyne_probability_all_codebooks /= codebooks.size
+            training_average_ideal_helstrom_probability_all_codebooks /= codebooks.size
+            testing_average_error_probability_all_codebooks /= codebooks.size
+            testing_average_ideal_homodyne_probability_all_codebooks /= codebooks.size
+            testing_average_ideal_helstrom_probability_all_codebooks /= codebooks.size
+
+            # TRAINED RESULTS
+            training_one_alpha_optimization_result = OptimizationResult(
                 optimized_parameters=one_codebook_optimization_result.optimized_parameters,
-                error_probability=average_error_probability_all_codebooks,
+                error_probability=training_average_error_probability_all_codebooks,
                 measurements=one_codebook_optimization_result.measurements)
-            self._update_result(result=result,
-                                one_alpha_optimization_result=one_alpha_optimization_result,
-                                one_alpha_success_probability=one_alpha_success_probability,
-                                helstrom_probability=average_ideal_helstrom_probability_all_codebooks,
-                                homodyne_probability=average_ideal_homodyne_probability_all_codebooks,
+            self._update_result(result=training_result,
+                                one_alpha_optimization_result=training_one_alpha_optimization_result,
+                                one_alpha_success_probability=self._get_succ_prob(
+                                    None, training_one_alpha_optimization_result),
+                                helstrom_probability=training_average_ideal_helstrom_probability_all_codebooks,
+                                homodyne_probability=training_average_ideal_homodyne_probability_all_codebooks,
                                 number_mode=self._training_circuit.number_input_modes)
             self._write_result(alpha=sample_alpha,
                                one_alpha_start_time=one_alpha_start_time,
                                success_probability=self._get_succ_prob(
-                                   one_alpha_success_probability, one_alpha_optimization_result),
-                               helstrom_probability=average_ideal_helstrom_probability_all_codebooks,
-                               homodyne_probability=average_ideal_homodyne_probability_all_codebooks,
-                               best_codebook=top5_codebooks.first)
+                                   None, training_one_alpha_optimization_result),
+                               helstrom_probability=training_average_ideal_helstrom_probability_all_codebooks,
+                               homodyne_probability=training_average_ideal_homodyne_probability_all_codebooks,
+                               best_codebook=top5_training_codebooks.first,
+                               testing=False)
+            # TESTED RESULTS
+            testing_one_alpha_optimization_result = OptimizationResult(
+                optimized_parameters=one_codebook_optimization_result.optimized_parameters,
+                error_probability=testing_average_error_probability_all_codebooks,
+                measurements=measurements)
+            self._update_result(result=testing_result,
+                                one_alpha_optimization_result=testing_one_alpha_optimization_result,
+                                one_alpha_success_probability=self._get_succ_prob(
+                                    one_alpha_success_probability, one_codebook_optimization_result),
+                                helstrom_probability=testing_average_ideal_helstrom_probability_all_codebooks,
+                                homodyne_probability=testing_average_ideal_homodyne_probability_all_codebooks,
+                                number_mode=self._testing_circuit.number_input_modes)
+            self._write_result(alpha=sample_alpha,
+                               one_alpha_start_time=one_alpha_start_time,
+                               success_probability=self._get_succ_prob(
+                                   one_alpha_success_probability, one_codebook_optimization_result),
+                               helstrom_probability=testing_average_ideal_helstrom_probability_all_codebooks,
+                               homodyne_probability=testing_average_ideal_homodyne_probability_all_codebooks,
+                               best_codebook=top5_testing_codebooks.first,
+                               testing=True)
 
-            logger.debug(f'Optimized and trained for alpha: {np.round(self._alpha_value, 2)} '
-                         f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_alpha_optimization_result)} '
-                         f"batch_size:{self._batch_size} plays:{self._plays}"
-                         f" modes:{self._training_circuit.number_input_modes}"
-                         f" ancillas: {self._training_circuit.number_ancillas} steps: {self._learning_steps}, "
-                         f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}"
-                         f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
+            logger.debug(
+                f'Optimized and trained for alpha: {np.round(self._alpha_value, 2)} '
+                f'pSucc: {self._get_succ_prob(one_alpha_success_probability, one_codebook_optimization_result)} '
+                f"batch_size:{self._batch_size} plays:{self._plays}"
+                f" modes:{self._training_circuit.number_input_modes}"
+                f" ancillas: {self._training_circuit.number_ancillas} steps: {self._learning_steps}, "
+                f"l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}"
+                f" layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}")
             logger.debug(
                 f'alpha: {np.round(self._alpha_value, 2)} '
-                f'IDEAL HELSTROM: {average_ideal_homodyne_probability_all_codebooks} ,'
-                f'IDEAL DOMODYNE: {average_ideal_helstrom_probability_all_codebooks} ,'
-                f'BEST success probability: {top5_codebooks.first.success_probability}\n'
-                f'Best codebook: {top5_codebooks.first}\n\n')
-            self._print_top5_codebooks(top5_codebooks=top5_codebooks)
+                f'TRAINING IDEAL HELSTROM: {training_average_ideal_homodyne_probability_all_codebooks} ,'
+                f'TRAINING IDEAL HOMODYNE: {training_average_ideal_helstrom_probability_all_codebooks} ,'
+                f'TESTING IDEAL HELSTROM: {testing_average_ideal_homodyne_probability_all_codebooks} ,'
+                f'TESTING IDEAL HOMODYNE: {testing_average_ideal_helstrom_probability_all_codebooks} ,'
+                f'BEST TRAINING success probability: {top5_training_codebooks.first.success_probability}\n'
+                f'BEST TESTING success probability: {top5_testing_codebooks.first.success_probability}\n'
+                f'Best TRAINING codebook: {top5_training_codebooks.first}'
+                f'Best TESTING codebook: {top5_testing_codebooks.first}\n\n')
+            self._print_top5_codebooks(top5_codebooks=top5_training_codebooks, testing=False)
+            self._print_top5_codebooks(top5_codebooks=top5_testing_codebooks, testing=True)
 
-        self._update_result_with_total_time(result=result, start_time=start_time)
-        self._save_results_to_file(result=result)
-        self._save_plot_to_file(result=result)
+        self._update_result_with_total_time(result=training_result, start_time=start_time)
+        self._save_results_to_file(result=training_result)
+        self._save_plot_to_file(result=training_result)
+        self._update_result_with_total_time(result=testing_result, start_time=start_time)
+        self._save_results_to_file(result=testing_result)
+        self._save_plot_to_file(result=testing_result)
 
-        return result
+        return testing_result
 
-    def _print_top5_codebooks(self, top5_codebooks: Top5_BestCodeBooks) -> None:
+    def _print_top5_codebooks(self, top5_codebooks: Top5_BestCodeBooks, testing: bool) -> None:
         first = f'FIRST: {top5_codebooks.first}\n\n' if top5_codebooks.size >= 1 else ''
         second = f'SECOND: {top5_codebooks.second}\n\n' if top5_codebooks.size >= 2 else ''
         third = f'THIRD: {top5_codebooks.third}\n\n' if top5_codebooks.size >= 3 else ''
         fourth = f'FOURTH: {top5_codebooks.fourth}\n\n' if top5_codebooks.size >= 4 else ''
         fifth = f'FIFTH: {top5_codebooks.fifth}\n\n' if top5_codebooks.size >= 5 else ''
 
+        codebook_type = 'TESTING' if testing else 'TRAINING'
         logger.debug('\n\n************************************\n'
-                     f'** TOP{top5_codebooks.size} codebooks: \n'
+                     f'** TOP{top5_codebooks.size} {codebook_type} codebooks: \n'
                      '************************************\n\n'
                      f'{first}'
                      f'{second}'
@@ -393,11 +451,12 @@ class CSD(ABC):
                       success_probability: float,
                       helstrom_probability: float,
                       homodyne_probability: float,
-                      best_codebook: BestCodeBook):
+                      best_codebook: BestCodeBook,
+                      testing: bool):
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 
-        GlobalResultManager(testing=self._testing).write_result(
+        GlobalResultManager(testing=testing).write_result(
             GlobalResult(alpha=alpha,
                          success_probability=success_probability,
                          number_modes=self._training_circuit.number_input_modes,
@@ -412,12 +471,16 @@ class CSD(ABC):
                          best_codebook=best_codebook.binary_codebook,
                          best_measurements=best_codebook.binary_measurements,
                          best_optimized_parameters=best_codebook.parsed_optimized_parameters))
-        directory_name = (f"./circuit_tex/alpha_{np.round(alpha, 2)}"
-                          f"_modes_{self._training_circuit.number_input_modes}"
-                          f"_squeezing_{self._architecture['squeezing']}"
-                          f"_ancillas_{self._training_circuit.number_ancillas}/")
-        best_codebook.program.print()
-        best_codebook.program.draw_circuit(tex_dir=directory_name, write_to_file=True)
+        if testing:
+            directory_name = (f"./circuit_tex/alpha_{np.round(alpha, 2)}"
+                              f"_modes_{self._training_circuit.number_input_modes}"
+                              f"_squeezing_{self._architecture['squeezing']}"
+                              f"_ancillas_{self._training_circuit.number_ancillas}/")
+            logger.info("\n\n****************************************\n\n"
+                        "CIRCUIT: \n\n")
+            best_codebook.program.print()
+            logger.info("\n\n****************************************\n\n")
+            best_codebook.program.draw_circuit(tex_dir=directory_name, write_to_file=True)
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()
@@ -647,7 +710,8 @@ class CSD(ABC):
         if self._alphas is None:
             self._alphas = alphas
         if self._plot is None:
-            self._plot = Plot(alphas=self._alphas, path=self._path_results)
+            path_results = GlobalResultManager(testing=True)._base_dir_path
+            self._plot = Plot(alphas=self._alphas, path=path_results)
         if measuring_types is None:
             self._plot.plot_success_probabilities()
             return None

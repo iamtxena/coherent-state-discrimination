@@ -18,7 +18,7 @@ from csd.util import timing
 import os
 # from csd.config import logger
 
-TESTING = False
+TESTING = True
 PATH_RESULTS = GlobalResultManager(testing=TESTING)._base_dir_path
 
 
@@ -220,7 +220,7 @@ def _general_execution(multiprocess_configuration: MultiProcessConfiguration,
                        backend: Backends,
                        measuring_type: MeasuringTypes):
     start_time = time()
-    pool = Pool(8)
+    pool = Pool(1)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(func=uncurry_launch_execution,
                                        iterable=_build_iterator(multiprocess_configuration,
@@ -295,7 +295,7 @@ if __name__ == '__main__':
     alphas = list(np.arange(alpha_init, alpha_end, alpha_step))
     # alphas.pop(5)
     # one_alpha = alphas[5]
-    # alphas = [alphas[8]]
+    alphas = [alphas[8]]
     # alphas = alphas[:-3]
     # alphas = alphas[4:]
 
@@ -307,7 +307,7 @@ if __name__ == '__main__':
     for number_input_modes in list_number_input_modes:
         for squeezing_option in list_squeezing:
 
-            learning_steps = LearningSteps(default=100,
+            learning_steps = LearningSteps(default=10,
                                            high=150,
                                            extreme=300)
             learning_rate = LearningRate(default=0.1,

@@ -16,7 +16,7 @@ class GlobalResult(NamedTuple):
     best_homodyne_probability: float
     best_codebook: List[List[int]]
     best_measurements: List[List[int]]
-    best_optimized_parameters: List[List[float]]
+    best_optimized_parameters: List[float]
 
     @property
     def distance_to_helstrom_probability(self) -> float:
@@ -47,7 +47,7 @@ class GlobalResult(NamedTuple):
     def values(self) -> Tuple[float, float, int, float, float,
                               float, bool, int, float, float,
                               float, float, float, List[List[int]], List[List[int]],
-                              List[List[float]]]:
+                              List[float]]:
         return (self.alpha,
                 self.success_probability,
                 self.number_modes,
