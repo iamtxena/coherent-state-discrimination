@@ -138,3 +138,4 @@ data/certbot
 jupyterdata
 circuit_tex
 examples/testing_results/plot_*
+examples/training_results/plot_*
