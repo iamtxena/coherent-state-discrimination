@@ -265,7 +265,8 @@ class CSD(ABC):
                         one_alpha_success_probability, one_codebook_optimization_result),
                     helstrom_probability=helstrom_probability,
                     homodyne_probability=homodyne_probability,
-                    optimized_parameters=one_codebook_optimization_result.optimized_parameters))
+                    optimized_parameters=one_codebook_optimization_result.optimized_parameters,
+                    program=self._testing_circuit.circuit if self._testing else self._training_circuit.circuit))
                 self._current_codebook_log_info = CodeBookLogInformation(
                     alpha_value=np.round(self._alpha_value, 2),
                     alpha_init_time=one_alpha_start_time,
@@ -411,6 +412,8 @@ class CSD(ABC):
                          best_codebook=best_codebook.binary_codebook,
                          best_measurements=best_codebook.binary_measurements,
                          best_optimized_parameters=best_codebook.parsed_optimized_parameters))
+        best_codebook.program.print()
+        best_codebook.program.draw_circuit(tex_dir=f"./circuit_tex/alpha_{np.round(alpha, 2)}/", write_to_file=True)
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()

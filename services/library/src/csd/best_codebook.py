@@ -5,6 +5,7 @@ from typing import List, Union
 from tensorflow.python.framework.ops import EagerTensor
 from csd.codeword import CodeWord
 import json
+import strawberryfields as sf
 
 
 @dataclass
@@ -16,6 +17,7 @@ class BestCodeBook():
     helstrom_probability: float
     homodyne_probability: float
     optimized_parameters: List[Union[List[float], EagerTensor]]
+    program: sf.Program
 
     @property
     def parsed_optimized_parameters(self) -> List[List[float]]:
