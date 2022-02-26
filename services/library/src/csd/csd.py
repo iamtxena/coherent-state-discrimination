@@ -412,8 +412,12 @@ class CSD(ABC):
                          best_codebook=best_codebook.binary_codebook,
                          best_measurements=best_codebook.binary_measurements,
                          best_optimized_parameters=best_codebook.parsed_optimized_parameters))
+        directory_name = (f"./circuit_tex/alpha_{np.round(alpha, 2)}"
+                          f"_modes_{self._training_circuit.number_input_modes}"
+                          f"_squeezing_{self._architecture['squeezing']}"
+                          f"_ancillas_{self._training_circuit.number_ancillas}/")
         best_codebook.program.print()
-        best_codebook.program.draw_circuit(tex_dir=f"./circuit_tex/alpha_{np.round(alpha, 2)}/", write_to_file=True)
+        best_codebook.program.draw_circuit(tex_dir=directory_name, write_to_file=True)
 
     def _update_result_with_total_time(self, result: ResultExecution, start_time: float) -> None:
         end_time = time()
