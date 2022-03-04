@@ -609,14 +609,12 @@ class CSD(ABC):
                 engine_backend=Backends.TENSORFLOW, options={
                     "cutoff_dim": self._current_cutoff,
                     "batch_size": self._codebook_size if self._codebook_size > 1 else None
-                },
-                codebook=self._current_codebook)
+                })
         return Engine(
             number_modes=self._training_circuit.number_modes,
             engine_backend=self._run_configuration['run_backend'], options={
                 "cutoff_dim": self._current_cutoff
-            },
-            codebook=self._current_codebook)
+            })
 
     def _backend_is_tf(self):
         return self._run_configuration['run_backend'] == Backends.TENSORFLOW
