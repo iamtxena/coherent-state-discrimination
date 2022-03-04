@@ -67,8 +67,7 @@ class UniversalMultimode(ABC):
 
         if squeezing:
             self._apply_squeezing_layer_to_all_modes(r, phi_r, context, modes)
-
-        Interferometer(theta=theta_2, phi=phi_2, varphi=varphi_2, number_modes=number_modes, context=context)
+            Interferometer(theta=theta_2, phi=phi_2, varphi=varphi_2, number_modes=number_modes, context=context)
 
         self._apply_displacement_layer_to_all_modes(a, context, modes)
 
