@@ -54,12 +54,15 @@ class OptimizationTesting(ABC):
             codeword_guesses: List[CodeWordSuccessProbability]) -> EagerTensor:
 
         self._codeword_guesses = codeword_guesses
+        if len(codeword_guesses) != self._output_batch.size:
+            raise ValueError(f'Codeword guesses length: {len(codeword_guesses)}'
+                             f' MUST be equal to output batch size: {self._output_batch.size}')
 
-        max_success_probability = tf.Variable(0.0)
-        for codeword_success_prob in codeword_guesses:
-            if max_success_probability < codeword_success_prob.success_probability:
-                max_success_probability = codeword_success_prob.success_probability
-        return max_success_probability
+        # max_success_probability = tf.Variable(0.0)
+        # for codeword_success_prob in codeword_guesses:
+        #     if max_success_probability < codeword_success_prob.success_probability:
+        #         max_success_probability = codeword_success_prob.success_probability
+        # return max_success_probability
 
         # success_probability_from_guesses = [
         #     codeword_success_prob.success_probability
@@ -67,13 +70,20 @@ class OptimizationTesting(ABC):
         #     else 1 - codeword_success_prob.success_probability
         #     for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
         # return sum(success_probability_from_guesses) / self._input_batch.size
+        success_probability_from_guesses = [
+            codeword_success_prob.success_probability
+            for codeword_success_prob in codeword_guesses]
+        return sum(success_probability_from_guesses) / self._input_batch.size
 
     def run_and_compute_average_batch_success_probability(self) -> Tuple[EagerTensor, List[CodeWord]]:
 
-        batch_success_probability = sum([self._compute_one_play_average_batch_success_probability(
+        # `        batch_success_probability = sum([self._compute_one_play_average_batch_success_probability(
+        #             codeword_guesses=self._run_and_get_codeword_guesses())
+        #             for _ in range(self._options.plays)]
+        #         ) / self._options.plays`
+
+        batch_success_probability = self._compute_one_play_average_batch_success_probability(
             codeword_guesses=self._run_and_get_codeword_guesses())
-            for _ in range(self._options.plays)]
-        ) / self._options.plays
 
         logger.debug(f'TESTING Success probability from trained parameters: {batch_success_probability}')
         return batch_success_probability, self.measurements
