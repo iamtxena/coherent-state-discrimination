@@ -2,6 +2,7 @@
 from typing import List, Union
 from csd.batch import Batch
 from csd.codeword import CodeWord
+from csd.util import compute_maximum_likelihood
 from .engine import Engine
 from strawberryfields.result import Result
 import tensorflow as tf
@@ -25,13 +26,8 @@ class TFEngine(Engine):
                                        if options['measuring_type'] is MeasuringTypes.PROBABILITIES
                                        else self._run_tf_sampling(circuit=circuit, options=options))
 
-        return self._compute_max_probability_for_all_codewords(batch_success_probabilities)
-
-    def _compute_max_probability_for_all_codewords(
-            self,
-            batch_success_probabilities: List[List[CodeWordSuccessProbability]]) -> List[CodeWordSuccessProbability]:
-        return [self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
-                for codewords_success_probabilities in batch_success_probabilities]
+        return compute_maximum_likelihood(batch_success_probabilities=batch_success_probabilities,
+                                          output_batch=options['output_batch'])
 
     def _run_tf_circuit_probabilities(self,
                                       circuit: Circuit,
@@ -95,7 +91,8 @@ class TFEngine(Engine):
         """Run a circuit experiment doing MeasureFock and performing sampling with nshots
         """
         batch_success_probabilities = self._run_tf_sampling(circuit, options)
-        return self._compute_max_probability_for_all_codewords(batch_success_probabilities)
+        return compute_maximum_likelihood(batch_success_probabilities=batch_success_probabilities,
+                                          output_batch=options['output_batch'])
 
     def _run_tf_sampling(self,
                          circuit: Circuit,
