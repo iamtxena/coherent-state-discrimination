@@ -2,7 +2,7 @@ from abc import ABC
 from typing import Callable, List, Union, Optional
 from csd.optimizers.parallel_tf import ParallelTFOptimizer
 from csd.typings.typing import LearningRate, LearningSteps, OptimizationBackends, OptimizationResult
-from csd.util import CodeBookLogInformation
+from csd.utils.util import CodeBookLogInformation
 from .optimizers.tf import TFOptimizer
 from .optimizers.scipy import ScipyOptimizer
 from .optimizers.parallel_scipy import ParallelOptimizer

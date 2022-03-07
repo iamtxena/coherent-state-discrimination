@@ -2,7 +2,7 @@
 from typing import List, Union
 from csd.batch import Batch
 from csd.codeword import CodeWord
-from csd.util import compute_maximum_likelihood
+from csd.utils.probability import compute_maximum_likelihood
 from .engine import Engine
 from strawberryfields.result import Result
 import tensorflow as tf

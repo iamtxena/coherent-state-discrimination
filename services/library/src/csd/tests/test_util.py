@@ -1,5 +1,5 @@
 import pytest
-from csd.util import set_friendly_time
+from csd.utils.util import set_friendly_time
 
 only_seconds = [0.1, 21, 51, 59.9]
 seconds_and_minutes = [63.4, 120, 821.9181, 962.5343]

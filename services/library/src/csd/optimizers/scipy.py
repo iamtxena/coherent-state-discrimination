@@ -1,6 +1,6 @@
 from abc import ABC
 from typing import Callable, Optional, Union
-from csd.util import CodeBookLogInformation
+from csd.utils.util import CodeBookLogInformation
 from scipy.optimize import minimize, OptimizeResult
 from csd.config import logger
 from csd.typings.typing import OptimizationResult

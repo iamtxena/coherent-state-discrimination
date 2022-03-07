@@ -1,6 +1,6 @@
 import time
 
-from csd.util import CodeBookLogInformation
+from csd.utils.util import CodeBookLogInformation
 
 from .tf import TFOptimizer
 from typing import Callable, Optional, Union

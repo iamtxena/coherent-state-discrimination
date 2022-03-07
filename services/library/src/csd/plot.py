@@ -7,7 +7,7 @@ from matplotlib.widgets import CheckButtons
 # from typeguard import typechecked
 from csd.typings.global_result import GlobalResult
 from csd.typings.typing import ResultExecution
-from csd.util import set_current_time, _fix_path, set_friendly_time
+from csd.utils.util import set_current_time, _fix_path, set_friendly_time
 import numpy as np
 # from csd.config import logger
 

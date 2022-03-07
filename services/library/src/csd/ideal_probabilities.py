@@ -4,7 +4,7 @@ from abc import ABC
 from typing import List, NamedTuple, Tuple
 import math
 from csd.codeword import CodeWord
-from csd.util import filter_number_modes_from_codebook
+from csd.utils.util import filter_number_modes_from_codebook
 from scipy.optimize import minimize
 
 

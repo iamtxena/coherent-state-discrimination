@@ -32,7 +32,7 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
 from csd.plot import Plot
 from csd.typings.cost_function import CostFunctionOptions
-from csd.util import CodeBookLogInformation, print_codebook_log, timing, save_object_to_disk
+from csd.utils.util import CodeBookLogInformation, print_codebook_log, timing, save_object_to_disk
 from csd.batch import Batch
 from .cost_function import CostFunction
 

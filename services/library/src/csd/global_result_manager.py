@@ -8,7 +8,7 @@ from typing import List, Optional, Union
 import numpy as np
 import glob
 from csd.plot import Plot
-from csd.util import strtobool
+from csd.utils.util import strtobool
 
 from csd.typings.global_result import GlobalResult
 # from csd.config import logger
@@ -103,6 +103,10 @@ class GlobalResultManager(ABC):
             reader = csv.reader(f)
             next(reader)
 
+            # for row in reader:
+            #     if len(row) > 16:
+            #         print(f'alpha: {float(row[0])}')
+            #         print(f'len(row): {len(row)}')
             alpha_results = [GlobalResult(alpha=float(row[0]),
                                           success_probability=float(row[1]),
                                           number_modes=int(row[2]),

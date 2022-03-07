@@ -13,7 +13,7 @@ import itertools
 from tensorflow.python.framework.ops import EagerTensor
 import tensorflow as tf
 
-from csd.util import generate_all_codewords_from_codeword, generate_measurement_matrices
+from csd.utils.util import generate_all_codewords_from_codeword, generate_measurement_matrices
 # from csd.config import logger
 
 

@@ -13,7 +13,8 @@ from tensorflow.keras import optimizers as tfOptimizers
 from tensorflow.keras import metrics as tfMetrics
 
 from csd.typings.typing import LearningRate, LearningSteps, OptimizationResult
-from csd.util import (CodeBookLogInformation, CodebookLearningStepsLogInformation, print_codebook_learning_steps_log)
+from csd.utils.util import (CodeBookLogInformation, CodebookLearningStepsLogInformation,
+                            print_codebook_learning_steps_log)
 from csd.config import logger
 
 

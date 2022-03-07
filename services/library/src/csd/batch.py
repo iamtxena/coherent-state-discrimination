@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from csd.util import generate_all_codewords
+from csd.utils.util import generate_all_codewords
 from .codeword import CodeWord
 
 DEFAULT_ALPHA_VALUE = 0.7

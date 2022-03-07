@@ -1,6 +1,6 @@
 from abc import ABC
 from typing import Callable, Optional, Union
-from csd.util import CodeBookLogInformation
+from csd.utils.util import CodeBookLogInformation
 from optimparallel import minimize_parallel
 from scipy.optimize import OptimizeResult
 # from multiprocessing import cpu_count

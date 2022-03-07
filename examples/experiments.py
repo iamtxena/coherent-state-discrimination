@@ -3,7 +3,7 @@ from csd import CSD
 from csd.typings.typing import (CutOffDimensions, LearningRate, LearningSteps,
                                 MeasuringTypes, CSDConfiguration, Backends, OptimizationBackends)
 import numpy as np
-from csd.util import timing
+from csd.utils.util import timing
 import os
 
 
