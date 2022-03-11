@@ -65,8 +65,7 @@ def compute_maximum_likelihood(batch_success_probabilities: List[List[CodeWordSu
 
         codeword_success_probability = CodeWordSuccessProbability(
             input_codeword=associated_input_codeword,
-            guessed_codeword=CodeWord(size=associated_input_codeword.size,
-                                      alpha_value=associated_input_codeword.alpha),
+            guessed_codeword=output_codeword,
             output_codeword=output_codeword,
             success_probability=max_success_probability,
             counts=0)
