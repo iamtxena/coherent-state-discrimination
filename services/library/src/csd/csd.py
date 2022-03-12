@@ -600,7 +600,7 @@ class CSD(ABC):
 
         if self._alpha_value > 0.6:
             self._current_cutoff = self._cutoff_dim.high
-        if self._alpha_value > 1.2:
+        if self._alpha_value > 1.4:
             self._current_cutoff = self._cutoff_dim.extreme
 
         if self._backend_is_tf():
