@@ -52,14 +52,18 @@ class Plot(ABC):
 
             probs_labels = []
             for number_mode in number_modes:
-                self._compute_hels_homo_probs(apply_log=apply_log if apply_log is not None else False,
-                                              number_mode=number_mode,
-                                              global_results=global_results,
-                                              helstrom_probabilities=helstrom_probabilities,
-                                              homodyne_probabilities=homodyne_probabilities,
-                                              best_codebook=best_codebook)
+                helstrom_probability, homodyne_probability = self._compute_hels_homo_prob(
+                    alpha=one_alpha,
+                    apply_log=apply_log if apply_log is not None else False,
+                    number_mode=number_mode,
+                    global_results=global_results,
+                    best_codebook=best_codebook)
+                helstrom_probabilities.append(helstrom_probability)
+                homodyne_probabilities.append(homodyne_probability)
+
                 squeezed_probabilities_mode_i = []
                 non_squeezed_probabilities_mode_i = []
+
                 for ancilla_i in number_ancillas:
                     squeezed_probability_ancilla_i = [global_result.success_probability
                                                       if not best_codebook else global_result.best_success_probability
@@ -124,7 +128,7 @@ class Plot(ABC):
         plt.subplots_adjust(hspace=0.4)
         fig.patch.set_facecolor('lightgrey')
         # fig.patch.set_alpha(0.7)
-        prefix_suffix = 'best_' if not best_codebook else ''
+        prefix_suffix = 'best_' if best_codebook else ''
         suffix = f"_{prefix_suffix}probs_all" if not apply_log else f"_logs_{prefix_suffix}probs_all"
         self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
                                 suffix=suffix, fig=fig)
@@ -133,43 +137,50 @@ class Plot(ABC):
                                  apply_log: bool,
                                  number_mode: int,
                                  global_results: List[GlobalResult],
-                                 helstrom_probabilities: List[float],
-                                 homodyne_probabilities: List[float],
-                                 alphas: List[float] = [],
-                                 best_codebook: Optional[bool] = False) -> None:
+                                 alphas: List[float],
+                                 best_codebook: Optional[bool] = False) -> Tuple[List[float], List[float]]:
         if best_codebook is None:
             best_codebook = False
-        if alphas is None or len(alphas) == 0:
-            homodyne_probability_all = [global_result.homodyne_probability
-                                        if not best_codebook else global_result.best_homodyne_probability
-                                        for global_result in global_results
-                                        if (global_result.number_modes == number_mode)]
-            homodyne_probability = sum(homodyne_probability_all) / len(homodyne_probability_all)
-            helstrom_probability_all = [global_result.helstrom_probability
-                                        if not best_codebook else global_result.best_helstrom_probability
-                                        for global_result in global_results
-                                        if (global_result.number_modes == number_mode)]
-            helstrom_probability = sum(helstrom_probability_all) / len(helstrom_probability_all)
+        helstrom_probabilities: List[float] = []
+        homodyne_probabilities: List[float] = []
 
-            homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
-            helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
-            return
         for alpha in alphas:
-            homodyne_probability_all = [global_result.homodyne_probability
-                                        if not best_codebook else global_result.best_homodyne_probability
-                                        for global_result in global_results
-                                        if (global_result.number_modes == number_mode and global_result.alpha == alpha)]
-            homodyne_probability = (sum(homodyne_probability_all) / len(homodyne_probability_all)
-                                    if len(homodyne_probability_all) > 0 else 0.0)
-            helstrom_probability_all = [global_result.helstrom_probability
-                                        if not best_codebook else global_result.best_helstrom_probability
-                                        for global_result in global_results
-                                        if (global_result.number_modes == number_mode and global_result.alpha == alpha)]
-            helstrom_probability = (sum(helstrom_probability_all) / len(helstrom_probability_all)
-                                    if len(helstrom_probability_all) > 0 else 0.0)
+            helstrom_probability, homodyne_probability = self._compute_hels_homo_prob(alpha=alpha,
+                                                                                      apply_log=apply_log,
+                                                                                      number_mode=number_mode,
+                                                                                      global_results=global_results,
+                                                                                      best_codebook=best_codebook)
+            helstrom_probabilities.append(helstrom_probability)
+            homodyne_probabilities.append(homodyne_probability)
+        return helstrom_probabilities, homodyne_probabilities
 
-            homodyne_probabilities.append(homodyne_probability if not apply_log else np.log(homodyne_probability))
-            helstrom_probabilities.append(helstrom_probability if not apply_log else np.log(helstrom_probability))
+    def _compute_hels_homo_prob(self,
+                                alpha: float,
+                                apply_log: bool,
+                                number_mode: int,
+                                global_results: List[GlobalResult],
+                                best_codebook: bool) -> Tuple[float, float]:
+
+        homodyne_probability_all = [global_result.homodyne_probability
+                                    if not best_codebook else global_result.best_homodyne_probability
+                                    for global_result in global_results
+                                    if (global_result.number_modes == number_mode and
+                                        global_result.alpha == alpha)]
+        homodyne_probability = homodyne_probability_all.pop() if len(homodyne_probability_all) > 0 else 0.0
+        helstrom_probability_all = [global_result.helstrom_probability
+                                    if not best_codebook else global_result.best_helstrom_probability
+                                    for global_result in global_results
+                                    if (global_result.number_modes == number_mode and
+                                        global_result.alpha == alpha and
+                                        global_result.squeezing)]
+        helstrom_probability = helstrom_probability_all.pop() if len(helstrom_probability_all) > 0 else 0.0
+
+        if apply_log and homodyne_probability > 0.0:
+            homodyne_probability = np.log(homodyne_probability)
+        if apply_log and helstrom_probability > 0.0:
+            helstrom_probability = np.log(helstrom_probability)
+
+        return helstrom_probability, homodyne_probability
 
     def _plot_lines_with_appropiate_colors(self,
                                            number_modes: List[int],
@@ -225,12 +236,15 @@ class Plot(ABC):
 
         probs_labels = []
         for number_mode in number_modes:
-            self._compute_hels_homo_probs(apply_log=apply_log if apply_log is not None else False,
-                                          number_mode=number_mode,
-                                          global_results=global_results,
-                                          helstrom_probabilities=helstrom_probabilities,
-                                          homodyne_probabilities=homodyne_probabilities,
-                                          best_codebook=best_codebook)
+            helstrom_probability, homodyne_probability = self._compute_hels_homo_prob(
+                alpha=one_alpha,
+                apply_log=apply_log if apply_log is not None else False,
+                number_mode=number_mode,
+                global_results=global_results,
+                best_codebook=best_codebook)
+            helstrom_probabilities.append(helstrom_probability)
+            homodyne_probabilities.append(homodyne_probability)
+
             squeezed_probabilities_mode_i = []
             non_squeezed_probabilities_mode_i = []
             for ancilla_i in number_ancillas:
@@ -290,7 +304,7 @@ class Plot(ABC):
 
         # self._show_or_save_plot(save_plot=save_plot if save_plot is not None else False,
         #                         suffix=suffix, fig=fig)
-        prefix_suffix = 'best_' if not best_codebook else ''
+        prefix_suffix = 'best_' if best_codebook else ''
         suffix = (f"_{prefix_suffix}probs_{str(np.round(one_alpha, 2))}"
                   if not apply_log else f"_logs_{prefix_suffix}probs_{str(np.round(one_alpha, 2))}")
         ylable_prefix = 'Average' if not best_codebook else 'Best Codebook'
@@ -320,15 +334,12 @@ class Plot(ABC):
         if best_codebook is None:
             best_codebook = False
         for number_mode in number_modes:
-            homodyne_probabilities: List[float] = []
-            helstrom_probabilities: List[float] = []
-            self._compute_hels_homo_probs(apply_log=False,
-                                          number_mode=number_mode,
-                                          global_results=global_results,
-                                          helstrom_probabilities=helstrom_probabilities,
-                                          homodyne_probabilities=homodyne_probabilities,
-                                          alphas=self._alphas,
-                                          best_codebook=best_codebook)
+            helstrom_probabilities, homodyne_probabilities = self._compute_hels_homo_probs(
+                alphas=self._alphas,
+                apply_log=False,
+                number_mode=number_mode,
+                global_results=global_results,
+                best_codebook=best_codebook)
 
             probs_labels.append((helstrom_probabilities, f'$pHel(a)^{number_mode}$'))
             for squeezing_option in squeezing_options:

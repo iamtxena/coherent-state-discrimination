@@ -85,17 +85,17 @@ class Circuit(ABC):
         if squeezing:
             r = self._create_free_parameter_list(base_name='r', number_elems=M, circuit=self._prog)
             phi_r = self._create_free_parameter_list(base_name='phi_r', number_elems=M, circuit=self._prog)
-        theta_2 = self._create_free_parameter_list(base_name='theta_2', number_elems=K, circuit=self._prog)
-        phi_2 = self._create_free_parameter_list(base_name='phi_2', number_elems=K, circuit=self._prog)
-        varphi_2 = self._create_free_parameter_list(base_name='varphi_2', number_elems=M, circuit=self._prog)
+            theta_2 = self._create_free_parameter_list(base_name='theta_2', number_elems=K, circuit=self._prog)
+            phi_2 = self._create_free_parameter_list(base_name='phi_2', number_elems=K, circuit=self._prog)
+            varphi_2 = self._create_free_parameter_list(base_name='varphi_2', number_elems=M, circuit=self._prog)
         a = self._create_free_parameter_list(base_name='a', number_elems=M, circuit=self._prog)
 
         self._free_parameters = self._count_free_parameters(theta_1=theta_1,
                                                             phi_1=phi_1,
                                                             varphi_1=varphi_1,
-                                                            theta_2=theta_2,
-                                                            phi_2=phi_2,
-                                                            varphi_2=varphi_2,
+                                                            theta_2=theta_2 if squeezing else [],
+                                                            phi_2=phi_2 if squeezing else [],
+                                                            varphi_2=varphi_2 if squeezing else [],
                                                             a=a,
                                                             r=r if squeezing else [],
                                                             phi_r=phi_r if squeezing else [])
@@ -110,9 +110,9 @@ class Circuit(ABC):
                                varphi_1=varphi_1,
                                r=r if squeezing else [],
                                phi_r=phi_r if squeezing else [],
-                               theta_2=theta_2,
-                               phi_2=phi_2,
-                               varphi_2=varphi_2,
+                               theta_2=theta_2 if squeezing else [],
+                               phi_2=phi_2 if squeezing else [],
+                               varphi_2=varphi_2 if squeezing else [],
                                a=a,
                                number_modes=M,
                                context=q,
