@@ -30,11 +30,10 @@ class CostFunction(ABC):
         self._codeword_guesses: Union[None, List[CodeWordSuccessProbability]] = None
 
     @property
-    def measurements(self) -> List[CodeWord]:
+    def measurements(self) -> List[CodeWordSuccessProbability]:
         if self._codeword_guesses is None:
             raise ValueError("codeword guesses still not computed")
-        return [codeword_sucess_probability.guessed_codeword
-                for codeword_sucess_probability in self._codeword_guesses]
+        return self._codeword_guesses
 
     def _run_and_get_codeword_guesses(self) -> List[CodeWordSuccessProbability]:
         if self._options.backend_name == Backends.TENSORFLOW.value:
@@ -86,7 +85,8 @@ class CostFunction(ABC):
             for codeword_success_prob in codeword_guesses]
         return sum(success_probability_from_guesses) / self._input_batch.size
 
-    def run_and_compute_average_batch_error_probability(self) -> Tuple[Union[float, EagerTensor], List[CodeWord]]:
+    def run_and_compute_average_batch_error_probability(self) -> Tuple[Union[float, EagerTensor],
+                                                                       List[CodeWordSuccessProbability]]:
         # loss = 1 - sum([self._compute_one_play_average_batch_success_probability(
         #     codeword_guesses=self._run_and_get_codeword_guesses())
         #     for _ in range(self._options.plays)]

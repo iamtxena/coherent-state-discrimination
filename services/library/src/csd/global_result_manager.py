@@ -119,9 +119,9 @@ class GlobalResultManager(ABC):
                                           best_helstrom_probability=float(row[11] if len(row) >= 12 else 0.0),
                                           best_homodyne_probability=float(row[12] if len(row) >= 13 else 0.0),
                                           best_codebook=json.loads(row[13]) if len(row) >= 14 else [],
-                                          best_measurements=json.loads(row[14]) if len(row) >= 15 else [],
+                                          best_measurements=row[14] if len(row) >= 15 else [],
                                           best_optimized_parameters=json.loads(row[15]) if len(row) >= 16 else [])
-                             for row in reader]
+                             for row in reader if len(row) > 0]
             new_results = self._filter_only_new_results(loaded_results=alpha_results)
             with open(global_results_file, 'a+', newline='') as write_obj:
                 writer = csv.writer(write_obj)
@@ -159,7 +159,7 @@ class GlobalResultManager(ABC):
                 best_helstrom_probability=float(row[11] if len(row) >= 12 else 0.0),
                 best_homodyne_probability=float(row[12] if len(row) >= 13 else 0.0),
                 best_codebook=json.loads(row[13]) if len(row) >= 14 else [],
-                best_measurements=json.loads(row[14]) if len(row) >= 15 else [],
+                best_measurements=row[14] if len(row) >= 15 else [],
                 best_optimized_parameters=json.loads(row[15]) if len(row) >= 16 else [])
                 for row in reader]
 

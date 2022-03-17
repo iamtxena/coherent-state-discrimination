@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import List
 from csd.codeword import CodeWord
 import json
+from csd.typings.typing import CodeWordSuccessProbability
 import strawberryfields as sf
 
 
@@ -11,7 +12,7 @@ import strawberryfields as sf
 class BestCodeBook():
     """Class for managing the best codebook."""
     codebook: List[CodeWord]
-    measurements: List[CodeWord]
+    measurements: List[CodeWordSuccessProbability]
     success_probability: float
     helstrom_probability: float
     homodyne_probability: float
@@ -42,8 +43,8 @@ class BestCodeBook():
         return [codeword.binary_code for codeword in self.codebook]
 
     @property
-    def binary_measurements(self) -> List[List[int]]:
-        return [codeword.binary_code for codeword in self.measurements]
+    def binary_measurements(self) -> List[dict]:
+        return [measurement.binary_code for measurement in self.measurements]
 
     def to_dict(self) -> dict:
         return {

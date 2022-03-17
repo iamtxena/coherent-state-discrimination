@@ -104,12 +104,6 @@ class RunConfiguration(TypedDict, total=False):
     running_type: RunningTypes
 
 
-class OptimizationResult(NamedTuple):
-    optimized_parameters: List[float]
-    error_probability: float
-    measurements: List[CodeWord]
-
-
 class OneProcessResultExecution(TypedDict):
     opt_params: List[Union[List[float], EagerTensor]]
     p_err: List[Union[float, EagerTensor]]
@@ -173,6 +167,17 @@ class CodeWordSuccessProbability():
     def __repr__(self) -> str:
         return self.__str__()
 
+    @property
+    def binary_code(self) -> dict:
+        return {
+            'input_codeword': self.input_codeword.binary_code,
+            'guessed_codeword': self.guessed_codeword.binary_code if self.guessed_codeword is not None else None,
+            'output_codeword': self.output_codeword.binary_code,
+            'psucc': (self.success_probability
+                      if isinstance(self.success_probability, float)
+                      else float(self.success_probability.numpy()))
+        }
+
 
 class CodeWordIndices(NamedTuple):
     codeword: CodeWord
@@ -201,3 +206,9 @@ class BatchSuccessProbability():
 
     def __repr__(self) -> str:
         return self.__str__()
+
+
+class OptimizationResult(NamedTuple):
+    optimized_parameters: List[float]
+    error_probability: float
+    measurements: List[CodeWordSuccessProbability]

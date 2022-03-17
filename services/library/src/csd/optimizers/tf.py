@@ -1,7 +1,6 @@
 from abc import ABC
 import time
 from typing import Callable, List, Optional, Tuple, Union
-from csd.codeword import CodeWord
 import tensorflow as tf
 import numpy as np
 import os
@@ -12,7 +11,7 @@ from tensorflow.python.ops.variables import Variable
 from tensorflow.keras import optimizers as tfOptimizers
 from tensorflow.keras import metrics as tfMetrics
 
-from csd.typings.typing import LearningRate, LearningSteps, OptimizationResult
+from csd.typings.typing import CodeWordSuccessProbability, LearningRate, LearningSteps, OptimizationResult
 from csd.utils.util import (CodeBookLogInformation, CodebookLearningStepsLogInformation,
                             print_codebook_learning_steps_log)
 from csd.config import logger
@@ -109,7 +108,7 @@ class TFOptimizer(ABC):
                      cost_function: Callable,
                      parameters: List[Variable]) -> Tuple[EagerTensor,
                                                           List[Variable],
-                                                          List[CodeWord]]:
+                                                          List[CodeWordSuccessProbability]]:
 
         with tf.GradientTape() as tape:
             loss, measurements = cost_function(params=parameters)

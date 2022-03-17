@@ -14,7 +14,7 @@ from csd.typings.global_result import GlobalResult
 from csd.typings.optimization_testing import OptimizationTestingOptions
 # from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (Backends,
-                                CSDConfiguration,
+                                CSDConfiguration, CodeWordSuccessProbability,
                                 CutOffDimensions,
                                 LearningRate,
                                 LearningSteps,
@@ -140,7 +140,8 @@ class CSD(ABC):
                        measuring_type=self._run_configuration['measuring_type'],
                        running_type=running_type)
 
-    def _cost_function(self, params: List[float]) -> Union[float, EagerTensor]:
+    def _cost_function(self, params: List[float]) -> Tuple[Union[float, EagerTensor],
+                                                           List[CodeWordSuccessProbability]]:
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
@@ -414,7 +415,9 @@ class CSD(ABC):
             updated_worst_success_probability = current_success_probability
         return updated_best_success_probability, updated_worst_success_probability, new_best_codebook
 
-    def _test_for_one_alpha_one_codebook(self, optimized_parameters: List[float]) -> Tuple[EagerTensor, List[CodeWord]]:
+    def _test_for_one_alpha_one_codebook(self, optimized_parameters: List[float]) -> Tuple[
+            EagerTensor,
+            List[CodeWordSuccessProbability]]:
         if self._testing_circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
