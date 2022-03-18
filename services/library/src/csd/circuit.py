@@ -117,7 +117,7 @@ class Circuit(ABC):
                                number_modes=M,
                                context=q,
                                squeezing=squeezing)
-            if running_type is RunningTypes.TESTING or measuring_type is MeasuringTypes.SAMPLING:
+            if measuring_type is MeasuringTypes.SAMPLING:
                 sf.ops.MeasureFock() | q
 
     def _create_circuit_for_one_mode(self,
@@ -139,7 +139,7 @@ class Circuit(ABC):
             self._apply_displacement_layer_to_all_modes(a, context=q, number_modes=number_modes)
             if squeezing:
                 self._apply_squeezing_layer_to_all_modes(r, phi_r, context=q, number_modes=number_modes)
-            if running_type is RunningTypes.TESTING or measuring_type is MeasuringTypes.SAMPLING:
+            if measuring_type is MeasuringTypes.SAMPLING:
                 sf.ops.MeasureFock() | q
 
     def _apply_displacement_layer_to_only_input_modes(self,

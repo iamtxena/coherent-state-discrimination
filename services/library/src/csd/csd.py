@@ -180,7 +180,7 @@ class CSD(ABC):
 
         self._run_configuration = configuration.copy()
         self._training_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
-        self._testing_circuit = self._create_circuit(running_type=RunningTypes.TRAINING)
+        self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
         training_result = self._init_result()
         testing_result = self._init_result()
 
