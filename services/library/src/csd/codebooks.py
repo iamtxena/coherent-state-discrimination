@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import math
 import itertools
 import random
-from typing import List
+from typing import List, Union
 import numpy as np
 
 from csd.codeword import CodeWord
@@ -21,15 +21,25 @@ class CodeBooks():
 
     def __init__(self,
                  batch: Batch,
-                 max_combinations: int = DEFAULT_MAX_COMBINATIONS):
-        self._max_combinations = max_combinations
-        self._codebook_maximum_size = self._compute_codebook_maximum_size(batch=batch)
-        self._information_bits = self._compute_maximum_information_bits(batch=batch)
-        self._codebooks = self._generate_all_codebooks_with_linear_codes(batch=batch,
-                                                                         information_bits=self._information_bits)
-        # self._codebooks: List[List[CodeWord]] = list(self._generate_all_random_codebooks_with_specific_size(
-        #    batch=batch, codebook_maximum_size=self._codebook_maximum_size))
-        self._alpha_value = batch.alpha
+                 max_combinations: int = DEFAULT_MAX_COMBINATIONS,
+                 codewords_list: Union[List[List[CodeWord]], None] = None):
+        if codewords_list is None:
+            self._max_combinations = max_combinations
+            self._codebook_maximum_size = self._compute_codebook_maximum_size(batch=batch)
+            self._information_bits = self._compute_maximum_information_bits(batch=batch)
+            self._codebooks = self._generate_all_codebooks_with_linear_codes(batch=batch,
+                                                                             information_bits=self._information_bits)
+            # self._codebooks: List[List[CodeWord]] = list(self._generate_all_random_codebooks_with_specific_size(
+            #    batch=batch, codebook_maximum_size=self._codebook_maximum_size))
+            self._alpha_value = batch.alpha
+        else:
+            self._codebooks = codewords_list
+            self._alpha_value = codewords_list[0][0].alpha
+
+    @staticmethod
+    def from_codewords_list(codewords_list: List[List[CodeWord]]):
+        return CodeBooks(batch=Batch(size=len(codewords_list[0]), word_size=codewords_list[0][0].size),
+                         codewords_list=codewords_list)
 
     @property
     def codebooks(self) -> List[List[CodeWord]]:
