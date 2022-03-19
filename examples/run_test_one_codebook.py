@@ -5,9 +5,12 @@ from csd import CSD
 from csd.batch import Batch
 from csd.codebooks import CodeBooks
 from csd.codeword import CodeWord
-from csd.typings.typing import CSDConfiguration, Backends
-from csd.config import logger
+from csd.typings.typing import CutOffDimensions
 import numpy as np
+import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
 
 
 def create_alphas() -> List[float]:
@@ -21,11 +24,11 @@ def create_alphas() -> List[float]:
 def create_codeword_from_binary(binary_codeword: List[int], one_alpha: float) -> CodeWord:
     word = []
     for bit in binary_codeword:
-        if bit != 0 and bit != 1:
+        if bit not in [0, 1]:
             raise ValueError("codeword can only accept 0 or 1 values")
         if bit == 0:
             word.append(one_alpha)
-        if bit == 1:
+        else:
             word.append(-one_alpha)
     return CodeWord(alpha_value=one_alpha, word=word)
 
@@ -40,6 +43,19 @@ def create_all_codewords(alpha_value: float, number_modes: int) -> List[CodeWord
 
     return [create_codeword_from_binary(binary_codeword=one_binary_codeword, one_alpha=alpha_value)
             for one_binary_codeword in all_binary_codewords]
+
+
+def execute_testing_circuit_one_codeword(alpha_value: float,
+                                         number_modes: int,
+                                         cutoff_dimension: CutOffDimensions,
+                                         one_codeword: CodeWord,
+                                         optimized_parameters: List[float]):
+    result = CSD().execute_testing_circuit_one_codeword(alpha_value=alpha_value,
+                                                        number_modes=number_modes,
+                                                        cutoff_dimension=cutoff_dimension,
+                                                        one_codeword=one_codeword,
+                                                        optimized_parameters=optimized_parameters)
+    print(result)
 
 
 if __name__ == '__main__':
@@ -69,12 +85,27 @@ if __name__ == '__main__':
     alphas = create_alphas()
     one_alpha = alphas[args.alpha_index]
     input_modes = args.modes
-    # one_binary_codeword = [0, 0]
+
     all_codewords = create_all_codewords(alpha_value=one_alpha, number_modes=input_modes)
     codebooks = CodeBooks.from_codewords_list(codewords_list=[all_codewords])
     input_batch = Batch(size=0, word_size=input_modes, all_words=False, input_batch=all_codewords)
 
-    # run_one_codebook()
-    print(all_codewords)
-    print(codebooks.codebooks)
-    print(input_batch.codewords)
+    one_binary_codeword = [0, 0]
+    one_codeword = create_codeword_from_binary(binary_codeword=one_binary_codeword, one_alpha=one_alpha)
+
+    cutoff_dim = CutOffDimensions(default=10,
+                                  high=15,
+                                  extreme=30)
+    squeezing = False
+    optimized_parameters = [-0.008990095928311348,
+                            -1.7685526609420776,
+                            -0.00886836089193821,
+                            -0.008727652952075005,
+                            0.6994574666023254,
+                            0.7021579742431641]
+    # functions to execute
+    execute_testing_circuit_one_codeword(alpha_value=one_alpha,
+                                         number_modes=input_modes,
+                                         cutoff_dimension=cutoff_dim,
+                                         one_codeword=one_codeword,
+                                         optimized_parameters=optimized_parameters)

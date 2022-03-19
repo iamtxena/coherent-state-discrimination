@@ -94,6 +94,7 @@ class CSD(ABC):
         self._plot: Union[Plot, None] = None
         self._training_circuit: Union[Circuit, None] = None
         self._run_configuration: Union[RunConfiguration, None] = None
+        self._architecture = self._default_architecture()
 
     def _set_architecture(self, architecture: Optional[Architecture] = None) -> Architecture:
         tmp_architecture = self._default_architecture()
@@ -164,6 +165,123 @@ class CSD(ABC):
                                 measuring_type=self._run_configuration['measuring_type'],
                                 shots=self._shots,
                                 plays=self._plays)).run_and_compute_average_batch_error_probability()
+
+    @timing
+    def execute_testing_circuit_one_codeword(self,
+                                             alpha_value: float,
+                                             number_modes: int,
+                                             cutoff_dimension: CutOffDimensions,
+                                             one_codeword: CodeWord,
+                                             optimized_parameters: List[float]) -> ResultExecution:
+        self._alphas = [alpha_value]
+        self._current_batch = Batch(size=0, word_size=number_modes, all_words=False, input_batch=[one_codeword])
+        self._batch_size = self._current_batch.size
+        self._cutoff_dim = cutoff_dimension
+        self._architecture['number_modes'] = number_modes
+        self._run_configuration = RunConfiguration({
+            'run_backend': Backends.TENSORFLOW,
+            'optimization_backend': OptimizationBackends.TENSORFLOW,
+            'measuring_type': MeasuringTypes.PROBABILITIES,
+            'running_type': RunningTypes.TESTING
+        })
+        self._training_circuit = None
+        self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
+        testing_result = self._init_result()
+        self._testing_path_results = GlobalResultManager(testing=True)._base_dir_path
+
+        self._alpha_value = alpha_value
+        codebooks = CodeBooks.from_codewords_list(codewords_list=[[one_codeword]])
+        self._all_codebooks_size = codebooks.size
+        testing_average_error_probability_all_codebooks = 0.0
+        testing_average_ideal_homodyne_probability_all_codebooks = 0.0
+        testing_average_ideal_helstrom_probability_all_codebooks = 0.0
+        top5_testing_codebooks = Top5_BestCodeBooks()
+
+        one_alpha_start_time = time()
+
+        for index, codebook in enumerate(codebooks.codebooks):
+            one_codebook_start_time = time()
+            self._current_codebook_index = index
+            self._current_codebook = codebook
+            logger.debug(f"current codebook: {self._current_codebook}")
+            self._codebook_size = len(codebook)
+            self._engine = self._create_engine()
+            self._current_codebook_log_info = CodeBookLogInformation(
+                alpha_value=np.round(self._alpha_value, 2),
+                alpha_init_time=one_alpha_start_time,
+                codebooks_size=codebooks.size,
+                codebook_iteration=index,
+                codebook_current_iteration_init_time=one_codebook_start_time
+            )
+            one_alpha_success_probability, measurements = self._test_for_one_alpha_one_codebook(
+                optimized_parameters=optimized_parameters)
+
+            testing_average_error_probability_all_codebooks += 1 - one_alpha_success_probability.numpy()
+            testing_homodyne_probability = IdealLinearCodesHomodyneProbability(
+                codebook=self._current_codebook).homodyne_probability
+            testing_average_ideal_homodyne_probability_all_codebooks += testing_homodyne_probability
+            testing_helstrom_probability = IdealLinearCodesHelstromProbability(
+                codebook=self._current_codebook).helstrom_probability
+            testing_average_ideal_helstrom_probability_all_codebooks += testing_helstrom_probability
+
+            top5_testing_codebooks.add(potential_best_codebook=BestCodeBook(
+                codebook=self._current_codebook,
+                measurements=measurements,
+                success_probability=one_alpha_success_probability.numpy(),
+                helstrom_probability=testing_helstrom_probability,
+                homodyne_probability=testing_homodyne_probability,
+                optimized_parameters=optimized_parameters,
+                program=self._testing_circuit.circuit))
+            self._current_codebook_log_info = CodeBookLogInformation(
+                alpha_value=np.round(self._alpha_value, 2),
+                alpha_init_time=one_alpha_start_time,
+                codebooks_size=codebooks.size,
+                codebook_iteration=index,
+                codebook_current_iteration_init_time=one_codebook_start_time
+            )
+            print_codebook_log(log_info=self._current_codebook_log_info)
+            logger.debug(
+                f'pSucc: {one_alpha_success_probability.numpy()} '
+                f"codebook_size:{self._codebook_size}")
+
+        testing_average_error_probability_all_codebooks /= codebooks.size
+        testing_average_ideal_homodyne_probability_all_codebooks /= codebooks.size
+        testing_average_ideal_helstrom_probability_all_codebooks /= codebooks.size
+
+        # TESTED RESULTS
+        testing_one_alpha_optimization_result = OptimizationResult(
+            optimized_parameters=optimized_parameters,
+            error_probability=testing_average_error_probability_all_codebooks,
+            measurements=measurements)
+        self._update_result(result=testing_result,
+                            one_alpha_optimization_result=testing_one_alpha_optimization_result,
+                            one_alpha_success_probability=one_alpha_success_probability.numpy(),
+                            helstrom_probability=testing_average_ideal_helstrom_probability_all_codebooks,
+                            homodyne_probability=testing_average_ideal_homodyne_probability_all_codebooks,
+                            number_mode=self._testing_circuit.number_input_modes)
+        self._write_result(alpha=alpha_value,
+                           one_alpha_start_time=one_alpha_start_time,
+                           success_probability=one_alpha_success_probability.numpy(),
+                           helstrom_probability=testing_average_ideal_helstrom_probability_all_codebooks,
+                           homodyne_probability=testing_average_ideal_homodyne_probability_all_codebooks,
+                           best_codebook=top5_testing_codebooks.first,
+                           testing=True)
+        logger.debug(
+            f'Tested for alpha: {np.round(self._alpha_value, 2)} '
+            f'pSucc: {one_alpha_success_probability.numpy()} '
+            f"batch_size:{self._batch_size} plays:{self._plays}"
+            f" modes:{self._testing_circuit.number_input_modes}, cutoff_dim: {self._cutoff_dim}"
+            f" squeezing: {self._architecture['squeezing']}")
+
+        logger.debug(
+            f'TESTING IDEAL HELSTROM: {testing_average_ideal_homodyne_probability_all_codebooks}\n'
+            f'TESTING IDEAL HOMODYNE: {testing_average_ideal_helstrom_probability_all_codebooks}\n'
+            f'BEST TESTING success probability: {top5_testing_codebooks.first.success_probability}\n'
+            f'Best TESTING codebook: {top5_testing_codebooks.first}\n\n')
+
+        self._update_result_with_total_time(result=testing_result, start_time=one_alpha_start_time)
+
+        return testing_result
 
     @timing
     def execute(self, configuration: RunConfiguration) -> ResultExecution:
@@ -272,7 +390,7 @@ class CSD(ABC):
                 one_alpha_success_probability, measurements = self._test_for_one_alpha_one_codebook(
                     optimized_parameters=one_codebook_optimization_result.optimized_parameters)
 
-                testing_average_error_probability_all_codebooks += one_codebook_optimization_result.error_probability
+                testing_average_error_probability_all_codebooks += 1 - one_alpha_success_probability.numpy()
                 testing_homodyne_probability = IdealLinearCodesHomodyneProbability(
                     codebook=self._current_codebook).homodyne_probability
                 testing_average_ideal_homodyne_probability_all_codebooks += testing_homodyne_probability
@@ -453,16 +571,17 @@ class CSD(ABC):
                       homodyne_probability: float,
                       best_codebook: BestCodeBook,
                       testing: bool):
-        if self._training_circuit is None:
+        if self._training_circuit is None and self._testing_circuit is None:
             raise ValueError("Circuit must be initialized")
+        circuit = self._training_circuit if self._training_circuit is not None else self._testing_circuit
 
         GlobalResultManager(testing=testing).write_result(
             GlobalResult(alpha=alpha,
                          success_probability=success_probability,
-                         number_modes=self._training_circuit.number_input_modes,
+                         number_modes=circuit.number_input_modes,
                          time_in_seconds=time() - one_alpha_start_time,
                          squeezing=self._architecture['squeezing'],
-                         number_ancillas=self._training_circuit.number_ancillas,
+                         number_ancillas=circuit.number_ancillas,
                          helstrom_probability=helstrom_probability,
                          homodyne_probability=homodyne_probability,
                          best_success_probability=best_codebook.success_probability,
@@ -473,16 +592,16 @@ class CSD(ABC):
                          best_optimized_parameters=best_codebook.parsed_optimized_parameters))
         if testing:
             directory_name = (f"./circuit_tex/alpha_{np.round(alpha, 2)}"
-                              f"_modes_{self._training_circuit.number_input_modes}"
+                              f"_modes_{ circuit.number_input_modes}"
                               f"_squeezing_{self._architecture['squeezing']}"
-                              f"_ancillas_{self._training_circuit.number_ancillas}/")
+                              f"_ancillas_{ circuit.number_ancillas}/")
 
             print("\n\n****************************************\n\n"
                   "CIRCUIT for "
                   f'alpha: {np.round(self._alpha_value, 2)}'
                   f" codebook_size:{self._codebook_size}"
-                  f" modes:{self._training_circuit.number_input_modes}"
-                  f" ancillas: {self._training_circuit.number_ancillas} \n "
+                  f" modes:{ circuit.number_input_modes}"
+                  f" ancillas: { circuit.number_ancillas} \n "
                   f" cutoff_dim: {self._cutoff_dim}"
                   f" squeezing: {self._architecture['squeezing']}: \n")
             best_codebook.program.print()
@@ -562,8 +681,9 @@ class CSD(ABC):
         result['number_modes'].append(number_mode)
 
     def _init_result(self):
-        if self._training_circuit is None:
+        if self._training_circuit is None and self._testing_circuit is None:
             raise ValueError("Circuit must be initialized")
+        circuit = self._training_circuit if self._training_circuit is not None else self._testing_circuit
 
         result: ResultExecution = {
             'alphas': [],
@@ -577,10 +697,10 @@ class CSD(ABC):
                                                measuring_type=self._run_configuration['measuring_type']),
             'plot_title': self._set_plot_title(batch_size=self._batch_size,
                                                plays=self._plays,
-                                               modes=self._training_circuit.number_input_modes,
+                                               modes=circuit.number_input_modes,
                                                layers=self._architecture['number_layers'],
                                                squeezing=self._architecture['squeezing'],
-                                               ancillas=self._training_circuit.number_ancillas,),
+                                               ancillas=circuit.number_ancillas,),
             'total_time': 0.0,
             'p_helstrom': [],
             'p_homodyne': [],
@@ -592,12 +712,13 @@ class CSD(ABC):
     def _create_engine(self) -> Union[Engine, TFEngine]:
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
-        if self._training_circuit is None:
+        if self._training_circuit is None and self._testing_circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._current_codebook is None:
             raise ValueError("_current_codebook must be initialized")
         if self._codebook_size is None:
             raise ValueError("_codebook_size must be initialized")
+        circuit = self._training_circuit if self._training_circuit is not None else self._testing_circuit
 
         self._current_cutoff = self._cutoff_dim.default
 
@@ -608,13 +729,13 @@ class CSD(ABC):
 
         if self._backend_is_tf():
             return TFEngine(
-                number_modes=self._training_circuit.number_modes,
+                number_modes=circuit.number_modes,
                 engine_backend=Backends.TENSORFLOW, options={
                     "cutoff_dim": self._current_cutoff,
                     "batch_size": self._codebook_size if self._codebook_size > 1 else None
                 })
         return Engine(
-            number_modes=self._training_circuit.number_modes,
+            number_modes=circuit.number_modes,
             engine_backend=self._run_configuration['run_backend'], options={
                 "cutoff_dim": self._current_cutoff
             })
