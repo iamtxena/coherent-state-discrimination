@@ -1,0 +1,2183 @@
+number alphas: 16
+number_input_modes: 5
+squeezing_option: False
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:17]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:32 plays:1 modes:5 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|WARNING|2022-03-11 08:43:17]: information bits are less than 1. value=0
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:17]: Optimizing for alpha: 0.1 with 0 codebooks.
+[CSD] 0.0.1|WARNING|2022-03-11 08:43:17]: codebooks size is 0. Going to next iteration.
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:17]: execute, took: 0 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:17]: launch_execution, took: 0 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:17]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:32 plays:1 modes:5 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:17]: Optimizing for alpha: 0.18 with 16 codebooks.
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:17]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, 0.18125, 0.18125, 0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:17]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:43:17]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:29]: Learned parameters value at step 50: [0.3357724, 0.65867156, 0.021777518, -0.60160536, 0.5845928, 0.2905948, 0.02034969, -0.6901964, 0.6929704, -0.2556189, -0.0016077003, -1.0261102, 0.52927995, -0.18203789, 0.051683515, -0.41875255, -0.021177534, -0.05423561, 0.013587548, -0.16647705, -0.24342124, -0.022361604, -0.37872246, 0.39928803, -0.30532852, 0.95295465, 0.71255535, -0.081806995, 0.36993048, 0.62005365]
+[CSD] 0.0.1|INFO|2022-03-11 08:43:29]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[1/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 11 seconds
+  Current codebook iteration time: 11 seconds
+  Estimated codebook REMAINING time: 2 minutes and 54 seconds
+
+  TOTAL learning computation time: 11 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 11 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:37]: Learned parameters value at step 100: [0.3125972, 0.6556811, -0.0005364122, -0.6083486, 0.573078, 0.2835434, -0.0008817124, -0.6960748, 0.68891096, -0.25864187, -0.00028603827, -1.1077898, 0.5968703, -0.1885855, 0.041148584, -0.44665155, -0.10120821, -0.037734672, 0.015965682, -0.1323833, -0.24617407, -0.026634572, -0.39880848, 0.40544054, -0.31812093, 0.9581403, 0.71495515, -0.07945672, 0.3772284, 0.60411406]
+[CSD] 0.0.1|INFO|2022-03-11 08:43:37]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[1/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 20 seconds
+  Current codebook iteration time: 20 seconds
+  Estimated codebook REMAINING time: 5 minutes and 6 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:37]: Trained for alpha: 0.18 parameters: [0.3125972, 0.6556811, -0.0005364122, -0.6083486, 0.573078, 0.2835434, -0.0008817124, -0.6960748, 0.68891096, -0.25864187, -0.00028603827, -1.1077898, 0.5968703, -0.1885855, 0.041148584, -0.44665155, -0.10120821, -0.037734672, 0.015965682, -0.1323833, -0.24617407, -0.026634572, -0.39880848, 0.40544054, -0.31812093, 0.9581403, 0.71495515, -0.07945672, 0.3772284, 0.60411406] p_err: 0.3478841781616211
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:37]: _train_for_one_alpha_one_codebook, took: 20 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:37]: Going to test with the trained optimized parameters: [0.3125972, 0.6556811, -0.0005364122, -0.6083486, 0.573078, 0.2835434, -0.0008817124, -0.6960748, 0.68891096, -0.25864187, -0.00028603827, -1.1077898, 0.5968703, -0.1885855, 0.041148584, -0.44665155, -0.10120821, -0.037734672, 0.015965682, -0.1323833, -0.24617407, -0.026634572, -0.39880848, 0.40544054, -0.31812093, 0.9581403, 0.71495515, -0.07945672, 0.3772284, 0.60411406]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:37]: TESTING Success probability from trained parameters: 0.6521149277687073
+[CSD] 0.0.1|INFO|2022-03-11 08:43:37]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[1/16]: 
+
+  TOTAL computation time: 20 seconds
+  Current codebook iteration time: 20 seconds
+  Estimated codebook REMAINING time: 5 minutes and 7 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:37]: pSucc: 0.6521149277687073 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:37]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, 0.18125, 0.18125, 0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:37]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:43:38]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:46]: Learned parameters value at step 50: [0.32718074, 0.019084206, 0.82505345, -0.008154978, 0.63632154, 0.1404679, -0.028210625, 0.12852727, 0.72897613, 0.28974158, 0.06267746, -0.6871014, 0.54548615, 0.90038466, -0.05180607, 0.4781019, -0.52800375, -0.6917181, 0.0065624425, 0.20260753, -0.077795275, 0.054562632, 0.14835817, -0.2411022, -0.035081435, 0.96043336, 0.5536646, -0.040891215, 0.9063867, 0.490504]
+[CSD] 0.0.1|INFO|2022-03-11 08:43:46]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[2/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 29 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 3 minutes and 24 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:55]: Learned parameters value at step 100: [0.32615018, 0.017161345, 0.83448493, -0.018157996, 0.6271903, 0.146281, -0.03409236, 0.10012254, 0.72135997, 0.29589152, 0.07213456, -0.7091835, 0.52551425, 0.95277816, -0.05409994, 0.4695263, -0.5103332, -0.75476354, 0.014241192, 0.15758157, -0.07870596, 0.05551428, 0.14550719, -0.254789, -0.030022997, 0.96639293, 0.5488643, -0.0427438, 0.8084781, 0.49568006]
+[CSD] 0.0.1|INFO|2022-03-11 08:43:55]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[2/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 38 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 4 minutes and 26 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:55]: Trained for alpha: 0.18 parameters: [0.32615018, 0.017161345, 0.83448493, -0.018157996, 0.6271903, 0.146281, -0.03409236, 0.10012254, 0.72135997, 0.29589152, 0.07213456, -0.7091835, 0.52551425, 0.95277816, -0.05409994, 0.4695263, -0.5103332, -0.75476354, 0.014241192, 0.15758157, -0.07870596, 0.05551428, 0.14550719, -0.254789, -0.030022997, 0.96639293, 0.5488643, -0.0427438, 0.8084781, 0.49568006] p_err: 0.2894741892814636
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:55]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:55]: Going to test with the trained optimized parameters: [0.32615018, 0.017161345, 0.83448493, -0.018157996, 0.6271903, 0.146281, -0.03409236, 0.10012254, 0.72135997, 0.29589152, 0.07213456, -0.7091835, 0.52551425, 0.95277816, -0.05409994, 0.4695263, -0.5103332, -0.75476354, 0.014241192, 0.15758157, -0.07870596, 0.05551428, 0.14550719, -0.254789, -0.030022997, 0.96639293, 0.5488643, -0.0427438, 0.8084781, 0.49568006]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:55]: TESTING Success probability from trained parameters: 0.7105258107185364
+[CSD] 0.0.1|INFO|2022-03-11 08:43:55]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[2/16]: 
+
+  TOTAL computation time: 38 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 4 minutes and 27 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:55]: pSucc: 0.7105258107185364 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:55]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, 0.18125, 0.18125, -0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:43:55]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:43:55]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:04]: Learned parameters value at step 50: [0.3303924, 0.42996678, 0.5375575, 0.7736662, -0.041268423, 0.26954472, 0.7167102, 0.815808, -0.07020312, 0.22096777, 0.04087241, -0.024051238, 0.39994273, -0.09879114, 0.17379896, -0.21828815, 0.05186983, -0.14739232, 0.31674734, 0.052737597, 0.034208577, 0.16178662, -0.14303564, 0.2459137, 0.08118315, 0.56465405, 0.3618225, 0.06507631, 0.7250296, 0.32339323]
+[CSD] 0.0.1|INFO|2022-03-11 08:44:04]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[3/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 47 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 3 minutes and 23 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:13]: Learned parameters value at step 100: [0.3246634, 0.43659863, 0.5418533, 0.7388414, -0.04450725, 0.24892947, 0.70030457, 0.7808376, -0.06469759, 0.21965832, 0.06684105, -0.047688425, 0.37843108, -0.103397764, 0.17368515, -0.18276826, 0.082006544, -0.14039208, 0.34531486, 0.05349561, 0.033954382, 0.178742, -0.14596637, 0.24944428, 0.091810025, 0.5715234, 0.3595275, 0.06501002, 0.7286055, 0.3117587]
+[CSD] 0.0.1|INFO|2022-03-11 08:44:13]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[3/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 55 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 4 minutes and 1 second
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:13]: Trained for alpha: 0.18 parameters: [0.3246634, 0.43659863, 0.5418533, 0.7388414, -0.04450725, 0.24892947, 0.70030457, 0.7808376, -0.06469759, 0.21965832, 0.06684105, -0.047688425, 0.37843108, -0.103397764, 0.17368515, -0.18276826, 0.082006544, -0.14039208, 0.34531486, 0.05349561, 0.033954382, 0.178742, -0.14596637, 0.24944428, 0.091810025, 0.5715234, 0.3595275, 0.06501002, 0.7286055, 0.3117587] p_err: 0.2894745469093323
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:13]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:13]: Going to test with the trained optimized parameters: [0.3246634, 0.43659863, 0.5418533, 0.7388414, -0.04450725, 0.24892947, 0.70030457, 0.7808376, -0.06469759, 0.21965832, 0.06684105, -0.047688425, 0.37843108, -0.103397764, 0.17368515, -0.18276826, 0.082006544, -0.14039208, 0.34531486, 0.05349561, 0.033954382, 0.178742, -0.14596637, 0.24944428, 0.091810025, 0.5715234, 0.3595275, 0.06501002, 0.7286055, 0.3117587]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:13]: TESTING Success probability from trained parameters: 0.7105254530906677
+[CSD] 0.0.1|INFO|2022-03-11 08:44:13]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[3/16]: 
+
+  TOTAL computation time: 55 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 4 minutes and 2 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:13]: pSucc: 0.7105254530906677 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:13]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, 0.18125, 0.18125, -0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:13]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:44:13]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:22]: Learned parameters value at step 50: [0.38890013, 0.319455, 0.5508343, -0.3808405, 0.47569248, 0.25607336, 0.3795563, -0.45524502, 0.57115036, 0.39869964, -0.25983235, -0.20403619, 0.06956749, -0.043148566, -0.23235606, -0.087479346, -0.15147357, 0.04397934, -0.0030657614, 0.057361525, 0.18367234, 0.018368134, -0.19216368, 0.11152902, -0.34575808, 0.88533264, 0.56343186, -0.4036755, 0.34153432, 0.80264664]
+[CSD] 0.0.1|INFO|2022-03-11 08:44:22]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[4/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 4 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 3 minutes and 14 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:30]: Learned parameters value at step 100: [0.38767594, 0.33223706, 0.5489794, -0.38161775, 0.4797544, 0.26351562, 0.37644255, -0.45462105, 0.5762246, 0.40455133, -0.24900083, -0.20365477, 0.04569195, -0.043119658, -0.21531753, -0.08375458, -0.15051119, 0.03152478, -0.026269099, 0.058520667, 0.18547243, 0.018413484, -0.19591835, 0.10777692, -0.34947583, 0.8907082, 0.5610623, -0.40479007, 0.3394782, 0.8069707]
+[CSD] 0.0.1|INFO|2022-03-11 08:44:30]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[4/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 1 minute and 13 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 40 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:31]: Trained for alpha: 0.18 parameters: [0.38767594, 0.33223706, 0.5489794, -0.38161775, 0.4797544, 0.26351562, 0.37644255, -0.45462105, 0.5762246, 0.40455133, -0.24900083, -0.20365477, 0.04569195, -0.043119658, -0.21531753, -0.08375458, -0.15051119, 0.03152478, -0.026269099, 0.058520667, 0.18547243, 0.018413484, -0.19591835, 0.10777692, -0.34947583, 0.8907082, 0.5610623, -0.40479007, 0.3394782, 0.8069707] p_err: 0.24761968851089478
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:31]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:31]: Going to test with the trained optimized parameters: [0.38767594, 0.33223706, 0.5489794, -0.38161775, 0.4797544, 0.26351562, 0.37644255, -0.45462105, 0.5762246, 0.40455133, -0.24900083, -0.20365477, 0.04569195, -0.043119658, -0.21531753, -0.08375458, -0.15051119, 0.03152478, -0.026269099, 0.058520667, 0.18547243, 0.018413484, -0.19591835, 0.10777692, -0.34947583, 0.8907082, 0.5610623, -0.40479007, 0.3394782, 0.8069707]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:31]: TESTING Success probability from trained parameters: 0.7523801326751709
+[CSD] 0.0.1|INFO|2022-03-11 08:44:31]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[4/16]: 
+
+  TOTAL computation time: 1 minute and 13 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 40 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:31]: pSucc: 0.7523801326751709 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:31]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, 0.18125, -0.18125, 0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:31]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:44:31]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:39]: Learned parameters value at step 50: [0.5088591, 0.48055655, 0.071169235, 0.39642245, 0.23325768, 0.5701984, 0.098826855, -0.19307731, 0.28459588, 0.62292886, 0.14440162, -0.008398248, -0.21431082, 0.34742358, -0.0009277081, 0.019575566, -0.07073418, 0.29354042, -0.051545586, -0.00417882, 0.0513317, -0.032111835, 0.0024680363, -0.011326693, 0.28958738, 0.43637428, 0.27119145, 0.9987326, 0.5466886, 0.88117486]
+[CSD] 0.0.1|INFO|2022-03-11 08:44:39]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[5/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 22 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 3 minutes and 1 second
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:48]: Learned parameters value at step 100: [0.51771355, 0.46009582, 0.04440908, 0.38047674, 0.20313638, 0.56565416, 0.087380506, -0.19537887, 0.27141023, 0.6177924, 0.1495364, -0.015039957, -0.25767964, 0.33628842, -0.007117174, 0.023501333, -0.11278473, 0.32380858, -0.055673484, -0.0033038906, 0.05915024, -0.03143049, 0.002557752, -0.012540786, 0.353581, 0.45158994, 0.27127883, 1.0041944, 0.5306926, 0.7345472]
+[CSD] 0.0.1|INFO|2022-03-11 08:44:48]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[5/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 1 minute and 31 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 20 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:48]: Trained for alpha: 0.18 parameters: [0.51771355, 0.46009582, 0.04440908, 0.38047674, 0.20313638, 0.56565416, 0.087380506, -0.19537887, 0.27141023, 0.6177924, 0.1495364, -0.015039957, -0.25767964, 0.33628842, -0.007117174, 0.023501333, -0.11278473, 0.32380858, -0.055673484, -0.0033038906, 0.05915024, -0.03143049, 0.002557752, -0.012540786, 0.353581, 0.45158994, 0.27127883, 1.0041944, 0.5306926, 0.7345472] p_err: 0.2894750237464905
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:48]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:48]: Going to test with the trained optimized parameters: [0.51771355, 0.46009582, 0.04440908, 0.38047674, 0.20313638, 0.56565416, 0.087380506, -0.19537887, 0.27141023, 0.6177924, 0.1495364, -0.015039957, -0.25767964, 0.33628842, -0.007117174, 0.023501333, -0.11278473, 0.32380858, -0.055673484, -0.0033038906, 0.05915024, -0.03143049, 0.002557752, -0.012540786, 0.353581, 0.45158994, 0.27127883, 1.0041944, 0.5306926, 0.7345472]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:48]: TESTING Success probability from trained parameters: 0.7105258703231812
+[CSD] 0.0.1|INFO|2022-03-11 08:44:48]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[5/16]: 
+
+  TOTAL computation time: 1 minute and 31 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 21 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:48]: pSucc: 0.7105258703231812 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:48]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, 0.18125, -0.18125, 0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:48]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:44:48]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:44:57]: Learned parameters value at step 50: [0.48867944, 0.27399108, -0.1360092, -0.15576261, 0.4543281, 0.42639545, -0.1568394, 0.18588817, 0.4973752, 0.70922023, 0.013622888, -0.11257616, -0.010548818, 0.2275138, 0.048336133, -0.05257415, 0.17576517, 0.6957132, 0.008427199, 0.09863592, -0.031246517, -0.008800727, 0.026919631, -0.12811324, -0.040393762, 0.7996725, 0.46814844, 0.9684652, 0.33003077, 0.47511366]
+[CSD] 0.0.1|INFO|2022-03-11 08:44:57]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[6/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 40 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 2 minutes and 47 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:06]: Learned parameters value at step 100: [0.48265877, 0.26433188, -0.12720698, -0.15230182, 0.44985262, 0.41974267, -0.14891177, 0.18583107, 0.5012874, 0.7219846, 0.009604629, -0.093273416, -0.055332556, 0.14680777, 0.049690966, -0.08624523, 0.19026105, 0.6484644, -0.0014793816, 0.09961033, -0.03164822, -0.0065736854, 0.027524605, -0.11354597, -0.03975471, 0.8025773, 0.47578374, 0.9740537, 0.3265406, 0.44922394]
+[CSD] 0.0.1|INFO|2022-03-11 08:45:06]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[6/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 1 minute and 49 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 1 second
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:06]: Trained for alpha: 0.18 parameters: [0.48265877, 0.26433188, -0.12720698, -0.15230182, 0.44985262, 0.41974267, -0.14891177, 0.18583107, 0.5012874, 0.7219846, 0.009604629, -0.093273416, -0.055332556, 0.14680777, 0.049690966, -0.08624523, 0.19026105, 0.6484644, -0.0014793816, 0.09961033, -0.03164822, -0.0065736854, 0.027524605, -0.11354597, -0.03975471, 0.8025773, 0.47578374, 0.9740537, 0.3265406, 0.44922394] p_err: 0.24762022495269775
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:06]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:06]: Going to test with the trained optimized parameters: [0.48265877, 0.26433188, -0.12720698, -0.15230182, 0.44985262, 0.41974267, -0.14891177, 0.18583107, 0.5012874, 0.7219846, 0.009604629, -0.093273416, -0.055332556, 0.14680777, 0.049690966, -0.08624523, 0.19026105, 0.6484644, -0.0014793816, 0.09961033, -0.03164822, -0.0065736854, 0.027524605, -0.11354597, -0.03975471, 0.8025773, 0.47578374, 0.9740537, 0.3265406, 0.44922394]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:06]: TESTING Success probability from trained parameters: 0.7523800730705261
+[CSD] 0.0.1|INFO|2022-03-11 08:45:06]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[6/16]: 
+
+  TOTAL computation time: 1 minute and 49 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 1 second
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:06]: pSucc: 0.7523800730705261 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:06]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, 0.18125, -0.18125, -0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:06]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:45:06]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:15]: Learned parameters value at step 50: [0.40153882, -0.19178481, -0.17846769, 0.47012424, 0.37905267, -0.122519866, 0.06272496, 0.56402177, 0.6609236, -0.3296721, 0.10981185, -0.63517034, 0.36152503, 0.23759636, -0.095008545, -0.779522, -0.80819803, -0.32548162, -0.07870928, -0.024740847, -0.04578141, 0.14184216, -0.11992579, 0.20754126, -0.12716399, 0.83659893, 0.42950186, 0.5839059, 1.0068421, 0.17259933]
+[CSD] 0.0.1|INFO|2022-03-11 08:45:15]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[7/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 58 seconds
+  Current codebook iteration time: 9 seconds
+  Estimated codebook REMAINING time: 2 minutes and 31 seconds
+
+  TOTAL learning computation time: 9 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 9 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:24]: Learned parameters value at step 100: [0.39520478, -0.20083798, -0.17400867, 0.45704094, 0.36405545, -0.12057268, 0.033939246, 0.5596754, 0.6667759, -0.3265074, 0.09602748, -0.61449623, 0.39265662, 0.21719144, -0.12285321, -0.79362035, -0.90995073, -0.31438828, -0.08309875, -0.021277284, -0.04657193, 0.14231701, -0.1398648, 0.21031961, -0.13088818, 0.8403554, 0.42808187, 0.58395433, 1.0133547, 0.16791591]
+[CSD] 0.0.1|INFO|2022-03-11 08:45:24]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[7/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 2 minutes and 6 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 43 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:24]: Trained for alpha: 0.18 parameters: [0.39520478, -0.20083798, -0.17400867, 0.45704094, 0.36405545, -0.12057268, 0.033939246, 0.5596754, 0.6667759, -0.3265074, 0.09602748, -0.61449623, 0.39265662, 0.21719144, -0.12285321, -0.79362035, -0.90995073, -0.31438828, -0.08309875, -0.021277284, -0.04657193, 0.14231701, -0.1398648, 0.21031961, -0.13088818, 0.8403554, 0.42808187, 0.58395433, 1.0133547, 0.16791591] p_err: 0.24761998653411865
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:24]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:24]: Going to test with the trained optimized parameters: [0.39520478, -0.20083798, -0.17400867, 0.45704094, 0.36405545, -0.12057268, 0.033939246, 0.5596754, 0.6667759, -0.3265074, 0.09602748, -0.61449623, 0.39265662, 0.21719144, -0.12285321, -0.79362035, -0.90995073, -0.31438828, -0.08309875, -0.021277284, -0.04657193, 0.14231701, -0.1398648, 0.21031961, -0.13088818, 0.8403554, 0.42808187, 0.58395433, 1.0133547, 0.16791591]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:24]: TESTING Success probability from trained parameters: 0.7523798942565918
+[CSD] 0.0.1|INFO|2022-03-11 08:45:24]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[7/16]: 
+
+  TOTAL computation time: 2 minutes and 7 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 43 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:24]: pSucc: 0.7523798942565918 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:24]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, 0.18125, -0.18125, -0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:24]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:45:24]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:33]: Learned parameters value at step 50: [0.32528687, 0.16385205, -0.31205726, 0.12179467, 0.28918487, 0.14331551, -0.08467747, 0.037020765, 0.71836156, -0.1676415, 0.13019171, -0.8500153, -0.1203575, -1.1769257, 0.31554607, -0.6639356, 1.2046409, -0.9568927, 0.024528276, -0.82831883, 0.003565267, -0.05886275, 0.14538816, 0.22211409, 0.17179886, 0.8095802, 0.35291645, 0.33868536, 0.39594758, 0.38889393]
+[CSD] 0.0.1|INFO|2022-03-11 08:45:33]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[8/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 2 minutes and 15 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 2 minutes and 15 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:42]: Learned parameters value at step 100: [0.32929823, 0.15957789, -0.30364624, 0.11430915, 0.2939777, 0.14478752, -0.09252241, 0.03271977, 0.743869, -0.1671801, 0.13991301, -0.87141854, -0.1266803, -1.2526529, 0.3225238, -0.674618, 1.2144551, -0.9939672, 0.027108438, -0.8394167, 0.003599843, -0.05067474, 0.1578008, 0.21438886, 0.15306647, 0.8135188, 0.3724602, 0.33271262, 0.39197338, 0.38536507]
+[CSD] 0.0.1|INFO|2022-03-11 08:45:42]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[8/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 2 minutes and 24 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 24 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:42]: Trained for alpha: 0.18 parameters: [0.32929823, 0.15957789, -0.30364624, 0.11430915, 0.2939777, 0.14478752, -0.09252241, 0.03271977, 0.743869, -0.1671801, 0.13991301, -0.87141854, -0.1266803, -1.2526529, 0.3225238, -0.674618, 1.2144551, -0.9939672, 0.027108438, -0.8394167, 0.003599843, -0.05067474, 0.1578008, 0.21438886, 0.15306647, 0.8135188, 0.3724602, 0.33271262, 0.39197338, 0.38536507] p_err: 0.2146897315979004
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:42]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:42]: Going to test with the trained optimized parameters: [0.32929823, 0.15957789, -0.30364624, 0.11430915, 0.2939777, 0.14478752, -0.09252241, 0.03271977, 0.743869, -0.1671801, 0.13991301, -0.87141854, -0.1266803, -1.2526529, 0.3225238, -0.674618, 1.2144551, -0.9939672, 0.027108438, -0.8394167, 0.003599843, -0.05067474, 0.1578008, 0.21438886, 0.15306647, 0.8135188, 0.3724602, 0.33271262, 0.39197338, 0.38536507]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:42]: TESTING Success probability from trained parameters: 0.7853109240531921
+[CSD] 0.0.1|INFO|2022-03-11 08:45:42]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[8/16]: 
+
+  TOTAL computation time: 2 minutes and 24 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 24 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:42]: pSucc: 0.7853109240531921 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:42]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, -0.18125, 0.18125, 0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:42]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:45:42]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:45:51]: Learned parameters value at step 50: [-0.43750587, 0.590181, 0.6677605, 0.51356804, -0.18298398, -0.04574234, 0.75683975, -0.2801425, -0.048850138, 0.035917737, -0.66197824, -0.095085055, 0.17661989, -0.7960559, -0.98453355, 0.7311601, -0.44848165, 0.36635455, -0.24859768, 0.5288887, -0.28066295, 0.114318214, -0.5317681, -0.3271824, -0.371609, 0.6557616, 0.8990968, 0.2926358, 0.603473, -0.4319017]
+[CSD] 0.0.1|INFO|2022-03-11 08:45:51]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[9/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 2 minutes and 33 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 1 minute and 59 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:00]: Learned parameters value at step 100: [-0.44773743, 0.59054357, 0.67473227, 0.49454302, -0.16153234, 0.00652307, 0.78115624, -0.30301538, -0.048588846, -0.0005993592, -0.653926, -0.11958142, 0.17794287, -0.886389, -0.91481256, 0.70376205, -0.43625924, 0.39724508, -0.21152242, 0.6503414, -0.26422, 0.11556393, -0.5186139, -0.34718677, -0.37651977, 0.66716653, 0.9041774, 0.27859, 0.5772299, -0.5970458]
+[CSD] 0.0.1|INFO|2022-03-11 08:46:00]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[9/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 2 minutes and 42 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 6 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:00]: Trained for alpha: 0.18 parameters: [-0.44773743, 0.59054357, 0.67473227, 0.49454302, -0.16153234, 0.00652307, 0.78115624, -0.30301538, -0.048588846, -0.0005993592, -0.653926, -0.11958142, 0.17794287, -0.886389, -0.91481256, 0.70376205, -0.43625924, 0.39724508, -0.21152242, 0.6503414, -0.26422, 0.11556393, -0.5186139, -0.34718677, -0.37651977, 0.66716653, 0.9041774, 0.27859, 0.5772299, -0.5970458] p_err: 0.28947389125823975
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:00]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:00]: Going to test with the trained optimized parameters: [-0.44773743, 0.59054357, 0.67473227, 0.49454302, -0.16153234, 0.00652307, 0.78115624, -0.30301538, -0.048588846, -0.0005993592, -0.653926, -0.11958142, 0.17794287, -0.886389, -0.91481256, 0.70376205, -0.43625924, 0.39724508, -0.21152242, 0.6503414, -0.26422, 0.11556393, -0.5186139, -0.34718677, -0.37651977, 0.66716653, 0.9041774, 0.27859, 0.5772299, -0.5970458]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:00]: TESTING Success probability from trained parameters: 0.7105261087417603
+[CSD] 0.0.1|INFO|2022-03-11 08:46:00]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[9/16]: 
+
+  TOTAL computation time: 2 minutes and 42 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 6 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:00]: pSucc: 0.7105261087417603 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:00]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, -0.18125, 0.18125, 0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:00]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:46:00]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:09]: Learned parameters value at step 50: [-0.28276652, -0.20210874, 0.18785682, -0.05172002, -0.03495003, 0.2892172, -0.016187664, 0.092216976, 0.2315297, 0.41733783, -0.85498255, -1.0912635, -0.047713682, -1.5888462, -1.4040912, 0.39530605, 0.7083272, 0.010260428, -0.7337611, -1.0794861, -0.060314637, -0.12168858, 0.83387727, -0.7091403, 0.019375551, 0.43517673, 0.45110008, -0.0674092, -0.18450478, 0.39640173]
+[CSD] 0.0.1|INFO|2022-03-11 08:46:09]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[10/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 2 minutes and 51 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 1 minute and 43 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:18]: Learned parameters value at step 100: [-0.28972232, -0.20829074, 0.2022672, -0.028604258, -0.032024425, 0.2675393, 0.011239794, 0.0760564, 0.23174994, 0.39989918, -0.8474328, -1.1396345, -0.033875007, -1.6437826, -1.4222034, 0.39055726, 0.6888376, 0.0041411677, -0.7276358, -1.1494797, -0.061793074, -0.11682229, 0.9039127, -0.7447906, 0.01808853, 0.42819718, 0.44516572, -0.07738735, -0.20805117, 0.40644518]
+[CSD] 0.0.1|INFO|2022-03-11 08:46:18]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[10/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 3 minutes and 0 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 48 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:18]: Trained for alpha: 0.18 parameters: [-0.28972232, -0.20829074, 0.2022672, -0.028604258, -0.032024425, 0.2675393, 0.011239794, 0.0760564, 0.23174994, 0.39989918, -0.8474328, -1.1396345, -0.033875007, -1.6437826, -1.4222034, 0.39055726, 0.6888376, 0.0041411677, -0.7276358, -1.1494797, -0.061793074, -0.11682229, 0.9039127, -0.7447906, 0.01808853, 0.42819718, 0.44516572, -0.07738735, -0.20805117, 0.40644518] p_err: 0.24762040376663208
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:18]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:18]: Going to test with the trained optimized parameters: [-0.28972232, -0.20829074, 0.2022672, -0.028604258, -0.032024425, 0.2675393, 0.011239794, 0.0760564, 0.23174994, 0.39989918, -0.8474328, -1.1396345, -0.033875007, -1.6437826, -1.4222034, 0.39055726, 0.6888376, 0.0041411677, -0.7276358, -1.1494797, -0.061793074, -0.11682229, 0.9039127, -0.7447906, 0.01808853, 0.42819718, 0.44516572, -0.07738735, -0.20805117, 0.40644518]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:18]: TESTING Success probability from trained parameters: 0.7523797154426575
+[CSD] 0.0.1|INFO|2022-03-11 08:46:18]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[10/16]: 
+
+  TOTAL computation time: 3 minutes and 0 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 48 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:18]: pSucc: 0.7523797154426575 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:18]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, -0.18125, 0.18125, -0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:18]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:46:18]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:27]: Learned parameters value at step 50: [-0.042884562, -0.12021204, -0.059075408, 0.8087716, 0.0031136875, 0.03897796, -0.015679225, 0.7611026, 0.07320661, 0.0929651, -0.96165234, 0.011045155, 0.079126135, -0.084941894, -0.9623902, -0.28920063, 1.82745, -0.094869204, -0.72982574, -0.5299166, 0.019491566, 0.023224123, -1.5563177, 0.23522538, 0.08833161, 0.42900217, 0.44053578, -0.17954223, 0.7622331, 0.42941752]
+[CSD] 0.0.1|INFO|2022-03-11 08:46:27]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[11/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 3 minutes and 9 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 1 minute and 26 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:35]: Learned parameters value at step 100: [-0.033383768, -0.095075265, -0.06557966, 0.8150611, -0.00016446537, 0.038995195, 0.0067743114, 0.7565369, 0.061712738, 0.092164606, -0.98487264, -0.083882436, 0.012827332, -0.09036056, -0.96352196, -0.33742008, 1.9904934, -0.08870122, -0.7953946, -0.5371052, 0.016067602, 0.017443348, -1.5769967, 0.23844206, 0.08894238, 0.4114123, 0.42117137, -0.18549211, 0.76628405, 0.43321234]
+[CSD] 0.0.1|INFO|2022-03-11 08:46:35]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[11/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 3 minutes and 18 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 30 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:35]: Trained for alpha: 0.18 parameters: [-0.033383768, -0.095075265, -0.06557966, 0.8150611, -0.00016446537, 0.038995195, 0.0067743114, 0.7565369, 0.061712738, 0.092164606, -0.98487264, -0.083882436, 0.012827332, -0.09036056, -0.96352196, -0.33742008, 1.9904934, -0.08870122, -0.7953946, -0.5371052, 0.016067602, 0.017443348, -1.5769967, 0.23844206, 0.08894238, 0.4114123, 0.42117137, -0.18549211, 0.76628405, 0.43321234] p_err: 0.24762046337127686
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:35]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:35]: Going to test with the trained optimized parameters: [-0.033383768, -0.095075265, -0.06557966, 0.8150611, -0.00016446537, 0.038995195, 0.0067743114, 0.7565369, 0.061712738, 0.092164606, -0.98487264, -0.083882436, 0.012827332, -0.09036056, -0.96352196, -0.33742008, 1.9904934, -0.08870122, -0.7953946, -0.5371052, 0.016067602, 0.017443348, -1.5769967, 0.23844206, 0.08894238, 0.4114123, 0.42117137, -0.18549211, 0.76628405, 0.43321234]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:36]: TESTING Success probability from trained parameters: 0.7523799538612366
+[CSD] 0.0.1|INFO|2022-03-11 08:46:36]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[11/16]: 
+
+  TOTAL computation time: 3 minutes and 18 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 30 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:36]: pSucc: 0.7523799538612366 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:36]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, -0.18125, 0.18125, -0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:36]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:46:36]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:45]: Learned parameters value at step 50: [-0.09590593, 0.027704043, -0.10621004, -0.28534338, 0.030567247, 0.036023464, -0.029103763, -0.49241495, 0.037053198, 0.006144688, -0.64959985, 1.2138164, 1.2932765, 0.21324214, -1.3637984, 1.3602084, 2.2347715, -0.033027586, -1.3622246, 1.8637931, 0.022488996, -0.06486606, -0.09588894, 0.06854129, -0.29945365, 0.4127107, 0.35043955, 0.6448522, 0.51839626, 0.88635474]
+[CSD] 0.0.1|INFO|2022-03-11 08:46:45]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[12/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 3 minutes and 27 seconds
+  Current codebook iteration time: 9 seconds
+  Estimated codebook REMAINING time: 1 minute and 9 seconds
+
+  TOTAL learning computation time: 9 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 9 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:53]: Learned parameters value at step 100: [-0.0996949, 0.030865239, -0.093668394, -0.28938067, 0.027534967, 0.039997883, -0.032306638, -0.5049855, 0.026831757, 0.023225231, -0.6563319, 1.2166966, 1.3380327, 0.18887055, -1.4038208, 1.3691764, 2.2468314, -0.033454753, -1.3677977, 1.9074063, -0.010140364, -0.064237595, -0.09057958, 0.07110203, -0.30520967, 0.39554575, 0.34466973, 0.65066457, 0.5216403, 0.89159095]
+[CSD] 0.0.1|INFO|2022-03-11 08:46:53]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[12/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 3 minutes and 36 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 12 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:53]: Trained for alpha: 0.18 parameters: [-0.0996949, 0.030865239, -0.093668394, -0.28938067, 0.027534967, 0.039997883, -0.032306638, -0.5049855, 0.026831757, 0.023225231, -0.6563319, 1.2166966, 1.3380327, 0.18887055, -1.4038208, 1.3691764, 2.2468314, -0.033454753, -1.3677977, 1.9074063, -0.010140364, -0.064237595, -0.09057958, 0.07110203, -0.30520967, 0.39554575, 0.34466973, 0.65066457, 0.5216403, 0.89159095] p_err: 0.21469110250473022
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:53]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:53]: Going to test with the trained optimized parameters: [-0.0996949, 0.030865239, -0.093668394, -0.28938067, 0.027534967, 0.039997883, -0.032306638, -0.5049855, 0.026831757, 0.023225231, -0.6563319, 1.2166966, 1.3380327, 0.18887055, -1.4038208, 1.3691764, 2.2468314, -0.033454753, -1.3677977, 1.9074063, -0.010140364, -0.064237595, -0.09057958, 0.07110203, -0.30520967, 0.39554575, 0.34466973, 0.65066457, 0.5216403, 0.89159095]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:54]: TESTING Success probability from trained parameters: 0.7853091359138489
+[CSD] 0.0.1|INFO|2022-03-11 08:46:54]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[12/16]: 
+
+  TOTAL computation time: 3 minutes and 36 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 12 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:54]: pSucc: 0.7853091359138489 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:54]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, -0.18125, -0.18125, 0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:46:54]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:46:54]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:02]: Learned parameters value at step 50: [-0.096409366, 0.2950191, -0.49105197, 0.312279, -0.00093357963, 0.35412008, -0.05047174, -0.23868544, 0.075589836, 0.77488613, -0.26858714, 0.27661505, 0.017769128, -0.017150812, -0.82166034, -0.3810464, -1.1964003, 0.23180783, -0.5415246, 0.0705835, 0.021275304, 0.005661671, -0.24544182, -0.119252905, -0.82440984, 0.4253989, 0.59177536, 0.7628366, 0.15558828, 0.023890998]
+[CSD] 0.0.1|INFO|2022-03-11 08:47:02]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[13/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 3 minutes and 45 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 52 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:11]: Learned parameters value at step 100: [-0.07698184, 0.23223718, -0.50537026, 0.31974655, 0.008940831, 0.33686936, -0.03808372, -0.22285208, 0.062290713, 0.7747941, -0.30047143, 0.3177586, 0.0024258203, -0.04596319, -0.7996446, -0.40527394, -1.2887379, 0.24912557, -0.59437084, 0.06583034, 0.033185918, 0.016028423, -0.25252554, -0.11760431, -0.8446122, 0.418247, 0.5880468, 0.763926, 0.13676937, 0.008228845]
+[CSD] 0.0.1|INFO|2022-03-11 08:47:11]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[13/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 3 minutes and 54 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 54 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:11]: Trained for alpha: 0.18 parameters: [-0.07698184, 0.23223718, -0.50537026, 0.31974655, 0.008940831, 0.33686936, -0.03808372, -0.22285208, 0.062290713, 0.7747941, -0.30047143, 0.3177586, 0.0024258203, -0.04596319, -0.7996446, -0.40527394, -1.2887379, 0.24912557, -0.59437084, 0.06583034, 0.033185918, 0.016028423, -0.25252554, -0.11760431, -0.8446122, 0.418247, 0.5880468, 0.763926, 0.13676937, 0.008228845] p_err: 0.24762022495269775
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:11]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:11]: Going to test with the trained optimized parameters: [-0.07698184, 0.23223718, -0.50537026, 0.31974655, 0.008940831, 0.33686936, -0.03808372, -0.22285208, 0.062290713, 0.7747941, -0.30047143, 0.3177586, 0.0024258203, -0.04596319, -0.7996446, -0.40527394, -1.2887379, 0.24912557, -0.59437084, 0.06583034, 0.033185918, 0.016028423, -0.25252554, -0.11760431, -0.8446122, 0.418247, 0.5880468, 0.763926, 0.13676937, 0.008228845]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:12]: TESTING Success probability from trained parameters: 0.7523798942565918
+[CSD] 0.0.1|INFO|2022-03-11 08:47:12]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[13/16]: 
+
+  TOTAL computation time: 3 minutes and 54 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 54 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:12]: pSucc: 0.7523798942565918 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:12]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, -0.18125, -0.18125, 0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:12]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:47:12]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:20]: Learned parameters value at step 50: [-0.30531684, 0.11079609, -0.35329247, -0.10777455, -0.01196706, 0.3048369, -0.5096823, 0.15698995, 0.0157437, 0.426908, -0.17081235, 0.35710567, -0.12003264, -0.18908694, 0.61511254, -0.027847122, -0.11623093, -0.24372534, 0.5685621, -0.11837977, -0.059752576, -0.08847811, -0.11496427, -0.21491292, 0.016986085, 0.47297612, 0.46082738, 0.87863296, -0.03426372, 0.39267758]
+[CSD] 0.0.1|INFO|2022-03-11 08:47:20]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[14/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 4 minutes and 3 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 34 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:29]: Learned parameters value at step 100: [-0.31777954, 0.0966761, -0.34902206, -0.10243135, -0.013735765, 0.29747283, -0.498724, 0.15800929, 0.01604449, 0.41757557, -0.16205275, 0.36191893, -0.10061853, -0.14694265, 0.79809606, -0.035984375, -0.12332664, -0.30314165, 0.79942226, -0.12062191, -0.043930683, -0.08806418, -0.11788154, -0.21062309, 0.001020055, 0.46463138, 0.45564795, 0.8834084, -0.036202665, 0.37654415]
+[CSD] 0.0.1|INFO|2022-03-11 08:47:29]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[14/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 4 minutes and 12 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 36 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:29]: Trained for alpha: 0.18 parameters: [-0.31777954, 0.0966761, -0.34902206, -0.10243135, -0.013735765, 0.29747283, -0.498724, 0.15800929, 0.01604449, 0.41757557, -0.16205275, 0.36191893, -0.10061853, -0.14694265, 0.79809606, -0.035984375, -0.12332664, -0.30314165, 0.79942226, -0.12062191, -0.043930683, -0.08806418, -0.11788154, -0.21062309, 0.001020055, 0.46463138, 0.45564795, 0.8834084, -0.036202665, 0.37654415] p_err: 0.2146894335746765
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:29]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:29]: Going to test with the trained optimized parameters: [-0.31777954, 0.0966761, -0.34902206, -0.10243135, -0.013735765, 0.29747283, -0.498724, 0.15800929, 0.01604449, 0.41757557, -0.16205275, 0.36191893, -0.10061853, -0.14694265, 0.79809606, -0.035984375, -0.12332664, -0.30314165, 0.79942226, -0.12062191, -0.043930683, -0.08806418, -0.11788154, -0.21062309, 0.001020055, 0.46463138, 0.45564795, 0.8834084, -0.036202665, 0.37654415]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:29]: TESTING Success probability from trained parameters: 0.7853091955184937
+[CSD] 0.0.1|INFO|2022-03-11 08:47:29]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[14/16]: 
+
+  TOTAL computation time: 4 minutes and 12 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 36 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:29]: pSucc: 0.7853091955184937 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:29]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, -0.18125, -0.18125, -0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:29]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:47:29]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:38]: Learned parameters value at step 50: [-0.22691573, -0.31141692, -0.38244468, 0.3140375, -0.06676257, -0.20158654, -0.072439514, 0.56215596, 0.058137022, -0.34034413, 0.13840955, -0.24578182, 0.21182564, -0.10746536, 0.77935827, -0.117165476, 0.16420506, -0.17956413, 1.0641072, 0.12039164, 0.026055861, 0.08248736, -0.046498973, 0.29016978, -0.09287346, 0.45984754, 0.4582406, 0.41593012, 1.0263925, 0.033662204]
+[CSD] 0.0.1|INFO|2022-03-11 08:47:38]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[15/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 4 minutes and 21 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 17 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:47]: Learned parameters value at step 100: [-0.22907238, -0.3057692, -0.39692292, 0.3017715, -0.062509775, -0.18645053, -0.06953705, 0.5643784, 0.054011516, -0.32412225, 0.13765723, -0.26373163, 0.22286618, -0.087946944, 0.8309978, -0.14090191, 0.1627082, -0.15723054, 1.12806, 0.13998513, 0.023474203, 0.08879457, -0.053593297, 0.29371846, -0.093571305, 0.45235637, 0.4491778, 0.39727995, 1.0331022, 0.037442386]
+[CSD] 0.0.1|INFO|2022-03-11 08:47:47]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[15/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 4 minutes and 30 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 18 seconds
+
+  TOTAL learning computation time: 9 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:47]: Trained for alpha: 0.18 parameters: [-0.22907238, -0.3057692, -0.39692292, 0.3017715, -0.062509775, -0.18645053, -0.06953705, 0.5643784, 0.054011516, -0.32412225, 0.13765723, -0.26373163, 0.22286618, -0.087946944, 0.8309978, -0.14090191, 0.1627082, -0.15723054, 1.12806, 0.13998513, 0.023474203, 0.08879457, -0.053593297, 0.29371846, -0.093571305, 0.45235637, 0.4491778, 0.39727995, 1.0331022, 0.037442386] p_err: 0.21469014883041382
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:47]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:47]: Going to test with the trained optimized parameters: [-0.22907238, -0.3057692, -0.39692292, 0.3017715, -0.062509775, -0.18645053, -0.06953705, 0.5643784, 0.054011516, -0.32412225, 0.13765723, -0.26373163, 0.22286618, -0.087946944, 0.8309978, -0.14090191, 0.1627082, -0.15723054, 1.12806, 0.13998513, 0.023474203, 0.08879457, -0.053593297, 0.29371846, -0.093571305, 0.45235637, 0.4491778, 0.39727995, 1.0331022, 0.037442386]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:47]: TESTING Success probability from trained parameters: 0.7853098511695862
+[CSD] 0.0.1|INFO|2022-03-11 08:47:47]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[15/16]: 
+
+  TOTAL computation time: 4 minutes and 30 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 18 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:47]: pSucc: 0.7853098511695862 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:47]: current codebook: [[0.18125, 0.18125, 0.18125, 0.18125, 0.18125], [-0.18125, -0.18125, -0.18125, -0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:47]: Optimizing for alpha: 0.18 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:47:47]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:47:56]: Learned parameters value at step 50: [-0.33057383, -0.02812139, 0.1289861, 0.29960757, -0.23014452, -0.14485268, 0.063206196, 0.23997132, -0.16322544, -0.25886953, 0.014361795, 0.30376992, 0.640476, -0.3269328, 0.13406181, -0.3633369, 1.1778184, -0.3234577, 0.5319896, -0.562818, 0.004550176, 0.1351386, -0.0443071, 0.38162392, 0.10317374, 0.4625515, 0.5040386, 0.3993384, 0.84345925, 0.4436356]
+[CSD] 0.0.1|INFO|2022-03-11 08:47:56]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[16/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 4 minutes and 38 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 0 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: Learned parameters value at step 100: [-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633]
+[CSD] 0.0.1|INFO|2022-03-11 08:48:05]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[16/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 4 minutes and 47 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 0 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: Trained for alpha: 0.18 parameters: [-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633] p_err: 0.18763893842697144
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: Going to test with the trained optimized parameters: [-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: TESTING Success probability from trained parameters: 0.8123611211776733
+[CSD] 0.0.1|INFO|2022-03-11 08:48:05]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.18 -> CODEBOOK[16/16]: 
+
+  TOTAL computation time: 4 minutes and 47 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: pSucc: 0.8123611211776733 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: Optimized and trained for alpha: 0.18 pSucc: 0.8123611211776733 batch_size:32 plays:1 modes:5 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: alpha: 0.18
+TRAINING IDEAL HELSTROM: 0.291111221713908
+TRAINING IDEAL HOMODYNE: 0.3326659425988792
+TESTING IDEAL HELSTROM: 0.291111221713908
+TESTING IDEAL HOMODYNE: 0.3326659425988792
+BEST TRAINING success probability: 0.8123610615730286
+BEST TESTING success probability: 0.8123611211776733
+Best TRAINING codebook: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.8123610615730286, "helstrom_probability": 0.14059947393954028, "homodyne_probability": 0.1086475209558542, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]], "measurements": [[1, 0, 0, 0, 0], [1, 0, 1, 0, 0], [1, 0, 0, 1, 0], [1, 0, 1, 1, 0], [0, 1, 1, 0, 0], [1, 0, 1, 0, 0], [1, 0, 1, 1, 1], [1, 0, 1, 1, 0], [0, 1, 0, 0, 1], [1, 1, 1, 0, 1], [1, 1, 0, 1, 0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 1, 1, 1], [0, 1, 1, 0, 0], [0, 1, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 1, 0], [0, 1, 0, 0, 1], [0, 0, 1, 0, 0], [1, 0, 1, 1, 1], [0, 1, 1, 1, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 1], [0, 1, 0, 0, 1], [0, 1, 1, 1, 1], [1, 1, 1, 1, 1], [0, 1, 1, 1, 1], [1, 1, 0, 1, 1], [1, 1, 1, 0, 0], [1, 0, 0, 0, 1]], "optimized_parameters": [-0.3420920968055725, -0.011198638938367367, 0.12578926980495453, 0.29734331369400024, -0.2320491075515747, -0.1324508935213089, 0.06455846130847931, 0.22788791358470917, -0.15556171536445618, -0.25080224871635437, 0.016162505373358727, 0.554722249507904, 0.7042516469955444, -0.3439568281173706, 0.0988631322979927, -0.3415643572807312, 1.289953589439392, -0.38230201601982117, 0.5693219900131226, -0.5836091637611389, -0.0010725598549470305, 0.13600121438503265, -0.06352032721042633, 0.3854352533817291, 0.11781785637140274, 0.46090152859687805, 0.504784107208252, 0.3935452401638031, 0.8479949235916138, 0.43806329369544983]}
+Best TESTING codebook: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.8123611211776733, "helstrom_probability": 0.14059947393954028, "homodyne_probability": 0.1086475209558542, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]], "measurements": [[1, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 1], [1, 0, 0, 1, 1], [0, 1, 0, 1, 1], [0, 1, 1, 1, 0], [1, 1, 1, 1, 0], [1, 1, 1, 1, 1], [1, 1, 1, 0, 0], [0, 1, 0, 1, 1], [1, 0, 0, 1, 1], [1, 0, 1, 1, 0], [1, 0, 0, 1, 1], [0, 1, 1, 1, 1], [0, 1, 1, 0, 1], [0, 0, 1, 0, 1], [1, 0, 1, 1, 1], [0, 1, 0, 1, 0], [1, 0, 1, 0, 1], [1, 1, 1, 0, 1], [1, 0, 1, 0, 0], [0, 0, 0, 1, 1], [1, 1, 0, 0, 1], [1, 1, 0, 1, 0], [1, 0, 1, 1, 1], [0, 0, 1, 0, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 0], [0, 0, 1, 1, 0], [1, 0, 1, 1, 0], [0, 1, 0, 1, 0], [1, 1, 0, 0, 1]], "optimized_parameters": [-0.3420920968055725, -0.011198638938367367, 0.12578926980495453, 0.29734331369400024, -0.2320491075515747, -0.1324508935213089, 0.06455846130847931, 0.22788791358470917, -0.15556171536445618, -0.25080224871635437, 0.016162505373358727, 0.554722249507904, 0.7042516469955444, -0.3439568281173706, 0.0988631322979927, -0.3415643572807312, 1.289953589439392, -0.38230201601982117, 0.5693219900131226, -0.5836091637611389, -0.0010725598549470305, 0.13600121438503265, -0.06352032721042633, 0.3854352533817291, 0.11781785637140274, 0.46090152859687805, 0.504784107208252, 0.3935452401638031, 0.8479949235916138, 0.43806329369544983]}
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: 
+
+************************************
+** TOP5 TRAINING codebooks: 
+************************************
+
+FIRST: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.8123610615730286, "helstrom_probability": 0.14059947393954028, "homodyne_probability": 0.1086475209558542, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]], "measurements": [[1, 0, 0, 0, 0], [1, 0, 1, 0, 0], [1, 0, 0, 1, 0], [1, 0, 1, 1, 0], [0, 1, 1, 0, 0], [1, 0, 1, 0, 0], [1, 0, 1, 1, 1], [1, 0, 1, 1, 0], [0, 1, 0, 0, 1], [1, 1, 1, 0, 1], [1, 1, 0, 1, 0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [1, 0, 1, 1, 1], [0, 1, 1, 0, 0], [0, 1, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 1, 0], [0, 1, 0, 0, 1], [0, 0, 1, 0, 0], [1, 0, 1, 1, 1], [0, 1, 1, 1, 1], [1, 0, 0, 0, 0], [1, 0, 0, 1, 1], [0, 1, 0, 0, 1], [0, 1, 1, 1, 1], [1, 1, 1, 1, 1], [0, 1, 1, 1, 1], [1, 1, 0, 1, 1], [1, 1, 1, 0, 0], [1, 0, 0, 0, 1]], "optimized_parameters": [-0.3420920968055725, -0.011198638938367367, 0.12578926980495453, 0.29734331369400024, -0.2320491075515747, -0.1324508935213089, 0.06455846130847931, 0.22788791358470917, -0.15556171536445618, -0.25080224871635437, 0.016162505373358727, 0.554722249507904, 0.7042516469955444, -0.3439568281173706, 0.0988631322979927, -0.3415643572807312, 1.289953589439392, -0.38230201601982117, 0.5693219900131226, -0.5836091637611389, -0.0010725598549470305, 0.13600121438503265, -0.06352032721042633, 0.3854352533817291, 0.11781785637140274, 0.46090152859687805, 0.504784107208252, 0.3935452401638031, 0.8479949235916138, 0.43806329369544983]}
+
+SECOND: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.7853105664253235, "helstrom_probability": 0.20815505236542708, "homodyne_probability": 0.16936195454290406, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 0, 1]], "measurements": [[0, 0, 0, 0, 0], [1, 0, 1, 0, 0], [0, 0, 1, 0, 1], [0, 1, 1, 0, 0], [0, 0, 0, 1, 1], [1, 1, 0, 0, 1], [0, 1, 0, 0, 1], [0, 1, 0, 1, 1], [1, 0, 0, 0, 0], [0, 1, 1, 1, 1], [1, 0, 1, 0, 1], [0, 0, 0, 1, 0], [1, 0, 0, 0, 0], [1, 0, 0, 0, 1], [1, 0, 0, 1, 1], [1, 1, 0, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 0, 1, 1], [0, 0, 0, 1, 0], [0, 0, 0, 1, 0], [0, 1, 1, 1, 1], [0, 1, 1, 1, 1], [1, 0, 0, 0, 1], [0, 1, 0, 1, 1], [1, 1, 1, 0, 0], [1, 1, 1, 0, 1], [0, 0, 1, 1, 1], [0, 1, 0, 0, 0]], "optimized_parameters": [-0.317779541015625, 0.09667609632015228, -0.3490220606327057, -0.10243134945631027, -0.013735764659941196, 0.29747283458709717, -0.4987240135669708, 0.15800929069519043, 0.016044490039348602, 0.41757556796073914, -0.16205275058746338, 0.36191892623901367, -0.10061852633953094, -0.1469426453113556, 0.7980960607528687, -0.03598437458276749, -0.12332663685083389, -0.30314165353775024, 0.7994222640991211, -0.12062191218137741, -0.04393068328499794, -0.08806417882442474, -0.11788153648376465, -0.21062308549880981, 0.0010200550314038992, 0.4646313786506653, 0.45564794540405273, 0.8834084272384644, -0.03620266541838646, 0.37654414772987366]}
+
+THIRD: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.7853102684020996, "helstrom_probability": 0.20815505236542708, "homodyne_probability": 0.16936195454290406, "best_codebook": [[0, 0, 0, 0, 0], [1, 0, 1, 1, 1]], "measurements": [[0, 1, 1, 0, 0], [0, 0, 1, 1, 1], [1, 1, 0, 0, 1], [0, 1, 1, 0, 1], [1, 0, 1, 1, 0], [1, 0, 0, 1, 1], [0, 1, 0, 0, 1], [1, 1, 1, 0, 0], [1, 0, 1, 0, 0], [1, 0, 0, 1, 0], [0, 0, 1, 1, 1], [1, 1, 1, 0, 1], [0, 1, 1, 1, 0], [1, 1, 1, 0, 1], [0, 0, 0, 0, 0], [0, 0, 1, 1, 1], [1, 0, 0, 1, 0], [1, 1, 0, 1, 1], [0, 0, 0, 0, 1], [1, 0, 1, 1, 0], [1, 0, 0, 1, 0], [1, 1, 0, 0, 1], [1, 0, 0, 0, 1], [1, 0, 1, 0, 1], [0, 1, 0, 0, 0], [0, 1, 1, 0, 1], [1, 1, 1, 0, 1], [0, 0, 1, 1, 1], [1, 1, 0, 1, 1], [0, 0, 1, 0, 1], [1, 1, 0, 0, 1], [1, 0, 1, 0, 0]], "optimized_parameters": [0.3292982280254364, 0.1595778912305832, -0.3036462366580963, 0.1143091470003128, 0.2939777076244354, 0.1447875201702118, -0.09252241253852844, 0.03271976858377457, 0.7438690066337585, -0.1671801060438156, 0.13991300761699677, -0.8714185357093811, -0.12668029963970184, -1.252652883529663, 0.3225238025188446, -0.6746180057525635, 1.2144551277160645, -0.9939671754837036, 0.027108438313007355, -0.8394166827201843, 0.0035998430103063583, -0.050674740225076675, 0.1578007936477661, 0.2143888622522354, 0.1530664712190628, 0.8135188221931458, 0.37246018648147583, 0.3327126204967499, 0.3919733762741089, 0.3853650689125061]}
+
+FOURTH: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.7853098511695862, "helstrom_probability": 0.20815505236542708, "homodyne_probability": 0.16936195454290406, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 0]], "measurements": [[1, 0, 0, 0, 1], [0, 0, 0, 0, 0], [0, 1, 0, 0, 1], [0, 1, 0, 1, 0], [1, 1, 1, 1, 0], [1, 1, 1, 0, 0], [1, 1, 0, 1, 0], [1, 0, 0, 1, 1], [1, 1, 0, 0, 0], [1, 0, 1, 1, 1], [0, 1, 1, 1, 0], [0, 1, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 1, 0, 0], [1, 1, 0, 0, 1], [1, 0, 1, 1, 0], [1, 1, 1, 0, 0], [1, 1, 0, 1, 0], [0, 0, 1, 1, 0], [0, 0, 0, 1, 1], [0, 1, 0, 0, 1], [0, 0, 1, 0, 1], [0, 1, 0, 1, 1], [1, 0, 1, 1, 1], [1, 0, 1, 1, 1], [1, 1, 0, 1, 0], [0, 1, 0, 1, 1], [0, 0, 0, 0, 1], [1, 0, 0, 0, 1], [1, 1, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 0, 1, 1]], "optimized_parameters": [-0.22907237708568573, -0.3057692050933838, -0.39692291617393494, 0.30177149176597595, -0.06250977516174316, -0.1864505261182785, -0.06953705102205276, 0.5643783807754517, 0.0540115162730217, -0.32412225008010864, 0.13765722513198853, -0.26373162865638733, 0.22286617755889893, -0.08794694393873215, 0.8309978246688843, -0.14090190827846527, 0.16270819306373596, -0.15723054111003876, 1.128059983253479, 0.139985129237175, 0.023474203422665596, 0.08879456669092178, -0.05359329655766487, 0.29371845722198486, -0.09357130527496338, 0.45235636830329895, 0.4491778016090393, 0.3972799479961395, 1.0331021547317505, 0.03744238615036011]}
+
+FIFTH: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.7853088974952698, "helstrom_probability": 0.20815505236542708, "homodyne_probability": 0.16936195454290406, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 0, 1, 1]], "measurements": [[1, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 1, 0, 0, 0], [1, 1, 0, 0, 1], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [1, 1, 0, 1, 1], [1, 1, 1, 0, 0], [0, 0, 0, 0, 0], [1, 0, 0, 1, 1], [1, 0, 0, 0, 1], [1, 1, 1, 1, 1], [1, 1, 1, 0, 1], [0, 1, 1, 1, 0], [1, 1, 1, 0, 0], [0, 0, 0, 1, 0], [1, 1, 0, 0, 0], [0, 0, 0, 1, 1], [1, 0, 1, 1, 1], [1, 1, 0, 1, 0], [0, 0, 0, 0, 0], [0, 0, 1, 0, 1], [1, 1, 1, 0, 0], [1, 1, 0, 0, 1], [1, 1, 0, 1, 1], [1, 0, 1, 0, 0], [1, 1, 1, 0, 0], [1, 1, 0, 1, 0], [1, 0, 0, 1, 0], [1, 1, 1, 0, 1], [0, 1, 0, 1, 0], [1, 0, 1, 1, 0]], "optimized_parameters": [-0.09969490021467209, 0.03086523897945881, -0.0936683937907219, -0.28938066959381104, 0.0275349672883749, 0.0399978831410408, -0.03230663761496544, -0.504985511302948, 0.02683175727725029, 0.02322523109614849, -0.6563318967819214, 1.2166966199874878, 1.3380327224731445, 0.18887054920196533, -1.4038207530975342, 1.3691763877868652, 2.2468314170837402, -0.03345475345849991, -1.3677977323532104, 1.9074063301086426, -0.010140364058315754, -0.06423759460449219, -0.0905795767903328, 0.07110203057527542, -0.3052096664905548, 0.39554575085639954, 0.34466972947120667, 0.6506645679473877, 0.5216403007507324, 0.89159095287323]}
+
+************************************
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: 
+
+************************************
+** TOP5 TESTING codebooks: 
+************************************
+
+FIRST: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.8123611211776733, "helstrom_probability": 0.14059947393954028, "homodyne_probability": 0.1086475209558542, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]], "measurements": [[1, 0, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 1], [1, 0, 0, 1, 1], [0, 1, 0, 1, 1], [0, 1, 1, 1, 0], [1, 1, 1, 1, 0], [1, 1, 1, 1, 1], [1, 1, 1, 0, 0], [0, 1, 0, 1, 1], [1, 0, 0, 1, 1], [1, 0, 1, 1, 0], [1, 0, 0, 1, 1], [0, 1, 1, 1, 1], [0, 1, 1, 0, 1], [0, 0, 1, 0, 1], [1, 0, 1, 1, 1], [0, 1, 0, 1, 0], [1, 0, 1, 0, 1], [1, 1, 1, 0, 1], [1, 0, 1, 0, 0], [0, 0, 0, 1, 1], [1, 1, 0, 0, 1], [1, 1, 0, 1, 0], [1, 0, 1, 1, 1], [0, 0, 1, 0, 1], [1, 1, 1, 1, 1], [1, 1, 1, 1, 0], [0, 0, 1, 1, 0], [1, 0, 1, 1, 0], [0, 1, 0, 1, 0], [1, 1, 0, 0, 1]], "optimized_parameters": [-0.3420920968055725, -0.011198638938367367, 0.12578926980495453, 0.29734331369400024, -0.2320491075515747, -0.1324508935213089, 0.06455846130847931, 0.22788791358470917, -0.15556171536445618, -0.25080224871635437, 0.016162505373358727, 0.554722249507904, 0.7042516469955444, -0.3439568281173706, 0.0988631322979927, -0.3415643572807312, 1.289953589439392, -0.38230201601982117, 0.5693219900131226, -0.5836091637611389, -0.0010725598549470305, 0.13600121438503265, -0.06352032721042633, 0.3854352533817291, 0.11781785637140274, 0.46090152859687805, 0.504784107208252, 0.3935452401638031, 0.8479949235916138, 0.43806329369544983]}
+
+SECOND: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.7853109240531921, "helstrom_probability": 0.20815505236542708, "homodyne_probability": 0.16936195454290406, "best_codebook": [[0, 0, 0, 0, 0], [1, 0, 1, 1, 1]], "measurements": [[1, 1, 0, 1, 1], [0, 1, 0, 1, 1], [1, 1, 0, 1, 0], [1, 0, 1, 0, 1], [0, 1, 1, 0, 0], [1, 0, 1, 1, 1], [1, 1, 0, 0, 1], [0, 1, 1, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 0, 1], [0, 0, 0, 1, 1], [1, 0, 0, 1, 0], [0, 1, 0, 0, 0], [1, 0, 0, 0, 1], [0, 1, 1, 0, 0], [0, 1, 0, 0, 0], [1, 0, 1, 1, 0], [1, 1, 1, 0, 1], [0, 1, 1, 0, 1], [1, 0, 0, 0, 1], [1, 1, 0, 0, 1], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [0, 0, 0, 1, 1], [0, 1, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 1], [0, 1, 0, 0, 0], [1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 1, 0]], "optimized_parameters": [0.3292982280254364, 0.1595778912305832, -0.3036462366580963, 0.1143091470003128, 0.2939777076244354, 0.1447875201702118, -0.09252241253852844, 0.03271976858377457, 0.7438690066337585, -0.1671801060438156, 0.13991300761699677, -0.8714185357093811, -0.12668029963970184, -1.252652883529663, 0.3225238025188446, -0.6746180057525635, 1.2144551277160645, -0.9939671754837036, 0.027108438313007355, -0.8394166827201843, 0.0035998430103063583, -0.050674740225076675, 0.1578007936477661, 0.2143888622522354, 0.1530664712190628, 0.8135188221931458, 0.37246018648147583, 0.3327126204967499, 0.3919733762741089, 0.3853650689125061]}
+
+THIRD: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.7853098511695862, "helstrom_probability": 0.20815505236542708, "homodyne_probability": 0.16936195454290406, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 0]], "measurements": [[0, 1, 1, 1, 1], [0, 0, 0, 0, 1], [0, 0, 1, 0, 0], [1, 1, 0, 0, 1], [1, 1, 1, 0, 0], [0, 0, 1, 1, 0], [1, 0, 1, 1, 0], [1, 0, 0, 1, 0], [0, 0, 1, 0, 0], [0, 1, 0, 0, 0], [0, 0, 0, 0, 0], [1, 1, 0, 1, 1], [1, 1, 0, 0, 1], [1, 1, 1, 0, 0], [1, 1, 0, 0, 0], [0, 0, 0, 0, 1], [1, 0, 1, 1, 0], [1, 1, 0, 0, 1], [1, 0, 1, 1, 0], [0, 0, 1, 0, 0], [1, 0, 0, 0, 1], [1, 1, 1, 0, 0], [1, 0, 0, 1, 1], [1, 1, 0, 1, 1], [0, 0, 1, 1, 1], [1, 1, 1, 1, 1], [1, 0, 0, 0, 1], [1, 0, 0, 0, 1], [1, 1, 0, 0, 1], [1, 0, 0, 1, 1], [0, 0, 0, 1, 0], [0, 0, 1, 1, 0]], "optimized_parameters": [-0.22907237708568573, -0.3057692050933838, -0.39692291617393494, 0.30177149176597595, -0.06250977516174316, -0.1864505261182785, -0.06953705102205276, 0.5643783807754517, 0.0540115162730217, -0.32412225008010864, 0.13765722513198853, -0.26373162865638733, 0.22286617755889893, -0.08794694393873215, 0.8309978246688843, -0.14090190827846527, 0.16270819306373596, -0.15723054111003876, 1.128059983253479, 0.139985129237175, 0.023474203422665596, 0.08879456669092178, -0.05359329655766487, 0.29371845722198486, -0.09357130527496338, 0.45235636830329895, 0.4491778016090393, 0.3972799479961395, 1.0331021547317505, 0.03744238615036011]}
+
+FOURTH: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.7853091955184937, "helstrom_probability": 0.20815505236542708, "homodyne_probability": 0.16936195454290406, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 0, 1]], "measurements": [[0, 1, 1, 1, 1], [0, 0, 1, 0, 1], [0, 1, 0, 1, 0], [1, 1, 1, 1, 1], [1, 1, 0, 0, 0], [1, 0, 1, 1, 0], [1, 1, 0, 0, 1], [0, 0, 1, 1, 1], [0, 0, 0, 1, 1], [1, 0, 0, 1, 1], [0, 0, 0, 1, 0], [0, 0, 0, 1, 1], [0, 0, 0, 1, 1], [1, 1, 0, 1, 0], [0, 0, 0, 0, 0], [0, 1, 1, 1, 1], [0, 1, 1, 0, 1], [0, 0, 0, 0, 1], [1, 1, 0, 1, 0], [0, 1, 0, 1, 1], [1, 0, 1, 0, 0], [1, 1, 1, 1, 0], [0, 1, 1, 1, 1], [1, 0, 0, 0, 1], [1, 0, 0, 1, 0], [0, 0, 1, 0, 1], [1, 1, 1, 1, 0], [0, 0, 1, 0, 1], [1, 0, 0, 0, 0], [1, 0, 1, 0, 0], [0, 0, 1, 0, 1], [1, 1, 0, 0, 0]], "optimized_parameters": [-0.317779541015625, 0.09667609632015228, -0.3490220606327057, -0.10243134945631027, -0.013735764659941196, 0.29747283458709717, -0.4987240135669708, 0.15800929069519043, 0.016044490039348602, 0.41757556796073914, -0.16205275058746338, 0.36191892623901367, -0.10061852633953094, -0.1469426453113556, 0.7980960607528687, -0.03598437458276749, -0.12332663685083389, -0.30314165353775024, 0.7994222640991211, -0.12062191218137741, -0.04393068328499794, -0.08806417882442474, -0.11788153648376465, -0.21062308549880981, 0.0010200550314038992, 0.4646313786506653, 0.45564794540405273, 0.8834084272384644, -0.03620266541838646, 0.37654414772987366]}
+
+FIFTH: {"alpha": 0.18125, "modes": 5, "best_success_probability": 0.7853091359138489, "helstrom_probability": 0.20815505236542708, "homodyne_probability": 0.16936195454290406, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 0, 1, 1]], "measurements": [[0, 0, 1, 0, 0], [1, 0, 1, 0, 0], [1, 0, 0, 1, 0], [0, 1, 1, 0, 1], [1, 0, 1, 0, 1], [1, 0, 1, 1, 1], [1, 0, 0, 0, 0], [1, 0, 1, 1, 0], [0, 0, 1, 0, 1], [0, 1, 0, 0, 0], [0, 1, 0, 1, 0], [1, 0, 0, 1, 0], [1, 0, 1, 1, 1], [0, 1, 1, 1, 1], [1, 0, 0, 1, 0], [0, 0, 1, 0, 1], [0, 1, 1, 0, 1], [1, 1, 0, 1, 1], [1, 1, 1, 0, 1], [1, 1, 1, 0, 1], [1, 1, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 1, 0, 1], [1, 0, 1, 0, 1], [0, 1, 1, 0, 0], [1, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 1, 0], [1, 1, 0, 0, 1], [1, 0, 1, 0, 0], [1, 1, 0, 0, 1], [1, 0, 1, 0, 0]], "optimized_parameters": [-0.09969490021467209, 0.03086523897945881, -0.0936683937907219, -0.28938066959381104, 0.0275349672883749, 0.0399978831410408, -0.03230663761496544, -0.504985511302948, 0.02683175727725029, 0.02322523109614849, -0.6563318967819214, 1.2166966199874878, 1.3380327224731445, 0.18887054920196533, -1.4038207530975342, 1.3691763877868652, 2.2468314170837402, -0.03345475345849991, -1.3677977323532104, 1.9074063301086426, -0.010140364058315754, -0.06423759460449219, -0.0905795767903328, 0.07110203057527542, -0.3052096664905548, 0.39554575085639954, 0.34466972947120667, 0.6506645679473877, 0.5216403007507324, 0.89159095287323]}
+
+************************************
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: execute, took: 4 minutes and 47 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: launch_execution, took: 4 minutes and 47 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:32 plays:1 modes:5 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: Optimizing for alpha: 0.26 with 16 codebooks.
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:05]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:48:05]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:14]: Learned parameters value at step 50: [0.36501345, -0.14836307, 0.05259816, 1.9064695, 0.52615863, -0.81108665, -0.00064281817, 0.579597, 0.6618031, -0.011587097, 0.16675521, 1.7523948, 1.3644235, -0.5761953, -0.0044078236, 1.2957447, -0.77312344, -0.0799596, 0.113941096, 0.5479092, -0.4209232, -0.062013242, -0.2495308, 0.32831505, 0.15209848, 1.0081164, 0.726869, 0.48609513, -0.37605083, 0.82911813]
+[CSD] 0.0.1|INFO|2022-03-11 08:48:14]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[1/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 8 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 2 minutes and 13 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:23]: Learned parameters value at step 100: [0.36028266, -0.13933577, -0.0018593183, 2.0108583, 0.5370761, -0.8684854, 0.001047218, 0.64426506, 0.6776211, -0.0133304745, 0.1626194, 1.9356571, 1.5273764, -0.6032017, 0.0067102266, 1.3040657, -0.9096493, -0.42076012, 0.11149598, 0.5540629, -0.42707157, -0.06766402, -0.25737065, 0.40265486, -0.8087046, 1.0139768, 0.72272617, 0.49602416, -0.22824065, 1.1554339]
+[CSD] 0.0.1|INFO|2022-03-11 08:48:23]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[1/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 17 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 4 minutes and 27 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:23]: Trained for alpha: 0.26 parameters: [0.36028266, -0.13933577, -0.0018593183, 2.0108583, 0.5370761, -0.8684854, 0.001047218, 0.64426506, 0.6776211, -0.0133304745, 0.1626194, 1.9356571, 1.5273764, -0.6032017, 0.0067102266, 1.3040657, -0.9096493, -0.42076012, 0.11149598, 0.5540629, -0.42707157, -0.06766402, -0.25737065, 0.40265486, -0.8087046, 1.0139768, 0.72272617, 0.49602416, -0.22824065, 1.1554339] p_err: 0.284854531288147
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:23]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:23]: Going to test with the trained optimized parameters: [0.36028266, -0.13933577, -0.0018593183, 2.0108583, 0.5370761, -0.8684854, 0.001047218, 0.64426506, 0.6776211, -0.0133304745, 0.1626194, 1.9356571, 1.5273764, -0.6032017, 0.0067102266, 1.3040657, -0.9096493, -0.42076012, 0.11149598, 0.5540629, -0.42707157, -0.06766402, -0.25737065, 0.40265486, -0.8087046, 1.0139768, 0.72272617, 0.49602416, -0.22824065, 1.1554339]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:23]: TESTING Success probability from trained parameters: 0.7151455879211426
+[CSD] 0.0.1|INFO|2022-03-11 08:48:23]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[1/16]: 
+
+  TOTAL computation time: 17 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 4 minutes and 29 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:23]: pSucc: 0.7151455879211426 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:23]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:23]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:48:23]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:32]: Learned parameters value at step 50: [0.49447748, 1.3535619, 1.1560353, 0.019128932, 0.63703245, 1.1730514, -0.24798597, 0.042845882, 0.67284733, -0.07799416, 0.024187729, -0.50534993, 0.2356978, -0.96144587, 0.018621346, 0.044067424, 0.38118044, -1.121269, -0.010652142, -1.4014558, 0.3064147, 0.099782996, -0.32250813, 1.2166022, -0.018727727, 1.0869951, 0.5655764, 0.9257847, -0.12269505, 0.51922613]
+[CSD] 0.0.1|INFO|2022-03-11 08:48:32]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[2/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 26 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 3 minutes and 8 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:41]: Learned parameters value at step 100: [0.47718376, 1.3839788, 1.1304232, 0.007231084, 0.65190345, 1.1753145, -0.24240679, 0.03806851, 0.69077146, -0.06528812, 0.024864009, -0.50659245, 0.22719575, -0.9523035, 0.003916541, 0.0509948, 0.4069441, -1.1186758, 0.007244544, -1.4675884, 0.30941564, 0.092110045, -0.33647367, 1.2111744, -0.010964386, 1.0944029, 0.56856847, 0.94808304, -0.10914439, 0.52676]
+[CSD] 0.0.1|INFO|2022-03-11 08:48:41]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[2/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 35 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 4 minutes and 10 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:41]: Trained for alpha: 0.26 parameters: [0.47718376, 1.3839788, 1.1304232, 0.007231084, 0.65190345, 1.1753145, -0.24240679, 0.03806851, 0.69077146, -0.06528812, 0.024864009, -0.50659245, 0.22719575, -0.9523035, 0.003916541, 0.0509948, 0.4069441, -1.1186758, 0.007244544, -1.4675884, 0.30941564, 0.092110045, -0.33647367, 1.2111744, -0.010964386, 1.0944029, 0.56856847, 0.94808304, -0.10914439, 0.52676] p_err: 0.20901530981063843
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:41]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:41]: Going to test with the trained optimized parameters: [0.47718376, 1.3839788, 1.1304232, 0.007231084, 0.65190345, 1.1753145, -0.24240679, 0.03806851, 0.69077146, -0.06528812, 0.024864009, -0.50659245, 0.22719575, -0.9523035, 0.003916541, 0.0509948, 0.4069441, -1.1186758, 0.007244544, -1.4675884, 0.30941564, 0.092110045, -0.33647367, 1.2111744, -0.010964386, 1.0944029, 0.56856847, 0.94808304, -0.10914439, 0.52676]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:41]: TESTING Success probability from trained parameters: 0.7909845113754272
+[CSD] 0.0.1|INFO|2022-03-11 08:48:41]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[2/16]: 
+
+  TOTAL computation time: 35 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 4 minutes and 11 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:41]: pSucc: 0.7909845113754272 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:41]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, 0.26249999999999996, 0.26249999999999996, -0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:41]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:48:41]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:50]: Learned parameters value at step 50: [0.55202717, 0.46821442, 0.46274206, 0.73224163, 0.45019397, 0.4578574, 0.4040145, 0.7650773, 0.41982058, 0.6057013, -0.07432925, -0.14957549, 0.43616474, 0.0018602065, -0.15937352, -0.10119174, 0.098608546, -0.018638967, -0.0977952, 0.31382942, -0.017310651, 0.13176593, -0.77599025, 0.034987282, -0.12820576, 0.5855687, 0.7678946, 0.267482, 0.8455772, 0.17405982]
+[CSD] 0.0.1|INFO|2022-03-11 08:48:50]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[3/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 44 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 3 minutes and 14 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:59]: Learned parameters value at step 100: [0.5540154, 0.46620855, 0.4920822, 0.71393263, 0.451262, 0.44911277, 0.41891828, 0.7436943, 0.4199799, 0.6086898, -0.056405924, -0.12761648, 0.40438458, 0.028503325, -0.13626029, -0.1145161, 0.13945383, -0.0137733035, -0.12715298, 0.3193759, -0.016531155, 0.14439642, -0.78844255, 0.037294503, -0.11282132, 0.5844886, 0.77803934, 0.27357146, 0.850681, 0.17675681]
+[CSD] 0.0.1|INFO|2022-03-11 08:48:59]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[3/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 53 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 52 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:59]: Trained for alpha: 0.26 parameters: [0.5540154, 0.46620855, 0.4920822, 0.71393263, 0.451262, 0.44911277, 0.41891828, 0.7436943, 0.4199799, 0.6086898, -0.056405924, -0.12761648, 0.40438458, 0.028503325, -0.13626029, -0.1145161, 0.13945383, -0.0137733035, -0.12715298, 0.3193759, -0.016531155, 0.14439642, -0.78844255, 0.037294503, -0.11282132, 0.5844886, 0.77803934, 0.27357146, 0.850681, 0.17675681] p_err: 0.2090167999267578
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:59]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:59]: Going to test with the trained optimized parameters: [0.5540154, 0.46620855, 0.4920822, 0.71393263, 0.451262, 0.44911277, 0.41891828, 0.7436943, 0.4199799, 0.6086898, -0.056405924, -0.12761648, 0.40438458, 0.028503325, -0.13626029, -0.1145161, 0.13945383, -0.0137733035, -0.12715298, 0.3193759, -0.016531155, 0.14439642, -0.78844255, 0.037294503, -0.11282132, 0.5844886, 0.77803934, 0.27357146, 0.850681, 0.17675681]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:59]: TESTING Success probability from trained parameters: 0.7909828424453735
+[CSD] 0.0.1|INFO|2022-03-11 08:48:59]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[3/16]: 
+
+  TOTAL computation time: 53 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 53 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:59]: pSucc: 0.7909828424453735 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:59]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, 0.26249999999999996, 0.26249999999999996, -0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:48:59]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:48:59]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:08]: Learned parameters value at step 50: [0.5022186, 0.26417685, 0.53508437, -0.36013964, 0.47003856, 0.15287022, 0.48353153, -0.4536623, 0.5166768, 0.17543863, -0.04183607, -0.088614255, 0.07027171, -0.12086265, 0.030958842, -0.121343456, 0.07873698, 0.016488839, -0.009892897, 0.05244934, 0.32002783, -0.00013197819, -0.11533658, -0.051126864, -0.05742831, 0.9801774, 0.6294113, 0.16268195, 0.48150438, 0.9304137]
+[CSD] 0.0.1|INFO|2022-03-11 08:49:08]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[4/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 2 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 3 minutes and 8 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:16]: Learned parameters value at step 100: [0.513507, 0.25942937, 0.5200069, -0.35668975, 0.48411244, 0.14619312, 0.4659535, -0.4521739, 0.53358823, 0.18732353, -0.032438055, -0.08469644, 0.057842392, -0.10456478, 0.026760316, -0.12221375, 0.08036652, 0.03336471, -0.0060350075, 0.037858255, 0.32360142, -0.00020597893, -0.11989848, -0.042187545, -0.057627264, 0.9864184, 0.64010495, 0.1596405, 0.47474015, 0.9362895]
+[CSD] 0.0.1|INFO|2022-03-11 08:49:16]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[4/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 1 minute and 11 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 34 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:16]: Trained for alpha: 0.26 parameters: [0.513507, 0.25942937, 0.5200069, -0.35668975, 0.48411244, 0.14619312, 0.4659535, -0.4521739, 0.53358823, 0.18732353, -0.032438055, -0.08469644, 0.057842392, -0.10456478, 0.026760316, -0.12221375, 0.08036652, 0.03336471, -0.0060350075, 0.037858255, 0.32360142, -0.00020597893, -0.11989848, -0.042187545, -0.057627264, 0.9864184, 0.64010495, 0.1596405, 0.47474015, 0.9362895] p_err: 0.1588515043258667
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:16]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:16]: Going to test with the trained optimized parameters: [0.513507, 0.25942937, 0.5200069, -0.35668975, 0.48411244, 0.14619312, 0.4659535, -0.4521739, 0.53358823, 0.18732353, -0.032438055, -0.08469644, 0.057842392, -0.10456478, 0.026760316, -0.12221375, 0.08036652, 0.03336471, -0.0060350075, 0.037858255, 0.32360142, -0.00020597893, -0.11989848, -0.042187545, -0.057627264, 0.9864184, 0.64010495, 0.1596405, 0.47474015, 0.9362895]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:16]: TESTING Success probability from trained parameters: 0.8411485552787781
+[CSD] 0.0.1|INFO|2022-03-11 08:49:16]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[4/16]: 
+
+  TOTAL computation time: 1 minute and 11 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 34 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:16]: pSucc: 0.8411485552787781 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:16]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, 0.26249999999999996, -0.26249999999999996, 0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:16]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:49:16]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:25]: Learned parameters value at step 50: [0.5788721, 0.22818619, 0.17637773, 1.3230264, 0.5819238, 0.76205397, 0.23281027, -0.3727971, 0.65580153, 0.81683165, 0.1609517, 0.06631354, -0.63010067, 0.17651683, 0.10429133, -0.09693314, -0.13832775, 0.33816653, -0.050664503, -0.06789096, -0.09020784, 0.051904306, 0.19192672, 0.09213619, 0.29099405, 0.65220106, 0.47252068, 1.1146077, 0.55192256, -0.32547927]
+[CSD] 0.0.1|INFO|2022-03-11 08:49:25]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[5/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 20 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 2 minutes and 56 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:34]: Learned parameters value at step 100: [0.5777368, 0.26244286, 0.1630735, 1.3342662, 0.5788933, 0.7516779, 0.22541621, -0.32744604, 0.6530823, 0.8339112, 0.16108441, 0.07297777, -0.74221164, 0.13874178, 0.10463267, -0.11002542, -0.17584406, 0.35772002, -0.053084116, -0.06630213, -0.09465426, 0.052032698, 0.19758183, 0.10095313, 0.30139515, 0.6463472, 0.49289685, 1.1173038, 0.5636306, -0.33517748]
+[CSD] 0.0.1|INFO|2022-03-11 08:49:34]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[5/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 1 minute and 29 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 15 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:34]: Trained for alpha: 0.26 parameters: [0.5777368, 0.26244286, 0.1630735, 1.3342662, 0.5788933, 0.7516779, 0.22541621, -0.32744604, 0.6530823, 0.8339112, 0.16108441, 0.07297777, -0.74221164, 0.13874178, 0.10463267, -0.11002542, -0.17584406, 0.35772002, -0.053084116, -0.06630213, -0.09465426, 0.052032698, 0.19758183, 0.10095313, 0.30139515, 0.6463472, 0.49289685, 1.1173038, 0.5636306, -0.33517748] p_err: 0.20902115106582642
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:34]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:34]: Going to test with the trained optimized parameters: [0.5777368, 0.26244286, 0.1630735, 1.3342662, 0.5788933, 0.7516779, 0.22541621, -0.32744604, 0.6530823, 0.8339112, 0.16108441, 0.07297777, -0.74221164, 0.13874178, 0.10463267, -0.11002542, -0.17584406, 0.35772002, -0.053084116, -0.06630213, -0.09465426, 0.052032698, 0.19758183, 0.10095313, 0.30139515, 0.6463472, 0.49289685, 1.1173038, 0.5636306, -0.33517748]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:34]: TESTING Success probability from trained parameters: 0.7909794449806213
+[CSD] 0.0.1|INFO|2022-03-11 08:49:34]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[5/16]: 
+
+  TOTAL computation time: 1 minute and 29 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 3 minutes and 16 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:34]: pSucc: 0.7909794449806213 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:34]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, 0.26249999999999996, -0.26249999999999996, 0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:34]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:49:34]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:43]: Learned parameters value at step 50: [-0.38002926, -0.18030792, 0.38722315, 0.63283587, -0.38853016, -0.19447888, 0.4311317, 0.6529018, -0.44621557, -0.16351527, 0.19903699, -0.2042099, -0.16462407, -0.31134656, 0.13092284, 0.1368968, -0.007794507, -0.0809764, 0.1519616, 0.6586802, -0.35509214, -0.116577975, -0.016594145, -0.19031498, 0.1533013, 0.9837852, 0.5917907, 0.8382261, 0.4691757, 0.91921705]
+[CSD] 0.0.1|INFO|2022-03-11 08:49:43]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[6/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 38 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 2 minutes and 43 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:52]: Learned parameters value at step 100: [-0.3830301, -0.19185261, 0.3871015, 0.6397623, -0.39585146, -0.19483657, 0.4323985, 0.6727444, -0.45847017, -0.14962049, 0.23899515, -0.17544407, -0.12951243, -0.25275832, 0.15109238, 0.1278474, 0.008294396, -0.096905306, 0.1439355, 0.75057137, -0.36741823, -0.11054756, -0.020105727, -0.18446334, 0.15174386, 0.98797303, 0.5904124, 0.84198177, 0.4805714, 0.9224794]
+[CSD] 0.0.1|INFO|2022-03-11 08:49:52]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[6/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 1 minute and 46 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 58 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:52]: Trained for alpha: 0.26 parameters: [-0.3830301, -0.19185261, 0.3871015, 0.6397623, -0.39585146, -0.19483657, 0.4323985, 0.6727444, -0.45847017, -0.14962049, 0.23899515, -0.17544407, -0.12951243, -0.25275832, 0.15109238, 0.1278474, 0.008294396, -0.096905306, 0.1439355, 0.75057137, -0.36741823, -0.11054756, -0.020105727, -0.18446334, 0.15174386, 0.98797303, 0.5904124, 0.84198177, 0.4805714, 0.9224794] p_err: 0.1588568091392517
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:52]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:52]: Going to test with the trained optimized parameters: [-0.3830301, -0.19185261, 0.3871015, 0.6397623, -0.39585146, -0.19483657, 0.4323985, 0.6727444, -0.45847017, -0.14962049, 0.23899515, -0.17544407, -0.12951243, -0.25275832, 0.15109238, 0.1278474, 0.008294396, -0.096905306, 0.1439355, 0.75057137, -0.36741823, -0.11054756, -0.020105727, -0.18446334, 0.15174386, 0.98797303, 0.5904124, 0.84198177, 0.4805714, 0.9224794]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:52]: TESTING Success probability from trained parameters: 0.8411436676979065
+[CSD] 0.0.1|INFO|2022-03-11 08:49:52]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[6/16]: 
+
+  TOTAL computation time: 1 minute and 46 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 58 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:52]: pSucc: 0.8411436676979065 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:52]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, 0.26249999999999996, -0.26249999999999996, -0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:49:52]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:49:52]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:01]: Learned parameters value at step 50: [0.30329132, -0.28712392, -0.40471163, 0.42387083, 0.39268965, -0.30211723, 0.058919728, 0.4536924, 0.575264, -0.25074235, 0.16619855, -0.682667, 0.18048713, 0.078052744, 0.08011781, -0.40299425, 0.3467619, -0.5831106, 0.022806637, 0.059597626, -0.010298314, -0.049539123, -0.2331059, -0.35995185, -0.68648106, 1.1210232, 0.4406031, 0.6829275, 0.99689937, 0.013448907]
+[CSD] 0.0.1|INFO|2022-03-11 08:50:01]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[7/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 55 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 2 minutes and 28 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:09]: Learned parameters value at step 100: [0.29763457, -0.27022958, -0.39267594, 0.41189966, 0.3843309, -0.29194903, 0.057346724, 0.4495808, 0.5725024, -0.23808461, 0.1313299, -0.70108557, 0.18777311, 0.07152618, 0.07605278, -0.37731743, 0.38928297, -0.6054171, 0.035554364, 0.113546245, -0.0104307, -0.053406302, -0.21853855, -0.3659414, -0.6693453, 1.1285124, 0.42477742, 0.6799792, 1.0029259, 0.01486195]
+[CSD] 0.0.1|INFO|2022-03-11 08:50:09]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[7/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 2 minutes and 4 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 40 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:09]: Trained for alpha: 0.26 parameters: [0.29763457, -0.27022958, -0.39267594, 0.41189966, 0.3843309, -0.29194903, 0.057346724, 0.4495808, 0.5725024, -0.23808461, 0.1313299, -0.70108557, 0.18777311, 0.07152618, 0.07605278, -0.37731743, 0.38928297, -0.6054171, 0.035554364, 0.113546245, -0.0104307, -0.053406302, -0.21853855, -0.3659414, -0.6693453, 1.1285124, 0.42477742, 0.6799792, 1.0029259, 0.01486195] p_err: 0.15885281562805176
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:09]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:09]: Going to test with the trained optimized parameters: [0.29763457, -0.27022958, -0.39267594, 0.41189966, 0.3843309, -0.29194903, 0.057346724, 0.4495808, 0.5725024, -0.23808461, 0.1313299, -0.70108557, 0.18777311, 0.07152618, 0.07605278, -0.37731743, 0.38928297, -0.6054171, 0.035554364, 0.113546245, -0.0104307, -0.053406302, -0.21853855, -0.3659414, -0.6693453, 1.1285124, 0.42477742, 0.6799792, 1.0029259, 0.01486195]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:10]: TESTING Success probability from trained parameters: 0.8411483764648438
+[CSD] 0.0.1|INFO|2022-03-11 08:50:10]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[7/16]: 
+
+  TOTAL computation time: 2 minutes and 4 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 40 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:10]: pSucc: 0.8411483764648438 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:10]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, 0.26249999999999996, -0.26249999999999996, -0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:10]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:50:10]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:18]: Learned parameters value at step 50: [0.36655822, 0.033078562, 0.45953012, 0.5603154, 0.64481443, -0.11813507, 0.28019434, -0.05428562, 0.18851201, -0.2178548, 0.6771293, -1.3416412, -0.30665952, -0.22990742, 0.504597, -0.58392155, -0.42829567, -0.7984719, -1.8878021, -0.07367466, 0.27320176, -1.4494162, -0.16611025, -0.5857125, 0.09050915, 0.50720865, -0.51399004, 0.35089955, 0.89047694, 0.5193028]
+[CSD] 0.0.1|INFO|2022-03-11 08:50:18]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[8/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 2 minutes and 13 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 2 minutes and 13 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:27]: Learned parameters value at step 100: [0.36373186, 0.033920456, 0.46199828, 0.5790669, 0.64812773, -0.113408044, 0.3047724, -0.054074395, 0.19360298, -0.21700972, 0.68652016, -1.4389262, -0.29262525, -0.172008, 0.43324417, -0.6128564, -0.44572085, -0.7915056, -1.9120502, -0.09981737, 0.24467677, -1.5114157, -0.20498624, -0.591108, 0.0733556, 0.5088621, -0.5701075, 0.3388993, 0.8956564, 0.5349358]
+[CSD] 0.0.1|INFO|2022-03-11 08:50:27]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[8/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 2 minutes and 22 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 22 seconds
+
+  TOTAL learning computation time: 9 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:27]: Trained for alpha: 0.26 parameters: [0.36373186, 0.033920456, 0.46199828, 0.5790669, 0.64812773, -0.113408044, 0.3047724, -0.054074395, 0.19360298, -0.21700972, 0.68652016, -1.4389262, -0.29262525, -0.172008, 0.43324417, -0.6128564, -0.44572085, -0.7915056, -1.9120502, -0.09981737, 0.24467677, -1.5114157, -0.20498624, -0.591108, 0.0733556, 0.5088621, -0.5701075, 0.3388993, 0.8956564, 0.5349358] p_err: 0.12254607677459717
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:27]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:27]: Going to test with the trained optimized parameters: [0.36373186, 0.033920456, 0.46199828, 0.5790669, 0.64812773, -0.113408044, 0.3047724, -0.054074395, 0.19360298, -0.21700972, 0.68652016, -1.4389262, -0.29262525, -0.172008, 0.43324417, -0.6128564, -0.44572085, -0.7915056, -1.9120502, -0.09981737, 0.24467677, -1.5114157, -0.20498624, -0.591108, 0.0733556, 0.5088621, -0.5701075, 0.3388993, 0.8956564, 0.5349358]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:27]: TESTING Success probability from trained parameters: 0.8774546980857849
+[CSD] 0.0.1|INFO|2022-03-11 08:50:27]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[8/16]: 
+
+  TOTAL computation time: 2 minutes and 22 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 22 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:27]: pSucc: 0.8774546980857849 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:27]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, -0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:27]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:50:28]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:36]: Learned parameters value at step 50: [-0.47016606, 0.6837502, 0.6316836, 1.090288, -0.18714388, -0.021827579, 0.75381976, 0.1705836, -0.07225315, 0.035305675, -0.7158854, -0.21325804, 0.21170461, -0.2300374, -0.9846697, 0.45410758, -0.5189226, -0.021998325, -0.025937114, 0.9401077, -0.30422685, -0.016059292, -0.62784696, -0.36028492, -0.33415446, 0.6792709, 0.94191825, 0.29671666, 0.6031155, -0.3934959]
+[CSD] 0.0.1|INFO|2022-03-11 08:50:36]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[9/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 2 minutes and 31 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 1 minute and 57 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:45]: Learned parameters value at step 100: [-0.48089865, 0.68502605, 0.6360375, 1.1364359, -0.16906257, -0.010533331, 0.77598727, 0.14994448, -0.07605918, 0.006579075, -0.7026886, -0.23525597, 0.20671383, -0.17289174, -0.9223198, 0.5066693, -0.50023365, -0.017037246, 0.015690194, 0.8725337, -0.2893286, -0.016528903, -0.6191313, -0.37044626, -0.38008702, 0.68609655, 0.94741297, 0.2816968, 0.6294773, -0.41187474]
+[CSD] 0.0.1|INFO|2022-03-11 08:50:45]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[9/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 2 minutes and 40 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 4 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:45]: Trained for alpha: 0.26 parameters: [-0.48089865, 0.68502605, 0.6360375, 1.1364359, -0.16906257, -0.010533331, 0.77598727, 0.14994448, -0.07605918, 0.006579075, -0.7026886, -0.23525597, 0.20671383, -0.17289174, -0.9223198, 0.5066693, -0.50023365, -0.017037246, 0.015690194, 0.8725337, -0.2893286, -0.016528903, -0.6191313, -0.37044626, -0.38008702, 0.68609655, 0.94741297, 0.2816968, 0.6294773, -0.41187474] p_err: 0.2090160846710205
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:45]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:45]: Going to test with the trained optimized parameters: [-0.48089865, 0.68502605, 0.6360375, 1.1364359, -0.16906257, -0.010533331, 0.77598727, 0.14994448, -0.07605918, 0.006579075, -0.7026886, -0.23525597, 0.20671383, -0.17289174, -0.9223198, 0.5066693, -0.50023365, -0.017037246, 0.015690194, 0.8725337, -0.2893286, -0.016528903, -0.6191313, -0.37044626, -0.38008702, 0.68609655, 0.94741297, 0.2816968, 0.6294773, -0.41187474]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:45]: TESTING Success probability from trained parameters: 0.7909843921661377
+[CSD] 0.0.1|INFO|2022-03-11 08:50:45]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[9/16]: 
+
+  TOTAL computation time: 2 minutes and 40 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 2 minutes and 4 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:45]: pSucc: 0.7909843921661377 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:45]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, -0.26249999999999996, 0.26249999999999996, 0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:45]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:50:45]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:50:54]: Learned parameters value at step 50: [-0.31894398, -0.37298325, 0.162572, 0.07074132, -0.12763673, 0.3870396, -0.17081565, 0.03667118, 0.26986676, 0.63355297, -0.90448296, -1.2034316, 0.35887975, -1.0479105, -1.3803408, 0.8030743, 0.41140595, -0.29044595, -0.8315911, 0.09737173, -0.13043539, -0.18826665, 0.2174794, 1.4472146, -0.0034317467, 0.45886123, 0.4387952, 0.037032686, -0.5226527, 0.40447825]
+[CSD] 0.0.1|INFO|2022-03-11 08:50:54]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[10/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 2 minutes and 49 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 1 minute and 41 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:03]: Learned parameters value at step 100: [-0.33471996, -0.3864844, 0.1887403, 0.062388703, -0.12591311, 0.36124715, -0.13584961, 0.02504874, 0.27588284, 0.60180396, -0.80897665, -1.2219179, 0.33966962, -1.0605217, -1.3850267, 0.8158725, 0.42929515, -0.2950496, -0.78295004, 0.086661994, -0.118229315, -0.19226705, 0.23150134, 1.4610038, -0.011982876, 0.45939025, 0.4362402, 0.027109023, -0.5294401, 0.41771084]
+[CSD] 0.0.1|INFO|2022-03-11 08:51:03]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[10/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 2 minutes and 58 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 46 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:03]: Trained for alpha: 0.26 parameters: [-0.33471996, -0.3864844, 0.1887403, 0.062388703, -0.12591311, 0.36124715, -0.13584961, 0.02504874, 0.27588284, 0.60180396, -0.80897665, -1.2219179, 0.33966962, -1.0605217, -1.3850267, 0.8158725, 0.42929515, -0.2950496, -0.78295004, 0.086661994, -0.118229315, -0.19226705, 0.23150134, 1.4610038, -0.011982876, 0.45939025, 0.4362402, 0.027109023, -0.5294401, 0.41771084] p_err: 0.1588524580001831
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:03]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:03]: Going to test with the trained optimized parameters: [-0.33471996, -0.3864844, 0.1887403, 0.062388703, -0.12591311, 0.36124715, -0.13584961, 0.02504874, 0.27588284, 0.60180396, -0.80897665, -1.2219179, 0.33966962, -1.0605217, -1.3850267, 0.8158725, 0.42929515, -0.2950496, -0.78295004, 0.086661994, -0.118229315, -0.19226705, 0.23150134, 1.4610038, -0.011982876, 0.45939025, 0.4362402, 0.027109023, -0.5294401, 0.41771084]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:03]: TESTING Success probability from trained parameters: 0.8411477208137512
+[CSD] 0.0.1|INFO|2022-03-11 08:51:03]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[10/16]: 
+
+  TOTAL computation time: 2 minutes and 58 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 46 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:03]: pSucc: 0.8411477208137512 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:03]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, -0.26249999999999996, 0.26249999999999996, -0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:03]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:51:03]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:12]: Learned parameters value at step 50: [-0.20543174, 0.059597496, 0.14039157, 0.36817455, -0.15323915, -0.029602185, 0.083434224, 0.24715172, 0.23409906, -0.20402378, -0.8840257, 1.6748039, 1.4786832, -0.21259004, -1.1746738, 1.9673278, 1.4322256, 0.31119457, -0.7306253, 1.6584978, -0.117691025, -0.05045711, -2.7676616, -0.12703787, 0.11346244, 0.45205924, 0.4264593, 0.19149491, 0.5096048, 0.03595594]
+[CSD] 0.0.1|INFO|2022-03-11 08:51:12]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[11/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 3 minutes and 6 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 1 minute and 24 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:21]: Learned parameters value at step 100: [-0.2000737, 0.034963556, 0.13486494, 0.36671445, -0.14544731, -0.03747765, 0.08699584, 0.23937687, 0.22012752, -0.21525887, -0.85904175, 1.7929289, 1.4059044, -0.23037681, -1.1787583, 2.0766833, 1.4152997, 0.27338696, -0.7302687, 1.5002388, -0.12363202, -0.031556427, -2.8561578, -0.1531977, 0.064191975, 0.44407985, 0.42175564, 0.20194504, 0.52456427, 0.024287147]
+[CSD] 0.0.1|INFO|2022-03-11 08:51:21]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[11/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 3 minutes and 15 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 29 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:21]: Trained for alpha: 0.26 parameters: [-0.2000737, 0.034963556, 0.13486494, 0.36671445, -0.14544731, -0.03747765, 0.08699584, 0.23937687, 0.22012752, -0.21525887, -0.85904175, 1.7929289, 1.4059044, -0.23037681, -1.1787583, 2.0766833, 1.4152997, 0.27338696, -0.7302687, 1.5002388, -0.12363202, -0.031556427, -2.8561578, -0.1531977, 0.064191975, 0.44407985, 0.42175564, 0.20194504, 0.52456427, 0.024287147] p_err: 0.15885424613952637
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:21]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:21]: Going to test with the trained optimized parameters: [-0.2000737, 0.034963556, 0.13486494, 0.36671445, -0.14544731, -0.03747765, 0.08699584, 0.23937687, 0.22012752, -0.21525887, -0.85904175, 1.7929289, 1.4059044, -0.23037681, -1.1787583, 2.0766833, 1.4152997, 0.27338696, -0.7302687, 1.5002388, -0.12363202, -0.031556427, -2.8561578, -0.1531977, 0.064191975, 0.44407985, 0.42175564, 0.20194504, 0.52456427, 0.024287147]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:21]: TESTING Success probability from trained parameters: 0.8411462306976318
+[CSD] 0.0.1|INFO|2022-03-11 08:51:21]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[11/16]: 
+
+  TOTAL computation time: 3 minutes and 16 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 29 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:21]: pSucc: 0.8411462306976318 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:21]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, -0.26249999999999996, 0.26249999999999996, -0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:21]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:51:21]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:30]: Learned parameters value at step 50: [0.088012815, -0.036539495, 0.007940006, -0.33034664, 0.00015050161, 0.0013058665, -0.016693002, -0.54954016, 0.20571527, -0.00066858344, -1.3538549, 0.70555085, 1.604836, 0.45217785, -1.1336262, 0.7971494, 1.4445299, -0.03938829, -0.5097379, 0.9344768, 0.25824338, 0.16926126, -1.2652419, 0.12161497, -0.2632789, 0.3170143, 0.45660165, 0.6050809, 0.5521105, 0.95926267]
+[CSD] 0.0.1|INFO|2022-03-11 08:51:30]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[12/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 3 minutes and 24 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 1 minute and 8 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:39]: Learned parameters value at step 100: [0.0994816, -0.02922868, 0.0050854003, -0.29143745, 0.009658122, 0.014568132, -0.014558178, -0.52815217, 0.20892341, 0.014939112, -1.3749523, 0.68835413, 1.5821495, 0.47116283, -1.0723383, 0.7748626, 1.4490376, -0.076577686, -0.5196324, 0.911126, 0.24289726, 0.18643826, -1.2799819, 0.11141748, -0.26769692, 0.30297637, 0.45828626, 0.6109799, 0.5509201, 0.96548444]
+[CSD] 0.0.1|INFO|2022-03-11 08:51:39]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[12/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 3 minutes and 33 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 11 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:39]: Trained for alpha: 0.26 parameters: [0.0994816, -0.02922868, 0.0050854003, -0.29143745, 0.009658122, 0.014568132, -0.014558178, -0.52815217, 0.20892341, 0.014939112, -1.3749523, 0.68835413, 1.5821495, 0.47116283, -1.0723383, 0.7748626, 1.4490376, -0.076577686, -0.5196324, 0.911126, 0.24289726, 0.18643826, -1.2799819, 0.11141748, -0.26769692, 0.30297637, 0.45828626, 0.6109799, 0.5509201, 0.96548444] p_err: 0.12254518270492554
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:39]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:39]: Going to test with the trained optimized parameters: [0.0994816, -0.02922868, 0.0050854003, -0.29143745, 0.009658122, 0.014568132, -0.014558178, -0.52815217, 0.20892341, 0.014939112, -1.3749523, 0.68835413, 1.5821495, 0.47116283, -1.0723383, 0.7748626, 1.4490376, -0.076577686, -0.5196324, 0.911126, 0.24289726, 0.18643826, -1.2799819, 0.11141748, -0.26769692, 0.30297637, 0.45828626, 0.6109799, 0.5509201, 0.96548444]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:39]: TESTING Success probability from trained parameters: 0.8774549961090088
+[CSD] 0.0.1|INFO|2022-03-11 08:51:39]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[12/16]: 
+
+  TOTAL computation time: 3 minutes and 33 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 1 minute and 11 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:39]: pSucc: 0.8774549961090088 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:39]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, -0.26249999999999996, -0.26249999999999996, 0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:39]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:51:39]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:48]: Learned parameters value at step 50: [-0.07555499, 0.13112955, -0.5201055, 0.4222437, -0.014447283, 0.30075723, -0.11365163, -0.17090091, 0.02399258, 0.82730144, -0.27177417, 0.54800826, 0.017561607, -0.4599907, -1.0211941, -0.498737, -0.9620542, 0.029816123, -0.70171344, -0.3021797, -0.012711106, -0.016775854, -0.09215943, -0.17104265, 0.2531302, 0.45844966, 0.6024126, 0.86533076, 0.08211564, 0.051102065]
+[CSD] 0.0.1|INFO|2022-03-11 08:51:48]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[13/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 3 minutes and 42 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 51 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:56]: Learned parameters value at step 100: [-0.059280314, 0.107449934, -0.57933927, 0.36355278, -0.00808397, 0.33828494, -0.10617356, -0.21149728, 0.013718542, 0.89606917, -0.28877896, 0.5472674, 0.004534373, -0.5042975, -1.0652195, -0.4651134, -0.9708772, 0.03933736, -0.782817, -0.37877393, -0.013283466, -0.019326733, -0.09503511, -0.18340826, 0.25216356, 0.45866507, 0.61171424, 0.86809397, 0.042004712, 0.06591316]
+[CSD] 0.0.1|INFO|2022-03-11 08:51:56]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[13/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 3 minutes and 51 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 53 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:56]: Trained for alpha: 0.26 parameters: [-0.059280314, 0.107449934, -0.57933927, 0.36355278, -0.00808397, 0.33828494, -0.10617356, -0.21149728, 0.013718542, 0.89606917, -0.28877896, 0.5472674, 0.004534373, -0.5042975, -1.0652195, -0.4651134, -0.9708772, 0.03933736, -0.782817, -0.37877393, -0.013283466, -0.019326733, -0.09503511, -0.18340826, 0.25216356, 0.45866507, 0.61171424, 0.86809397, 0.042004712, 0.06591316] p_err: 0.1588536500930786
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:56]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:56]: Going to test with the trained optimized parameters: [-0.059280314, 0.107449934, -0.57933927, 0.36355278, -0.00808397, 0.33828494, -0.10617356, -0.21149728, 0.013718542, 0.89606917, -0.28877896, 0.5472674, 0.004534373, -0.5042975, -1.0652195, -0.4651134, -0.9708772, 0.03933736, -0.782817, -0.37877393, -0.013283466, -0.019326733, -0.09503511, -0.18340826, 0.25216356, 0.45866507, 0.61171424, 0.86809397, 0.042004712, 0.06591316]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:57]: TESTING Success probability from trained parameters: 0.8411465883255005
+[CSD] 0.0.1|INFO|2022-03-11 08:51:57]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[13/16]: 
+
+  TOTAL computation time: 3 minutes and 51 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 53 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:57]: pSucc: 0.8411465883255005 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:57]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, -0.26249999999999996, -0.26249999999999996, 0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:51:57]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:51:57]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:06]: Learned parameters value at step 50: [0.21069486, -0.37981075, -0.12582894, 0.7955719, 0.32528058, 0.26053625, -0.1969715, 0.70810175, 0.48953074, 0.753907, -1.2380906, -0.07545392, -0.5625723, -0.6670778, -0.766731, 0.27078256, -0.4398677, -0.19985834, 0.39499012, 0.13436654, 0.48578873, 0.21054642, -0.41829178, -0.29698184, -0.00880991, 0.7795095, 0.60685253, 0.49720386, 0.969009, 0.62428385]
+[CSD] 0.0.1|INFO|2022-03-11 08:52:06]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[14/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 4 minutes and 0 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 34 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:14]: Learned parameters value at step 100: [0.20386623, -0.35010147, -0.13468766, 0.7769043, 0.31060702, 0.26417324, -0.20752653, 0.69986725, 0.48696554, 0.76656944, -1.2869761, -0.029084371, -0.63231367, -0.636517, -0.80505675, 0.27826643, -0.48421693, -0.21644449, 0.43419385, 0.12200886, 0.49780607, 0.17924638, -0.4057188, -0.2948267, -0.0071275784, 0.78093314, 0.6016981, 0.49534142, 0.976033, 0.6260725]
+[CSD] 0.0.1|INFO|2022-03-11 08:52:14]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[14/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 4 minutes and 9 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 35 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:14]: Trained for alpha: 0.26 parameters: [0.20386623, -0.35010147, -0.13468766, 0.7769043, 0.31060702, 0.26417324, -0.20752653, 0.69986725, 0.48696554, 0.76656944, -1.2869761, -0.029084371, -0.63231367, -0.636517, -0.80505675, 0.27826643, -0.48421693, -0.21644449, 0.43419385, 0.12200886, 0.49780607, 0.17924638, -0.4057188, -0.2948267, -0.0071275784, 0.78093314, 0.6016981, 0.49534142, 0.976033, 0.6260725] p_err: 0.12254565954208374
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:14]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:14]: Going to test with the trained optimized parameters: [0.20386623, -0.35010147, -0.13468766, 0.7769043, 0.31060702, 0.26417324, -0.20752653, 0.69986725, 0.48696554, 0.76656944, -1.2869761, -0.029084371, -0.63231367, -0.636517, -0.80505675, 0.27826643, -0.48421693, -0.21644449, 0.43419385, 0.12200886, 0.49780607, 0.17924638, -0.4057188, -0.2948267, -0.0071275784, 0.78093314, 0.6016981, 0.49534142, 0.976033, 0.6260725]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:14]: TESTING Success probability from trained parameters: 0.8774537444114685
+[CSD] 0.0.1|INFO|2022-03-11 08:52:14]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[14/16]: 
+
+  TOTAL computation time: 4 minutes and 9 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 35 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:14]: pSucc: 0.8774537444114685 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:14]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, -0.26249999999999996, -0.26249999999999996, -0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:14]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:52:14]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:23]: Learned parameters value at step 50: [-0.18070309, -0.22984949, -0.63011897, 0.4205003, -0.11246092, -0.22638242, -0.2714131, 0.5673953, 0.009345014, -0.5965768, 0.10654566, -0.20913123, 0.046073977, 0.009460686, 0.28932393, 0.07588332, 0.17197745, 0.009195957, 0.90491617, 0.08969528, 0.049580257, 0.05446295, 0.09259982, -0.035291668, -0.20792182, 0.51191396, 0.5460211, 0.29556856, 1.0505995, 0.06674754]
+[CSD] 0.0.1|INFO|2022-03-11 08:52:23]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[15/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 4 minutes and 18 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 17 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:32]: Learned parameters value at step 100: [-0.19019024, -0.30111328, -0.6305061, 0.4439579, -0.11286666, -0.23887898, -0.26972386, 0.6088826, 0.007812867, -0.5890995, 0.096139744, -0.16882448, 0.053545963, 0.0074322163, 0.30618632, 0.0761302, 0.18097287, 6.242801e-05, 1.026393, 0.112508014, 0.04448508, 0.058656104, 0.0851975, -0.03750385, -0.20955034, 0.5099264, 0.54539186, 0.29439917, 1.0561912, 0.06149273]
+[CSD] 0.0.1|INFO|2022-03-11 08:52:32]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[15/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 4 minutes and 27 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 17 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:32]: Trained for alpha: 0.26 parameters: [-0.19019024, -0.30111328, -0.6305061, 0.4439579, -0.11286666, -0.23887898, -0.26972386, 0.6088826, 0.007812867, -0.5890995, 0.096139744, -0.16882448, 0.053545963, 0.0074322163, 0.30618632, 0.0761302, 0.18097287, 6.242801e-05, 1.026393, 0.112508014, 0.04448508, 0.058656104, 0.0851975, -0.03750385, -0.20955034, 0.5099264, 0.54539186, 0.29439917, 1.0561912, 0.06149273] p_err: 0.12254494428634644
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:32]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:32]: Going to test with the trained optimized parameters: [-0.19019024, -0.30111328, -0.6305061, 0.4439579, -0.11286666, -0.23887898, -0.26972386, 0.6088826, 0.007812867, -0.5890995, 0.096139744, -0.16882448, 0.053545963, 0.0074322163, 0.30618632, 0.0761302, 0.18097287, 6.242801e-05, 1.026393, 0.112508014, 0.04448508, 0.058656104, 0.0851975, -0.03750385, -0.20955034, 0.5099264, 0.54539186, 0.29439917, 1.0561912, 0.06149273]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:32]: TESTING Success probability from trained parameters: 0.8774549961090088
+[CSD] 0.0.1|INFO|2022-03-11 08:52:32]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[15/16]: 
+
+  TOTAL computation time: 4 minutes and 27 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 17 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:32]: pSucc: 0.8774549961090088 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:32]: current codebook: [[0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996, 0.26249999999999996], [-0.26249999999999996, -0.26249999999999996, -0.26249999999999996, -0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:32]: Optimizing for alpha: 0.26 
+codebook_size:2 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:52:32]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:41]: Learned parameters value at step 50: [-0.30907768, -0.011685283, 0.11599458, 0.2857079, -0.21032661, -0.13601013, 0.03845665, 0.20090178, -0.1584032, -0.2600097, -0.06348245, -0.73396856, 0.5336457, -0.31248748, 0.16745652, -0.38751104, 1.1492071, -0.4070691, 0.4541322, -0.42864332, -0.0013915617, 0.10860026, -0.06987158, 0.37447208, 0.10258663, 0.49047655, 0.58706427, 0.43427226, 0.9144574, 0.46948168]
+[CSD] 0.0.1|INFO|2022-03-11 08:52:41]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[16/16] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 4 minutes and 36 seconds
+  Current codebook iteration time: 8 seconds
+  Estimated codebook REMAINING time: 0 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: Learned parameters value at step 100: [-0.3310693, -0.0100814495, 0.12389862, 0.29071507, -0.22101246, -0.13804881, 0.04374163, 0.2015034, -0.15949582, -0.2621285, -0.05580367, -0.83289117, 0.5616835, -0.28369573, 0.1129298, -0.39509168, 1.2345605, -0.40484285, 0.42955536, -0.42271245, -0.017200032, 0.10934985, -0.074695006, 0.37775278, 0.09286485, 0.49089837, 0.5885479, 0.42548683, 0.9196543, 0.46708363]
+[CSD] 0.0.1|INFO|2022-03-11 08:52:50]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[16/16] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 4 minutes and 45 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 0 seconds
+
+  TOTAL learning computation time: 8 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: Trained for alpha: 0.26 parameters: [-0.3310693, -0.0100814495, 0.12389862, 0.29071507, -0.22101246, -0.13804881, 0.04374163, 0.2015034, -0.15949582, -0.2621285, -0.05580367, -0.83289117, 0.5616835, -0.28369573, 0.1129298, -0.39509168, 1.2345605, -0.40484285, 0.42955536, -0.42271245, -0.017200032, 0.10934985, -0.074695006, 0.37775278, 0.09286485, 0.49089837, 0.5885479, 0.42548683, 0.9196543, 0.46708363] p_err: 0.0952196717262268
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: _train_for_one_alpha_one_codebook, took: 17 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: Going to test with the trained optimized parameters: [-0.3310693, -0.0100814495, 0.12389862, 0.29071507, -0.22101246, -0.13804881, 0.04374163, 0.2015034, -0.15949582, -0.2621285, -0.05580367, -0.83289117, 0.5616835, -0.28369573, 0.1129298, -0.39509168, 1.2345605, -0.40484285, 0.42955536, -0.42271245, -0.017200032, 0.10934985, -0.074695006, 0.37775278, 0.09286485, 0.49089837, 0.5885479, 0.42548683, 0.9196543, 0.46708363]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: TESTING Success probability from trained parameters: 0.9047793745994568
+[CSD] 0.0.1|INFO|2022-03-11 08:52:50]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.26 -> CODEBOOK[16/16]: 
+
+  TOTAL computation time: 4 minutes and 45 seconds
+  Current codebook iteration time: 17 seconds
+  Estimated codebook REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: pSucc: 0.9047793745994568 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: Optimized and trained for alpha: 0.26 pSucc: 0.9047793745994568 batch_size:32 plays:1 modes:5 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] layers:1 squeezing: False
+[-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633]
+[-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633]
+
+
+****************************************
+
+CIRCUIT for alpha: 0.18 codebook_size:2 modes:5 ancillas: 0 
+  cutoff_dim: [10,15,30] squeezing: False: 
+
+Dgate({alpha_0}, 0) | (q[0])
+Dgate({alpha_1}, 0) | (q[1])
+Dgate({alpha_2}, 0) | (q[2])
+Dgate({alpha_3}, 0) | (q[3])
+Dgate({alpha_4}, 0) | (q[4])
+BSgate({theta_1_0}, {phi_1_0}) | (q[0], q[1])
+BSgate({theta_1_1}, {phi_1_1}) | (q[2], q[3])
+BSgate({theta_1_2}, {phi_1_2}) | (q[1], q[2])
+BSgate({theta_1_3}, {phi_1_3}) | (q[3], q[4])
+BSgate({theta_1_4}, {phi_1_4}) | (q[0], q[1])
+BSgate({theta_1_5}, {phi_1_5}) | (q[2], q[3])
+BSgate({theta_1_6}, {phi_1_6}) | (q[1], q[2])
+BSgate({theta_1_7}, {phi_1_7}) | (q[3], q[4])
+BSgate({theta_1_8}, {phi_1_8}) | (q[0], q[1])
+BSgate({theta_1_9}, {phi_1_9}) | (q[2], q[3])
+Rgate({varphi_1_0}) | (q[0])
+Rgate({varphi_1_1}) | (q[1])
+Rgate({varphi_1_2}) | (q[2])
+Rgate({varphi_1_3}) | (q[3])
+Rgate({varphi_1_4}) | (q[4])
+Dgate({a_0}, 0) | (q[0])
+Dgate({a_1}, 0) | (q[1])
+Dgate({a_2}, 0) | (q[2])
+Dgate({a_3}, 0) | (q[3])
+Dgate({a_4}, 0) | (q[4])
+
+
+****************************************
+
+
+[-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633]
+[-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633]
+[-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633]
+[-0.31777954, 0.0966761, -0.34902206, -0.10243135, -0.013735765, 0.29747283, -0.498724, 0.15800929, 0.01604449, 0.41757557, -0.16205275, 0.36191893, -0.10061853, -0.14694265, 0.79809606, -0.035984375, -0.12332664, -0.30314165, 0.79942226, -0.12062191, -0.043930683, -0.08806418, -0.11788154, -0.21062309, 0.001020055, 0.46463138, 0.45564795, 0.8834084, -0.036202665, 0.37654415]
+[0.32929823, 0.15957789, -0.30364624, 0.11430915, 0.2939777, 0.14478752, -0.09252241, 0.03271977, 0.743869, -0.1671801, 0.13991301, -0.87141854, -0.1266803, -1.2526529, 0.3225238, -0.674618, 1.2144551, -0.9939672, 0.027108438, -0.8394167, 0.003599843, -0.05067474, 0.1578008, 0.21438886, 0.15306647, 0.8135188, 0.3724602, 0.33271262, 0.39197338, 0.38536507]
+[-0.22907238, -0.3057692, -0.39692292, 0.3017715, -0.062509775, -0.18645053, -0.06953705, 0.5643784, 0.054011516, -0.32412225, 0.13765723, -0.26373163, 0.22286618, -0.087946944, 0.8309978, -0.14090191, 0.1627082, -0.15723054, 1.12806, 0.13998513, 0.023474203, 0.08879457, -0.053593297, 0.29371846, -0.093571305, 0.45235637, 0.4491778, 0.39727995, 1.0331022, 0.037442386]
+[-0.0996949, 0.030865239, -0.093668394, -0.28938067, 0.027534967, 0.039997883, -0.032306638, -0.5049855, 0.026831757, 0.023225231, -0.6563319, 1.2166966, 1.3380327, 0.18887055, -1.4038208, 1.3691764, 2.2468314, -0.033454753, -1.3677977, 1.9074063, -0.010140364, -0.064237595, -0.09057958, 0.07110203, -0.30520967, 0.39554575, 0.34466973, 0.65066457, 0.5216403, 0.89159095]
+[-0.3420921, -0.011198639, 0.12578927, 0.2973433, -0.23204911, -0.1324509, 0.06455846, 0.22788791, -0.15556172, -0.25080225, 0.016162505, 0.55472225, 0.70425165, -0.34395683, 0.09886313, -0.34156436, 1.2899536, -0.38230202, 0.569322, -0.58360916, -0.0010725599, 0.13600121, -0.06352033, 0.38543525, 0.11781786, 0.46090153, 0.5047841, 0.39354524, 0.8479949, 0.4380633]
+[0.32929823, 0.15957789, -0.30364624, 0.11430915, 0.2939777, 0.14478752, -0.09252241, 0.03271977, 0.743869, -0.1671801, 0.13991301, -0.87141854, -0.1266803, -1.2526529, 0.3225238, -0.674618, 1.2144551, -0.9939672, 0.027108438, -0.8394167, 0.003599843, -0.05067474, 0.1578008, 0.21438886, 0.15306647, 0.8135188, 0.3724602, 0.33271262, 0.39197338, 0.38536507]
+[-0.22907238, -0.3057692, -0.39692292, 0.3017715, -0.062509775, -0.18645053, -0.06953705, 0.5643784, 0.054011516, -0.32412225, 0.13765723, -0.26373163, 0.22286618, -0.087946944, 0.8309978, -0.14090191, 0.1627082, -0.15723054, 1.12806, 0.13998513, 0.023474203, 0.08879457, -0.053593297, 0.29371846, -0.093571305, 0.45235637, 0.4491778, 0.39727995, 1.0331022, 0.037442386]
+[-0.31777954, 0.0966761, -0.34902206, -0.10243135, -0.013735765, 0.29747283, -0.498724, 0.15800929, 0.01604449, 0.41757557, -0.16205275, 0.36191893, -0.10061853, -0.14694265, 0.79809606, -0.035984375, -0.12332664, -0.30314165, 0.79942226, -0.12062191, -0.043930683, -0.08806418, -0.11788154, -0.21062309, 0.001020055, 0.46463138, 0.45564795, 0.8834084, -0.036202665, 0.37654415]
+[-0.0996949, 0.030865239, -0.093668394, -0.28938067, 0.027534967, 0.039997883, -0.032306638, -0.5049855, 0.026831757, 0.023225231, -0.6563319, 1.2166966, 1.3380327, 0.18887055, -1.4038208, 1.3691764, 2.2468314, -0.033454753, -1.3677977, 1.9074063, -0.010140364, -0.064237595, -0.09057958, 0.07110203, -0.30520967, 0.39554575, 0.34466973, 0.65066457, 0.5216403, 0.89159095]
+[-0.3310693, -0.0100814495, 0.12389862, 0.29071507, -0.22101246, -0.13804881, 0.04374163, 0.2015034, -0.15949582, -0.2621285, -0.05580367, -0.83289117, 0.5616835, -0.28369573, 0.1129298, -0.39509168, 1.2345605, -0.40484285, 0.42955536, -0.42271245, -0.017200032, 0.10934985, -0.074695006, 0.37775278, 0.09286485, 0.49089837, 0.5885479, 0.42548683, 0.9196543, 0.46708363]
+[-0.3310693, -0.0100814495, 0.12389862, 0.29071507, -0.22101246, -0.13804881, 0.04374163, 0.2015034, -0.15949582, -0.2621285, -0.05580367, -0.83289117, 0.5616835, -0.28369573, 0.1129298, -0.39509168, 1.2345605, -0.40484285, 0.42955536, -0.42271245, -0.017200032, 0.10934985, -0.074695006, 0.37775278, 0.09286485, 0.49089837, 0.5885479, 0.42548683, 0.9196543, 0.46708363]
+
+
+****************************************
+
+CIRCUIT for alpha: 0.26 codebook_size:2 modes:5 ancillas: 0 
+  cutoff_dim: [10,15,30] squeezing: False: 
+
+Dgate({alpha_0}, 0) | (q[0])
+Dgate({alpha_1}, 0) | (q[1])
+Dgate({alpha_2}, 0) | (q[2])
+Dgate({alpha_3}, 0) | (q[3])
+Dgate({alpha_4}, 0) | (q[4])
+BSgate({theta_1_0}, {phi_1_0}) | (q[0], q[1])
+BSgate({theta_1_1}, {phi_1_1}) | (q[2], q[3])
+BSgate({theta_1_2}, {phi_1_2}) | (q[1], q[2])
+BSgate({theta_1_3}, {phi_1_3}) | (q[3], q[4])
+BSgate({theta_1_4}, {phi_1_4}) | (q[0], q[1])
+BSgate({theta_1_5}, {phi_1_5}) | (q[2], q[3])
+BSgate({theta_1_6}, {phi_1_6}) | (q[1], q[2])
+BSgate({theta_1_7}, {phi_1_7}) | (q[3], q[4])
+BSgate({theta_1_8}, {phi_1_8}) | (q[0], q[1])
+BSgate({theta_1_9}, {phi_1_9}) | (q[2], q[3])
+Rgate({varphi_1_0}) | (q[0])
+Rgate({varphi_1_1}) | (q[1])
+Rgate({varphi_1_2}) | (q[2])
+Rgate({varphi_1_3}) | (q[3])
+Rgate({varphi_1_4}) | (q[4])
+Dgate({a_0}, 0) | (q[0])
+Dgate({a_1}, 0) | (q[1])
+Dgate({a_2}, 0) | (q[2])
+Dgate({a_3}, 0) | (q[3])
+Dgate({a_4}, 0) | (q[4])
+
+
+****************************************
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: alpha: 0.26
+TRAINING IDEAL HELSTROM: 0.36569243078112085
+TRAINING IDEAL HOMODYNE: 0.4323780271663566
+TESTING IDEAL HELSTROM: 0.36569243078112085
+TESTING IDEAL HOMODYNE: 0.4323780271663566
+BEST TRAINING success probability: 0.9047803282737732
+BEST TESTING success probability: 0.9047793745994568
+Best TRAINING codebook: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.9047803282737732, "helstrom_probability": 0.2301300786041275, "homodyne_probability": 0.16832033865748863, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]], "measurements": [[0, 1, 1, 1, 1], [0, 0, 1, 1, 1], [0, 1, 1, 0, 0], [1, 1, 1, 0, 1], [0, 1, 0, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 1, 0], [0, 0, 1, 1, 0], [1, 0, 1, 0, 0], [1, 1, 1, 0, 0], [0, 0, 1, 1, 1], [0, 1, 0, 1, 0], [1, 1, 1, 1, 0], [1, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 1], [0, 0, 0, 1, 0], [0, 0, 1, 1, 0], [0, 0, 1, 1, 0], [1, 1, 1, 1, 1], [0, 1, 0, 0, 1], [0, 1, 1, 0, 1], [1, 0, 0, 0, 1], [0, 1, 0, 0, 0], [1, 0, 1, 1, 1], [1, 1, 0, 1, 0], [1, 0, 0, 0, 0], [0, 1, 0, 0, 1], [0, 1, 1, 1, 1], [0, 0, 1, 1, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 1]], "optimized_parameters": [-0.33106929063796997, -0.010081449523568153, 0.12389861792325974, 0.2907150685787201, -0.22101245820522308, -0.13804881274700165, 0.043741628527641296, 0.20150339603424072, -0.15949581563472748, -0.2621285021305084, -0.05580367147922516, -0.8328911662101746, 0.5616834759712219, -0.2836957275867462, 0.1129297986626625, -0.3950916826725006, 1.234560489654541, -0.4048428535461426, 0.42955535650253296, -0.42271244525909424, -0.017200032249093056, 0.10934984683990479, -0.07469500601291656, 0.37775278091430664, 0.09286484867334366, 0.49089837074279785, 0.5885478854179382, 0.42548683285713196, 0.9196543097496033, 0.4670836329460144]}
+Best TESTING codebook: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.9047793745994568, "helstrom_probability": 0.2301300786041275, "homodyne_probability": 0.16832033865748863, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]], "measurements": [[1, 1, 0, 1, 1], [1, 1, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 1], [1, 0, 0, 0, 1], [0, 0, 1, 0, 1], [1, 1, 1, 1, 1], [1, 0, 1, 0, 0], [1, 1, 0, 0, 0], [1, 0, 0, 1, 0], [1, 1, 0, 1, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 1], [1, 1, 0, 0, 0], [1, 1, 1, 1, 1], [0, 0, 1, 0, 1], [0, 0, 1, 0, 1], [1, 1, 0, 0, 1], [0, 1, 1, 0, 1], [1, 0, 0, 0, 1], [1, 1, 0, 0, 0], [0, 0, 1, 0, 0], [1, 1, 1, 1, 1], [1, 1, 0, 1, 0], [1, 0, 1, 1, 1], [0, 1, 1, 1, 1], [0, 0, 1, 1, 0], [1, 1, 0, 0, 1], [0, 0, 0, 1, 0], [1, 1, 0, 0, 0]], "optimized_parameters": [-0.33106929063796997, -0.010081449523568153, 0.12389861792325974, 0.2907150685787201, -0.22101245820522308, -0.13804881274700165, 0.043741628527641296, 0.20150339603424072, -0.15949581563472748, -0.2621285021305084, -0.05580367147922516, -0.8328911662101746, 0.5616834759712219, -0.2836957275867462, 0.1129297986626625, -0.3950916826725006, 1.234560489654541, -0.4048428535461426, 0.42955535650253296, -0.42271244525909424, -0.017200032249093056, 0.10934984683990479, -0.07469500601291656, 0.37775278091430664, 0.09286484867334366, 0.49089837074279785, 0.5885478854179382, 0.42548683285713196, 0.9196543097496033, 0.4670836329460144]}
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: 
+
+************************************
+** TOP5 TRAINING codebooks: 
+************************************
+
+FIRST: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.9047803282737732, "helstrom_probability": 0.2301300786041275, "homodyne_probability": 0.16832033865748863, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]], "measurements": [[0, 1, 1, 1, 1], [0, 0, 1, 1, 1], [0, 1, 1, 0, 0], [1, 1, 1, 0, 1], [0, 1, 0, 0, 0], [0, 0, 1, 1, 0], [0, 0, 0, 1, 0], [0, 0, 1, 1, 0], [1, 0, 1, 0, 0], [1, 1, 1, 0, 0], [0, 0, 1, 1, 1], [0, 1, 0, 1, 0], [1, 1, 1, 1, 0], [1, 0, 1, 0, 0], [0, 1, 1, 0, 0], [0, 0, 1, 1, 1], [0, 0, 0, 1, 0], [0, 0, 1, 1, 0], [0, 0, 1, 1, 0], [1, 1, 1, 1, 1], [0, 1, 0, 0, 1], [0, 1, 1, 0, 1], [1, 0, 0, 0, 1], [0, 1, 0, 0, 0], [1, 0, 1, 1, 1], [1, 1, 0, 1, 0], [1, 0, 0, 0, 0], [0, 1, 0, 0, 1], [0, 1, 1, 1, 1], [0, 0, 1, 1, 0], [0, 0, 1, 0, 0], [0, 1, 1, 1, 1]], "optimized_parameters": [-0.33106929063796997, -0.010081449523568153, 0.12389861792325974, 0.2907150685787201, -0.22101245820522308, -0.13804881274700165, 0.043741628527641296, 0.20150339603424072, -0.15949581563472748, -0.2621285021305084, -0.05580367147922516, -0.8328911662101746, 0.5616834759712219, -0.2836957275867462, 0.1129297986626625, -0.3950916826725006, 1.234560489654541, -0.4048428535461426, 0.42955535650253296, -0.42271244525909424, -0.017200032249093056, 0.10934984683990479, -0.07469500601291656, 0.37775278091430664, 0.09286484867334366, 0.49089837074279785, 0.5885478854179382, 0.42548683285713196, 0.9196543097496033, 0.4670836329460144]}
+
+SECOND: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.8774550557136536, "helstrom_probability": 0.3087299116547426, "homodyne_probability": 0.24038605873369456, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 0]], "measurements": [[0, 0, 0, 1, 1], [0, 0, 1, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 0, 1], [0, 1, 1, 0, 0], [1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [1, 1, 0, 1, 0], [1, 0, 1, 1, 0], [0, 0, 1, 1, 1], [0, 1, 0, 1, 1], [0, 0, 0, 0, 0], [1, 0, 0, 0, 1], [0, 1, 0, 1, 1], [0, 0, 0, 1, 0], [1, 1, 0, 1, 1], [1, 0, 0, 1, 1], [1, 0, 0, 1, 0], [1, 1, 0, 1, 0], [1, 0, 0, 0, 0], [0, 1, 1, 1, 1], [1, 1, 0, 1, 1], [1, 1, 1, 1, 0], [1, 0, 1, 0, 1], [1, 1, 0, 1, 1], [1, 0, 1, 1, 0], [1, 0, 1, 0, 1], [0, 1, 1, 0, 0], [1, 1, 0, 1, 1], [1, 1, 1, 0, 0], [1, 0, 1, 0, 1], [0, 1, 1, 1, 1]], "optimized_parameters": [-0.19019024074077606, -0.3011132776737213, -0.6305060982704163, 0.4439578950405121, -0.11286666244268417, -0.2388789802789688, -0.2697238624095917, 0.6088826060295105, 0.007812866941094398, -0.5890995264053345, 0.09613974392414093, -0.1688244789838791, 0.053545963019132614, 0.007432216312736273, 0.306186318397522, 0.07613019645214081, 0.1809728741645813, 6.242800736799836e-05, 1.0263930559158325, 0.11250801384449005, 0.04448508098721504, 0.058656103909015656, 0.08519750088453293, -0.03750384971499443, -0.20955033600330353, 0.5099263787269592, 0.545391857624054, 0.2943991720676422, 1.0561912059783936, 0.06149272993206978]}
+
+THIRD: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.8774548172950745, "helstrom_probability": 0.3087299116547426, "homodyne_probability": 0.24038605873369456, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 0, 1, 1]], "measurements": [[0, 1, 1, 0, 1], [1, 0, 1, 0, 1], [1, 1, 1, 0, 0], [1, 0, 0, 1, 1], [1, 1, 1, 0, 0], [1, 0, 0, 1, 0], [0, 1, 0, 0, 0], [1, 0, 0, 0, 1], [0, 1, 1, 0, 1], [0, 1, 0, 0, 0], [1, 0, 1, 1, 0], [1, 0, 1, 0, 0], [0, 1, 1, 1, 1], [0, 0, 0, 1, 1], [1, 1, 1, 0, 0], [0, 1, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 0, 1, 1], [0, 1, 1, 0, 0], [0, 1, 1, 0, 0], [1, 1, 1, 0, 0], [1, 1, 0, 1, 1], [1, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 1, 0, 1], [0, 0, 1, 0, 0], [0, 0, 0, 0, 1], [1, 0, 0, 1, 0], [0, 0, 0, 0, 0], [0, 0, 1, 1, 0], [1, 1, 1, 1, 1], [0, 0, 1, 1, 0]], "optimized_parameters": [0.09948159754276276, -0.029228679835796356, 0.005085400305688381, -0.29143744707107544, 0.009658122435212135, 0.014568132348358631, -0.014558178372681141, -0.5281521677970886, 0.20892341434955597, 0.014939111657440662, -1.3749523162841797, 0.6883541345596313, 1.5821495056152344, 0.4711628258228302, -1.072338342666626, 0.7748625874519348, 1.4490375518798828, -0.07657768577337265, -0.5196323990821838, 0.9111260175704956, 0.24289725720882416, 0.18643826246261597, -1.2799818515777588, 0.11141747981309891, -0.26769691705703735, 0.3029763698577881, 0.45828625559806824, 0.6109799146652222, 0.5509201288223267, 0.9654844403266907]}
+
+FOURTH: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.8774543404579163, "helstrom_probability": 0.3087299116547426, "homodyne_probability": 0.24038605873369456, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 0, 1]], "measurements": [[1, 1, 1, 0, 0], [1, 1, 1, 1, 1], [1, 0, 1, 0, 1], [1, 1, 1, 0, 1], [1, 0, 0, 0, 1], [0, 1, 1, 0, 1], [1, 0, 1, 0, 1], [0, 0, 0, 0, 1], [0, 1, 0, 1, 1], [1, 1, 1, 0, 0], [1, 1, 0, 0, 0], [1, 0, 0, 1, 1], [1, 1, 1, 1, 0], [1, 1, 1, 0, 0], [1, 0, 0, 1, 0], [0, 1, 1, 1, 1], [0, 0, 0, 0, 1], [0, 0, 1, 1, 1], [0, 0, 1, 1, 1], [0, 0, 0, 1, 1], [1, 0, 0, 1, 0], [0, 1, 0, 1, 0], [1, 0, 1, 0, 1], [1, 0, 1, 1, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 0], [1, 0, 0, 1, 0], [1, 1, 1, 1, 1], [1, 1, 1, 0, 1], [1, 0, 0, 1, 1], [0, 1, 1, 1, 0], [0, 1, 0, 0, 1]], "optimized_parameters": [0.20386622846126556, -0.3501014709472656, -0.1346876621246338, 0.776904284954071, 0.31060701608657837, 0.2641732394695282, -0.2075265347957611, 0.6998672485351562, 0.486965537071228, 0.7665694355964661, -1.2869760990142822, -0.029084371402859688, -0.6323136687278748, -0.6365169882774353, -0.8050567507743835, 0.27826642990112305, -0.48421692848205566, -0.2164444923400879, 0.43419384956359863, 0.12200886011123657, 0.4978060722351074, 0.17924638092517853, -0.4057188034057617, -0.2948266863822937, -0.007127578370273113, 0.780933141708374, 0.601698100566864, 0.495341420173645, 0.9760329723358154, 0.6260725259780884]}
+
+FIFTH: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.8774539232254028, "helstrom_probability": 0.3087299116547426, "homodyne_probability": 0.24038605873369456, "best_codebook": [[0, 0, 0, 0, 0], [1, 0, 1, 1, 1]], "measurements": [[0, 0, 0, 0, 0], [1, 0, 0, 1, 1], [1, 0, 1, 1, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 0], [1, 1, 0, 1, 1], [1, 1, 0, 0, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 1], [1, 1, 1, 1, 1], [0, 0, 0, 0, 1], [1, 1, 0, 0, 0], [0, 1, 1, 0, 1], [1, 1, 1, 0, 0], [1, 1, 1, 0, 0], [0, 0, 0, 1, 1], [1, 0, 0, 0, 0], [0, 1, 0, 1, 1], [0, 1, 1, 0, 1], [0, 1, 0, 1, 1], [0, 1, 1, 1, 0], [1, 0, 0, 0, 1], [0, 0, 1, 1, 0], [0, 1, 0, 1, 1], [0, 1, 0, 0, 1], [0, 0, 0, 0, 0], [0, 1, 0, 1, 1], [1, 1, 1, 1, 0], [1, 1, 0, 1, 0], [1, 0, 1, 1, 0], [0, 0, 1, 0, 1], [0, 1, 1, 0, 0]], "optimized_parameters": [0.36373186111450195, 0.03392045572400093, 0.4619982838630676, 0.5790668725967407, 0.6481277346611023, -0.11340804398059845, 0.30477240681648254, -0.05407439544796944, 0.19360297918319702, -0.21700972318649292, 0.6865201592445374, -1.4389262199401855, -0.2926252484321594, -0.1720079928636551, 0.43324416875839233, -0.612856388092041, -0.4457208514213562, -0.7915055751800537, -1.9120502471923828, -0.09981737285852432, 0.24467676877975464, -1.511415719985962, -0.20498624444007874, -0.5911080241203308, 0.07335560023784637, 0.5088620781898499, -0.5701075196266174, 0.33889931440353394, 0.895656406879425, 0.5349357724189758]}
+
+************************************
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: 
+
+************************************
+** TOP5 TESTING codebooks: 
+************************************
+
+FIRST: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.9047793745994568, "helstrom_probability": 0.2301300786041275, "homodyne_probability": 0.16832033865748863, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 1]], "measurements": [[1, 1, 0, 1, 1], [1, 1, 0, 1, 0], [1, 1, 1, 0, 0], [0, 1, 0, 1, 0], [0, 0, 1, 0, 1], [1, 0, 0, 0, 1], [0, 0, 1, 0, 1], [1, 1, 1, 1, 1], [1, 0, 1, 0, 0], [1, 1, 0, 0, 0], [1, 0, 0, 1, 0], [1, 1, 0, 1, 1], [1, 0, 0, 0, 0], [1, 0, 0, 0, 0], [0, 0, 0, 0, 1], [1, 1, 0, 0, 0], [1, 1, 1, 1, 1], [0, 0, 1, 0, 1], [0, 0, 1, 0, 1], [1, 1, 0, 0, 1], [0, 1, 1, 0, 1], [1, 0, 0, 0, 1], [1, 1, 0, 0, 0], [0, 0, 1, 0, 0], [1, 1, 1, 1, 1], [1, 1, 0, 1, 0], [1, 0, 1, 1, 1], [0, 1, 1, 1, 1], [0, 0, 1, 1, 0], [1, 1, 0, 0, 1], [0, 0, 0, 1, 0], [1, 1, 0, 0, 0]], "optimized_parameters": [-0.33106929063796997, -0.010081449523568153, 0.12389861792325974, 0.2907150685787201, -0.22101245820522308, -0.13804881274700165, 0.043741628527641296, 0.20150339603424072, -0.15949581563472748, -0.2621285021305084, -0.05580367147922516, -0.8328911662101746, 0.5616834759712219, -0.2836957275867462, 0.1129297986626625, -0.3950916826725006, 1.234560489654541, -0.4048428535461426, 0.42955535650253296, -0.42271244525909424, -0.017200032249093056, 0.10934984683990479, -0.07469500601291656, 0.37775278091430664, 0.09286484867334366, 0.49089837074279785, 0.5885478854179382, 0.42548683285713196, 0.9196543097496033, 0.4670836329460144]}
+
+SECOND: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.8774549961090088, "helstrom_probability": 0.3087299116547426, "homodyne_probability": 0.24038605873369456, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 1, 0]], "measurements": [[1, 0, 0, 0, 1], [1, 0, 0, 1, 0], [1, 1, 1, 1, 0], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 1, 1], [1, 0, 1, 1, 0], [1, 0, 0, 0, 1], [1, 0, 0, 0, 0], [0, 1, 1, 0, 0], [1, 0, 1, 0, 0], [1, 1, 1, 0, 0], [0, 1, 1, 0, 1], [1, 0, 1, 0, 1], [0, 0, 1, 0, 1], [1, 0, 0, 0, 1], [1, 0, 0, 0, 1], [1, 0, 0, 1, 1], [1, 0, 1, 0, 0], [1, 0, 1, 1, 0], [0, 0, 1, 0, 0], [1, 1, 0, 1, 1], [1, 1, 1, 1, 1], [0, 0, 1, 1, 0], [1, 1, 0, 0, 0], [0, 1, 0, 1, 1], [1, 0, 0, 0, 1], [1, 0, 0, 1, 0], [1, 0, 1, 0, 1], [1, 0, 0, 1, 1]], "optimized_parameters": [-0.19019024074077606, -0.3011132776737213, -0.6305060982704163, 0.4439578950405121, -0.11286666244268417, -0.2388789802789688, -0.2697238624095917, 0.6088826060295105, 0.007812866941094398, -0.5890995264053345, 0.09613974392414093, -0.1688244789838791, 0.053545963019132614, 0.007432216312736273, 0.306186318397522, 0.07613019645214081, 0.1809728741645813, 6.242800736799836e-05, 1.0263930559158325, 0.11250801384449005, 0.04448508098721504, 0.058656103909015656, 0.08519750088453293, -0.03750384971499443, -0.20955033600330353, 0.5099263787269592, 0.545391857624054, 0.2943991720676422, 1.0561912059783936, 0.06149272993206978]}
+
+THIRD: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.8774549961090088, "helstrom_probability": 0.3087299116547426, "homodyne_probability": 0.24038605873369456, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 0, 1, 1]], "measurements": [[0, 1, 0, 0, 1], [0, 1, 0, 0, 1], [1, 1, 1, 0, 1], [0, 0, 1, 1, 1], [0, 0, 0, 0, 1], [1, 1, 0, 0, 1], [1, 0, 1, 0, 0], [1, 1, 0, 0, 0], [0, 0, 1, 0, 1], [0, 0, 1, 0, 1], [0, 0, 0, 0, 1], [1, 1, 1, 1, 0], [1, 0, 0, 1, 0], [1, 1, 1, 1, 0], [1, 0, 0, 0, 0], [1, 1, 0, 0, 0], [1, 1, 0, 0, 1], [1, 1, 1, 0, 0], [1, 0, 1, 1, 0], [0, 0, 0, 1, 1], [1, 1, 1, 0, 1], [1, 0, 1, 1, 0], [0, 1, 1, 1, 1], [0, 0, 1, 1, 0], [0, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 1, 0], [1, 1, 0, 0, 0], [1, 0, 0, 1, 0], [0, 1, 1, 1, 0], [0, 1, 1, 0, 1], [1, 1, 0, 1, 0]], "optimized_parameters": [0.09948159754276276, -0.029228679835796356, 0.005085400305688381, -0.29143744707107544, 0.009658122435212135, 0.014568132348358631, -0.014558178372681141, -0.5281521677970886, 0.20892341434955597, 0.014939111657440662, -1.3749523162841797, 0.6883541345596313, 1.5821495056152344, 0.4711628258228302, -1.072338342666626, 0.7748625874519348, 1.4490375518798828, -0.07657768577337265, -0.5196323990821838, 0.9111260175704956, 0.24289725720882416, 0.18643826246261597, -1.2799818515777588, 0.11141747981309891, -0.26769691705703735, 0.3029763698577881, 0.45828625559806824, 0.6109799146652222, 0.5509201288223267, 0.9654844403266907]}
+
+FOURTH: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.8774546980857849, "helstrom_probability": 0.3087299116547426, "homodyne_probability": 0.24038605873369456, "best_codebook": [[0, 0, 0, 0, 0], [1, 0, 1, 1, 1]], "measurements": [[1, 1, 0, 0, 1], [1, 0, 1, 0, 0], [1, 1, 1, 0, 1], [1, 1, 0, 1, 1], [0, 0, 1, 1, 0], [1, 1, 0, 1, 1], [0, 1, 0, 0, 0], [0, 1, 1, 1, 1], [1, 0, 1, 0, 1], [0, 0, 1, 1, 0], [1, 0, 0, 0, 1], [1, 0, 1, 1, 0], [1, 1, 0, 0, 1], [0, 0, 0, 1, 1], [0, 1, 0, 1, 0], [1, 1, 1, 1, 1], [1, 1, 1, 1, 0], [1, 1, 1, 0, 0], [0, 0, 1, 1, 1], [1, 1, 0, 1, 1], [0, 1, 1, 1, 1], [1, 1, 0, 1, 1], [0, 1, 1, 0, 0], [0, 0, 0, 0, 1], [1, 1, 0, 0, 1], [1, 1, 0, 1, 1], [0, 0, 0, 1, 1], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [1, 1, 0, 0, 0], [0, 1, 0, 1, 0], [1, 1, 1, 0, 0]], "optimized_parameters": [0.36373186111450195, 0.03392045572400093, 0.4619982838630676, 0.5790668725967407, 0.6481277346611023, -0.11340804398059845, 0.30477240681648254, -0.05407439544796944, 0.19360297918319702, -0.21700972318649292, 0.6865201592445374, -1.4389262199401855, -0.2926252484321594, -0.1720079928636551, 0.43324416875839233, -0.612856388092041, -0.4457208514213562, -0.7915055751800537, -1.9120502471923828, -0.09981737285852432, 0.24467676877975464, -1.511415719985962, -0.20498624444007874, -0.5911080241203308, 0.07335560023784637, 0.5088620781898499, -0.5701075196266174, 0.33889931440353394, 0.895656406879425, 0.5349357724189758]}
+
+FIFTH: {"alpha": 0.26249999999999996, "modes": 5, "best_success_probability": 0.8774537444114685, "helstrom_probability": 0.3087299116547426, "homodyne_probability": 0.24038605873369456, "best_codebook": [[0, 0, 0, 0, 0], [1, 1, 1, 0, 1]], "measurements": [[0, 1, 0, 0, 1], [0, 1, 0, 1, 0], [1, 1, 0, 0, 0], [0, 1, 0, 0, 0], [1, 0, 1, 0, 1], [0, 1, 0, 1, 0], [1, 1, 0, 0, 0], [1, 1, 1, 0, 1], [1, 1, 1, 1, 0], [0, 1, 0, 1, 1], [1, 1, 0, 0, 1], [1, 0, 1, 0, 1], [1, 1, 1, 0, 1], [0, 1, 1, 0, 0], [0, 0, 0, 1, 1], [1, 1, 0, 0, 0], [0, 1, 0, 1, 1], [1, 0, 0, 0, 1], [1, 1, 1, 1, 1], [0, 1, 0, 1, 0], [0, 0, 0, 1, 0], [1, 0, 0, 1, 1], [1, 0, 0, 1, 1], [1, 1, 1, 1, 0], [1, 1, 0, 1, 0], [0, 0, 1, 0, 0], [0, 0, 1, 1, 0], [0, 0, 1, 1, 0], [0, 1, 0, 1, 0], [0, 0, 0, 0, 1], [0, 1, 0, 0, 1], [0, 1, 0, 1, 1]], "optimized_parameters": [0.20386622846126556, -0.3501014709472656, -0.1346876621246338, 0.776904284954071, 0.31060701608657837, 0.2641732394695282, -0.2075265347957611, 0.6998672485351562, 0.486965537071228, 0.7665694355964661, -1.2869760990142822, -0.029084371402859688, -0.6323136687278748, -0.6365169882774353, -0.8050567507743835, 0.27826642990112305, -0.48421692848205566, -0.2164444923400879, 0.43419384956359863, 0.12200886011123657, 0.4978060722351074, 0.17924638092517853, -0.4057188034057617, -0.2948266863822937, -0.007127578370273113, 0.780933141708374, 0.601698100566864, 0.495341420173645, 0.9760329723358154, 0.6260725259780884]}
+
+************************************
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: execute, took: 4 minutes and 45 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: launch_execution, took: 4 minutes and 45 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:32 plays:1 modes:5 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: Optimizing for alpha: 0.34 with 64 codebooks.
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: current codebook: [[0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [0.34375, -0.34375, 0.34375, 0.34375, 0.34375], [-0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [-0.34375, -0.34375, 0.34375, 0.34375, 0.34375]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:52:50]: Optimizing for alpha: 0.34 
+codebook_size:4 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:52:50]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:03]: Learned parameters value at step 50: [-0.12177747, 0.26606408, 0.072709665, 0.57975054, 0.6134962, -0.049995124, -0.0627361, 0.86030585, 1.0560145, -0.22540185, -0.45823702, -0.49458355, -0.7128422, 0.28132343, 0.03333634, -0.36781353, 1.8494998, 1.1630094, 0.18286392, 0.7117944, 0.18852676, -0.14465989, 0.054076605, -0.6738626, -0.39962444, 0.7165945, 0.7347632, -0.3455679, -0.33370897, -0.13609725]
+[CSD] 0.0.1|INFO|2022-03-11 08:53:03]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[1/64] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 12 seconds
+  Current codebook iteration time: 12 seconds
+  Estimated codebook REMAINING time: 13 minutes and 4 seconds
+
+  TOTAL learning computation time: 12 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 12 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:15]: Learned parameters value at step 100: [-0.14612986, 0.21921577, 0.035307206, 0.56521326, 0.6010684, 0.0033343523, -0.0129953865, 0.8583228, 1.0960271, -0.052911337, -0.46047917, -0.45636868, -0.7441841, 0.26702526, 0.032163158, -0.42938328, 1.9514157, 1.2886292, 0.20235671, 0.8699754, 0.16988595, -0.15849154, 0.14976728, -0.68343437, -0.53756166, 0.7256057, 0.7346364, -0.3070384, -0.3502004, -0.12952183]
+[CSD] 0.0.1|INFO|2022-03-11 08:53:15]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[1/64] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 24 seconds
+  Current codebook iteration time: 24 seconds
+  Estimated codebook REMAINING time: 26 minutes and 14 seconds
+
+  TOTAL learning computation time: 12 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:15]: Trained for alpha: 0.34 parameters: [-0.14612986, 0.21921577, 0.035307206, 0.56521326, 0.6010684, 0.0033343523, -0.0129953865, 0.8583228, 1.0960271, -0.052911337, -0.46047917, -0.45636868, -0.7441841, 0.26702526, 0.032163158, -0.42938328, 1.9514157, 1.2886292, 0.20235671, 0.8699754, 0.16988595, -0.15849154, 0.14976728, -0.68343437, -0.53756166, 0.7256057, 0.7346364, -0.3070384, -0.3502004, -0.12952183] p_err: 0.402676522731781
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:15]: _train_for_one_alpha_one_codebook, took: 25 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:15]: Going to test with the trained optimized parameters: [-0.14612986, 0.21921577, 0.035307206, 0.56521326, 0.6010684, 0.0033343523, -0.0129953865, 0.8583228, 1.0960271, -0.052911337, -0.46047917, -0.45636868, -0.7441841, 0.26702526, 0.032163158, -0.42938328, 1.9514157, 1.2886292, 0.20235671, 0.8699754, 0.16988595, -0.15849154, 0.14976728, -0.68343437, -0.53756166, 0.7256057, 0.7346364, -0.3070384, -0.3502004, -0.12952183]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:15]: TESTING Success probability from trained parameters: 0.5973230004310608
+[CSD] 0.0.1|INFO|2022-03-11 08:53:15]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[1/64]: 
+
+  TOTAL computation time: 25 seconds
+  Current codebook iteration time: 25 seconds
+  Estimated codebook REMAINING time: 26 minutes and 25 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:15]: pSucc: 0.5973230004310608 codebook_size:4
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:15]: current codebook: [[0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [0.34375, -0.34375, 0.34375, 0.34375, -0.34375], [-0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [-0.34375, -0.34375, 0.34375, 0.34375, -0.34375]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:15]: Optimizing for alpha: 0.34 
+codebook_size:4 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:53:15]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:28]: Learned parameters value at step 50: [0.005558651, -0.06269345, 1.1015378, 0.3210628, 0.004348193, 1.0181235, 0.5684227, 0.25510445, -0.046448827, -0.37845048, -1.0335763, -0.38848358, -0.0012456477, -0.4165144, -0.38735986, 0.18149522, 0.104291655, -0.20222406, -0.25566465, 0.07046069, -0.003945455, -0.12284827, -0.027445644, -1.1038991, -0.076966494, 0.76387316, 0.82706535, 0.71529716, -0.029163228, 0.42831558]
+[CSD] 0.0.1|INFO|2022-03-11 08:53:28]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[2/64] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 37 seconds
+  Current codebook iteration time: 12 seconds
+  Estimated codebook REMAINING time: 19 minutes and 32 seconds
+
+  TOTAL learning computation time: 12 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 12 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:41]: Learned parameters value at step 100: [-0.0028572725, -0.10764751, 1.0873905, 0.31097674, 0.0005401516, 1.007926, 0.5700304, 0.25937364, 0.00059533096, -0.36188313, -1.0963889, -0.37585345, 0.011827389, -0.41025928, -0.43393484, 0.1923601, 0.08722814, -0.16752438, -0.24477363, 0.052391868, -7.1197155e-06, -0.124873444, -0.027685635, -1.1271697, -0.08283705, 0.7355636, 0.82914054, 0.6896621, -0.03679802, 0.41979566]
+[CSD] 0.0.1|INFO|2022-03-11 08:53:41]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[2/64] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 50 seconds
+  Current codebook iteration time: 25 seconds
+  Estimated codebook REMAINING time: 26 minutes and 3 seconds
+
+  TOTAL learning computation time: 12 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:41]: Trained for alpha: 0.34 parameters: [-0.0028572725, -0.10764751, 1.0873905, 0.31097674, 0.0005401516, 1.007926, 0.5700304, 0.25937364, 0.00059533096, -0.36188313, -1.0963889, -0.37585345, 0.011827389, -0.41025928, -0.43393484, 0.1923601, 0.08722814, -0.16752438, -0.24477363, 0.052391868, -7.1197155e-06, -0.124873444, -0.027685635, -1.1271697, -0.08283705, 0.7355636, 0.82914054, 0.6896621, -0.03679802, 0.41979566] p_err: 0.3368121385574341
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:41]: _train_for_one_alpha_one_codebook, took: 25 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:41]: Going to test with the trained optimized parameters: [-0.0028572725, -0.10764751, 1.0873905, 0.31097674, 0.0005401516, 1.007926, 0.5700304, 0.25937364, 0.00059533096, -0.36188313, -1.0963889, -0.37585345, 0.011827389, -0.41025928, -0.43393484, 0.1923601, 0.08722814, -0.16752438, -0.24477363, 0.052391868, -7.1197155e-06, -0.124873444, -0.027685635, -1.1271697, -0.08283705, 0.7355636, 0.82914054, 0.6896621, -0.03679802, 0.41979566]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:41]: TESTING Success probability from trained parameters: 0.6631852984428406
+[CSD] 0.0.1|INFO|2022-03-11 08:53:41]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[2/64]: 
+
+  TOTAL computation time: 50 seconds
+  Current codebook iteration time: 25 seconds
+  Estimated codebook REMAINING time: 26 minutes and 8 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:41]: pSucc: 0.6631852984428406 codebook_size:4
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:41]: current codebook: [[0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [0.34375, -0.34375, 0.34375, -0.34375, 0.34375], [-0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [-0.34375, -0.34375, 0.34375, -0.34375, 0.34375]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:41]: Optimizing for alpha: 0.34 
+codebook_size:4 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:53:41]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:53:53]: Learned parameters value at step 50: [0.044486597, 0.37861973, 0.19519915, 0.013160267, 0.46650353, 0.69926137, -0.029072337, 0.005824932, 1.0788661, 0.36570138, -0.94964814, -0.022907315, -1.912037, -2.076248, 0.16973944, -0.37298134, 1.3244904, 1.9982853, 0.07525176, -0.5945082, 0.13654724, -0.09439155, -0.57234466, -0.33938143, 0.022350328, 0.5422004, 0.7280926, 0.54984325, 0.925691, 0.8986495]
+[CSD] 0.0.1|INFO|2022-03-11 08:53:53]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[3/64] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 3 seconds
+  Current codebook iteration time: 12 seconds
+  Estimated codebook REMAINING time: 21 minutes and 26 seconds
+
+  TOTAL learning computation time: 12 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 12 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:06]: Learned parameters value at step 100: [-0.0051959855, 0.38214982, 0.20887321, -0.00024619728, 0.46133462, 0.73005384, -0.0028522217, -0.0048271273, 1.1122757, 0.35178536, -1.0184342, -0.10102494, -1.9683284, -2.1063745, 0.10723629, -0.39199257, 1.5147696, 2.0726316, 0.1192149, -0.48714578, 0.15959783, -0.11726924, -0.520931, -0.41025063, 0.02622659, 0.5359103, 0.73685515, 0.5572203, 0.92751706, 0.8552593]
+[CSD] 0.0.1|INFO|2022-03-11 08:54:06]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[3/64] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 1 minute and 15 seconds
+  Current codebook iteration time: 25 seconds
+  Estimated codebook REMAINING time: 25 minutes and 40 seconds
+
+  TOTAL learning computation time: 12 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:06]: Trained for alpha: 0.34 parameters: [-0.0051959855, 0.38214982, 0.20887321, -0.00024619728, 0.46133462, 0.73005384, -0.0028522217, -0.0048271273, 1.1122757, 0.35178536, -1.0184342, -0.10102494, -1.9683284, -2.1063745, 0.10723629, -0.39199257, 1.5147696, 2.0726316, 0.1192149, -0.48714578, 0.15959783, -0.11726924, -0.520931, -0.41025063, 0.02622659, 0.5359103, 0.73685515, 0.5572203, 0.92751706, 0.8552593] p_err: 0.3368174433708191
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:06]: _train_for_one_alpha_one_codebook, took: 25 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:06]: Going to test with the trained optimized parameters: [-0.0051959855, 0.38214982, 0.20887321, -0.00024619728, 0.46133462, 0.73005384, -0.0028522217, -0.0048271273, 1.1122757, 0.35178536, -1.0184342, -0.10102494, -1.9683284, -2.1063745, 0.10723629, -0.39199257, 1.5147696, 2.0726316, 0.1192149, -0.48714578, 0.15959783, -0.11726924, -0.520931, -0.41025063, 0.02622659, 0.5359103, 0.73685515, 0.5572203, 0.92751706, 0.8552593]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:06]: TESTING Success probability from trained parameters: 0.66318279504776
+[CSD] 0.0.1|INFO|2022-03-11 08:54:06]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[3/64]: 
+
+  TOTAL computation time: 1 minute and 15 seconds
+  Current codebook iteration time: 25 seconds
+  Estimated codebook REMAINING time: 25 minutes and 43 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:06]: pSucc: 0.66318279504776 codebook_size:4
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:06]: current codebook: [[0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [0.34375, -0.34375, 0.34375, -0.34375, -0.34375], [-0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [-0.34375, -0.34375, 0.34375, -0.34375, -0.34375]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:06]: Optimizing for alpha: 0.34 
+codebook_size:4 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:54:06]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:19]: Learned parameters value at step 50: [-0.026000382, 0.47549656, -0.41603017, -0.15915501, 0.020411596, 0.22584064, -0.76305145, 0.14491385, 0.72386533, -0.87859154, -0.10197563, 0.83143485, -0.78858954, -2.0112653, 0.039712228, -1.3144073, -0.66914916, -1.2591741, 0.14671321, 0.9457951, -0.13048822, 0.19147402, -0.6843926, -0.309748, 0.024647724, 0.7395496, 0.31567055, -0.24885759, 0.6142399, 0.5286356]
+[CSD] 0.0.1|INFO|2022-03-11 08:54:19]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[4/64] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 28 seconds
+  Current codebook iteration time: 13 seconds
+  Estimated codebook REMAINING time: 22 minutes and 14 seconds
+
+  TOTAL learning computation time: 13 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 13 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:32]: Learned parameters value at step 100: [0.0017626096, 0.49373636, -0.39073047, -0.14584318, -1.0117044e-05, 0.1259069, -0.78479445, 0.08101103, 0.71021223, -0.90661836, -0.10552714, 0.7635591, -0.8322546, -2.1202946, 0.032025438, -1.2790554, -0.68411666, -1.1650178, 0.16477087, 0.8556131, -0.1261152, 0.1835426, -0.7990664, -0.18041822, -0.0155286435, 0.72380936, 0.3138109, -0.35692665, 0.6214355, 0.5046076]
+[CSD] 0.0.1|INFO|2022-03-11 08:54:32]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[4/64] -> LEARNING_STEPS[100/100]: 
+
+  TOTAL computation time: 1 minute and 41 seconds
+  Current codebook iteration time: 25 seconds
+  Estimated codebook REMAINING time: 25 minutes and 21 seconds
+
+  TOTAL learning computation time: 12 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 0 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:32]: Trained for alpha: 0.34 parameters: [0.0017626096, 0.49373636, -0.39073047, -0.14584318, -1.0117044e-05, 0.1259069, -0.78479445, 0.08101103, 0.71021223, -0.90661836, -0.10552714, 0.7635591, -0.8322546, -2.1202946, 0.032025438, -1.2790554, -0.68411666, -1.1650178, 0.16477087, 0.8556131, -0.1261152, 0.1835426, -0.7990664, -0.18041822, -0.0155286435, 0.72380936, 0.3138109, -0.35692665, 0.6214355, 0.5046076] p_err: 0.29812562465667725
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:32]: _train_for_one_alpha_one_codebook, took: 25 seconds
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:32]: Going to test with the trained optimized parameters: [0.0017626096, 0.49373636, -0.39073047, -0.14584318, -1.0117044e-05, 0.1259069, -0.78479445, 0.08101103, 0.71021223, -0.90661836, -0.10552714, 0.7635591, -0.8322546, -2.1202946, 0.032025438, -1.2790554, -0.68411666, -1.1650178, 0.16477087, 0.8556131, -0.1261152, 0.1835426, -0.7990664, -0.18041822, -0.0155286435, 0.72380936, 0.3138109, -0.35692665, 0.6214355, 0.5046076]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:32]: TESTING Success probability from trained parameters: 0.701879620552063
+[CSD] 0.0.1|INFO|2022-03-11 08:54:32]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[4/64]: 
+
+  TOTAL computation time: 1 minute and 41 seconds
+  Current codebook iteration time: 25 seconds
+  Estimated codebook REMAINING time: 25 minutes and 23 seconds
+---------------------------------------------------------------------
+
+
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:32]: pSucc: 0.701879620552063 codebook_size:4
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:32]: current codebook: [[0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [0.34375, -0.34375, -0.34375, 0.34375, 0.34375], [-0.34375, 0.34375, 0.34375, 0.34375, 0.34375], [-0.34375, -0.34375, -0.34375, 0.34375, 0.34375]]
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:32]: Optimizing for alpha: 0.34 
+codebook_size:4 plays:1 modes:5 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [10,15,30] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-03-11 08:54:32]: number of parameters: 30
+[CSD] 0.0.1|DEBUG|2022-03-11 08:54:44]: Learned parameters value at step 50: [0.026271306, 0.45142597, 0.79724056, -0.49221992, -0.0043921215, 0.5980185, 0.08361189, 0.17177525, -0.022961752, 0.7021222, -1.7194362, -0.14758709, -0.013811628, 0.29375586, 0.3732127, -0.13292557, -0.43272683, 0.30826676, -0.1624184, -0.13076948, 0.005696602, 0.20373988, 0.33585697, 0.14172083, 0.29333282, 0.742987, 0.8660079, -0.33276555, 0.7604582, -0.83580005]
+[CSD] 0.0.1|INFO|2022-03-11 08:54:44]: 
+
+---------------------------------------------------------------------
+  ALPHA:0.34 -> CODEBOOK[5/64] -> LEARNING_STEPS[50/100]: 
+
+  TOTAL computation time: 1 minute and 54 seconds
+  Current codebook iteration time: 12 seconds
+  Estimated codebook REMAINING time: 22 minutes and 27 seconds
+
+  TOTAL learning computation time: 12 seconds
+  Current learning block step iteration time: 0 seconds
+  Estimated learning REMAINING time: 12 seconds
+---------------------------------------------------------------------
+
+
