@@ -301,7 +301,7 @@ if __name__ == '__main__':
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [4]
+    list_number_input_modes = [2, 3, 4]
     list_squeezing = [False, True]
     one_ancilla = 0
     for number_input_modes in list_number_input_modes:
@@ -318,7 +318,7 @@ if __name__ == '__main__':
                                           extreme=30)
 
             number_ancillas = one_ancilla
-            batch_size = 1  # 2**number_input_modes
+            batch_size = 2**number_input_modes
             shots = 1
             plays = 1
             number_layers = 1
