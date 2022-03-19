@@ -30,11 +30,15 @@ class Optimize(ABC):
                                           params_name=params_name)
         # if self._opt_backend is Backends.TENSORFLOW and parallel_optimization is True:
         #     self._optimizer = ParallelTFOptimizer(nparams=nparams)
-        if (self._opt_backend is OptimizationBackends.SCIPY and
-                parallel_optimization is False):
+        if (
+            self._opt_backend is OptimizationBackends.SCIPY and
+            not parallel_optimization
+        ):
             self._optimizer = ScipyOptimizer(nparams=nparams)
-        if (self._opt_backend is OptimizationBackends.SCIPY and
-                parallel_optimization is True):
+        if (
+            self._opt_backend is OptimizationBackends.SCIPY and
+            parallel_optimization
+        ):
             self._optimizer = ParallelOptimizer(nparams=nparams)
 
     def optimize(self,

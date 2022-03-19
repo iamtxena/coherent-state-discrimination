@@ -90,19 +90,23 @@ if __name__ == '__main__':
     codebooks = CodeBooks.from_codewords_list(codewords_list=[all_codewords])
     input_batch = Batch(size=0, word_size=input_modes, all_words=False, input_batch=all_codewords)
 
-    one_binary_codeword = [0, 0]
+    one_binary_codeword = [0] * input_modes
     one_codeword = create_codeword_from_binary(binary_codeword=one_binary_codeword, one_alpha=one_alpha)
 
     cutoff_dim = CutOffDimensions(default=10,
                                   high=15,
                                   extreme=30)
     squeezing = False
-    optimized_parameters = [-0.008990095928311348,
-                            -1.7685526609420776,
-                            -0.00886836089193821,
-                            -0.008727652952075005,
-                            0.6994574666023254,
-                            0.7021579742431641]
+    # optimized_parameters = [-0.008990095928311348,
+    #                         -1.7685526609420776,
+    #                         -0.00886836089193821,
+    #                         -0.008727652952075005,
+    #                         0.6994574666023254,
+    #                         0.7021579742431641]
+    optimized_parameters = [0.6989617347717285, -0.4482949376106262, 0.5959842205047607, -0.0008065046276897192,
+                            0.007647479884326458,
+                            0.0014407442649826407, -0.0009840255370363593, 0.0004724813625216484,
+                            -0.0002699749602470547, 0.6797224283218384, 0.7170392274856567, 0.6569817662239075]
     # functions to execute
     execute_testing_circuit_one_codeword(alpha_value=one_alpha,
                                          number_modes=input_modes,

@@ -58,7 +58,7 @@ class GlobalResultManager(ABC):
                                              best_homodyne_probability=0.0,
                                              best_codebook=[],
                                              best_measurements=[],
-                                             best_optimized_parameters=[]).header())
+                                             best_optimized_parameters={}).header())
         return results_file
 
     def write_result(self, global_result: GlobalResult) -> None:
@@ -95,7 +95,7 @@ class GlobalResultManager(ABC):
                                          best_homodyne_probability=0.0,
                                          best_codebook=[],
                                          best_measurements=[],
-                                         best_optimized_parameters=[]).header())
+                                         best_optimized_parameters={}).header())
         return global_results_file
 
     def _transfer_alpha_results_to_global_file(self, global_results_file: str, alpha_file: str) -> None:

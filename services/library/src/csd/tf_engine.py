@@ -39,6 +39,10 @@ class TFEngine(Engine):
         result = self._run_tf_circuit(circuit=circuit, options=options)
         self._all_fock_probs = [result.state.all_fock_probs()] if self.only_one_codeword(
             input_batch=options['input_batch']) else result.state.all_fock_probs()
+        # for i in range(circuit.number_input_modes):
+        #     e, v = result.state.quad_expectation(mode=i)
+        #     print(f'Mode: {i}, Expectation: {e.numpy()}, Variance: {v.numpy()}')
+
         # logger.debug(f'all_fock_probs: {self._all_fock_probs}')
         # logger.debug(f'len all_fock_probs: {len(self._all_fock_probs)}')
 
@@ -189,10 +193,12 @@ class TFEngine(Engine):
         if self._engine.run_progs:
             self._engine.reset()
 
+        args = self._parse_tf_circuit_parameters(
+            circuit=circuit,
+            options=options)
+
         return self._engine.run(program=circuit.circuit,
-                                args=self._parse_tf_circuit_parameters(
-                                    circuit=circuit,
-                                    options=options),
+                                args=args,
                                 shots=options['shots'])
 
     def _parse_tf_circuit_parameters(self,
@@ -215,7 +221,7 @@ class TFEngine(Engine):
             logger.error(f"circuit.parameters.keys(): {circuit.parameters.keys()}")
             raise ValueError('length parameters.keys() differes from all_values')
 
-        return {name: value for (name, value) in zip(circuit.parameters.keys(), all_values)}
+        return dict(zip(circuit.parameters.keys(), all_values))
 
     def only_one_codeword(self, input_batch: Batch) -> bool:
         return len(input_batch.codewords) == 1

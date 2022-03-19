@@ -1,4 +1,4 @@
-from typing import NamedTuple, TypedDict, Union, List
+from typing import Dict, NamedTuple, TypedDict, Union, List
 import enum
 import numpy as np
 from nptyping import NDArray
@@ -105,7 +105,7 @@ class RunConfiguration(TypedDict, total=False):
 
 
 class OneProcessResultExecution(TypedDict):
-    opt_params: List[Union[List[float], EagerTensor]]
+    opt_params: List[Dict[str, Union[List[float], EagerTensor]]]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]
     p_helstrom: List[float]
@@ -115,7 +115,7 @@ class OneProcessResultExecution(TypedDict):
 class ResultExecution(TypedDict):
     alphas: List[float]
     batches: List[List[CodeWord]]
-    opt_params: List[Union[List[float], EagerTensor]]
+    opt_params: List[Dict[str, Union[List[float], EagerTensor]]]
     p_err: List[Union[float, EagerTensor]]
     p_succ: List[Union[float, EagerTensor]]
     result_backend: str

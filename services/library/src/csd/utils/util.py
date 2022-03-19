@@ -1,7 +1,8 @@
 from functools import wraps
 from time import time
-from typing import List, NamedTuple, Optional, Tuple
+from typing import Dict, List, NamedTuple, Optional, Tuple, Union
 
+from tensorflow.python.framework.ops import EagerTensor
 from csd.codeword import CodeWord
 from csd.config import logger
 import numpy as np
@@ -305,3 +306,11 @@ def filter_number_modes_from_codebook(codebook: List[CodeWord]) -> int:
     one_constant_modes = summed_codes.count(number_codebooks)
 
     return orig_number_modes - zero_constant_modes - one_constant_modes
+
+
+def create_optimized_parameters_to_print(
+        modes: int,
+        optimized_parameters: List[float],
+        circuit_parameters: List[str]) -> Dict[str, Union[List[float], EagerTensor]]:
+
+    return dict(zip(circuit_parameters[modes:], optimized_parameters))

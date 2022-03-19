@@ -32,7 +32,11 @@ from tensorflow.python.framework.ops import EagerTensor
 from csd.optimize import Optimize
 from csd.plot import Plot
 from csd.typings.cost_function import CostFunctionOptions
-from csd.utils.util import CodeBookLogInformation, print_codebook_log, timing, save_object_to_disk
+from csd.utils.util import (CodeBookLogInformation,
+                            create_optimized_parameters_to_print,
+                            print_codebook_log,
+                            timing,
+                            save_object_to_disk)
 from csd.batch import Batch
 from .cost_function import CostFunction
 
@@ -575,6 +579,11 @@ class CSD(ABC):
             raise ValueError("Circuit must be initialized")
         circuit = self._training_circuit if self._training_circuit is not None else self._testing_circuit
 
+        optimized_parameters = create_optimized_parameters_to_print(
+            modes=circuit.number_input_modes,
+            optimized_parameters=best_codebook.parsed_optimized_parameters,
+            circuit_parameters=list(circuit.parameters.keys()))
+
         GlobalResultManager(testing=testing).write_result(
             GlobalResult(alpha=alpha,
                          success_probability=success_probability,
@@ -589,7 +598,7 @@ class CSD(ABC):
                          best_homodyne_probability=best_codebook.homodyne_probability,
                          best_codebook=best_codebook.binary_codebook,
                          best_measurements=best_codebook.binary_measurements,
-                         best_optimized_parameters=best_codebook.parsed_optimized_parameters))
+                         best_optimized_parameters=optimized_parameters))
         if testing:
             directory_name = (f"./circuit_tex/alpha_{np.round(alpha, 2)}"
                               f"_modes_{ circuit.number_input_modes}"
@@ -668,12 +677,18 @@ class CSD(ABC):
                        helstrom_probability: float,
                        homodyne_probability: float,
                        number_mode: int):
+        if self._training_circuit is None and self._testing_circuit is None:
+            raise ValueError("Circuit must be initialized")
+        circuit = self._training_circuit if self._training_circuit is not None else self._testing_circuit
         # logger.debug(f'Tested for alpha: {np.round(self._alpha_value, 2)}'
         #              f' parameters: {one_alpha_optimization_result.optimized_parameters}'
         #              f' p_succ: {one_alpha_success_probability.numpy()}')
         result['alphas'].append(np.round(self._alpha_value, 2))
         # result['batches'].append([])  # self._current_batch.codewords if self._current_batch is not None else [])
-        result['opt_params'].append(list(one_alpha_optimization_result.optimized_parameters))
+        result['opt_params'].append(create_optimized_parameters_to_print(
+            modes=number_mode,
+            optimized_parameters=one_alpha_optimization_result.optimized_parameters,
+            circuit_parameters=list(circuit.parameters.keys())))
         result['p_err'].append(one_alpha_optimization_result.error_probability)
         result['p_succ'].append(one_alpha_success_probability)
         result['p_helstrom'].append(helstrom_probability)
@@ -685,7 +700,7 @@ class CSD(ABC):
             raise ValueError("Circuit must be initialized")
         circuit = self._training_circuit if self._training_circuit is not None else self._testing_circuit
 
-        result: ResultExecution = {
+        return {
             'alphas': [],
             'batches': [],
             'opt_params': [],
@@ -693,21 +708,23 @@ class CSD(ABC):
             'p_succ': [],
             'result_backend': self._run_configuration['run_backend'].value,
             'measuring_type': self._run_configuration['measuring_type'].value,
-            'plot_label': self._set_plot_label(plot_label_backend=self._run_configuration['run_backend'],
-                                               measuring_type=self._run_configuration['measuring_type']),
-            'plot_title': self._set_plot_title(batch_size=self._batch_size,
-                                               plays=self._plays,
-                                               modes=circuit.number_input_modes,
-                                               layers=self._architecture['number_layers'],
-                                               squeezing=self._architecture['squeezing'],
-                                               ancillas=circuit.number_ancillas,),
+            'plot_label': self._set_plot_label(
+                plot_label_backend=self._run_configuration['run_backend'],
+                measuring_type=self._run_configuration['measuring_type'],
+            ),
+            'plot_title': self._set_plot_title(
+                batch_size=self._batch_size,
+                plays=self._plays,
+                modes=circuit.number_input_modes,
+                layers=self._architecture['number_layers'],
+                squeezing=self._architecture['squeezing'],
+                ancillas=circuit.number_ancillas,
+            ),
             'total_time': 0.0,
             'p_helstrom': [],
             'p_homodyne': [],
-            'number_modes': []
+            'number_modes': [],
         }
-
-        return result
 
     def _create_engine(self) -> Union[Engine, TFEngine]:
         if self._run_configuration is None:
@@ -784,7 +801,7 @@ class CSD(ABC):
                 f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim}, \n"
                 f"layers,{layers}, squeezing:{squeezing}")
 
-    @timing
+    @ timing
     def execute_all_backends_and_measuring_types(
             self,
             backends: List[Backends] = [Backends.FOCK,
