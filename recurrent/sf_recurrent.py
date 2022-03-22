@@ -119,17 +119,15 @@ def evaluate(step, model, q_box):
     codewords = list(product([-1, +1], repeat=config.NUM_MODES))
     # logger.debug(codewords)
 
-    n_correct = 0
+    p_correct = 0.0
     total = 0
 
     for codeword in codewords:
-        previous_predictions = np.random.normal(size=config.NUM_MODES)
-        layer_number = 0
-        probability_of_prediction = 0.0
-
-        stack = [(layer_number, previous_predictions, probability_of_prediction)]
+        # logger.debug(f"{codeword = }")
+        stack = [(0, np.random.normal(size=config.NUM_MODES), 1.0)]
 
         while stack:
+            # logger.debug(f"{stack = }")
             layer_number, previous_predictions, probability_of_prediction = stack.pop()
 
             one_hot_layer_vector = np.zeros(config.NUM_LAYERS)
@@ -140,6 +138,8 @@ def evaluate(step, model, q_box):
 
             predicted_displacements = model(input_vector)
 
+            # logger.debug(f"{predicted_displacements = }")
+
             q_result = q_box(
                 layer_number,
                 codeword,
@@ -149,34 +149,36 @@ def evaluate(step, model, q_box):
             measurement_matrices = generate_measurement_matrices(config.NUM_MODES, config.CUTOFF_DIM)
 
             success_probs = [np.sum(np.multiply(mm, all_fock_probs)) for mm in measurement_matrices]
+            # logger.debug(f"{success_probs = }")
 
             for ip, p in enumerate(success_probs):
-                if p > 0:
-                    if layer_number < config.NUM_LAYERS - 1:
-                        stack.append((layer_number + 1, codewords[ip], p * probability_of_prediction))
-                    elif layer_number == config.NUM_LAYERS - 1:
-                        if codewords[ip] == codeword:
-                            n_correct += 1
+                if layer_number < config.NUM_LAYERS - 1:
+                    stack.append((layer_number + 1, codewords[ip], p * probability_of_prediction))
 
-                        total += 1
+                if layer_number == config.NUM_LAYERS - 1:
+                    if codewords[ip] == codeword:
+                        p_correct += probability_of_prediction
 
-    wandb.log({"average_accuracy": n_correct / total, "eval_step": step})
-    logger.info(f"Accuracy: {n_correct/total:.4f}.")
+                    total += 1
+
+
+    wandb.log({"average_accuracy": p_correct / total, "eval_step": step})
+    logger.info(f"Accuracy: {p_correct/total:.4f}.")
 
 
 
 if __name__ == '__main__':
-    # Number of layers of the Dolinar receiver.
+    # Number of layers of the Dolinar receiver. Default is 2.
     NUM_LAYERS = 2
 
-    # Number of quantum modes.
+    # Number of quantum modes. Default is 2.
     NUM_MODES = 2
 
-    # Number of variables being optimized per mode.
+    # Number of variables being optimized per mode. Default is 1.
     NUM_VARIABLES = 1
 
     # Signal amplitude. Default is 1.0.
-    SIGNAL_AMPLITUDE = 1.0
+    SIGNAL_AMPLITUDE = 0.2
 
     # Initialize wandb logging.
     wandb.init(
@@ -192,11 +194,10 @@ if __name__ == '__main__':
             "INPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES + NUM_LAYERS,
             "OUTPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES,
 
-            "NUM_REPEAT": 25,
-            "NUM_TRAINING_ITERATIONS": 50,
-            "MAX_ITERATIONS": 100,
+            "NUM_REPEAT": 5,
+            "NUM_TRAINING_ITERATIONS": 1000,
 
-            "VERSION": "v1"
+            "VERSION": "v2"
         }
     )
     wandb.run.name = f"l{NUM_LAYERS}_m{NUM_MODES}_a{SIGNAL_AMPLITUDE}"
@@ -217,7 +218,7 @@ if __name__ == '__main__':
     q_box = QuantumBox(config)
     logger.info("Done.")
 
-    wandb.log({"average_accuracy": 0.0})
+    wandb.log({"average_accuracy": 0.0, "eval_step": 0})
 
     # Training loop (with evaluation).
     logger.info("Begin training.")
@@ -227,7 +228,7 @@ if __name__ == '__main__':
         train(model, q_box)
 
         # Evaluate.
-        evaluate(step, model, q_box)
+        evaluate(step + 1, model, q_box)
 
     end = time.time()
     elapsed = (end - start)
