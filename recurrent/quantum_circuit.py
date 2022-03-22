@@ -20,7 +20,7 @@ class QuantumBox:
                                     "cutoff_dim": self.CUTOFF_DIM
                                 })
 
-    def __call__(self, layer, input_codeword, displacement_magnitudes_for_each_mode):
+    def __call__(self, layer, input_codeword, displacement_magnitudes_for_each_mode, evaluate=False):
         # Reset engine if a program has been executed.
         if self.engine.run_progs:
             self.engine.reset()
@@ -40,7 +40,6 @@ class QuantumBox:
             params[f"displacement_magnitudes_for_each_mode_arg_{nth_mode}"] =  program.params(f"displacement_magnitudes_for_each_mode_arg_{nth_mode}")
             mapping[f"displacement_magnitudes_for_each_mode_arg_{nth_mode}"] = displacement_magnitudes_for_each_mode[nth_mode]
 
-        # TODO: Use a different quantum circuit.
         with program.context as q:
             # Prepare the coherent states for the layer. Appropriately scales
             # the amplitudes for each of the layers.
@@ -52,7 +51,9 @@ class QuantumBox:
             for m in range(self.NUM_MODES):
                 sf.ops.Dgate(params[f"displacement_magnitudes_for_each_mode_arg_{m}"]) | q[m]
 
-            # Perform measurements.
-            sf.ops.MeasureFock() | q
+            # Only MeasureFock for training, evaluate uses `all_fock_probs`.
+            if not evaluate:
+                # Perform measurements.
+                sf.ops.MeasureFock() | q
 
         return self.engine.run(program, args=mapping)
