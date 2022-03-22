@@ -1,14 +1,15 @@
 import time
+from itertools import product
 
 import numpy as np
 from loguru import logger
 from scipy.optimize import minimize
-# from optimparallel import minimize_parallel as minimize
 from tqdm import tqdm
 import wandb
 
 from model_wrapper import LinearRegressionWrapper
 from quantum_circuit import QuantumBox
+from util import generate_measurement_matrices
 
 
 def generate_random_codeword(NUM_MODES):
@@ -75,7 +76,7 @@ def train(model, q_box):
     # logger.debug(f"{input_codeword = }")
 
     for _ in range(config.NUM_REPEAT):
-        previous_prediction = np.random.normal(size=config.NUM_MODES * config.NUM_VARIABLES)
+        previous_prediction = np.random.normal(size=config.NUM_MODES)
 
         for nth_layer in range(config.NUM_LAYERS):
             # logger.debug(f"Optimising for layer {nth_layer + 1} of {NUM_LAYERS}")
@@ -115,51 +116,49 @@ def train(model, q_box):
             previous_prediction = measurement_of_nth_layer.samples[0]
 
 def evaluate(step, model, q_box):
-    codewords = []
-    for i in range(2 ** config.NUM_MODES):
-        string_in_binary = bin(i)[2:]
-        pad_length = config.NUM_MODES - len(string_in_binary)
-
-        padded_string_in_binary = "0" * pad_length + string_in_binary
-        codeword = np.array(list(map(int, padded_string_in_binary)))
-        codeword = codeword * 2 - 1
-
-        codewords.append(codeword)
+    codewords = list(product([-1, +1], repeat=config.NUM_MODES))
     # logger.debug(codewords)
 
     n_correct = 0
     total = 0
 
-    for _ in range(config.NUM_REPEAT):
-        for codeword in codewords:
-            t_previous_predictions = np.random.normal(size=config.NUM_MODES * config.NUM_VARIABLES)
+    for codeword in codewords:
+        previous_predictions = np.random.normal(size=config.NUM_MODES)
+        layer_number = 0
+        probability_of_prediction = 0.0
 
-            for nth_layer in range(config.NUM_LAYERS):
-                one_hot_layer_vector = np.zeros(config.NUM_LAYERS)
-                one_hot_layer_vector[nth_layer] = 1
+        stack = [(layer_number, previous_predictions, probability_of_prediction)]
 
-                input_vector = np.concatenate([t_previous_predictions, one_hot_layer_vector])
-                input_vector = np.expand_dims(input_vector, 0)
+        while stack:
+            layer_number, previous_predictions, probability_of_prediction = stack.pop()
 
-                predicted_displacements = model(input_vector)
+            one_hot_layer_vector = np.zeros(config.NUM_LAYERS)
+            one_hot_layer_vector[layer_number] = 1
 
-                measurement_of_nth_layer = q_box(
-                    nth_layer,
-                    codeword,
-                    2 * config.SIGNAL_AMPLITUDE * predicted_displacements)
+            input_vector = np.concatenate([previous_predictions, one_hot_layer_vector])
+            input_vector = np.expand_dims(input_vector, 0)
 
-                prediction = measurement_of_nth_layer.samples[0]
-                t_previous_predictions = prediction
+            predicted_displacements = model(input_vector)
 
-            prediction_of_final_layer = t_previous_predictions
+            q_result = q_box(
+                layer_number,
+                codeword,
+                2 * config.SIGNAL_AMPLITUDE * predicted_displacements)
 
-            all_modes_correct = True
-            for i in range(codeword.shape[0]):
-                if codeword[i] * prediction_of_final_layer[i] > 0:
-                    all_modes_correct = False
+            all_fock_probs = q_result.state.all_fock_probs()
+            measurement_matrices = generate_measurement_matrices(config.NUM_MODES, config.CUTOFF_DIM)
 
-            n_correct = n_correct + 1 if all_modes_correct else 0
-            total += 1
+            success_probs = [np.sum(np.multiply(mm, all_fock_probs)) for mm in measurement_matrices]
+
+            for ip, p in enumerate(success_probs):
+                if p > 0:
+                    if layer_number < config.NUM_LAYERS - 1:
+                        stack.append((layer_number + 1, codewords[ip], p * probability_of_prediction))
+                    elif layer_number == config.NUM_LAYERS - 1:
+                        if codewords[ip] == codeword:
+                            n_correct += 1
+
+                        total += 1
 
     wandb.log({"average_accuracy": n_correct / total, "eval_step": step})
     logger.info(f"Accuracy: {n_correct/total:.4f}.")
@@ -167,15 +166,17 @@ def evaluate(step, model, q_box):
 
 
 if __name__ == '__main__':
-    # Number of layers of the Dolinar receiver. Selecting 4 as the most basic,
-    # non-trivial case.
-    NUM_LAYERS = 2 # 1,2,3
+    # Number of layers of the Dolinar receiver.
+    NUM_LAYERS = 2
 
-    # Number of quantum modes. Basic 2-mode case.
+    # Number of quantum modes.
     NUM_MODES = 2
 
     # Number of variables being optimized per mode.
     NUM_VARIABLES = 1
+
+    # Signal amplitude. Default is 1.0.
+    SIGNAL_AMPLITUDE = 1.0
 
     # Initialize wandb logging.
     wandb.init(
@@ -186,7 +187,7 @@ if __name__ == '__main__':
             "NUM_MODES": NUM_MODES,
             "NUM_LAYERS": NUM_LAYERS,
             "NUM_VARIABLES": NUM_VARIABLES,
-            "SIGNAL_AMPLITUDE": 0.2, # Signal amplitude. Default is 1.0.
+            "SIGNAL_AMPLITUDE": SIGNAL_AMPLITUDE,
 
             "INPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES + NUM_LAYERS,
             "OUTPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES,
@@ -194,8 +195,11 @@ if __name__ == '__main__':
             "NUM_REPEAT": 25,
             "NUM_TRAINING_ITERATIONS": 50,
             "MAX_ITERATIONS": 100,
+
+            "VERSION": "v1"
         }
     )
+    wandb.run.name = f"l{NUM_LAYERS}_m{NUM_MODES}_a{SIGNAL_AMPLITUDE}"
 
     config = wandb.config
 
