@@ -138,7 +138,7 @@ def evaluate(step, model, q_box):
 
             predicted_displacements = model(input_vector)
 
-            # logger.debug(f"{predicted_displacements = }")
+            logger.debug(f"{predicted_displacements = }")
 
             q_result = q_box(
                 layer_number,
@@ -156,7 +156,7 @@ def evaluate(step, model, q_box):
                     stack.append((layer_number + 1, codewords[ip], p * probability_of_prediction))
 
                 if layer_number == config.NUM_LAYERS - 1:
-                    if codewords[ip] == codeword:
+                    if np.sum(np.array(codewords[ip]) + np.array(codeword)) == 0:
                         p_correct += probability_of_prediction
 
                     total += 1
@@ -194,7 +194,7 @@ if __name__ == '__main__':
             "INPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES + NUM_LAYERS,
             "OUTPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES,
 
-            "NUM_REPEAT": 5,
+            "NUM_REPEAT": 50,
             "NUM_TRAINING_ITERATIONS": 1000,
 
             "VERSION": "v2"
