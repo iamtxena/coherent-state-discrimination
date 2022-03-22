@@ -21,8 +21,8 @@ class LinearRegressionWrapper(_ModelWrapper):
 
         # This call to fit is required to initialize the weights of the model.
         # We optimize these weights later using scipy.
-        dummy_X = np.zeros((1, self.input_size))
-        dummy_y = np.zeros((1, self.output_size))
+        dummy_X = np.random.rand(1, self.input_size)
+        dummy_y = np.random.rand(1, self.output_size)
 
         # logger.debug(f"{dummy_X.shape = }")
         # logger.debug(f"{dummy_y.shape = }")
