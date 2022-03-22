@@ -58,7 +58,7 @@ def generate_measurement_matrices(num_modes: int, cutoff_dimension: int):
     # https://strawberryfields.readthedocs.io/en/stable/code/api/strawberryfields.backends.BaseFockState.html?highlight=all_fock#strawberryfields.backends.BaseFockState.all_fock_probs
     matrix_shape = [cutoff_dimension] * num_modes
     zeros_matrix = np.zeros(matrix_shape)
-    possible_outcomes = [*product([0, 1], repeat=num_modes)]
+    possible_outcomes = list(product([0, 1], repeat=num_modes))
 
     return [generate_measurement_matrix_one_outcome(
                 outcome=outcome,
