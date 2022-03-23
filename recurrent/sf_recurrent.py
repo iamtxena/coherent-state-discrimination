@@ -18,6 +18,11 @@ def generate_random_codeword(NUM_MODES):
     """
     return np.random.choice([-1, +1], size=NUM_MODES)
 
+def generate_training_batch(NUM_MODES):
+    """
+    Generates a batch of training data containing all possible codewords.
+    """
+    return np.array(list(product([-1, +1], repeat=NUM_MODES)))
 
 def loss_metric(prediction, target, NUM_MODES):
     """
@@ -25,33 +30,33 @@ def loss_metric(prediction, target, NUM_MODES):
     `target`.
     Both `prediction` and `target` are tensors.
     """
-    true_values = np.ones((NUM_MODES))
-    false_values = np.zeros((NUM_MODES))
+    ones = np.ones((NUM_MODES))
+    zeros = np.zeros((NUM_MODES))
 
-    indices_where_input_codeword_was_minus = np.where(target == -1, true_values, false_values)
-    indices_where_no_photon_is_observed = np.where(prediction == 0, true_values, false_values)
+    indices_where_input_codeword_was_minus = np.where(target == -1, ones, zeros)
+    indices_where_no_photon_is_observed = np.where(prediction == 0, ones, zeros)
 
-    indices_where_input_codeword_was_plus = np.where(target == +1, true_values, false_values)
-    indices_where_at_least_one_photon_is_observed = np.where(prediction > 0, true_values, false_values)
+    indices_where_input_codeword_was_plus = np.where(target == +1, ones, zeros)
+    indices_where_at_least_one_photon_is_observed = np.where(prediction > 0, ones, zeros)
 
-    combined_indices_1 = np.logical_and(
+    input_minus_and_output_minus = np.logical_and(
         indices_where_input_codeword_was_minus,
         indices_where_no_photon_is_observed
     )
 
-    combined_indices_2 = np.logical_and(
+    input_plus_and_output_plus = np.logical_and(
         indices_where_input_codeword_was_plus,
         indices_where_at_least_one_photon_is_observed
     )
 
-    combined_indices = np.logical_or(combined_indices_1, combined_indices_2)
-    sum_of_combined_indices = np.sum(np.sum(combined_indices))
+    any_error = np.logical_or(input_minus_and_output_minus, input_plus_and_output_plus)
+    sum_of_combined_indices = np.sum(any_error)
 
     return sum_of_combined_indices / NUM_MODES
 
 def training_error(weights, target, input_vector, layer_number, model, q_box, NUM_MODES):
     model.set_learnable_parameteres_from_flattended_list(weights)
-    predicted_displacements = model(input_vector)
+    predicted_displacements = model(np.expand_dims(input_vector, axis=0))
 
     measurement_of_nth_layer = q_box(
         layer_number,
@@ -59,24 +64,37 @@ def training_error(weights, target, input_vector, layer_number, model, q_box, NU
         2 * q_box.SIGNAL_AMPLITUDE * predicted_displacements)
 
     prediction = measurement_of_nth_layer.samples[0]
-    # logger.debug(f"{prediction = }, {target = }")
-
     error = loss_metric(prediction, target, NUM_MODES)
 
-    wandb.log({"error": error})
+    # logger.debug(f"q::{prediction = }, c::{target = }, {error = }")
 
     return error
 
-def train(model, q_box):
+def batched_training_error(weights, targets, input_vectors, layer_number, model, q_box, NUM_MODES):
+    accumulated_error = 0.0
+    batch_size = len(targets)
+
+    for i in range(batch_size):
+        accumulated_error += training_error(weights, targets[i], input_vectors[i], layer_number, model, q_box, NUM_MODES)
+
+    batch_error = accumulated_error / batch_size
+
+    wandb.log({"error": batch_error})
+
+    return batch_error
+
+def train(model, q_box, config):
     """
     Runs a single step of optimization for a single value of alpha across all
     layers of the Dolinar receiver.
     """
-    input_codeword = generate_random_codeword(config.NUM_MODES)
-    # logger.debug(f"{input_codeword = }")
+    input_codewords_batch = generate_training_batch(config.NUM_MODES)
+    batch_size = len(input_codewords_batch)
+
+    # logger.debug(f"before iteration:: {model.get_learnable_parameters_as_flattened_list() = }")
 
     for _ in range(config.NUM_REPEAT):
-        previous_prediction = np.random.normal(size=config.NUM_MODES)
+        previous_prediction = np.random.normal(size=(batch_size, config.NUM_MODES))
 
         for nth_layer in range(config.NUM_LAYERS):
             # logger.debug(f"Optimising for layer {nth_layer + 1} of {NUM_LAYERS}")
@@ -84,36 +102,50 @@ def train(model, q_box):
             one_hot_layer_vector = np.zeros(config.NUM_LAYERS)
             one_hot_layer_vector[nth_layer] = 1
 
-            input_vector = np.concatenate([previous_prediction, one_hot_layer_vector])
-            input_vector = np.expand_dims(input_vector, 0)
-
-            # TODO: Use weights to compute previous_prediction for layer 1...n-1 for layer n.
+            one_hot_layer_vectors = np.repeat([one_hot_layer_vector], batch_size, axis=0)
+            input_vectors = np.concatenate([previous_prediction, one_hot_layer_vectors], axis=1)
 
             modes = config.NUM_MODES
 
             result = minimize(
-                fun=training_error,
+                fun=batched_training_error,
                 x0=model.get_learnable_parameters_as_flattened_list(),
                 args=(
-                    input_codeword,
-                    input_vector,
+                    input_codewords_batch,
+                    input_vectors,
                     nth_layer,
                     model,
                     q_box,
                     modes
-                )
+                ),
+                method="BFGS"
             )
 
-            model.set_learnable_parameteres_from_flattended_list(result.x)
+            # Update parameters so that previous parameters are not overwritten.
+            prev_params = model.get_learnable_parameters_as_flattened_list()
+            current_params = result.x
+            new_params = prev_params + config.STEP_SIZE * (current_params - prev_params)
 
-            predicted_displacements = model(input_vector)
+            model.set_learnable_parameteres_from_flattended_list(new_params)
 
-            measurement_of_nth_layer = q_box(
-                nth_layer,
-                input_codeword,
-                2 * config.SIGNAL_AMPLITUDE * predicted_displacements)
+            predictions = []
 
-            previous_prediction = measurement_of_nth_layer.samples[0]
+            for i in range(batch_size):
+                input_vector = input_vectors[i]
+                predicted_displacements = model(np.expand_dims(input_vector, axis=0))
+
+                measurement_of_nth_layer = q_box(
+                    nth_layer,
+                    input_codewords_batch[i],
+                    2 * q_box.SIGNAL_AMPLITUDE * predicted_displacements)
+
+                prediction = measurement_of_nth_layer.samples[0]
+                predictions.append(prediction)
+
+            previous_prediction = np.array(predictions)
+
+    # logger.debug(f"after iteration:: {model.get_learnable_parameters_as_flattened_list() = }")
+
 
 def evaluate(step, model, q_box):
     codewords = list(product([-1, +1], repeat=config.NUM_MODES))
@@ -138,7 +170,7 @@ def evaluate(step, model, q_box):
 
             predicted_displacements = model(input_vector)
 
-            logger.debug(f"{predicted_displacements = }")
+            # logger.debug(f"{predicted_displacements = }")
 
             q_result = q_box(
                 layer_number,
@@ -186,6 +218,8 @@ if __name__ == '__main__':
         config={
             "CUTOFF_DIM": 8,
 
+            "STEP_SIZE": 0.3,
+
             "NUM_MODES": NUM_MODES,
             "NUM_LAYERS": NUM_LAYERS,
             "NUM_VARIABLES": NUM_VARIABLES,
@@ -194,10 +228,10 @@ if __name__ == '__main__':
             "INPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES + NUM_LAYERS,
             "OUTPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES,
 
-            "NUM_REPEAT": 50,
-            "NUM_TRAINING_ITERATIONS": 1000,
+            "NUM_REPEAT": 5,
+            "NUM_TRAINING_ITERATIONS": 100,
 
-            "VERSION": "v2"
+            "VERSION": "v3"
         }
     )
     wandb.run.name = f"l{NUM_LAYERS}_m{NUM_MODES}_a{SIGNAL_AMPLITUDE}"
@@ -225,7 +259,7 @@ if __name__ == '__main__':
     start = time.time()
 
     for step in tqdm(range(config.NUM_TRAINING_ITERATIONS)):
-        train(model, q_box)
+        train(model, q_box, config)
 
         # Evaluate.
         evaluate(step + 1, model, q_box)
