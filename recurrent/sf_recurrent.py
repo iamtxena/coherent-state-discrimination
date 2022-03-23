@@ -22,7 +22,10 @@ def generate_training_batch(NUM_MODES):
     """
     Generates a batch of training data containing all possible codewords.
     """
-    return np.random.shuffle(np.array(list(product([-1, +1], repeat=NUM_MODES))))
+    batch = np.array(list(product([-1, +1], repeat=NUM_MODES)))
+    np.random.shuffle(batch)
+
+    return  batch
 
 def loss_metric(prediction, target, NUM_MODES):
     """
