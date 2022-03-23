@@ -19,10 +19,10 @@ class LinearRegressionWrapper(_ModelWrapper):
 
         # y = W * x + b
 
-        # This call to fit is required to initialize the weights of the model.
+        # This call to fit is required to "initialize" the weights of the model.
         # We optimize these weights later using scipy.
-        dummy_X = np.random.rand(1, self.input_size)
-        dummy_y = np.random.rand(1, self.output_size)
+        dummy_X = np.zeros((1, self.input_size))
+        dummy_y = np.zeros((1, self.output_size))
 
         # logger.debug(f"{dummy_X.shape = }")
         # logger.debug(f"{dummy_y.shape = }")
@@ -30,6 +30,12 @@ class LinearRegressionWrapper(_ModelWrapper):
         self.model.fit(dummy_X, dummy_y)
 
         self.serialized_length = self.input_size * self.output_size + self.output_size
+
+        self.__actually_init_model_weights()
+
+    def __actually_init_model_weights(self):
+        self.model.coef_ = np.random.normal(size=self.model.coef_.shape)
+        self.model.intercept_ = np.random.normal(size=self.model.intercept_.shape)
 
     def get_learnable_parameters_as_flattened_list(self):
         learnable_weights = np.array([])
