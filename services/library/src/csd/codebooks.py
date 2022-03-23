@@ -12,34 +12,43 @@ from csd.codeword import CodeWord
 from .batch import Batch
 from csd.config import logger
 
-DEFAULT_MAX_COMBINATIONS = 120
-
 
 @dataclass
-class CodeBooks():
+class CodeBooks:
     """Class for managing the codebooks from a given batch."""
 
-    def __init__(self,
-                 batch: Batch,
-                 max_combinations: int = DEFAULT_MAX_COMBINATIONS,
-                 codewords_list: Union[List[List[CodeWord]], None] = None):
-        if codewords_list is None:
-            self._max_combinations = max_combinations
-            self._codebook_maximum_size = self._compute_codebook_maximum_size(batch=batch)
+    def __init__(
+        self,
+        batch: Batch,
+        max_combinations: int = 0,
+        codewords_list: Union[List[List[CodeWord]], None] = None,
+    ):
+        # to use fully random codebooks, max_combinations must be set
+        use_linear_codes = max_combinations == 0
+        self._max_combinations = max_combinations
+        self._codebook_maximum_size = self._compute_codebook_maximum_size(batch=batch)
+
+        if codewords_list is None and use_linear_codes:
             self._information_bits = self._compute_maximum_information_bits(batch=batch)
-            self._codebooks = self._generate_all_codebooks_with_linear_codes(batch=batch,
-                                                                             information_bits=self._information_bits)
-            # self._codebooks: List[List[CodeWord]] = list(self._generate_all_random_codebooks_with_specific_size(
-            #    batch=batch, codebook_maximum_size=self._codebook_maximum_size))
+            self._codebooks = self._generate_all_codebooks_with_linear_codes(
+                batch=batch, information_bits=self._information_bits
+            )
+        if codewords_list is None and not use_linear_codes:
+            self._codebooks = list(
+                self._generate_all_random_codebooks_with_specific_size(
+                    batch=batch, codebook_maximum_size=self._codebook_maximum_size
+                )
+            )
             self._alpha_value = batch.alpha
-        else:
+        if codewords_list is not None:
             self._codebooks = codewords_list
             self._alpha_value = codewords_list[0][0].alpha
 
     @staticmethod
     def from_codewords_list(codewords_list: List[List[CodeWord]]):
-        return CodeBooks(batch=Batch(size=len(codewords_list[0]), word_size=codewords_list[0][0].size),
-                         codewords_list=codewords_list)
+        return CodeBooks(
+            batch=Batch(size=len(codewords_list[0]), word_size=codewords_list[0][0].size), codewords_list=codewords_list
+        )
 
     @property
     def codebooks(self) -> List[List[CodeWord]]:
@@ -72,9 +81,9 @@ class CodeBooks():
         channel_max_communication_rate = self._compute_channel_max_communication_rate(alpha=batch.alpha)
         return math.floor(batch.one_codeword.size * channel_max_communication_rate)
 
-    def _generate_all_random_codebooks_with_specific_size(self,
-                                                          batch: Batch,
-                                                          codebook_maximum_size: int) -> List[List[CodeWord]]:
+    def _generate_all_random_codebooks_with_specific_size(
+        self, batch: Batch, codebook_maximum_size: int
+    ) -> List[List[CodeWord]]:
         if codebook_maximum_size > batch.size:
             raise ValueError("codebook size must be smaller than batch size")
         if codebook_maximum_size == batch.size:
@@ -82,26 +91,26 @@ class CodeBooks():
 
         total_combinations = self._compute_all_combinations(batch=batch, codebook_maximum_size=codebook_maximum_size)
 
-        logger.debug(f'Total combinations: {total_combinations} and max combinations: {self._max_combinations}')
+        logger.debug(f"Total combinations: {total_combinations} and max combinations: {self._max_combinations}")
         if total_combinations <= self._max_combinations:
             all_combinations = itertools.combinations(batch.codewords, codebook_maximum_size)
             return [list(codewords) for codewords in all_combinations]
 
-        return [random.choices(batch.codewords, k=codebook_maximum_size) for _ in range(0, self._max_combinations)]
+        return [random.choices(batch.codewords, k=codebook_maximum_size) for _ in range(self._max_combinations)]
 
     def _compute_all_combinations(self, batch: Batch, codebook_maximum_size: int) -> int:
-        return int(math.factorial(batch.size) /
-                   (math.factorial(batch.size - codebook_maximum_size) * math.factorial(codebook_maximum_size)))
+        return int(
+            math.factorial(batch.size)
+            / (math.factorial(batch.size - codebook_maximum_size) * math.factorial(codebook_maximum_size))
+        )
 
-    def _generate_all_codebooks_with_linear_codes(self,
-                                                  batch: Batch,
-                                                  information_bits: int) -> List[List[CodeWord]]:
+    def _generate_all_codebooks_with_linear_codes(self, batch: Batch, information_bits: int) -> List[List[CodeWord]]:
 
         rows = k = information_bits
         n = batch.one_codeword.size
         columns = n - k
         if not information_bits > 0:
-            logger.warning(f'information bits are less than 1. value={information_bits}')
+            logger.warning(f"information bits are less than 1. value={information_bits}")
             return []
         options = [0, 1]
 

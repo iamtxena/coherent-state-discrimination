@@ -56,10 +56,9 @@ class CSD(ABC):
     DEFAULT_ALPHA = 0.7
     DEFAULT_BATCH_SIZE = 1
     DEFAULT_WORD_SIZE = 10
-    DEFAULT_LEARNING_STEPS = LearningSteps(default=300, high=500, extreme=2000)
+    DEFAULT_LEARNING_STEPS = LearningSteps(default=150, high=300, extreme=500)
     DEFAULT_LEARNING_RATE = LearningRate(default=0.01, high=0.001, extreme=0.001)
     DEFAULT_PLAYS = 1
-    DEFAULT_MAX_COMBINATIONS = 120
 
     def __init__(self, csd_config: Union[CSDConfiguration, None] = None):
         self._set_default_values()
@@ -84,7 +83,7 @@ class CSD(ABC):
         self._save_plots = csd_config.get("save_plots", False)
         self._architecture = self._set_architecture(csd_config.get("architecture")).copy()
         self._parallel_optimization = csd_config.get("parallel_optimization", False)
-        self._max_combinations = csd_config.get("max_combinations", self.DEFAULT_MAX_COMBINATIONS)
+        self._max_combinations = csd_config.get("max_combinations", 0)
 
     def _set_default_values(self):
         self._alphas: List[float] = []
@@ -97,7 +96,7 @@ class CSD(ABC):
         self._save_results = False
         self._save_plots = False
         self._parallel_optimization = False
-        self._max_combinations = self.DEFAULT_MAX_COMBINATIONS
+        self._max_combinations = 0
 
         self._current_batch: Union[Batch, None] = None
         self._result = None
@@ -627,6 +626,7 @@ class CSD(ABC):
             testing_average_error_probability_all_codebooks = 0.0
             testing_average_ideal_homodyne_probability_all_codebooks = 0.0
             testing_average_ideal_helstrom_probability_all_codebooks = 0.0
+
             codebooks = CodeBooks(batch=self._current_batch, max_combinations=self._max_combinations)
             self._all_codebooks_size = codebooks.size
             logger.debug(
