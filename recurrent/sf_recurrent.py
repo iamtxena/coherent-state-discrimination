@@ -22,7 +22,7 @@ def generate_training_batch(NUM_MODES):
     """
     Generates a batch of training data containing all possible codewords.
     """
-    return np.array(list(product([-1, +1], repeat=NUM_MODES)))
+    return np.random.shuffle(np.array(list(product([-1, +1], repeat=NUM_MODES))))
 
 def loss_metric(prediction, target, NUM_MODES):
     """
@@ -79,7 +79,7 @@ def batched_training_error(weights, targets, input_vectors, layer_number, model,
 
     batch_error = accumulated_error / batch_size
 
-    wandb.log({"error": batch_error})
+    wandb.log({"batch_error": batch_error})
 
     return batch_error
 
@@ -228,8 +228,8 @@ if __name__ == '__main__':
             "INPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES + NUM_LAYERS,
             "OUTPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES,
 
-            "NUM_REPEAT": 5,
-            "NUM_TRAINING_ITERATIONS": 100,
+            "NUM_REPEAT": 2,
+            "NUM_TRAINING_ITERATIONS": 75,
 
             "VERSION": "v3"
         }
