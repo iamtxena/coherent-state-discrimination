@@ -74,6 +74,8 @@ def training_error(weights, target, input_vector, layer_number, model, q_box, NU
     return error
 
 def batched_training_error(weights, targets, input_vectors, layer_number, model, q_box, NUM_MODES):
+    global global_accumulated_training_error
+
     accumulated_error = 0.0
     batch_size = len(targets)
 
@@ -83,6 +85,8 @@ def batched_training_error(weights, targets, input_vectors, layer_number, model,
     batch_error = accumulated_error / batch_size
 
     wandb.log({"batch_error": batch_error})
+
+    global_accumulated_training_error += batch_error
 
     return batch_error
 
@@ -120,9 +124,10 @@ def train(model, q_box, config):
                     model,
                     q_box,
                     modes
-                ),
-                method="BFGS"
+                )
             )
+
+            wandb.log({"accumulated_error": global_accumulated_training_error})
 
             # Update parameters so that previous parameters are not overwritten.
             prev_params = model.get_learnable_parameters_as_flattened_list()
@@ -213,7 +218,7 @@ if __name__ == '__main__':
     NUM_VARIABLES = 1
 
     # Signal amplitude. Default is 1.0.
-    SIGNAL_AMPLITUDE = 0.2
+    SIGNAL_AMPLITUDE = 0.0
 
     # Initialize wandb logging.
     wandb.init(
@@ -221,7 +226,7 @@ if __name__ == '__main__':
         config={
             "CUTOFF_DIM": 8,
 
-            "STEP_SIZE": 0.3,
+            "STEP_SIZE": 0.95,
 
             "NUM_MODES": NUM_MODES,
             "NUM_LAYERS": NUM_LAYERS,
@@ -232,9 +237,9 @@ if __name__ == '__main__':
             "OUTPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES,
 
             "NUM_REPEAT": 2,
-            "NUM_TRAINING_ITERATIONS": 75,
+            "NUM_TRAINING_ITERATIONS": 10,
 
-            "VERSION": "v3"
+            "VERSION": "v5"
         }
     )
     wandb.run.name = f"l{NUM_LAYERS}_m{NUM_MODES}_a{SIGNAL_AMPLITUDE}"
@@ -260,6 +265,8 @@ if __name__ == '__main__':
     # Training loop (with evaluation).
     logger.info("Begin training.")
     start = time.time()
+
+    global_accumulated_training_error = 0.0
 
     for step in tqdm(range(config.NUM_TRAINING_ITERATIONS)):
         train(model, q_box, config)
