@@ -61,17 +61,22 @@ def training_error(weights, target, input_vector, layer_number, model, q_box, NU
     model.set_learnable_parameteres_from_flattended_list(weights)
     predicted_displacements = model(np.expand_dims(input_vector, axis=0))
 
-    measurement_of_nth_layer = q_box(
-        layer_number,
-        target,
-        2 * q_box.SIGNAL_AMPLITUDE * predicted_displacements)
+    # Sample `n_samples` times to account for stochastic nature of the quantum circuit.
+    n_samples = 1000
+    sampling_error = 0
 
-    prediction = measurement_of_nth_layer.samples[0]
-    error = loss_metric(prediction, target, NUM_MODES)
+    for _ in range(n_samples):
+        measurement_of_nth_layer = q_box(
+            layer_number,
+            target,
+            2 * q_box.SIGNAL_AMPLITUDE * predicted_displacements)
 
-    # logger.debug(f"q::{prediction = }, c::{target = }, {error = }")
+        prediction = measurement_of_nth_layer.samples[0]
+        sampling_error += loss_metric(prediction, target, NUM_MODES)
 
-    return error
+    # logger.debug(f"q::{prediction = }, c::{target = }, {sampling_error = }")
+
+    return sampling_error / n_samples
 
 def batched_training_error(weights, targets, input_vectors, layer_number, model, q_box, NUM_MODES):
     global global_accumulated_training_error
@@ -218,7 +223,7 @@ if __name__ == '__main__':
     NUM_VARIABLES = 1
 
     # Signal amplitude. Default is 1.0.
-    SIGNAL_AMPLITUDE = 0.0
+    SIGNAL_AMPLITUDE = 0.2
 
     # Initialize wandb logging.
     wandb.init(
@@ -239,7 +244,7 @@ if __name__ == '__main__':
             "NUM_REPEAT": 2,
             "NUM_TRAINING_ITERATIONS": 10,
 
-            "VERSION": "v5"
+            "VERSION": "v6"
         }
     )
     wandb.run.name = f"l{NUM_LAYERS}_m{NUM_MODES}_a{SIGNAL_AMPLITUDE}"
