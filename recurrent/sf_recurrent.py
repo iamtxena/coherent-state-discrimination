@@ -129,7 +129,11 @@ def train(model, q_box, config):
                     model,
                     q_box,
                     modes
-                )
+                ),
+                options={
+                    "maxiter": config.MAX_ITERATIONS,
+                    "disp": True
+                }
             )
 
             wandb.log({"accumulated_error": global_accumulated_training_error})
@@ -223,7 +227,7 @@ if __name__ == '__main__':
     NUM_VARIABLES = 1
 
     # Signal amplitude. Default is 1.0.
-    SIGNAL_AMPLITUDE = 0.2
+    SIGNAL_AMPLITUDE = 1.0
 
     # Initialize wandb logging.
     wandb.init(
@@ -241,8 +245,10 @@ if __name__ == '__main__':
             "INPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES + NUM_LAYERS,
             "OUTPUT_VECTOR_SIZE": NUM_MODES * NUM_VARIABLES,
 
-            "NUM_REPEAT": 2,
-            "NUM_TRAINING_ITERATIONS": 10,
+            "NUM_REPEAT": 1, # Number of times to repeat training for each epoch.
+            "NUM_TRAINING_ITERATIONS": 10, # Number of epochs.
+
+            "MAX_ITERATIONS": 50, # Maximum number of iterations for the optimizer.
 
             "VERSION": "v6"
         }
