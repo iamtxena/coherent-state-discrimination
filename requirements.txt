@@ -1,11 +1,9 @@
-autopep8
-flake8
-mccabe
-mypy
-mypy-extensions
-pycodestyle
-pyflakes
-toml
-typing-extensions
-pennylane
-pennylane-sf
+# -*- coding: utf-8 -*-
+
+numpy == 1.19.5
+loguru == 0.5.3
+scipy == 1.7.1
+tqdm == 4.62.3
+wandb == 0.12.10
+StrawberryFields == 0.21.0
+scikit-learn == 1.0.1
