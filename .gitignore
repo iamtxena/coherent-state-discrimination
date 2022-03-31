@@ -127,3 +127,15 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+examples/logs
+output.txt
+tf*output.txt
+*bak*
+logs*
+examples/results/globals/alphas*
+data/certbot
+jupyterdata
+circuit_tex
+examples/testing_results/plot_*
+examples/training_results/plot_*

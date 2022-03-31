@@ -1,0 +1,1764 @@
+number alphas: 16
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.50625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.1]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.18125]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.34375]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.42499999999999993]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.6687499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.5874999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.7499999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: current codebook: [[0.8312499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.1 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.34 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.42 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.51 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.67 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.83 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.59 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.75 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.26 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:56:58]: Optimizing for alpha: 0.18 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:56:59]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Optimized for alpha: 0.42 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Optimized for alpha: 0.26 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Optimized for alpha: 0.51 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Optimized for alpha: 0.67 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:03]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.59 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.34 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.83 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.1 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.75 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.18 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.26 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.42 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Trained for alpha: 0.26 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized and trained for alpha: 0.26 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: current codebook: [[-0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimizing for alpha: 0.26 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Trained for alpha: 0.42 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized and trained for alpha: 0.42 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: current codebook: [[-0.42499999999999993]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimizing for alpha: 0.42 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:04]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:57:04]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.67 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized for alpha: 0.51 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Trained for alpha: 0.67 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized and trained for alpha: 0.67 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: current codebook: [[-0.6687499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimizing for alpha: 0.67 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Trained for alpha: 0.51 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimized and trained for alpha: 0.51 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: current codebook: [[-0.50625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:04]: Optimizing for alpha: 0.51 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:04]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:57:04]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized for alpha: 0.59 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Trained for alpha: 0.59 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized and trained for alpha: 0.59 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: current codebook: [[-0.5874999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimizing for alpha: 0.59 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:05]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized for alpha: 0.34 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Trained for alpha: 0.34 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized and trained for alpha: 0.34 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: current codebook: [[-0.34375]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimizing for alpha: 0.34 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:05]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized for alpha: 0.75 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Trained for alpha: 0.75 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized and trained for alpha: 0.75 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: current codebook: [[-0.7499999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimizing for alpha: 0.75 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized for alpha: 0.1 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|INFO|2022-02-05 11:57:05]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Trained for alpha: 0.1 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized and trained for alpha: 0.1 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: current codebook: [[-0.1]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimizing for alpha: 0.1 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:05]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized for alpha: 0.83 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized for alpha: 0.18 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Trained for alpha: 0.83 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized and trained for alpha: 0.83 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: current codebook: [[-0.8312499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimizing for alpha: 0.83 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Trained for alpha: 0.18 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: _train_for_one_alpha_one_codebook, took: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimized and trained for alpha: 0.18 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: current codebook: [[-0.18125]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:05]: Optimizing for alpha: 0.18 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:05]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:57:05]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.26 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.42 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.67 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.51 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.59 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.1 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.34 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.75 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.83 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Optimized for alpha: 0.18 took:1 second. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:06]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.26 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.26 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.26 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.26 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: current codebook: [[0.9124999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimizing for alpha: 0.91 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:07]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.42 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.42 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.42 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.42 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: current codebook: [[0.9937499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimizing for alpha: 0.99 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:07]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.51 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.67 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.51 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.51 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.51 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.67 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.67 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: current codebook: [[1.075]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.67 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimizing for alpha: 1.08 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: current codebook: [[1.15625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimizing for alpha: 1.16 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:07]: number of parameters: 1
+[CSD] 0.0.1|INFO|2022-02-05 11:57:07]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.59 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.59 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.59 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.59 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: current codebook: [[1.2374999999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimizing for alpha: 1.24 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:07]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.34 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.34 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.34 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.34 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:2 plays:1 modes:1 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: current codebook: [[1.3187499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimizing for alpha: 1.32 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.1 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|INFO|2022-02-05 11:57:07]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.75 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.1 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.1 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.1 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.75 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.75 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.75 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.83 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.83 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.83 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.83 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized for alpha: 0.18 took:1 second. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Trained for alpha: 0.18 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.18 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: Optimized and trained for alpha: 0.18 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: execute, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:07]: launch_execution, took: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 0.91 took:0 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 0.99 took:0 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 1.16 took:0 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 1.08 took:0 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 1.32 took:0 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 1.24 took:0 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 0.91 took:0 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Trained for alpha: 0.91 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized and trained for alpha: 0.91 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: current codebook: [[-0.9124999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimizing for alpha: 0.91 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:08]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 0.99 took:0 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Trained for alpha: 0.99 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized and trained for alpha: 0.99 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: current codebook: [[-0.9937499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimizing for alpha: 0.99 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:08]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 1.08 took:0 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Trained for alpha: 1.08 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized and trained for alpha: 1.08 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: current codebook: [[-1.075]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimizing for alpha: 1.08 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized for alpha: 1.16 took:0 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|INFO|2022-02-05 11:57:08]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Trained for alpha: 1.16 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimized and trained for alpha: 1.16 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: current codebook: [[-1.15625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:08]: Optimizing for alpha: 1.16 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:08]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized for alpha: 1.32 took:0 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized for alpha: 1.24 took:0 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized for alpha: 0.91 took:0 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized for alpha: 0.99 took:0 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized for alpha: 1.08 took:0 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized for alpha: 1.16 took:0 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Learned parameters value at step 150: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized for alpha: 1.32 took:0 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Trained for alpha: 1.32 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized and trained for alpha: 1.32 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: current codebook: [[-1.3187499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimizing for alpha: 1.32 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:09]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Learned parameters value at step 150: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized for alpha: 1.24 took:0 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Trained for alpha: 1.24 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: _train_for_one_alpha_one_codebook, took: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimized and trained for alpha: 1.24 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: current codebook: [[-1.2374999999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:09]: Optimizing for alpha: 1.24 
+codebook_size:1 plays:1 modes:1 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:09]: number of parameters: 1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized for alpha: 0.91 took:0 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Trained for alpha: 0.91 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized and trained for alpha: 0.91 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized and trained for alpha: 0.91 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: execute, took: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: launch_execution, took: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized for alpha: 0.99 took:0 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Trained for alpha: 0.99 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized and trained for alpha: 0.99 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized and trained for alpha: 0.99 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: execute, took: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: launch_execution, took: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized for alpha: 1.08 took:0 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Trained for alpha: 1.08 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized and trained for alpha: 1.08 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized and trained for alpha: 1.08 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: execute, took: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: launch_execution, took: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized for alpha: 1.16 took:0 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Trained for alpha: 1.16 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized and trained for alpha: 1.16 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized and trained for alpha: 1.16 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: execute, took: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: launch_execution, took: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized for alpha: 1.32 took:0 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Learned parameters value at step 50: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Optimized for alpha: 1.24 took:0 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:10]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Optimized for alpha: 1.32 took:0 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Learned parameters value at step 100: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Optimized for alpha: 1.24 took:0 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Learned parameters value at step 150: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Optimized for alpha: 1.32 took:0 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Trained for alpha: 1.32 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Optimized and trained for alpha: 1.32 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Optimized and trained for alpha: 1.32 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: execute, took: 4 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: launch_execution, took: 4 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Learned parameters value at step 150: [0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Optimized for alpha: 1.24 took:0 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Trained for alpha: 1.24 parameters: [0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: _train_for_one_alpha_one_codebook, took: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Optimized and trained for alpha: 1.24 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: Optimized and trained for alpha: 1.24 pSucc: 1.0 batch_size:2 plays:1 modes:1 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: execute, took: 4 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:11]: launch_execution, took: 4 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: _general_execution, took: 13 seconds.
+number alphas: 16
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.5874999999999999, 0.5874999999999999], [0.5874999999999999, -0.5874999999999999], [-0.5874999999999999, 0.5874999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.42499999999999993, 0.42499999999999993], [0.42499999999999993, -0.42499999999999993]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.34375, 0.34375]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.1, 0.1]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.6687499999999998, 0.6687499999999998], [0.6687499999999998, -0.6687499999999998], [-0.6687499999999998, 0.6687499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.50625, 0.50625], [0.50625, -0.50625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.8312499999999999, 0.8312499999999999], [0.8312499999999999, -0.8312499999999999], [-0.8312499999999999, 0.8312499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: current codebook: [[0.7499999999999999, 0.7499999999999999], [0.7499999999999999, -0.7499999999999999], [-0.7499999999999999, 0.7499999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.34 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.26 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.67 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.51 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.1 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.83 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.59 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.75 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.42 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:12]: Optimizing for alpha: 0.18 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:13]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Optimized for alpha: 0.26 took:10 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Estimated remaining time: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Optimized for alpha: 0.1 took:10 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Estimated remaining time: 11 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Optimized for alpha: 0.34 took:10 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Estimated remaining time: 11 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Optimized for alpha: 0.18 took:10 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:22]: Estimated remaining time: 11 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:24]: Learned parameters value at step 50: [0.17111228, -1.1778584, 0.8776356, -0.19587299, 0.20830421, 0.8778232, 0.3788343, 0.16728854, 2.9555385, -0.785208]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:24]: Optimized for alpha: 0.51 took:12 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:24]: Estimated remaining time: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:24]: Learned parameters value at step 50: [0.24150223, -1.0853231, 0.8625747, -0.14247882, 0.26142856, 0.8625602, 0.34035897, 0.15456513, 0.772873, -0.7726183]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:24]: Optimized for alpha: 0.42 took:12 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:24]: Estimated remaining time: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:25]: Learned parameters value at step 50: [-0.020311113, -0.7327301, -0.22090986, 0.06441434, -0.014949275, -0.8215419, 0.1821998, -0.11057835, -0.8409778, -0.84930307]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:25]: Optimized for alpha: 0.59 took:13 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:25]: Estimated remaining time: 14 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Learned parameters value at step 50: [0.023308106, 2.1699576, 0.12495765, -0.32751554, -0.027630232, 1.9324099, -0.12851806, 0.3441966, -0.86822736, -0.8343582]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Optimized for alpha: 0.67 took:13 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Estimated remaining time: 14 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Learned parameters value at step 50: [-0.0134850675, 2.1571918, 0.16091853, -0.2960125, -0.032408804, 2.164225, -0.12693883, 0.33766627, -0.8861419, -0.8991079]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Optimized for alpha: 0.75 took:14 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Estimated remaining time: 14 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Learned parameters value at step 50: [0.010147243, 2.190372, 0.038380876, -0.061384194, 0.002868555, 2.1779697, -0.06369405, 0.040290654, -0.95697546, -0.9462187]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Optimized for alpha: 0.83 took:14 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:26]: Estimated remaining time: 14 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimized for alpha: 0.26 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Trained for alpha: 0.26 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: _train_for_one_alpha_one_codebook, took: 15 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimized and trained for alpha: 0.26 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: current codebook: [[0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimizing for alpha: 0.26 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:27]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimized for alpha: 0.1 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Trained for alpha: 0.1 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: _train_for_one_alpha_one_codebook, took: 15 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimized and trained for alpha: 0.1 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: current codebook: [[0.1, -0.1]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimizing for alpha: 0.1 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimized for alpha: 0.18 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|INFO|2022-02-05 11:57:27]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Trained for alpha: 0.18 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: _train_for_one_alpha_one_codebook, took: 15 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimized and trained for alpha: 0.18 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: current codebook: [[0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimizing for alpha: 0.18 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimized for alpha: 0.34 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|INFO|2022-02-05 11:57:27]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Trained for alpha: 0.34 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: _train_for_one_alpha_one_codebook, took: 15 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimized and trained for alpha: 0.34 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: current codebook: [[0.34375, -0.34375]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:27]: Optimizing for alpha: 0.34 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:27]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:30]: Learned parameters value at step 100: [0.5054616, -0.8709883, 0.80807406, -0.5968372, 0.53899044, 1.7327147, 0.081147105, 0.66158897, 6.207559, -0.30891755]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:30]: Optimized for alpha: 0.51 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:30]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:30]: Trained for alpha: 0.51 parameters: [0.5054616, -0.8709883, 0.80807406, -0.5968372, 0.53899044, 1.7327147, 0.081147105, 0.66158897, 6.207559, -0.30891755] p_err: 0.002531766891479492
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:30]: _train_for_one_alpha_one_codebook, took: 18 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:30]: Optimized and trained for alpha: 0.51 pSucc: 0.9974682331085205 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:30]: current codebook: [[0.50625, 0.50625], [-0.50625, 0.50625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:30]: Optimizing for alpha: 0.51 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:30]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:31]: Learned parameters value at step 100: [0.48223925, -0.6820785, 0.87033784, -0.47640273, 0.4020122, 1.6527706, 0.022546789, 0.6698332, 6.8403554, -0.22195515]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:31]: Optimized for alpha: 0.42 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:31]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:31]: Trained for alpha: 0.42 parameters: [0.48223925, -0.6820785, 0.87033784, -0.47640273, 0.4020122, 1.6527706, 0.022546789, 0.6698332, 6.8403554, -0.22195515] p_err: 0.01145315170288086
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:31]: _train_for_one_alpha_one_codebook, took: 19 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:31]: Optimized and trained for alpha: 0.42 pSucc: 0.9885468482971191 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:31]: current codebook: [[0.42499999999999993, 0.42499999999999993], [-0.42499999999999993, 0.42499999999999993]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:31]: Optimizing for alpha: 0.42 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:31]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Optimized for alpha: 0.26 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Optimized for alpha: 0.1 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Optimized for alpha: 0.34 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Optimized for alpha: 0.18 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:32]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:33]: Learned parameters value at step 100: [0.0007065404, -0.8067083, -0.2021238, 0.092175946, 0.00076129386, -0.8920777, 0.20510733, -0.09199069, -0.79294944, -0.79557157]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:33]: Optimized for alpha: 0.59 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:33]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:33]: Trained for alpha: 0.59 parameters: [0.0007065404, -0.8067083, -0.2021238, 0.092175946, 0.00076129386, -0.8920777, 0.20510733, -0.09199069, -0.79294944, -0.79557157] p_err: 0.1295924186706543
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:33]: _train_for_one_alpha_one_codebook, took: 21 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:33]: Optimized and trained for alpha: 0.59 pSucc: 0.8704075813293457 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:33]: current codebook: [[0.5874999999999999, 0.5874999999999999], [0.5874999999999999, -0.5874999999999999], [-0.5874999999999999, -0.5874999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:33]: Optimizing for alpha: 0.59 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:33]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Learned parameters value at step 100: [0.053118158, 2.3294435, 0.12534381, -0.32565072, -0.05479054, 1.877601, -0.12168362, 0.32731882, -0.8227338, -0.8251574]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimized for alpha: 0.67 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Trained for alpha: 0.67 parameters: [0.053118158, 2.3294435, 0.12534381, -0.32565072, -0.05479054, 1.877601, -0.12168362, 0.32731882, -0.8227338, -0.8251574] p_err: 0.08888334035873413
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: _train_for_one_alpha_one_codebook, took: 22 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimized and trained for alpha: 0.67 pSucc: 0.9111166596412659 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: current codebook: [[0.6687499999999998, 0.6687499999999998], [0.6687499999999998, -0.6687499999999998], [-0.6687499999999998, -0.6687499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimizing for alpha: 0.67 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:34]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Learned parameters value at step 100: [0.0022798828, 2.2069097, 0.050850008, -0.050492972, -0.0019218416, 2.176754, -0.050812554, 0.050817616, -0.91102105, -0.91234887]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimized for alpha: 0.83 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Trained for alpha: 0.83 parameters: [0.0022798828, 2.2069097, 0.050850008, -0.050492972, -0.0019218416, 2.176754, -0.050812554, 0.050817616, -0.91102105, -0.91234887] p_err: 0.03647202253341675
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: _train_for_one_alpha_one_codebook, took: 22 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimized and trained for alpha: 0.83 pSucc: 0.9635279774665833 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: current codebook: [[0.8312499999999999, 0.8312499999999999], [0.8312499999999999, -0.8312499999999999], [-0.8312499999999999, -0.8312499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimizing for alpha: 0.83 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Learned parameters value at step 100: [0.02492534, 2.3429658, 0.1360396, -0.30420983, -0.018780975, 2.0676985, -0.14093058, 0.29809165, -0.86639595, -0.86304736]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimized for alpha: 0.75 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|INFO|2022-02-05 11:57:34]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Trained for alpha: 0.75 parameters: [0.02492534, 2.3429658, 0.1360396, -0.30420983, -0.018780975, 2.0676985, -0.14093058, 0.29809165, -0.86639595, -0.86304736] p_err: 0.05839282274246216
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: _train_for_one_alpha_one_codebook, took: 22 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimized and trained for alpha: 0.75 pSucc: 0.9416071772575378 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: current codebook: [[0.7499999999999999, 0.7499999999999999], [0.7499999999999999, -0.7499999999999999], [-0.7499999999999999, -0.7499999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:34]: Optimizing for alpha: 0.75 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:34]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Learned parameters value at step 50: [0.018668734, 1.3947934, -0.52629316, 1.7727709, -0.010959977, -1.5727656, 0.49312922, 0.21728414, -0.7541084, 0.4241778]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized for alpha: 0.51 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized for alpha: 0.26 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Trained for alpha: 0.26 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized and trained for alpha: 0.26 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: current codebook: [[-0.26249999999999996, 0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimizing for alpha: 0.26 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:37]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized for alpha: 0.1 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized for alpha: 0.34 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Trained for alpha: 0.34 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: _train_for_one_alpha_one_codebook, took: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized and trained for alpha: 0.34 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: current codebook: [[-0.34375, 0.34375]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimizing for alpha: 0.34 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Trained for alpha: 0.1 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized and trained for alpha: 0.1 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: current codebook: [[-0.1, 0.1]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimizing for alpha: 0.1 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:37]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:37]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Learned parameters value at step 50: [0.029556515, 1.5501212, -0.58188426, 2.0029824, -0.008560643, -1.8029817, 0.54384696, 0.11920414, -0.7483837, 0.2867708]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized for alpha: 0.42 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized for alpha: 0.18 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Trained for alpha: 0.18 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimized and trained for alpha: 0.18 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: current codebook: [[-0.18125, 0.18125]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:37]: Optimizing for alpha: 0.18 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:38]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:42]: Learned parameters value at step 50: [0.014690217, 1.6117696, -0.08222718, 0.15590695, -0.0014091339, -0.6375089, 0.073614895, -0.17784129, -0.85692286, -0.75894785]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:42]: Optimized for alpha: 0.59 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:42]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:42]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:42]: Optimized for alpha: 0.26 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:42]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Optimized for alpha: 0.34 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Optimized for alpha: 0.1 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Optimized for alpha: 0.18 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Learned parameters value at step 50: [0.1261689, -1.144317, 0.33273816, -0.14325172, 0.121780835, 1.3348442, -0.25147688, 0.2128116, -0.87596303, -0.84409076]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Optimized for alpha: 0.67 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Learned parameters value at step 50: [-0.01069353, 0.76121694, 0.06425448, -0.07293522, 0.080581784, 0.20802654, -0.0074372566, 0.07256584, -1.0256294, -0.990453]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Optimized for alpha: 0.83 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Learned parameters value at step 50: [-0.0022836889, 0.06935265, 0.07405829, 0.009258445, 0.039099216, 0.23064078, -0.035980675, -0.05127731, -0.8953432, -0.89032423]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Optimized for alpha: 0.75 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:43]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Learned parameters value at step 100: [-0.0031213989, 1.4253799, -0.5160888, 1.8104075, 0.0013422283, -1.6104038, 0.51682764, 0.18903843, -0.7728787, 0.37139592]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Optimized for alpha: 0.51 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Trained for alpha: 0.51 parameters: [-0.0031213989, 1.4253799, -0.5160888, 1.8104075, 0.0013422283, -1.6104038, 0.51682764, 0.18903843, -0.7728787, 0.37139592] p_err: 0.13182342052459717
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Optimized and trained for alpha: 0.51 pSucc: 0.8681765794754028 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: current codebook: [[0.50625, 0.50625], [-0.50625, -0.50625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Optimizing for alpha: 0.51 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:44]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Learned parameters value at step 100: [0.022689132, 1.600915, -0.5737108, 2.058402, -0.022085276, -1.8584023, 0.5749893, 0.09348171, -0.75091934, 0.21486787]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Optimized for alpha: 0.42 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Trained for alpha: 0.42 parameters: [0.022689132, 1.600915, -0.5737108, 2.058402, -0.022085276, -1.8584023, 0.5749893, 0.09348171, -0.75091934, 0.21486787] p_err: 0.17590248584747314
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Optimized and trained for alpha: 0.42 pSucc: 0.8240975141525269 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: current codebook: [[0.42499999999999993, 0.42499999999999993], [-0.42499999999999993, -0.42499999999999993]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:44]: Optimizing for alpha: 0.42 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:44]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimized for alpha: 0.26 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Trained for alpha: 0.26 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimized and trained for alpha: 0.26 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: current codebook: [[-0.26249999999999996, -0.26249999999999996]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimizing for alpha: 0.26 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:47]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimized for alpha: 0.34 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Trained for alpha: 0.34 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimized and trained for alpha: 0.34 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: current codebook: [[-0.34375, -0.34375]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimizing for alpha: 0.34 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:47]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimized for alpha: 0.1 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Trained for alpha: 0.1 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimized and trained for alpha: 0.1 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: current codebook: [[-0.1, -0.1]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:47]: Optimizing for alpha: 0.1 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:48]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:48]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:48]: Optimized for alpha: 0.18 took:4 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:48]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:48]: Trained for alpha: 0.18 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:48]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:48]: Optimized and trained for alpha: 0.18 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:48]: current codebook: [[-0.18125, -0.18125]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:48]: Optimizing for alpha: 0.18 
+codebook_size:1 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:48]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Learned parameters value at step 100: [0.051260915, 1.7752359, -0.07631176, 0.16455762, 0.066595405, -0.6315678, 0.07886821, -0.16565934, -0.8779208, -0.80431485]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Optimized for alpha: 0.59 took:7 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Trained for alpha: 0.59 parameters: [0.051260915, 1.7752359, -0.07631176, 0.16455762, 0.066595405, -0.6315678, 0.07886821, -0.16565934, -0.8779208, -0.80431485] p_err: 0.1292150616645813
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Optimized and trained for alpha: 0.59 pSucc: 0.8707849383354187 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: current codebook: [[0.5874999999999999, 0.5874999999999999], [-0.5874999999999999, 0.5874999999999999], [-0.5874999999999999, -0.5874999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Optimizing for alpha: 0.59 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:50]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Learned parameters value at step 50: [-0.28460225, -0.7221824, -0.19995359, 0.13403912, -0.019999567, -1.2403082, 0.01682079, -0.41712356, -0.6235796, -1.281289]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Optimized for alpha: 0.51 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:50]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Learned parameters value at step 50: [0.080895856, -1.927072, -0.13315186, 0.51011366, 0.17062992, -1.9035523, 0.26395515, -0.29052472, -0.6681548, -0.983067]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Optimized for alpha: 0.42 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Learned parameters value at step 100: [0.11549366, -1.1159662, 0.28880134, -0.17421329, 0.10582976, 1.2993538, -0.29087627, 0.17689931, -0.8812479, -0.8496088]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Optimized for alpha: 0.67 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Trained for alpha: 0.67 parameters: [0.11549366, -1.1159662, 0.28880134, -0.17421329, 0.10582976, 1.2993538, -0.29087627, 0.17689931, -0.8812479, -0.8496088] p_err: 0.08921194076538086
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Optimized and trained for alpha: 0.67 pSucc: 0.9107880592346191 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: current codebook: [[0.6687499999999998, 0.6687499999999998], [-0.6687499999999998, 0.6687499999999998], [-0.6687499999999998, -0.6687499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:51]: Optimizing for alpha: 0.67 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:51]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Learned parameters value at step 100: [-0.03176191, 0.72963065, 0.03230961, -0.06870518, 0.043414667, 0.20883158, -0.03762755, 0.07754263, -0.940101, -0.9322316]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Optimized for alpha: 0.83 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Trained for alpha: 0.83 parameters: [-0.03176191, 0.72963065, 0.03230961, -0.06870518, 0.043414667, 0.20883158, -0.03762755, 0.07754263, -0.940101, -0.9322316] p_err: 0.036790430545806885
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Optimized and trained for alpha: 0.83 pSucc: 0.9632095694541931 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: current codebook: [[0.8312499999999999, 0.8312499999999999], [-0.8312499999999999, 0.8312499999999999], [-0.8312499999999999, -0.8312499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Optimizing for alpha: 0.83 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:52]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Learned parameters value at step 100: [-0.003746042, 0.06403755, 0.054370422, 0.031157881, 0.031014772, 0.20620576, -0.04855281, -0.03518732, -0.9092068, -0.89305323]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Optimized for alpha: 0.75 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Trained for alpha: 0.75 parameters: [-0.003746042, 0.06403755, 0.054370422, 0.031157881, 0.031014772, 0.20620576, -0.04855281, -0.03518732, -0.9092068, -0.89305323] p_err: 0.05883711576461792
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Optimized and trained for alpha: 0.75 pSucc: 0.9411628842353821 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: current codebook: [[0.7499999999999999, 0.7499999999999999], [-0.7499999999999999, 0.7499999999999999], [-0.7499999999999999, -0.7499999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Optimizing for alpha: 0.75 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:52]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Optimized for alpha: 0.26 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:52]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Optimized for alpha: 0.34 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Optimized for alpha: 0.18 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Learned parameters value at step 50: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Optimized for alpha: 0.1 took:5 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:53]: Estimated remaining time: 5 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Learned parameters value at step 100: [-0.32246768, -0.63702875, -0.14364538, 0.11379703, 0.05649392, -0.9331874, 0.02061734, -0.29408115, -0.611018, -1.8859107]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Optimized for alpha: 0.51 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Trained for alpha: 0.51 parameters: [-0.32246768, -0.63702875, -0.14364538, 0.11379703, 0.05649392, -0.9331874, 0.02061734, -0.29408115, -0.611018, -1.8859107] p_err: 0.0031775236129760742
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Optimized and trained for alpha: 0.51 pSucc: 0.9968224763870239 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: current codebook: [[0.50625, -0.50625], [-0.50625, 0.50625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Optimizing for alpha: 0.51 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:57]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Optimized for alpha: 0.26 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:57]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Trained for alpha: 0.26 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.26 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.26 pSucc: 1.0 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: execute, took: 45 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: launch_execution, took: 45 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: current codebook: [[0.9124999999999999, 0.9124999999999999], [0.9124999999999999, -0.9124999999999999], [-0.9124999999999999, 0.9124999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimizing for alpha: 0.91 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:58]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized for alpha: 0.34 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Trained for alpha: 0.34 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.34 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.34 pSucc: 1.0 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: execute, took: 45 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: launch_execution, took: 45 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: current codebook: [[0.9937499999999998, 0.9937499999999998], [0.9937499999999998, -0.9937499999999998], [-0.9937499999999998, 0.9937499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimizing for alpha: 0.99 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Learned parameters value at step 100: [0.053169098, -2.1718085, -0.12898716, 0.45761028, 0.14762571, -1.8643817, 0.2643767, -0.28566313, -0.4823575, -2.0457132]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized for alpha: 0.42 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|INFO|2022-02-05 11:57:58]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized for alpha: 0.18 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Trained for alpha: 0.42 parameters: [0.053169098, -2.1718085, -0.12898716, 0.45761028, 0.14762571, -1.8643817, 0.2643767, -0.28566313, -0.4823575, -2.0457132] p_err: 0.00278317928314209
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.42 pSucc: 0.9972168207168579 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: current codebook: [[0.42499999999999993, -0.42499999999999993], [-0.42499999999999993, 0.42499999999999993]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimizing for alpha: 0.42 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Trained for alpha: 0.18 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.18 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.18 pSucc: 1.0 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: execute, took: 46 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: launch_execution, took: 46 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: current codebook: [[1.075, 1.075], [1.075, -1.075], [-1.075, 1.075]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimizing for alpha: 1.08 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:58]: number of parameters: 10
+[CSD] 0.0.1|INFO|2022-02-05 11:57:58]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Learned parameters value at step 100: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized for alpha: 0.1 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Trained for alpha: 0.1 parameters: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1] p_err: 0.0
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Learned parameters value at step 50: [0.0008231199, 0.5344807, -0.02249139, 0.24972685, -0.00040747807, -0.15699069, 0.013540131, -0.24061893, -0.78097, -0.8659999]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized for alpha: 0.59 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: _train_for_one_alpha_one_codebook, took: 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.1 pSucc: 1.0 codebook_size:1
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimized and trained for alpha: 0.1 pSucc: 1.0 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: execute, took: 46 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: launch_execution, took: 46 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: current codebook: [[1.15625, 1.15625], [1.15625, -1.15625], [-1.15625, 1.15625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:57:58]: Optimizing for alpha: 1.16 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:57:58]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Learned parameters value at step 50: [0.0046251332, 0.21967864, 0.016747115, 0.23140524, 0.01939819, -0.013628475, -0.012798586, -0.20495214, -0.78226274, -0.8514261]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Optimized for alpha: 0.67 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Learned parameters value at step 50: [-0.068801224, 0.46357027, -0.060502287, 0.16817354, -0.039159838, -0.6106821, 0.09460747, -0.16739424, -0.9673129, -0.99956757]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Optimized for alpha: 0.83 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Learned parameters value at step 50: [-0.013449472, 0.7542257, -0.06618081, 0.24768811, 0.012436564, -0.6867926, 0.11126028, -0.24272682, -0.85013145, -0.88257456]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Optimized for alpha: 0.75 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:00]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:04]: Learned parameters value at step 50: [-0.5030645, 1.2616056, -0.22699039, -0.6883655, -0.471324, 1.3429528, -0.82179147, -0.10701198, -0.74769974, -0.7493687]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:04]: Optimized for alpha: 0.51 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:04]: Estimated remaining time: 7 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:05]: Learned parameters value at step 50: [-0.4253277, 1.3026128, -0.16303629, -0.6066865, -0.38228446, 1.3047057, -0.6929037, -0.08254965, -0.40025392, -0.37306863]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:05]: Optimized for alpha: 0.42 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:05]: Estimated remaining time: 7 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Learned parameters value at step 100: [-0.016825786, 0.5703077, -0.01660395, 0.24389198, -0.023593737, -0.14939207, 0.016987598, -0.2447563, -0.8115639, -0.8770416]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Optimized for alpha: 0.59 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Trained for alpha: 0.59 parameters: [-0.016825786, 0.5703077, -0.01660395, 0.24389198, -0.023593737, -0.14939207, 0.016987598, -0.2447563, -0.8115639, -0.8770416] p_err: 0.12922245264053345
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Optimized and trained for alpha: 0.59 pSucc: 0.8707775473594666 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: current codebook: [[0.5874999999999999, -0.5874999999999999], [-0.5874999999999999, 0.5874999999999999], [-0.5874999999999999, -0.5874999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Optimizing for alpha: 0.59 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:06]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Learned parameters value at step 50: [-0.0010415413, 1.5762565, 0.027453382, -0.02485551, -0.004833623, 1.7745525, -0.029202, 0.016506273, -0.9904746, -0.9940301]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Optimized for alpha: 0.91 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Learned parameters value at step 50: [0.0058214706, 0.8451982, 0.020354228, -0.020021066, -0.008816214, 1.1237884, -0.031250082, 0.008740513, -1.0430137, -1.0415092]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Optimized for alpha: 0.99 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Learned parameters value at step 50: [-0.0008878197, 1.4286096, 0.048944253, -0.036929164, -0.012669332, 1.5007243, -0.05979496, 0.036654502, -1.0992467, -1.0901809]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Optimized for alpha: 1.08 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Learned parameters value at step 50: [0.004600299, 1.7301421, 0.09416912, -0.06819135, -0.006275816, 1.711558, -0.0712615, 0.06821741, -1.1470294, -1.1597854]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Optimized for alpha: 1.16 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:06]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Learned parameters value at step 100: [-0.011531738, 0.22860806, 0.018994005, 0.21566255, -0.014665815, -0.0017027709, -0.019009022, -0.21814357, -0.846228, -0.8813823]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimized for alpha: 0.67 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Trained for alpha: 0.67 parameters: [-0.011531738, 0.22860806, 0.018994005, 0.21566255, -0.014665815, -0.0017027709, -0.019009022, -0.21814357, -0.846228, -0.8813823] p_err: 0.0891985297203064
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimized and trained for alpha: 0.67 pSucc: 0.9108014702796936 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: current codebook: [[0.6687499999999998, -0.6687499999999998], [-0.6687499999999998, 0.6687499999999998], [-0.6687499999999998, -0.6687499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimizing for alpha: 0.67 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:09]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Learned parameters value at step 100: [-0.009343365, 0.5726865, -0.08734865, 0.17987725, -0.008559264, -0.7018375, 0.08369577, -0.18060873, -0.9241128, -0.9340382]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimized for alpha: 0.83 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Trained for alpha: 0.83 parameters: [-0.009343365, 0.5726865, -0.08734865, 0.17987725, -0.008559264, -0.7018375, 0.08369577, -0.18060873, -0.9241128, -0.9340382] p_err: 0.036786019802093506
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimized and trained for alpha: 0.83 pSucc: 0.9632139801979065 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: current codebook: [[0.8312499999999999, -0.8312499999999999], [-0.8312499999999999, 0.8312499999999999], [-0.8312499999999999, -0.8312499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimizing for alpha: 0.83 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:09]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Learned parameters value at step 100: [-0.027241288, 0.8666165, -0.09378395, 0.25380194, -0.024126332, -0.7476936, 0.09317708, -0.2536268, -0.8901765, -0.90893453]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimized for alpha: 0.75 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Trained for alpha: 0.75 parameters: [-0.027241288, 0.8666165, -0.09378395, 0.25380194, -0.024126332, -0.7476936, 0.09317708, -0.2536268, -0.8901765, -0.90893453] p_err: 0.05882543325424194
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimized and trained for alpha: 0.75 pSucc: 0.9411745667457581 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: current codebook: [[0.7499999999999999, -0.7499999999999999], [-0.7499999999999999, 0.7499999999999999], [-0.7499999999999999, -0.7499999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:09]: Optimizing for alpha: 0.75 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:09]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Learned parameters value at step 100: [-0.50934744, 1.1825671, -0.30085912, -0.6401922, -0.45739084, 1.2387513, -0.8175221, -0.11907637, -0.47669578, -0.50868994]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Optimized for alpha: 0.51 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Trained for alpha: 0.51 parameters: [-0.50934744, 1.1825671, -0.30085912, -0.6401922, -0.45739084, 1.2387513, -0.8175221, -0.11907637, -0.47669578, -0.50868994] p_err: 0.00010848045349121094
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Optimized and trained for alpha: 0.51 pSucc: 0.9998915195465088 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: current codebook: [[0.50625, -0.50625], [-0.50625, -0.50625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Optimizing for alpha: 0.51 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:11]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Learned parameters value at step 100: [-0.429754, 1.367098, -0.104469635, -0.6539921, -0.38446534, 1.3950189, -0.69576555, -0.08607823, -0.46276474, -0.3858684]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Optimized for alpha: 0.42 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Trained for alpha: 0.42 parameters: [-0.429754, 1.367098, -0.104469635, -0.6539921, -0.38446534, 1.3950189, -0.69576555, -0.08607823, -0.46276474, -0.3858684] p_err: 9.715557098388672e-06
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Optimized and trained for alpha: 0.42 pSucc: 0.9999902844429016 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: current codebook: [[0.42499999999999993, -0.42499999999999993], [-0.42499999999999993, -0.42499999999999993]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:11]: Optimizing for alpha: 0.42 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:12]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:14]: Learned parameters value at step 50: [0.0054002223, -1.555337, -0.021371916, 0.021017503, 0.0057238704, -1.4700619, 0.020901201, -0.01868995, -0.7657251, -0.76338756]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:14]: Optimized for alpha: 0.59 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:14]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Learned parameters value at step 100: [-0.0010618488, 1.6841261, 0.029054932, -0.021100814, -0.00075131876, 1.8378206, -0.029085193, 0.021611802, -0.9625821, -0.96263516]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimized for alpha: 0.91 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Trained for alpha: 0.91 parameters: [-0.0010618488, 1.6841261, 0.029054932, -0.021100814, -0.00075131876, 1.8378206, -0.029085193, 0.021611802, -0.9625821, -0.96263516] p_err: 0.0216025710105896
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimized and trained for alpha: 0.91 pSucc: 0.9783974289894104 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: current codebook: [[0.9124999999999999, 0.9124999999999999], [0.9124999999999999, -0.9124999999999999], [-0.9124999999999999, -0.9124999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimizing for alpha: 0.91 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:15]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Learned parameters value at step 100: [0.0035552334, 0.8205669, 0.02488878, -0.014987586, -0.0030414048, 1.0995045, -0.026126726, 0.013252676, -1.0210196, -1.0234812]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimized for alpha: 0.99 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Trained for alpha: 0.99 parameters: [0.0035552334, 0.8205669, 0.02488878, -0.014987586, -0.0030414048, 1.0995045, -0.026126726, 0.013252676, -1.0210196, -1.0234812] p_err: 0.012109935283660889
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimized and trained for alpha: 0.99 pSucc: 0.9878900647163391 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: current codebook: [[0.9937499999999998, 0.9937499999999998], [0.9937499999999998, -0.9937499999999998], [-0.9937499999999998, -0.9937499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimizing for alpha: 0.99 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:15]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Learned parameters value at step 100: [0.0031643494, 1.464243, 0.05386413, -0.036166806, -0.0023349486, 1.4724658, -0.053763226, 0.03637284, -1.0895991, -1.0886362]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimized for alpha: 1.08 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Trained for alpha: 1.08 parameters: [0.0031643494, 1.464243, 0.05386413, -0.036166806, -0.0023349486, 1.4724658, -0.053763226, 0.03637284, -1.0895991, -1.0886362] p_err: 0.006437480449676514
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimized and trained for alpha: 1.08 pSucc: 0.9935625195503235 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: current codebook: [[1.075, 1.075], [1.075, -1.075], [-1.075, -1.075]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimizing for alpha: 1.08 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:15]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Learned parameters value at step 100: [0.0058532376, 1.7231034, 0.08219255, -0.06791736, -0.005246615, 1.698594, -0.082231134, 0.067699745, -1.1607441, -1.1620339]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimized for alpha: 1.16 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Trained for alpha: 1.16 parameters: [0.0058532376, 1.7231034, 0.08219255, -0.06791736, -0.005246615, 1.698594, -0.082231134, 0.067699745, -1.1607441, -1.1620339] p_err: 0.0032698512077331543
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimized and trained for alpha: 1.16 pSucc: 0.9967301487922668 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: current codebook: [[1.15625, 1.15625], [1.15625, -1.15625], [-1.15625, -1.15625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:15]: Optimizing for alpha: 1.16 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:15]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:17]: Learned parameters value at step 50: [0.0018099865, -1.5464439, -0.027709657, 0.011607893, 0.0029658184, -1.4649289, 0.0112462165, -0.02499551, -0.8365422, -0.8359229]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:17]: Optimized for alpha: 0.67 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:17]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Learned parameters value at step 50: [-0.008910289, 1.5977987, 0.041898966, -0.036729667, -0.0058410224, 1.567897, -0.030905114, 0.035395384, -0.8915466, -0.8977987]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Optimized for alpha: 0.75 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Learned parameters value at step 50: [0.0031629098, -1.1658204, -0.014697375, 0.0019611665, 0.007015311, -1.1556011, 0.006977286, -0.021289598, -0.94470435, -0.9555523]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Optimized for alpha: 0.83 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Learned parameters value at step 50: [0.06970836, 0.90212107, -0.22241764, 1.404242, 0.082555555, -1.2043879, 0.20670106, 0.5718901, -0.75821817, 0.5114801]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Optimized for alpha: 0.51 took:7 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:18]: Estimated remaining time: 7 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:19]: Learned parameters value at step 50: [0.11453112, 0.72466505, -0.19641617, 1.1545362, 0.13051796, -0.9545695, 0.14183877, -0.5144579, -0.7465922, -0.20243134]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:19]: Optimized for alpha: 0.42 took:7 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:19]: Estimated remaining time: 7 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: Learned parameters value at step 100: [0.0008310337, -1.7090781, -0.023982637, 0.02158659, 0.00077814434, -1.6265801, 0.023051698, -0.022826783, -0.7308606, -0.7301606]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: Optimized for alpha: 0.59 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: Trained for alpha: 0.59 parameters: [0.0008310337, -1.7090781, -0.023982637, 0.02158659, 0.00077814434, -1.6265801, 0.023051698, -0.022826783, -0.7308606, -0.7301606] p_err: 0.1162828803062439
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: Optimized and trained for alpha: 0.59 pSucc: 0.8837171196937561 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: Optimized and trained for alpha: 0.59 pSucc: 0.8739217966794968 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: execute, took: 1 minute and 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: launch_execution, took: 1 minute and 10 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: current codebook: [[1.2374999999999998, 1.2374999999999998], [1.2374999999999998, -1.2374999999999998], [-1.2374999999999998, 1.2374999999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:23]: Optimizing for alpha: 1.24 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:23]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Learned parameters value at step 50: [0.04922081, 0.68019503, -0.12145828, 0.1678138, 0.10275006, -0.24193254, 0.10156727, -0.13922139, -1.0963789, -1.0596657]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Optimized for alpha: 0.91 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Learned parameters value at step 50: [-0.23141423, -0.28591123, 0.036100253, 0.24141717, 0.17805323, -0.0850927, -0.009937601, -0.24687013, -1.0574946, -0.9429624]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Optimized for alpha: 0.99 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Learned parameters value at step 50: [-0.40864587, -0.6244505, 0.3202216, -1.693483, -0.17490056, 0.35711995, -0.15731813, -1.5491185, -0.8998944, 0.8084087]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Optimized for alpha: 1.08 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Learned parameters value at step 50: [-0.5789478, -0.45871562, 0.09165015, -1.6181152, -0.2484855, 0.13828635, -0.31504878, -1.4823709, -0.6389213, 0.57055086]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Optimized for alpha: 1.16 took:8 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:24]: Estimated remaining time: 9 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Learned parameters value at step 100: [0.015030087, 0.79400724, -0.19630842, 1.2380553, 0.015735403, -1.0380837, 0.19267347, 0.5754947, -0.77206755, 0.518897]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Optimized for alpha: 0.51 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Trained for alpha: 0.51 parameters: [0.015030087, 0.79400724, -0.19630842, 1.2380553, 0.015735403, -1.0380837, 0.19267347, 0.5754947, -0.77206755, 0.518897] p_err: 0.13182485103607178
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Optimized and trained for alpha: 0.51 pSucc: 0.8681751489639282 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: current codebook: [[-0.50625, 0.50625], [-0.50625, -0.50625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Optimizing for alpha: 0.51 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:25]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Learned parameters value at step 100: [0.086155914, 0.7674697, -0.17668594, 1.2151572, 0.08429633, -1.0152011, 0.17638735, -0.65831846, -0.75209236, -0.2885372]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Optimized for alpha: 0.42 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Trained for alpha: 0.42 parameters: [0.086155914, 0.7674697, -0.17668594, 1.2151572, 0.08429633, -1.0152011, 0.17638735, -0.65831846, -0.75209236, -0.2885372] p_err: 0.17590314149856567
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Optimized and trained for alpha: 0.42 pSucc: 0.8240968585014343 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: current codebook: [[-0.42499999999999993, 0.42499999999999993], [-0.42499999999999993, -0.42499999999999993]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:25]: Optimizing for alpha: 0.42 
+codebook_size:2 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:25]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: Learned parameters value at step 100: [-0.00032707886, -1.6741941, -0.021843873, 0.019733278, 0.00034778437, -1.5908145, 0.020865984, -0.020592332, -0.7931711, -0.7923192]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: Optimized for alpha: 0.67 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: Trained for alpha: 0.67 parameters: [-0.00032707886, -1.6741941, -0.021843873, 0.019733278, 0.00034778437, -1.5908145, 0.020865984, -0.020592332, -0.7931711, -0.7923192] p_err: 0.08195382356643677
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: Optimized and trained for alpha: 0.67 pSucc: 0.9180461764335632 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: Optimized and trained for alpha: 0.67 pSucc: 0.9126880913972855 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: execute, took: 1 minute and 14 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: launch_execution, took: 1 minute and 14 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: Executing One Layer circuit with Backend: tf,  with measuring_type: probabilities 
+batch_size:4 plays:1 modes:2 ancillas: 0 
+steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: current codebook: [[1.3187499999999999, 1.3187499999999999], [1.3187499999999999, -1.3187499999999999], [-1.3187499999999999, 1.3187499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:26]: Optimizing for alpha: 1.32 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:26]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Learned parameters value at step 100: [-0.0012428322, -1.3918452, -0.0138680395, 0.013936473, 0.0022082971, -1.3809965, 0.013576218, -0.015483658, -0.90304524, -0.90360826]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Optimized for alpha: 0.83 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Trained for alpha: 0.83 parameters: [-0.0012428322, -1.3918452, -0.0138680395, 0.013936473, 0.0022082971, -1.3809965, 0.013576218, -0.015483658, -0.90304524, -0.90360826] p_err: 0.03502684831619263
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Optimized and trained for alpha: 0.83 pSucc: 0.9649731516838074 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Optimized and trained for alpha: 0.83 pSucc: 0.9637311697006226 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: execute, took: 1 minute and 14 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: launch_execution, took: 1 minute and 14 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Learned parameters value at step 100: [-0.0005329958, 1.5767297, 0.035886228, -0.035478514, 0.0009823289, 1.5381477, -0.035460517, 0.035472203, -0.8484847, -0.8483978]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Optimized for alpha: 0.75 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Trained for alpha: 0.75 parameters: [-0.0005329958, 1.5767297, 0.035886228, -0.035478514, 0.0009823289, 1.5381477, -0.035460517, 0.035472203, -0.8484847, -0.8483978] p_err: 0.05504578351974487
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: _train_for_one_alpha_one_codebook, took: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Optimized and trained for alpha: 0.75 pSucc: 0.9449542164802551 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: Optimized and trained for alpha: 0.75 pSucc: 0.9422247111797333 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: execute, took: 1 minute and 15 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:27]: launch_execution, took: 1 minute and 15 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:31]: Learned parameters value at step 50: [0.0054754787, 1.6437114, 0.11889097, -0.07358366, -0.008980615, 1.6194613, -0.096390046, 0.06713286, -1.2141124, -1.2183019]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:31]: Optimized for alpha: 1.24 took:8 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:31]: Estimated remaining time: 17 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:31]: Learned parameters value at step 50: [0.019977512, -1.3471615, 1.6720365, -0.48442477, -0.012771375, 1.6716427, 0.62581813, 0.4822832, -0.37966624, -0.7505693]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:31]: Optimized for alpha: 0.51 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:31]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Learned parameters value at step 50: [0.034067113, -1.5260408, 1.9051112, -0.55394685, -0.010170579, 1.9051125, 0.258681, 0.5240009, -0.31759602, -0.7468603]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized for alpha: 0.42 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Learned parameters value at step 100: [0.0064462945, 0.74995106, -0.115956746, 0.16218778, 0.0069986843, -0.26523906, 0.11442834, -0.16152154, -0.9803415, -0.9734242]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized for alpha: 0.91 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Trained for alpha: 0.91 parameters: [0.0064462945, 0.74995106, -0.115956746, 0.16218778, 0.0069986843, -0.26523906, 0.11442834, -0.16152154, -0.9803415, -0.9734242] p_err: 0.02175682783126831
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized and trained for alpha: 0.91 pSucc: 0.9782431721687317 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: current codebook: [[0.9124999999999999, 0.9124999999999999], [-0.9124999999999999, 0.9124999999999999], [-0.9124999999999999, -0.9124999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimizing for alpha: 0.91 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:32]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Learned parameters value at step 100: [-0.1896863, -0.32885575, 0.017323518, 0.25143597, 0.19355704, -0.09758567, -0.02384418, -0.24649045, -1.0310663, -1.0287883]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized for alpha: 0.99 took:7 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Trained for alpha: 0.99 parameters: [-0.1896863, -0.32885575, 0.017323518, 0.25143597, 0.19355704, -0.09758567, -0.02384418, -0.24649045, -1.0310663, -1.0287883] p_err: 0.012162268161773682
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized and trained for alpha: 0.99 pSucc: 0.9878377318382263 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: current codebook: [[0.9937499999999998, 0.9937499999999998], [-0.9937499999999998, 0.9937499999999998], [-0.9937499999999998, -0.9937499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimizing for alpha: 0.99 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:32]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Learned parameters value at step 100: [-0.31982708, -0.60682416, 0.24559283, -1.6384444, -0.25309587, 0.38061595, -0.27873346, -1.4713783, -0.9802072, 0.9833906]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized for alpha: 1.08 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Trained for alpha: 1.08 parameters: [-0.31982708, -0.60682416, 0.24559283, -1.6384444, -0.25309587, 0.38061595, -0.27873346, -1.4713783, -0.9802072, 0.9833906] p_err: 0.006797313690185547
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized and trained for alpha: 1.08 pSucc: 0.9932026863098145 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: current codebook: [[1.075, 1.075], [-1.075, 1.075], [-1.075, -1.075]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimizing for alpha: 1.08 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:32]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Learned parameters value at step 100: [-0.48572162, -0.60783786, 0.20092551, -1.6827625, -0.2813195, 0.22001728, -0.2227427, -1.4487998, -0.84878, 0.84126997]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized for alpha: 1.16 took:8 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Trained for alpha: 1.16 parameters: [-0.48572162, -0.60783786, 0.20092551, -1.6827625, -0.2813195, 0.22001728, -0.2227427, -1.4487998, -0.84878, 0.84126997] p_err: 0.0046686530113220215
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimized and trained for alpha: 1.16 pSucc: 0.995331346988678 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: current codebook: [[1.15625, 1.15625], [-1.15625, 1.15625], [-1.15625, -1.15625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:32]: Optimizing for alpha: 1.16 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:32]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:34]: Learned parameters value at step 50: [0.012632102, 1.7451495, 0.19796123, -0.12084848, -0.0224809, 1.6785831, -0.17484502, 0.11810069, -1.2601515, -1.2974496]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:34]: Optimized for alpha: 1.32 took:7 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:34]: Estimated remaining time: 15 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: Learned parameters value at step 100: [-0.0015389334, -1.375272, 1.7094026, -0.48871762, 0.0007231644, 1.7090195, 0.6292537, 0.49066955, -0.38478175, -0.77230597]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: Optimized for alpha: 0.51 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: Trained for alpha: 0.51 parameters: [-0.0015389334, -1.375272, 1.7094026, -0.48871762, 0.0007231644, 1.7090195, 0.6292537, 0.49066955, -0.38478175, -0.77230597] p_err: 0.13182330131530762
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: _train_for_one_alpha_one_codebook, took: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: Optimized and trained for alpha: 0.51 pSucc: 0.8681766986846924 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: Optimized and trained for alpha: 0.51 pSucc: 0.9331184426943461 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: execute, took: 1 minute and 25 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:37]: launch_execution, took: 1 minute and 25 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Learned parameters value at step 100: [0.020048147, -1.5781792, 1.9666902, -0.5514508, -0.01973301, 1.9666984, 0.18126251, 0.5489164, -0.34549895, -0.7509989]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Optimized for alpha: 0.42 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Trained for alpha: 0.42 parameters: [0.020048147, -1.5781792, 1.9666902, -0.5514508, -0.01973301, 1.9666984, 0.18126251, 0.5489164, -0.34549895, -0.7509989] p_err: 0.17590272426605225
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: _train_for_one_alpha_one_codebook, took: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Optimized and trained for alpha: 0.42 pSucc: 0.8240972757339478 codebook_size:2
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Optimized and trained for alpha: 0.42 pSucc: 0.9096742669741312 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: execute, took: 1 minute and 25 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: launch_execution, took: 1 minute and 25 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Learned parameters value at step 100: [0.0056141405, 1.6535351, 0.1071207, -0.06997143, -0.006562706, 1.6025704, -0.10680123, 0.06973879, -1.237242, -1.2385601]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Optimized for alpha: 1.24 took:7 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:38]: Estimated remaining time: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Learned parameters value at step 50: [-0.06771959, 0.10604365, -0.13325517, 0.2213515, -0.062412854, -0.61737525, 0.087128565, -0.17796727, -1.0418342, -1.0755782]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Optimized for alpha: 0.91 took:7 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Estimated remaining time: 7 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Learned parameters value at step 50: [-0.032601554, -0.29697785, -0.16143203, 0.3717676, -0.061663494, -0.5747725, 0.1308249, -0.3075052, -1.0865743, -1.099715]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Optimized for alpha: 0.99 took:7 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Estimated remaining time: 7 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Learned parameters value at step 50: [0.015487183, -0.3115903, -0.12076218, 0.33225232, -0.03378721, -0.5333837, 0.11568217, -0.31838584, -1.0939999, -1.1101695]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Optimized for alpha: 1.08 took:7 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Estimated remaining time: 7 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Learned parameters value at step 50: [0.06709064, -0.34153506, -0.04261076, 0.31123224, 0.02566841, -0.5334181, 0.12760536, -0.34436205, -1.0562645, -1.0719812]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Optimized for alpha: 1.16 took:7 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:39]: Estimated remaining time: 7 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:41]: Learned parameters value at step 100: [0.012241308, 1.740171, 0.19117434, -0.11501548, -0.023128154, 1.6768715, -0.18153891, 0.12389421, -1.3075763, -1.3264562]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:41]: Optimized for alpha: 1.32 took:6 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:41]: Estimated remaining time: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:44]: Learned parameters value at step 150: [0.0059265457, 1.6544132, 0.10685024, -0.069873035, -0.005905526, 1.6014311, -0.10698294, 0.06976842, -1.2415875, -1.2433097]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:44]: Optimized for alpha: 1.24 took:5 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:44]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:44]: Trained for alpha: 1.24 parameters: [0.0059265457, 1.6544132, 0.10685024, -0.069873035, -0.005905526, 1.6014311, -0.10698294, 0.06976842, -1.2415875, -1.2433097] p_err: 0.0015888810157775879
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:44]: _train_for_one_alpha_one_codebook, took: 21 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:44]: Optimized and trained for alpha: 1.24 pSucc: 0.9984111189842224 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:44]: current codebook: [[1.2374999999999998, 1.2374999999999998], [1.2374999999999998, -1.2374999999999998], [-1.2374999999999998, -1.2374999999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:44]: Optimizing for alpha: 1.24 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:44]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Learned parameters value at step 100: [-0.013203866, 0.17777075, -0.11537259, 0.20106845, 0.004311819, -0.65909374, 0.12031696, -0.20833862, -0.9749715, -0.98052657]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimized for alpha: 0.91 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Trained for alpha: 0.91 parameters: [-0.013203866, 0.17777075, -0.11537259, 0.20106845, 0.004311819, -0.65909374, 0.12031696, -0.20833862, -0.9749715, -0.98052657] p_err: 0.0217553973197937
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimized and trained for alpha: 0.91 pSucc: 0.9782446026802063 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: current codebook: [[0.9124999999999999, -0.9124999999999999], [-0.9124999999999999, 0.9124999999999999], [-0.9124999999999999, -0.9124999999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimizing for alpha: 0.91 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:45]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Learned parameters value at step 100: [-0.010753315, -0.25598562, -0.14508097, 0.3442936, 0.00019749327, -0.5678902, 0.1462904, -0.34075838, -1.0380484, -1.0393908]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimized for alpha: 0.99 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Trained for alpha: 0.99 parameters: [-0.010753315, -0.25598562, -0.14508097, 0.3442936, 0.00019749327, -0.5678902, 0.1462904, -0.34075838, -1.0380484, -1.0393908] p_err: 0.012159347534179688
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimized and trained for alpha: 0.99 pSucc: 0.9878406524658203 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: current codebook: [[0.9937499999999998, -0.9937499999999998], [-0.9937499999999998, 0.9937499999999998], [-0.9937499999999998, -0.9937499999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimizing for alpha: 0.99 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:45]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Learned parameters value at step 100: [0.009763508, -0.30428872, -0.1241007, 0.3323, -0.024215294, -0.5299077, 0.11044605, -0.31434497, -1.0984817, -1.0998056]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimized for alpha: 1.08 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Trained for alpha: 1.08 parameters: [0.009763508, -0.30428872, -0.1241007, 0.3323, -0.024215294, -0.5299077, 0.11044605, -0.31434497, -1.0984817, -1.0998056] p_err: 0.006452083587646484
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimized and trained for alpha: 1.08 pSucc: 0.9935479164123535 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: current codebook: [[1.075, -1.075], [-1.075, 1.075], [-1.075, -1.075]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimizing for alpha: 1.08 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:45]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Learned parameters value at step 100: [0.05091611, -0.31046268, -0.07286107, 0.31638727, 0.0037429282, -0.53312355, 0.09085333, -0.3369575, -1.1054976, -1.1075044]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimized for alpha: 1.16 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Trained for alpha: 1.16 parameters: [0.05091611, -0.31046268, -0.07286107, 0.31638727, 0.0037429282, -0.53312355, 0.09085333, -0.3369575, -1.1054976, -1.1075044] p_err: 0.003312051296234131
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: _train_for_one_alpha_one_codebook, took: 13 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimized and trained for alpha: 1.16 pSucc: 0.9966879487037659 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: current codebook: [[1.15625, -1.15625], [-1.15625, 1.15625], [-1.15625, -1.15625]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:45]: Optimizing for alpha: 1.16 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:45]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:47]: Learned parameters value at step 150: [0.015607827, 1.7394141, 0.18765257, -0.11838718, -0.019389778, 1.6785094, -0.18522528, 0.12063242, -1.3141171, -1.3277798]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:47]: Optimized for alpha: 1.32 took:5 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:47]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:47]: Trained for alpha: 1.32 parameters: [0.015607827, 1.7394141, 0.18765257, -0.11838718, -0.019389778, 1.6785094, -0.18522528, 0.12063242, -1.3141171, -1.3277798] p_err: 0.000762641429901123
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:47]: _train_for_one_alpha_one_codebook, took: 20 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:47]: Optimized and trained for alpha: 1.32 pSucc: 0.9992373585700989 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:47]: current codebook: [[1.3187499999999999, 1.3187499999999999], [1.3187499999999999, -1.3187499999999999], [-1.3187499999999999, -1.3187499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:47]: Optimizing for alpha: 1.32 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:58:47]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:50]: Learned parameters value at step 50: [-0.07015149, 0.39032513, 0.22836839, -0.09624936, -0.035893563, 0.32319757, -0.2679638, 0.14822079, -1.1302419, -1.1348758]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:50]: Optimized for alpha: 1.24 took:6 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:50]: Estimated remaining time: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Learned parameters value at step 50: [-0.0052081607, 1.4292905, 0.010529263, -0.051896535, 0.00067734346, 1.3628774, -0.049910698, 0.043157585, -1.0268596, -0.999612]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Optimized for alpha: 0.91 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Learned parameters value at step 50: [-0.0412115, 1.5596882, 0.06682843, -0.34957877, -0.032974243, 1.3737206, -0.119359404, 0.28077295, -1.0943518, -1.0626317]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Optimized for alpha: 0.99 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Learned parameters value at step 50: [-0.04234157, 1.5493197, -0.06856931, 0.13849968, -0.0391353, -0.50975144, 0.03549586, -0.16529363, -1.1014674, -1.1849271]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Optimized for alpha: 1.08 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:51]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:52]: Learned parameters value at step 50: [-0.033028863, 1.360371, -0.010660427, 0.10094881, -0.048418168, 0.21760225, -0.044351656, -0.122595884, -1.0990568, -1.2870083]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:52]: Optimized for alpha: 1.16 took:6 seconds. steps: [50/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:52]: Estimated remaining time: 6 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:53]: Learned parameters value at step 50: [-0.15999155, 0.2208797, 0.09359695, 0.009055567, -0.06832116, 0.15800181, -0.17339532, 0.05842424, -1.0038718, -0.94220424]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:53]: Optimized for alpha: 1.32 took:6 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:53]: Estimated remaining time: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:56]: Learned parameters value at step 100: [-0.054391503, 0.39008948, 0.2329331, -0.10179631, -0.017239772, 0.327094, -0.26506257, 0.13528407, -1.1615415, -1.1586071]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:56]: Optimized for alpha: 1.24 took:5 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:56]: Estimated remaining time: 3 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Learned parameters value at step 100: [-0.0012087813, 1.5187374, 0.032708768, -0.05119385, 0.0008608129, 1.4477049, -0.032655578, 0.049738213, -0.96556866, -0.96165794]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized for alpha: 0.91 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Trained for alpha: 0.91 parameters: [-0.0012087813, 1.5187374, 0.032708768, -0.05119385, 0.0008608129, 1.4477049, -0.032655578, 0.049738213, -0.96556866, -0.96165794] p_err: 0.021032392978668213
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: _train_for_one_alpha_one_codebook, took: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized and trained for alpha: 0.91 pSucc: 0.9789676070213318 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized and trained for alpha: 0.91 pSucc: 0.97846320271492 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: execute, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: launch_execution, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Learned parameters value at step 100: [-0.0003127422, 1.6618062, 0.0951281, -0.31811202, 0.0014332018, 1.398454, -0.09558999, 0.31995693, -1.0232428, -1.0245993]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized for alpha: 0.99 took:6 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Trained for alpha: 0.99 parameters: [-0.0003127422, 1.6618062, 0.0951281, -0.31811202, 0.0014332018, 1.398454, -0.09558999, 0.31995693, -1.0232428, -1.0245993] p_err: 0.011903107166290283
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: _train_for_one_alpha_one_codebook, took: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized and trained for alpha: 0.99 pSucc: 0.9880968928337097 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized and trained for alpha: 0.99 pSucc: 0.9879163354635239 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: execute, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: launch_execution, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Learned parameters value at step 100: [-0.030172255, 1.6011773, -0.06646064, 0.17133738, -0.0361567, -0.6894285, 0.066032685, -0.17229308, -1.0730705, -1.1161435]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized for alpha: 1.08 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Trained for alpha: 1.08 parameters: [-0.030172255, 1.6011773, -0.06646064, 0.17133738, -0.0361567, -0.6894285, 0.066032685, -0.17229308, -1.0730705, -1.1161435] p_err: 0.006373226642608643
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: _train_for_one_alpha_one_codebook, took: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized and trained for alpha: 1.08 pSucc: 0.9936267733573914 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: Optimized and trained for alpha: 1.08 pSucc: 0.9934849739074707 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: execute, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:57]: launch_execution, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Learned parameters value at step 100: [-0.0064092656, 1.4154673, 0.008682121, 0.10702364, -0.050133433, 0.21034303, -0.022148268, -0.11844509, -1.1016787, -1.2250255]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Optimized for alpha: 1.16 took:5 seconds. steps: [100/100]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Trained for alpha: 1.16 parameters: [-0.0064092656, 1.4154673, 0.008682121, 0.10702364, -0.050133433, 0.21034303, -0.022148268, -0.11844509, -1.1016787, -1.2250255] p_err: 0.003296196460723877
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: _train_for_one_alpha_one_codebook, took: 12 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Optimized and trained for alpha: 1.16 pSucc: 0.9967038035392761 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Optimized and trained for alpha: 1.16 pSucc: 0.9963633120059967 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: execute, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: launch_execution, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Learned parameters value at step 100: [-0.15394728, 0.21043219, 0.09835148, 0.00651543, -0.058294147, 0.15881103, -0.15892626, 0.053801414, -1.0244428, -1.0185573]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Optimized for alpha: 1.32 took:5 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:58:58]: Estimated remaining time: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:01]: Learned parameters value at step 150: [-0.04760242, 0.38511264, 0.23513788, -0.10244701, -0.008362637, 0.32643214, -0.25933555, 0.12675375, -1.1783415, -1.1780146]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:01]: Optimized for alpha: 1.24 took:4 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:01]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:01]: Trained for alpha: 1.24 parameters: [-0.04760242, 0.38511264, 0.23513788, -0.10244701, -0.008362637, 0.32643214, -0.25933555, 0.12675375, -1.1783415, -1.1780146] p_err: 0.001619100570678711
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:01]: _train_for_one_alpha_one_codebook, took: 16 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:01]: Optimized and trained for alpha: 1.24 pSucc: 0.9983808994293213 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:01]: current codebook: [[1.2374999999999998, 1.2374999999999998], [-1.2374999999999998, 1.2374999999999998], [-1.2374999999999998, -1.2374999999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:01]: Optimizing for alpha: 1.24 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:59:01]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:02]: Learned parameters value at step 150: [-0.14441532, 0.20043312, 0.09877018, 0.0049721715, -0.048554692, 0.15629958, -0.14996786, 0.046302713, -1.0512366, -1.0498571]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:02]: Optimized for alpha: 1.32 took:3 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:02]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:02]: Trained for alpha: 1.32 parameters: [-0.14441532, 0.20043312, 0.09877018, 0.0049721715, -0.048554692, 0.15629958, -0.14996786, 0.046302713, -1.0512366, -1.0498571] p_err: 0.0009602904319763184
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:02]: _train_for_one_alpha_one_codebook, took: 15 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:02]: Optimized and trained for alpha: 1.32 pSucc: 0.9990397095680237 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:02]: current codebook: [[1.3187499999999999, 1.3187499999999999], [-1.3187499999999999, 1.3187499999999999], [-1.3187499999999999, -1.3187499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:02]: Optimizing for alpha: 1.32 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:59:02]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:05]: Learned parameters value at step 50: [0.07823938, -0.37011504, -0.10415678, 0.14533879, 0.050428826, -0.054516286, 0.13220496, -0.1933068, -1.0973253, -1.1049153]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:05]: Optimized for alpha: 1.24 took:4 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:05]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:06]: Learned parameters value at step 50: [0.10857758, -0.3773663, -0.014038382, 0.07871446, 0.0893335, 0.067561574, 0.07127446, -0.12049727, -1.0330706, -1.0283512]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:06]: Optimized for alpha: 1.32 took:4 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:06]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:09]: Learned parameters value at step 100: [0.061045527, -0.36799672, -0.101726405, 0.14888662, 0.032395918, -0.054147817, 0.13571991, -0.18383576, -1.1276962, -1.1294067]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:09]: Optimized for alpha: 1.24 took:3 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:09]: Estimated remaining time: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:10]: Learned parameters value at step 100: [0.101104714, -0.37594485, -0.016647624, 0.075278126, 0.08285423, 0.07238473, 0.060154155, -0.11925359, -1.068486, -1.0693322]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:10]: Optimized for alpha: 1.32 took:3 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:10]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:13]: Learned parameters value at step 150: [0.051983356, -0.36232346, -0.10365303, 0.14987598, 0.02374249, -0.05212866, 0.13117968, -0.17727411, -1.1511587, -1.1514319]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:13]: Optimized for alpha: 1.24 took:3 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:13]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:13]: Trained for alpha: 1.24 parameters: [0.051983356, -0.36232346, -0.10365303, 0.14987598, 0.02374249, -0.05212866, 0.13117968, -0.17727411, -1.1511587, -1.1514319] p_err: 0.0016438961029052734
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:13]: _train_for_one_alpha_one_codebook, took: 11 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:13]: Optimized and trained for alpha: 1.24 pSucc: 0.9983561038970947 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:13]: current codebook: [[1.2374999999999998, -1.2374999999999998], [-1.2374999999999998, 1.2374999999999998], [-1.2374999999999998, -1.2374999999999998]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:13]: Optimizing for alpha: 1.24 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:59:13]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:14]: Learned parameters value at step 150: [0.091780305, -0.37257233, -0.016347168, 0.073938936, 0.0751217, 0.07738867, 0.05477907, -0.11241612, -1.0929284, -1.0934198]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:14]: Optimized for alpha: 1.32 took:4 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:14]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:14]: Trained for alpha: 1.32 parameters: [0.091780305, -0.37257233, -0.016347168, 0.073938936, 0.0751217, 0.07738867, 0.05477907, -0.11241612, -1.0929284, -1.0934198] p_err: 0.0008988380432128906
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:14]: _train_for_one_alpha_one_codebook, took: 11 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:14]: Optimized and trained for alpha: 1.32 pSucc: 0.9991011619567871 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:14]: current codebook: [[1.3187499999999999, -1.3187499999999999], [-1.3187499999999999, 1.3187499999999999], [-1.3187499999999999, -1.3187499999999999]]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:14]: Optimizing for alpha: 1.32 
+codebook_size:3 plays:1 modes:2 ancillas: 0 
+ steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] 
+layers:1 squeezing: False
+[CSD] 0.0.1|INFO|2022-02-05 11:59:14]: number of parameters: 10
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:17]: Learned parameters value at step 50: [0.19350843, -0.12719615, 0.009987127, 0.09539274, -0.013964387, -0.1066713, -0.035373632, -0.07907391, -1.4609689, -1.0036509]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:17]: Optimized for alpha: 1.24 took:4 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:17]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:18]: Learned parameters value at step 50: [0.23651926, 0.014363734, 0.12417834, 0.08833351, -0.0045129163, 0.23788168, -0.12639043, -0.04481031, -1.5776148, -0.98451644]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:18]: Optimized for alpha: 1.32 took:3 seconds. steps: [50/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:18]: Estimated remaining time: 8 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:21]: Learned parameters value at step 100: [0.17567864, -0.09929163, 0.013571338, 0.08424357, -0.032282747, -0.13239722, -0.023823323, -0.093516216, -1.403311, -1.0472667]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:21]: Optimized for alpha: 1.24 took:3 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:21]: Estimated remaining time: 2 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:22]: Learned parameters value at step 100: [0.2150426, 0.046221793, 0.13365583, 0.06568962, -0.019323027, 0.27154875, -0.12903951, -0.06479342, -1.5484391, -1.0315007]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:22]: Optimized for alpha: 1.32 took:3 seconds. steps: [100/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:22]: Estimated remaining time: 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: Learned parameters value at step 150: [0.15542865, -0.09066126, 0.016156891, 0.087447464, -0.050695997, -0.13507342, -0.020413414, -0.090388194, -1.3668293, -1.1050524]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: Optimized for alpha: 1.24 took:3 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: Trained for alpha: 1.24 parameters: [0.15542865, -0.09066126, 0.016156891, 0.087447464, -0.050695997, -0.13507342, -0.020413414, -0.090388194, -1.3668293, -1.1050524] p_err: 0.0016930103302001953
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: _train_for_one_alpha_one_codebook, took: 11 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: Optimized and trained for alpha: 1.24 pSucc: 0.9983069896697998 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: Optimized and trained for alpha: 1.24 pSucc: 0.9983637779951096 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: execute, took: 1 minute and 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:24]: launch_execution, took: 1 minute and 1 second.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: Learned parameters value at step 150: [0.19451897, 0.049283966, 0.13136417, 0.063665636, -0.03235334, 0.26941466, -0.1306126, -0.06732275, -1.5188651, -1.0879326]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: Optimized for alpha: 1.32 took:3 seconds. steps: [150/150]
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: Estimated remaining time: 0 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: Trained for alpha: 1.32 parameters: [0.19451897, 0.049283966, 0.13136417, 0.063665636, -0.03235334, 0.26941466, -0.1306126, -0.06732275, -1.5188651, -1.0879326] p_err: 0.0009273886680603027
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: _train_for_one_alpha_one_codebook, took: 11 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: Optimized and trained for alpha: 1.32 pSucc: 0.9990726113319397 codebook_size:3
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: Optimized and trained for alpha: 1.32 pSucc: 0.9991127103567123 batch_size:4 plays:1 modes:2 ancillas: 0 steps: [100,150,300], l_rate: [0.1,0.01,0.01], cutoff_dim: [7,10,10] layers:1 squeezing: False
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: execute, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: launch_execution, took: 59 seconds.
+[CSD] 0.0.1|DEBUG|2022-02-05 11:59:26]: _general_execution, took: 2 minutes and 14 seconds.
