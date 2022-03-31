@@ -267,7 +267,7 @@ if __name__ == "__main__":
     # one_codeword = create_codeword_from_binary(binary_codeword=one_binary_codeword, one_alpha=one_alpha)
 
     cutoff_dim = CutOffDimensions(default=2, high=2, extreme=2)
-    squeezing = False
+    squeezing = True
     # # optimized_parameters = [-0.008990095928311348,
     # #                         -1.7685526609420776,
     # #                         -0.00886836089193821,
