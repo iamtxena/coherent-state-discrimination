@@ -44,3 +44,28 @@ Find the mathematica file and a screenshot where you can take the expressions of
 
 ![Mathematica Screenshot](./doc/images/mathematica.png)
 
+## Running the simulation
+
+There are several ways to run the simulation, all of them are available at the `examples` folder. From all of them, you need first to install the library by running on the project base directory:
+
+```sh
+pip install .
+```
+
+Then you can execute the `parallel_experiments.py` editing the file and selecting the option you desire to run:
+
+```python
+list_number_input_modes = [2]
+list_squeezing = [False]
+number_ancillas = 0
+max_combinations = 0
+```
+
+* list_number_input_modes: specify the list of input number of modes.
+* list_squeezing: specify if you want to simulate with squeezing layer, True or False. It can be both if you want a simulation for either one.
+* number_ancillas: specify the number of ancillas to use
+* max_combinations: when using all possible combination of codebooks, specify the number of maximum combinations to train. If you set this parameter to `0`, then it will apply the linear codes technique.
+
+Once your simulation has finished, you should run `process_results.py` to consolidate all your results into a single results `csv` file and plot the results.
+
+Then, you can run the jupyter notebook `plot_testing_results.ipynb` or `plot_testing_best_results.ipynb` that will read from that `csv` file to plot interactive results.
