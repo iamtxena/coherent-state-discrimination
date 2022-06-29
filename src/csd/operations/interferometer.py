@@ -9,29 +9,31 @@ from strawberryfields.parameters import FreeParameter
 
 
 class Interferometer(ABC):
-    """ General linear interferometer, an array of beamsplitters and phase shifters.
+    """General linear interferometer, an array of beamsplitters and phase shifters.
 
-        For M wires, the general interferometer is specified by providing
-        M(M−1)/2 transmittivity angles θ and the same number of phase angles ϕ,
-        as well as M−1 additional rotation parameters φ.
+    For M wires, the general interferometer is specified by providing
+    M(M−1)/2 transmittivity angles θ and the same number of phase angles ϕ,
+    as well as M−1 additional rotation parameters φ.
 
-        The default scheme is 'rectangular': uses the scheme described in Clements et al.,
-        resulting in a rectangular array of M(M−1)/2 beamsplitters arranged in M slices
-        and ordered from left to right and top to bottom in each slice.
-        The first beamsplitter acts on wires 0 and 1.
+    The default scheme is 'rectangular': uses the scheme described in Clements et al.,
+    resulting in a rectangular array of M(M−1)/2 beamsplitters arranged in M slices
+    and ordered from left to right and top to bottom in each slice.
+    The first beamsplitter acts on wires 0 and 1.
 
-        The implementation is based on pennylane, but using strawberry library:
-        https://pennylane.readthedocs.io/en/stable/code/api/pennylane.templates.subroutines.Interferometer.html
+    The implementation is based on pennylane, but using strawberry library:
+    https://pennylane.readthedocs.io/en/stable/code/api/pennylane.templates.subroutines.Interferometer.html
     """
 
     @typechecked
-    def __init__(self,
-                 theta: List[Union[float, EagerTensor, FreeParameter]],
-                 phi: List[Union[float, EagerTensor, FreeParameter]],
-                 varphi: List[Union[float, EagerTensor, FreeParameter]],
-                 number_modes: int,
-                 context) -> None:
-        """ Creates an Interferometer to the specified circuit (program context)
+    def __init__(
+        self,
+        theta: List[Union[float, EagerTensor, FreeParameter]],
+        phi: List[Union[float, EagerTensor, FreeParameter]],
+        varphi: List[Union[float, EagerTensor, FreeParameter]],
+        number_modes: int,
+        context,
+    ) -> None:
+        """Creates an Interferometer to the specified circuit (program context)
 
         Args:
             theta (tensor_like): size :math:`(M(M-1)/2,)` tensor of transmittivity angles :math:`\theta`

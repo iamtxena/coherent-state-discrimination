@@ -318,7 +318,7 @@ def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration) ->
 def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
     os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
-    # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
     backend = Backends.TENSORFLOW
     measuring_type = MeasuringTypes.PROBABILITIES
@@ -340,20 +340,24 @@ if __name__ == "__main__":
     # one_alpha = alphas[5]
     # alphas = [alphas[8]]
     # alphas = alphas[:-3]
-    alphas = [alphas[5]]
+    # alphas = [alphas[3], alphas[4], alphas[5]]
+    alphas = [alphas[3]]
+    # alphas = [alphas[4], alphas[5]]
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [2]
+    list_number_input_modes = [3]
+    # list_number_input_modes = [4]
     list_squeezing = [False]
-    one_ancilla = 0
-    number_ancillas = one_ancilla
+    list_number_ancillas = [0]
     shots = 1
     plays = 1
     number_layers = 1
     max_combinations = 0
 
-    for number_input_modes, squeezing_option in itertools.product(list_number_input_modes, list_squeezing):
+    for number_input_modes, squeezing_option, number_ancillas in itertools.product(
+        list_number_input_modes, list_squeezing, list_number_ancillas
+    ):
         learning_steps = LearningSteps(default=100, high=150, extreme=300)
         learning_rate = LearningRate(default=0.1, high=0.01, extreme=0.01)
         cutoff_dim = CutOffDimensions(default=7, high=7, extreme=7)

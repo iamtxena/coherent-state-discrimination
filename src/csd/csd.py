@@ -34,7 +34,7 @@ from typing import Optional, Tuple, Union, cast, List
 import numpy as np
 from time import time
 from csd.config import logger
-from tensorflow.python.framework.ops import EagerTensor
+from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
 from csd.optimize import Optimize
 from csd.plot import Plot
 from csd.typings.cost_function import CostFunctionOptions

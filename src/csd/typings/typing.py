@@ -1,11 +1,10 @@
 from typing import Dict, NamedTuple, TypedDict, Union, List
 import enum
 import numpy as np
-from nptyping import NDArray
 import json
 from dataclasses import dataclass
 
-from tensorflow.python.framework.ops import EagerTensor
+from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
 from tensorflow import Variable
 from csd.batch import Batch
 
@@ -18,7 +17,7 @@ class LearningSteps(NamedTuple):
     extreme: int
 
     def __str__(self) -> str:
-        return f'[{self.default},{self.high},{self.extreme}]'
+        return f"[{self.default},{self.high},{self.extreme}]"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -30,7 +29,7 @@ class LearningRate(NamedTuple):
     extreme: float
 
     def __str__(self) -> str:
-        return f'[{self.default},{self.high},{self.extreme}]'
+        return f"[{self.default},{self.high},{self.extreme}]"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -42,7 +41,7 @@ class CutOffDimensions(NamedTuple):
     extreme: int
 
     def __str__(self) -> str:
-        return f'[{self.default},{self.high},{self.extreme}]'
+        return f"[{self.default},{self.high},{self.extreme}]"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -76,25 +75,25 @@ class CSDConfiguration(TypedDict, total=False):
 
 
 class Backends(enum.Enum):
-    FOCK = 'fock'
-    GAUSSIAN = 'gaussian'
-    BOSONIC = 'bosonic'
-    TENSORFLOW = 'tf'
+    FOCK = "fock"
+    GAUSSIAN = "gaussian"
+    BOSONIC = "bosonic"
+    TENSORFLOW = "tf"
 
 
 class MeasuringTypes(enum.Enum):
-    SAMPLING = 'sampling'
-    PROBABILITIES = 'probabilities'
+    SAMPLING = "sampling"
+    PROBABILITIES = "probabilities"
 
 
 class RunningTypes(enum.Enum):
-    TRAINING = 'training'
-    TESTING = 'testing'
+    TRAINING = "training"
+    TESTING = "testing"
 
 
 class OptimizationBackends(enum.Enum):
-    SCIPY = 'scipy'
-    TENSORFLOW = 'tf'
+    SCIPY = "scipy"
+    TENSORFLOW = "tf"
 
 
 class RunConfiguration(TypedDict, total=False):
@@ -129,8 +128,7 @@ class ResultExecution(TypedDict):
 
 
 class EngineRunOptions(TypedDict):
-    params: Union[List[Union[float, EagerTensor]],
-                  NDArray[np.float]]
+    params: Union[List[Union[float, EagerTensor]], List[np.float32]]
     input_codeword: CodeWord
     output_codeword: CodeWord
     shots: int
@@ -147,7 +145,7 @@ class TFEngineRunOptions(TypedDict):
 
 
 @dataclass
-class CodeWordSuccessProbability():
+class CodeWordSuccessProbability:
     input_codeword: CodeWord
     guessed_codeword: CodeWord
     output_codeword: CodeWord
@@ -155,14 +153,18 @@ class CodeWordSuccessProbability():
     counts: Variable
 
     def __str__(self) -> str:
-        return json.dumps({
-            "input_codeword": self.input_codeword.word,
-            "guessed_codeword": self.guessed_codeword.word if self.guessed_codeword is not None else None,
-            "output_codeword": self.output_codeword.word,
-            "psucc": (self.success_probability
-                      if isinstance(self.success_probability, float)
-                      else float(self.success_probability.numpy()))
-        })
+        return json.dumps(
+            {
+                "input_codeword": self.input_codeword.word,
+                "guessed_codeword": self.guessed_codeword.word if self.guessed_codeword is not None else None,
+                "output_codeword": self.output_codeword.word,
+                "psucc": (
+                    self.success_probability
+                    if isinstance(self.success_probability, float)
+                    else float(self.success_probability.numpy())
+                ),
+            }
+        )
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -170,12 +172,14 @@ class CodeWordSuccessProbability():
     @property
     def binary_code(self) -> dict:
         return {
-            'input_codeword': self.input_codeword.binary_code,
-            'guessed_codeword': self.guessed_codeword.binary_code if self.guessed_codeword is not None else None,
-            'output_codeword': self.output_codeword.binary_code,
-            'psucc': (self.success_probability
-                      if isinstance(self.success_probability, float)
-                      else float(self.success_probability.numpy()))
+            "input_codeword": self.input_codeword.binary_code,
+            "guessed_codeword": self.guessed_codeword.binary_code if self.guessed_codeword is not None else None,
+            "output_codeword": self.output_codeword.binary_code,
+            "psucc": (
+                self.success_probability
+                if isinstance(self.success_probability, float)
+                else float(self.success_probability.numpy())
+            ),
         }
 
 
@@ -184,25 +188,19 @@ class CodeWordIndices(NamedTuple):
     indices: List[List[int]]
 
     def __str__(self) -> str:
-        return json.dumps({
-            "codeword": self.codeword.word,
-            "indices": self.indices
-        })
+        return json.dumps({"codeword": self.codeword.word, "indices": self.indices})
 
     def __repr__(self) -> str:
         return self.__str__()
 
 
 @dataclass
-class BatchSuccessProbability():
+class BatchSuccessProbability:
     codeword_indices: CodeWordIndices
     success_probability: List[EagerTensor]
 
     def __str__(self) -> str:
-        return json.dumps({
-            "codeword_indices": self.codeword_indices.__str__(),
-            "psucc": self.success_probability
-        })
+        return json.dumps({"codeword_indices": self.codeword_indices.__str__(), "psucc": self.success_probability})
 
     def __repr__(self) -> str:
         return self.__str__()
