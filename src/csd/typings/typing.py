@@ -101,6 +101,7 @@ class RunConfiguration(TypedDict, total=False):
     optimization_backend: OptimizationBackends
     measuring_type: MeasuringTypes
     running_type: RunningTypes
+    binary_codebook: List[List[int]]
 
 
 class OneProcessResultExecution(TypedDict):

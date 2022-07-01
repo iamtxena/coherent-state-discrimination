@@ -40,6 +40,7 @@ class MultiProcessConfiguration(NamedTuple):
     squeezing: List[bool]
     number_ancillas: List[int]
     max_combinations: List[int]
+    binary_codebook: List[List[List[int]]]
 
 
 class LaunchExecutionConfiguration(NamedTuple):
@@ -57,6 +58,7 @@ class LaunchExecutionConfiguration(NamedTuple):
     number_ancillas: int
     alpha: float
     max_combinations: int
+    binary_codebook: List[int]
 
 
 def _set_plot_label(plot_label_backend: Backends, measuring_type: MeasuringTypes) -> str:
@@ -140,6 +142,7 @@ def launch_execution(configuration: LaunchExecutionConfiguration) -> ResultExecu
                 "run_backend": configuration.launch_backend,
                 "optimization_backend": OptimizationBackends.TENSORFLOW,
                 "measuring_type": configuration.measuring_type,
+                "binary_codebook": configuration.binary_codebook,
             }
         )
     )
@@ -161,6 +164,7 @@ def uncurry_launch_execution(t) -> ResultExecution:
         number_ancillas=t[11],
         alpha=t[12],
         max_combinations=t[13],
+        binary_codebook=t[14],
     )
     return launch_execution(configuration=one_execution_configuration)
 
@@ -300,6 +304,7 @@ def _build_iterator(
         multiprocess_configuration.number_ancillas,
         multiprocess_configuration.alphas,
         multiprocess_configuration.max_combinations,
+        multiprocess_configuration.binary_codebook,
     )
 
 
@@ -340,20 +345,21 @@ if __name__ == "__main__":
     # one_alpha = alphas[5]
     # alphas = [alphas[8]]
     # alphas = alphas[:-3]
-    alphas = [alphas[3], alphas[4], alphas[5]]
-    # alphas = [alphas[3]]
+    # alphas = [alphas[3], alphas[4], alphas[5]]
+    alphas = [alphas[3]]
     # alphas = [alphas[4], alphas[5]]
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [6]
+    list_number_input_modes = [2]
     # list_number_input_modes = [4]
     list_squeezing = [False]
     list_number_ancillas = [1]
     shots = 1
     plays = 1
     number_layers = 1
-    max_combinations = 0
+    max_combinations = 200
+    binary_codebook = [[1, 1], [0, 0], [0, 1], [1, 0]]
 
     for number_input_modes, squeezing_option, number_ancillas in itertools.product(
         list_number_input_modes, list_squeezing, list_number_ancillas
@@ -385,6 +391,7 @@ if __name__ == "__main__":
             squeezing=[squeezing_option] * number_alphas,
             number_ancillas=[number_ancillas] * number_alphas,
             max_combinations=[max_combinations] * number_alphas,
+            binary_codebook=[binary_codebook] * number_alphas,
         )
 
         multi_tf_backend(multiprocess_configuration=multiprocess_configuration)

@@ -2,7 +2,6 @@ import argparse
 import itertools
 from typing import List
 from csd import CSD
-from csd.batch import Batch
 from csd.codebooks import CodeBooks
 from csd.codeword import CodeWord
 from csd.typings.typing import CutOffDimensions
