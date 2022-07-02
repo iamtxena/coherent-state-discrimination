@@ -34,10 +34,11 @@ from typing import Optional, Tuple, Union, cast, List
 import numpy as np
 from time import time
 from csd.config import logger
-from tensorflow.python.framework.ops import EagerTensor
+from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
 from csd.optimize import Optimize
 from csd.plot import Plot
 from csd.typings.cost_function import CostFunctionOptions
+from csd.utils.codebook import create_codebook_from_binary
 from csd.utils.util import (
     CodeBookLogInformation,
     create_optimized_parameters_to_print,
@@ -627,7 +628,12 @@ class CSD(ABC):
             testing_average_ideal_homodyne_probability_all_codebooks = 0.0
             testing_average_ideal_helstrom_probability_all_codebooks = 0.0
 
-            codebooks = CodeBooks(batch=self._current_batch, max_combinations=self._max_combinations)
+            if self._run_configuration is not None and "binary_codebook" in self._run_configuration:
+                codebooks = create_codebook_from_binary(
+                    binary_codebook=self._run_configuration["binary_codebook"], one_alpha=self._alpha_value
+                )
+            else:
+                codebooks = CodeBooks(batch=self._current_batch, max_combinations=self._max_combinations)
             self._all_codebooks_size = codebooks.size
             logger.debug(
                 f"Optimizing for alpha: {np.round(self._alpha_value, 2)} " f"with {self._all_codebooks_size} codebooks."

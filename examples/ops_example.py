@@ -13,14 +13,14 @@ import itertools
 def convert_word_to_fock_prob_indices(word: List[str], cutoff_dim: int) -> List[List[int]]:
     number_modes = len(word)
 
-    if word.count('-a') == 0:
+    if word.count("-a") == 0:
         return [[0] * number_modes]
 
     prob_indices = []
     dimensions_more_than_0_photons = [i for i in range(cutoff_dim) if i > 0]
-    zero_list = [0 if letter == 'a' else letter for letter in word]
-    indices = np.where(np.array(word) == '-a')[0]
-    minus_groups = [p for p in itertools.product(dimensions_more_than_0_photons, repeat=word.count('-a'))]
+    zero_list = [0 if letter == "a" else letter for letter in word]
+    indices = np.where(np.array(word) == "-a")[0]
+    minus_groups = [p for p in itertools.product(dimensions_more_than_0_photons, repeat=word.count("-a"))]
 
     for minus_group in minus_groups:
         for dimension, index in zip(minus_group, indices):
@@ -44,10 +44,13 @@ def compute_fock_prob_one_word(result: Result, fock_prob_indices_one_word: List[
 
 def compute_fock_prob_all_words(result: Result, number_modes: int, cutoff_dimension: int) -> List[float]:
     fock_prob_indices_all_words = get_fock_prob_indices_from_modes(
-        number_modes=number_modes, cutoff_dimension=cutoff_dimension)
+        number_modes=number_modes, cutoff_dimension=cutoff_dimension
+    )
 
-    return [compute_fock_prob_one_word(result=result, fock_prob_indices_one_word=fock_prob_indices_one_word)
-            for fock_prob_indices_one_word in fock_prob_indices_all_words]
+    return [
+        compute_fock_prob_one_word(result=result, fock_prob_indices_one_word=fock_prob_indices_one_word)
+        for fock_prob_indices_one_word in fock_prob_indices_all_words
+    ]
 
 
 def create_circuit():
@@ -74,12 +77,7 @@ def create_circuit():
         # sf.ops.MeasureFock() | q
 
     prog.print()
-    results = eng.run(prog, args={
-        "alpha": 0.1,
-        "beta": 0.5,
-        "r": 0.2,
-        "phi_r": 0.1
-    })
+    results = eng.run(prog, args={"alpha": 0.1, "beta": 0.5, "r": 0.2, "phi_r": 0.1})
     # probs = results.state.all_fock_probs()
     # print(probs)
     # # print(modes)
@@ -118,11 +116,7 @@ def create_interferometer():
     print(varphi)
 
     with prog.context as q:
-        Interferometer(theta=theta,
-                       phi=phi,
-                       varphi=varphi,
-                       number_modes=number_modes,
-                       context=q)
+        Interferometer(theta=theta, phi=phi, varphi=varphi, number_modes=number_modes, context=q)
         # sf.ops.MeasureFock() | q
 
     prog.print()
@@ -141,16 +135,12 @@ def create_parametrized_interferometer():
     M = number_modes
     K = int(M * (M - 1) / 2)
     prog = sf.Program(number_modes)
-    theta = _create_free_parameter_list(base_name='theta', number_elems=K, circuit=prog)
-    phi = _create_free_parameter_list(base_name='phi', number_elems=K, circuit=prog)
-    varphi = _create_free_parameter_list(base_name='varphi', number_elems=M, circuit=prog)
+    theta = _create_free_parameter_list(base_name="theta", number_elems=K, circuit=prog)
+    phi = _create_free_parameter_list(base_name="phi", number_elems=K, circuit=prog)
+    varphi = _create_free_parameter_list(base_name="varphi", number_elems=M, circuit=prog)
 
     with prog.context as q:
-        Interferometer(theta=theta,
-                       phi=phi,
-                       varphi=varphi,
-                       number_modes=number_modes,
-                       context=q)
+        Interferometer(theta=theta, phi=phi, varphi=varphi, number_modes=number_modes, context=q)
         sf.ops.MeasureFock() | q
 
     prog.print()
@@ -173,18 +163,20 @@ def create_universal_multimode(squeezing: bool = True):
     a = _create_random_list(M)
 
     with prog.context as q:
-        UniversalMultimode(theta_1=theta_1,
-                           phi_1=phi_1,
-                           varphi_1=varphi_1,
-                           r=r,
-                           phi_r=phi_r,
-                           theta_2=theta_2,
-                           phi_2=phi_2,
-                           varphi_2=varphi_2,
-                           a=a,
-                           number_modes=number_modes,
-                           context=q,
-                           squeezing=squeezing)
+        UniversalMultimode(
+            theta_1=theta_1,
+            phi_1=phi_1,
+            varphi_1=varphi_1,
+            r=r,
+            phi_r=phi_r,
+            theta_2=theta_2,
+            phi_2=phi_2,
+            varphi_2=varphi_2,
+            a=a,
+            number_modes=number_modes,
+            context=q,
+            squeezing=squeezing,
+        )
         # sf.ops.MeasureFock() | q
 
     prog.print()
@@ -202,33 +194,34 @@ def create_parametrized_universal_multimode(squeezing: bool = True):
     M = number_modes
     K = int(M * (M - 1) / 2)
     prog = sf.Program(number_modes)
-    theta_1 = _create_free_parameter_list(base_name='theta_1', number_elems=K, circuit=prog)
-    phi_1 = _create_free_parameter_list(base_name='phi_1', number_elems=K, circuit=prog)
-    varphi_1 = _create_free_parameter_list(base_name='varphi_1', number_elems=M, circuit=prog)
-    r = _create_free_parameter_list(base_name='r', number_elems=M, circuit=prog)
-    phi_r = _create_free_parameter_list(base_name='phi_r', number_elems=M, circuit=prog)
-    theta_2 = _create_free_parameter_list(base_name='theta_2', number_elems=K, circuit=prog)
-    phi_2 = _create_free_parameter_list(base_name='phi_2', number_elems=K, circuit=prog)
-    varphi_2 = _create_free_parameter_list(base_name='varphi_2', number_elems=M, circuit=prog)
-    a = _create_free_parameter_list(base_name='a', number_elems=M, circuit=prog)
+    theta_1 = _create_free_parameter_list(base_name="theta_1", number_elems=K, circuit=prog)
+    phi_1 = _create_free_parameter_list(base_name="phi_1", number_elems=K, circuit=prog)
+    varphi_1 = _create_free_parameter_list(base_name="varphi_1", number_elems=M, circuit=prog)
+    r = _create_free_parameter_list(base_name="r", number_elems=M, circuit=prog)
+    phi_r = _create_free_parameter_list(base_name="phi_r", number_elems=M, circuit=prog)
+    theta_2 = _create_free_parameter_list(base_name="theta_2", number_elems=K, circuit=prog)
+    phi_2 = _create_free_parameter_list(base_name="phi_2", number_elems=K, circuit=prog)
+    varphi_2 = _create_free_parameter_list(base_name="varphi_2", number_elems=M, circuit=prog)
+    a = _create_free_parameter_list(base_name="a", number_elems=M, circuit=prog)
 
-    parameters = _count_free_parameters(
-        theta_1, phi_1, varphi_1, r, phi_r, theta_2, phi_2, varphi_2, a, squeezing)
+    parameters = _count_free_parameters(theta_1, phi_1, varphi_1, r, phi_r, theta_2, phi_2, varphi_2, a, squeezing)
     print(parameters)
 
     with prog.context as q:
-        UniversalMultimode(theta_1=theta_1,
-                           phi_1=phi_1,
-                           varphi_1=varphi_1,
-                           r=r,
-                           phi_r=phi_r,
-                           theta_2=theta_2,
-                           phi_2=phi_2,
-                           varphi_2=varphi_2,
-                           a=a,
-                           number_modes=number_modes,
-                           context=q,
-                           squeezing=squeezing)
+        UniversalMultimode(
+            theta_1=theta_1,
+            phi_1=phi_1,
+            varphi_1=varphi_1,
+            r=r,
+            phi_r=phi_r,
+            theta_2=theta_2,
+            phi_2=phi_2,
+            varphi_2=varphi_2,
+            a=a,
+            number_modes=number_modes,
+            context=q,
+            squeezing=squeezing,
+        )
         sf.ops.MeasureFock() | q
 
     prog.print()
@@ -238,30 +231,38 @@ def _create_random_list(number_elems: int) -> List[float]:
     return np.random.rand(1, number_elems)[0].tolist()
 
 
-def _create_free_parameter_list(base_name: str,
-                                number_elems: int,
-                                circuit: sf.Program) -> List[FreeParameter]:
-    return [circuit.params(f'{base_name}_{str(elem)}') for elem in range(number_elems)]
+def _create_free_parameter_list(base_name: str, number_elems: int, circuit: sf.Program) -> List[FreeParameter]:
+    return [circuit.params(f"{base_name}_{str(elem)}") for elem in range(number_elems)]
 
 
-def _count_free_parameters(theta_1: List[Union[float, EagerTensor, FreeParameter]],
-                           phi_1: List[Union[float, EagerTensor, FreeParameter]],
-                           varphi_1: List[Union[float, EagerTensor, FreeParameter]],
-                           r: List[Union[float, EagerTensor, FreeParameter]],
-                           phi_r: List[Union[float, EagerTensor, FreeParameter]],
-                           theta_2: List[Union[float, EagerTensor, FreeParameter]],
-                           phi_2: List[Union[float, EagerTensor, FreeParameter]],
-                           varphi_2: List[Union[float, EagerTensor, FreeParameter]],
-                           a: List[Union[float, EagerTensor, FreeParameter]],
-                           squeezing: bool = True) -> None:
+def _count_free_parameters(
+    theta_1: List[Union[float, EagerTensor, FreeParameter]],
+    phi_1: List[Union[float, EagerTensor, FreeParameter]],
+    varphi_1: List[Union[float, EagerTensor, FreeParameter]],
+    r: List[Union[float, EagerTensor, FreeParameter]],
+    phi_r: List[Union[float, EagerTensor, FreeParameter]],
+    theta_2: List[Union[float, EagerTensor, FreeParameter]],
+    phi_2: List[Union[float, EagerTensor, FreeParameter]],
+    varphi_2: List[Union[float, EagerTensor, FreeParameter]],
+    a: List[Union[float, EagerTensor, FreeParameter]],
+    squeezing: bool = True,
+) -> None:
     if squeezing:
-        return (len(theta_1) + len(phi_1) + len(varphi_1) + len(r) +
-                len(phi_r) + len(theta_2) + len(phi_2) + len(varphi_2) + len(a))
-    return (len(theta_1) + len(phi_1) + len(varphi_1) +
-            len(theta_2) + len(phi_2) + len(varphi_2) + len(a))
+        return (
+            len(theta_1)
+            + len(phi_1)
+            + len(varphi_1)
+            + len(r)
+            + len(phi_r)
+            + len(theta_2)
+            + len(phi_2)
+            + len(varphi_2)
+            + len(a)
+        )
+    return len(theta_1) + len(phi_1) + len(varphi_1) + len(theta_2) + len(phi_2) + len(varphi_2) + len(a)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # create_interferometer()
     create_universal_multimode()
     # create_universal_multimode(squeezing=False)

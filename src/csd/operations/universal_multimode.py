@@ -9,38 +9,40 @@ from .interferometer import Interferometer
 
 
 class UniversalMultimode(ABC):
-    """ Creates a set of gates that represents universal gates to
-        a multi mode circuit.
-        Based on pennylane CVNeuralNetLayers:
-        https://pennylane.readthedocs.io/en/stable/code/api/pennylane.templates.layers.CVNeuralNetLayers.html
+    """Creates a set of gates that represents universal gates to
+    a multi mode circuit.
+    Based on pennylane CVNeuralNetLayers:
+    https://pennylane.readthedocs.io/en/stable/code/api/pennylane.templates.layers.CVNeuralNetLayers.html
 
-        A sequence of layers of a continuous-variable quantum
-        neural network, as specified in arXiv:1806.06871.
-        The layer consists of interferometers, displacement and
-        squeezing gates mimicking the linear transformation of a
-        neural network in the x-basis of the quantum system,
-        in this implementation, without the Kerr gate.
+    A sequence of layers of a continuous-variable quantum
+    neural network, as specified in arXiv:1806.06871.
+    The layer consists of interferometers, displacement and
+    squeezing gates mimicking the linear transformation of a
+    neural network in the x-basis of the quantum system,
+    in this implementation, without the Kerr gate.
 
-        This implementation applys to only one layer with M modes,
-        and include interferometers of K=M(M−1)/2 beamsplitters.
+    This implementation applys to only one layer with M modes,
+    and include interferometers of K=M(M−1)/2 beamsplitters.
 
     """
 
     @typechecked
-    def __init__(self,
-                 theta_1: List[Union[float, EagerTensor, FreeParameter]],
-                 phi_1: List[Union[float, EagerTensor, FreeParameter]],
-                 varphi_1: List[Union[float, EagerTensor, FreeParameter]],
-                 r: List[Union[float, EagerTensor, FreeParameter]],
-                 phi_r: List[Union[float, EagerTensor, FreeParameter]],
-                 theta_2: List[Union[float, EagerTensor, FreeParameter]],
-                 phi_2: List[Union[float, EagerTensor, FreeParameter]],
-                 varphi_2: List[Union[float, EagerTensor, FreeParameter]],
-                 a: List[Union[float, EagerTensor, FreeParameter]],
-                 number_modes: int,
-                 context,
-                 squeezing: bool = True) -> None:
-        """ Creates an Universal Multimode gate to the specified circuit (program context)
+    def __init__(
+        self,
+        theta_1: List[Union[float, EagerTensor, FreeParameter]],
+        phi_1: List[Union[float, EagerTensor, FreeParameter]],
+        varphi_1: List[Union[float, EagerTensor, FreeParameter]],
+        r: List[Union[float, EagerTensor, FreeParameter]],
+        phi_r: List[Union[float, EagerTensor, FreeParameter]],
+        theta_2: List[Union[float, EagerTensor, FreeParameter]],
+        phi_2: List[Union[float, EagerTensor, FreeParameter]],
+        varphi_2: List[Union[float, EagerTensor, FreeParameter]],
+        a: List[Union[float, EagerTensor, FreeParameter]],
+        number_modes: int,
+        context,
+        squeezing: bool = True,
+    ) -> None:
+        """Creates an Universal Multimode gate to the specified circuit (program context)
 
         Args:
             theta_1 (List[Union[float, EagerTensor]]): shape (1,K) tensor of transmittivity
