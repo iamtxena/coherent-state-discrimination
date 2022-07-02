@@ -255,7 +255,7 @@ def _general_execution(
     measuring_type: MeasuringTypes,
 ):
     start_time = time()
-    pool = Pool(1)
+    pool = Pool(3)
     # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
     execution_results = pool.map_async(
         func=uncurry_launch_execution,
@@ -346,20 +346,23 @@ if __name__ == "__main__":
     # alphas = [alphas[8]]
     # alphas = alphas[:-3]
     # alphas = [alphas[3], alphas[4], alphas[5]]
-    alphas = [alphas[3]]
-    # alphas = [alphas[4], alphas[5]]
+    # alphas = [alphas[4]]
+    alphas = [alphas[4], alphas[5]]
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [2]
+    list_number_input_modes = [4]
     # list_number_input_modes = [4]
     list_squeezing = [False]
-    list_number_ancillas = [1]
+    list_number_ancillas = [3]
     shots = 1
     plays = 1
     number_layers = 1
-    max_combinations = 200
-    binary_codebook = [[1, 1], [0, 0], [0, 1], [1, 0]]
+    max_combinations = 200000
+    # binary_codebook = [[0, 0, 0], [1, 1, 1]] # modes=3
+    # binary_codebook = [[0, 0, 0, 0], [1, 1, 1, 1]]  # modes=4 ancilla=0,1 alphas[3]
+    binary_codebook = [[0, 0, 0, 0], [0, 1, 1, 1], [1, 0, 1, 1], [1, 1, 0, 0]]  # modes=4 ancilla=0,1,2,3 alphas[4]
+    # binary_codebook = [[0, 0, 0, 0], [0, 1, 1, 1], [1, 0, 1, 1], [1, 1, 0, 0]] # modes=4 ancilla=0,1,2,3 alphas[5]
 
     for number_input_modes, squeezing_option, number_ancillas in itertools.product(
         list_number_input_modes, list_squeezing, list_number_ancillas
