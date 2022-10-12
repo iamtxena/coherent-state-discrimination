@@ -2,14 +2,14 @@
 from abc import ABC
 from typing import List, Optional, Union
 
-from strawberryfields.parameters import FreeParameter
-from tensorflow.python.framework.ops import EagerTensor
-from csd.operations.universal_multimode import UniversalMultimode
-from csd.typings.typing import Architecture, MeasuringTypes, RunningTypes
-
 # from csd.config import logger
 import strawberryfields as sf
+from strawberryfields.parameters import FreeParameter
+from tensorflow.python.framework.ops import EagerTensor
 from typeguard import typechecked
+
+from csd.operations.universal_multimode import UniversalMultimode
+from csd.typings.typing import Architecture, MeasuringTypes, RunningTypes
 
 
 class Circuit(ABC):

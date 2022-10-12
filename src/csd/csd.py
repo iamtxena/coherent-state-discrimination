@@ -1,56 +1,61 @@
 from abc import ABC
+from time import time
+from typing import List, Optional, Tuple, Union, cast
+
+import numpy as np
+from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
+
+from csd.batch import Batch
 from csd.best_codebook import BestCodeBook
 from csd.circuit import Circuit
 from csd.codebooks import CodeBooks
 from csd.codeword import CodeWord
+from csd.config import logger
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
 from csd.ideal_probabilities import IdealLinearCodesHelstromProbability, IdealLinearCodesHomodyneProbability
 from csd.optimization_testing import OptimizationTesting
+from csd.optimize import Optimize
+from csd.plot import Plot
 
 # from csd.optimization_testing import OptimizationTesting
 from csd.tf_engine import TFEngine
 from csd.top5_best_codebooks import Top5_BestCodeBooks
+from csd.typings.cost_function import CostFunctionOptions
 from csd.typings.global_result import GlobalResult
+from csd.typings.multi_layer_circuit import MultiLayerCircuit
 from csd.typings.optimization_testing import OptimizationTestingOptions
 
 # from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (
+    Architecture,
     Backends,
-    CSDConfiguration,
     CodeWordSuccessProbability,
+    CSDConfiguration,
     CutOffDimensions,
     LearningRate,
     LearningSteps,
+    MeasuringTypes,
     OptimizationBackends,
     OptimizationResult,
-    RunConfiguration,
-    MeasuringTypes,
     ResultExecution,
-    Architecture,
+    RunConfiguration,
     RunningTypes,
 )
-from typing import Optional, Tuple, Union, cast, List
-import numpy as np
-from time import time
-from csd.config import logger
-from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
-from csd.optimize import Optimize
-from csd.plot import Plot
-from csd.typings.cost_function import CostFunctionOptions
 from csd.utils.codebook import create_codebook_from_binary
 from csd.utils.util import (
     CodeBookLogInformation,
     create_optimized_parameters_to_print,
     print_codebook_log,
-    timing,
     save_object_to_disk,
+    timing,
 )
-from csd.batch import Batch
+
 from .cost_function import CostFunction
 
 
 class CSD(ABC):
+    """Coherent State Discrimination main class"""
 
     DEFAULT_NUM_SHOTS = 1000
     DEFAULT_CUTOFF_DIMENSION = CutOffDimensions(default=7, high=14, extreme=30)
@@ -104,7 +109,7 @@ class CSD(ABC):
         self._probability_results: List[ResultExecution] = []
         self._sampling_results: List[ResultExecution] = []
         self._plot: Union[Plot, None] = None
-        self._training_circuit: Union[Circuit, None] = None
+        self._training_circuit: Union[MultiLayerCircuit, None] = None
         self._run_configuration: Union[RunConfiguration, None] = None
         self._architecture = self._default_architecture()
 
@@ -142,7 +147,7 @@ class CSD(ABC):
             random_words=random_words,
         )
 
-    def _create_circuit(self, running_type: RunningTypes = RunningTypes.TRAINING) -> Circuit:
+    def _create_circuit(self, running_type: RunningTypes = RunningTypes.TRAINING) -> MultiLayerCircuit:
         """Creates a circuit to run an experiment based on configuration parameters
 
         Returns:
@@ -151,13 +156,28 @@ class CSD(ABC):
         if self._run_configuration is None:
             raise ValueError("Run configuration not specified")
 
-        return Circuit(
+        base_circuit = Circuit(
             architecture=self._architecture,
             measuring_type=self._run_configuration["measuring_type"],
             running_type=running_type,
         )
+        return MultiLayerCircuit(number_layers=self._architecture["number_layers"], base_circuit=base_circuit)
 
     def _cost_function(self, params: List[float]) -> Tuple[Union[float, EagerTensor], List[CodeWordSuccessProbability]]:
+        """Cost function
+
+        Args:
+            params (List[float]): List of parameters to optimize
+
+        Raises:
+            ValueError: _description_
+            ValueError: _description_
+            ValueError: _description_
+            ValueError: _description_
+
+        Returns:
+            Tuple[Union[float, EagerTensor], List[CodeWordSuccessProbability]]: _description_
+        """
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
         if self._run_configuration is None:
@@ -582,7 +602,7 @@ class CSD(ABC):
         testing_result = self._init_result()
 
         logger.debug(
-            f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
+            f"Executing circuit with Backend: {self._run_configuration['run_backend'].value}, "
             " with measuring_type: "
             f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value} \n"
             f"batch_size:{self._batch_size} plays:{self._plays}"
@@ -606,6 +626,7 @@ class CSD(ABC):
         )
 
     def _train_and_test(self, training_result: ResultExecution, testing_result: ResultExecution, random_words: bool):
+        """train the circuit and with the selected best parameters, run a single execution with those parameters"""
         if self._training_circuit is None:
             raise ValueError("Training circuit must be initialized")
         if self._testing_circuit is None:
@@ -968,6 +989,7 @@ class CSD(ABC):
 
     @timing
     def _train_for_one_alpha_one_codebook(self) -> OptimizationResult:
+        """train for one alpha and one codebook"""
         if self._training_circuit is None:
             raise ValueError("Circuit must be initialized")
 

@@ -1,24 +1,25 @@
 # engine.py
+import itertools
 from abc import ABC
+from typing import List, Optional, Union
+
 import strawberryfields as sf
-from strawberryfields.result import Result
+import tensorflow as tf
 from strawberryfields.backends import BaseState
+from strawberryfields.result import Result
+from tensorflow.python.framework.ops import EagerTensor
 from typeguard import typechecked
+
 from csd.codeword import CodeWord
+from csd.typings.multi_layer_circuit import MultiLayerCircuit
 from csd.typings.typing import (
-    Backends,
     BackendOptions,
+    Backends,
     CodeWordIndices,
     CodeWordSuccessProbability,
     EngineRunOptions,
     MeasuringTypes,
 )
-from csd.circuit import Circuit
-from typing import List, Optional, Union
-import itertools
-from tensorflow.python.framework.ops import EagerTensor
-import tensorflow as tf
-
 from csd.utils.util import generate_all_codewords_from_codeword, generate_measurement_matrices
 
 # from csd.config import logger
@@ -139,7 +140,7 @@ class Engine(ABC):
         return max_codeword_success_probability
 
     def run_circuit_checking_measuring_type(
-        self, circuit: Circuit, options: EngineRunOptions
+        self, circuit: MultiLayerCircuit, options: EngineRunOptions
     ) -> CodeWordSuccessProbability:
 
         if options["measuring_type"] is MeasuringTypes.SAMPLING:
@@ -149,7 +150,9 @@ class Engine(ABC):
 
         return self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
 
-    def _run_circuit_sampling(self, circuit: Circuit, options: EngineRunOptions) -> List[CodeWordSuccessProbability]:
+    def _run_circuit_sampling(
+        self, circuit: MultiLayerCircuit, options: EngineRunOptions
+    ) -> List[CodeWordSuccessProbability]:
         """Run a circuit experiment doing MeasureFock and performing samplint with nshots"""
         # if self._engine.backend_name == Backends.GAUSSIAN.value:
         #     return sum([1 for read_value in self._run_circuit(circuit=circuit, options=options).samples
@@ -191,7 +194,7 @@ class Engine(ABC):
         ]
 
     def _run_circuit_probabilities(
-        self, circuit: Circuit, options: EngineRunOptions
+        self, circuit: MultiLayerCircuit, options: EngineRunOptions
     ) -> List[CodeWordSuccessProbability]:
         """Run a circuit experiment computing the fock probability"""
         options["shots"] = 0
@@ -237,7 +240,7 @@ class Engine(ABC):
             for codeword_indices in all_codewords_indices
         ]
 
-    def _run_circuit(self, circuit: Circuit, options: EngineRunOptions) -> Result:
+    def _run_circuit(self, circuit: MultiLayerCircuit, options: EngineRunOptions) -> Result:
         """Run an experiment using the engine with the passed options"""
         # reset the engine if it has already been executed
         if self._engine.run_progs:
@@ -249,7 +252,7 @@ class Engine(ABC):
             shots=options["shots"],
         )
 
-    def _parse_circuit_parameters(self, circuit: Circuit, options: EngineRunOptions) -> dict:
+    def _parse_circuit_parameters(self, circuit: MultiLayerCircuit, options: EngineRunOptions) -> dict:
         all_values = [elem for elem in options["input_codeword"].to_list()]
         for param in options["params"]:
             all_values.append(param)

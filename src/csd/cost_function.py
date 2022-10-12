@@ -2,16 +2,17 @@
 from abc import ABC
 from typing import List, Tuple, Union
 
-# import numpy as np
-
 # import tensorflow as tf
 from tensorflow.python.framework.ops import EagerTensor
+
 from csd.batch import Batch
 from csd.codeword import CodeWord
-from csd.tf_engine import TFEngine
-from csd.typings.typing import Backends, CodeWordSuccessProbability, EngineRunOptions, RunningTypes, TFEngineRunOptions
-from csd.typings.cost_function import CostFunctionOptions
 from csd.config import logger
+from csd.tf_engine import TFEngine
+from csd.typings.cost_function import CostFunctionOptions
+from csd.typings.typing import Backends, CodeWordSuccessProbability, EngineRunOptions, RunningTypes, TFEngineRunOptions
+
+# import numpy as np
 
 
 class CostFunction(ABC):
@@ -40,8 +41,8 @@ class CostFunction(ABC):
         if self._options.backend_name == Backends.TENSORFLOW.value:
             if not isinstance(self._options.engine, TFEngine):
                 raise ValueError("TF Backend can only run on TFEngine.")
-            return self._options.engine.run_tf_circuit_checking_measuring_type(
-                circuit=self._options.circuit,
+            return self._options.engine.run_tf_multi_layer_circuit_checking_measuring_type(
+                multi_layer_circuit=self._options.circuit,
                 options=TFEngineRunOptions(
                     params=self._params,
                     input_batch=self._input_batch,
@@ -96,6 +97,11 @@ class CostFunction(ABC):
     def run_and_compute_average_batch_error_probability(
         self,
     ) -> Tuple[Union[float, EagerTensor], List[CodeWordSuccessProbability]]:
+        """run and compute average batch error probability
+
+        Returns:
+            Tuple[Union[float, EagerTensor], List[CodeWordSuccessProbability]]: _description_
+        """
         # loss = 1 - sum([self._compute_one_play_average_batch_success_probability(
         #     codeword_guesses=self._run_and_get_codeword_guesses())
         #     for _ in range(self._options.plays)]

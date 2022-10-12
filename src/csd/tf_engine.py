@@ -1,28 +1,98 @@
 # engine.py
 from typing import List, Union
-from csd.batch import Batch
-from csd.codeword import CodeWord
-from csd.utils.probability import compute_maximum_likelihood
-from .engine import Engine
-from strawberryfields.result import Result
+
 import tensorflow as tf
+from strawberryfields.result import Result
 from tensorflow.python.framework.ops import EagerTensor
-from csd.typings.typing import CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions
+
+from csd.batch import Batch
 from csd.circuit import Circuit
+from csd.codeword import CodeWord
 from csd.config import logger
+from csd.typings.multi_layer_circuit import MultiLayerCircuit
+from csd.typings.typing import CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions
+from csd.utils.probability import compute_maximum_likelihood, compute_multilayer_maximum_likelihood
+
+from .engine import Engine
 
 
 class TFEngine(Engine):
     """EagerTensor Flow Engine class"""
 
-    def run_tf_circuit_checking_measuring_type(
+    def _run_internal_circuit_checking_measuring_type(
         self, circuit: Circuit, options: TFEngineRunOptions
-    ) -> List[CodeWordSuccessProbability]:
+    ) -> List[List[CodeWordSuccessProbability]]:
+        """run internal circuit checking measuring type
 
-        batch_success_probabilities = (
+        Args:
+            circuit (Circuit): _description_
+            options (TFEngineRunOptions): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        return (
             self._run_tf_circuit_probabilities(circuit=circuit, options=options)
             if options["measuring_type"] is MeasuringTypes.PROBABILITIES
             else self._run_tf_sampling(circuit=circuit, options=options)
+        )
+
+    def _first_mode_result_is_zero(self, batch_success_probabilities: List[List[CodeWordSuccessProbability]]) -> bool:
+        """returns if the first mode result is zero from the given probabilities"""
+        # TODO: check the first mode result if it is zero or not
+        return True
+
+    def run_tf_multi_layer_circuit_checking_measuring_type(
+        self, multi_layer_circuit: MultiLayerCircuit, options: TFEngineRunOptions
+    ) -> List[CodeWordSuccessProbability]:
+        """Run Tensorflow circuit checking for measuring type
+
+        Args:
+            circuit (MultiLayerCircuit): _description_
+            options (TFEngineRunOptions): _description_
+
+        Returns:
+            List[CodeWordSuccessProbability]: _description_
+        """
+        if multi_layer_circuit.number_layers == 1:
+            return self.run_tf_circuit_checking_measuring_type(
+                circuit=multi_layer_circuit.first_layer.circuit, options=options
+            )
+
+        batch_success_probabilities_first_layer = self._run_internal_circuit_checking_measuring_type(
+            circuit=multi_layer_circuit.first_layer.circuit, options=options
+        )
+        if multi_layer_circuit.second_layer is None:
+            raise ValueError("Second layer MUST be defined when number_layers == 2")
+        second_layer_circuit_to_run = (
+            multi_layer_circuit.second_layer.circuit_zero_on_first_layer_mode
+            if self._first_mode_result_is_zero(batch_success_probabilities=batch_success_probabilities_first_layer)
+            else multi_layer_circuit.second_layer.circuit_one_on_first_layer_mode
+        )
+        batch_success_probabilities_second_layer = self._run_internal_circuit_checking_measuring_type(
+            circuit=second_layer_circuit_to_run, options=options
+        )
+        return compute_multilayer_maximum_likelihood(
+            batch_success_probabilities_first_layer=batch_success_probabilities_first_layer,
+            batch_success_probabilities_second_layer=batch_success_probabilities_second_layer,
+            output_batch=options["output_batch"],
+        )
+
+    def run_tf_circuit_checking_measuring_type(
+        self, circuit: Circuit, options: TFEngineRunOptions
+    ) -> List[CodeWordSuccessProbability]:
+        """Run Tensorflow circuit checking for measuring type
+
+        Args:
+            circuit (Circuit): _description_
+            options (TFEngineRunOptions): _description_
+
+        Returns:
+            List[CodeWordSuccessProbability]: _description_
+        """
+
+        batch_success_probabilities = self._run_internal_circuit_checking_measuring_type(
+            circuit=circuit, options=options
         )
 
         return compute_maximum_likelihood(

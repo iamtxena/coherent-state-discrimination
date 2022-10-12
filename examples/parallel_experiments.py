@@ -1,25 +1,26 @@
 import itertools
+import os
 from multiprocessing import Pool  # , cpu_count
 from time import time  # , sleep
 from typing import Iterator, List, NamedTuple
+
+import numpy as np
 from csd import CSD
 from csd.global_result_manager import GlobalResultManager
 from csd.plot import Plot
 from csd.typings.typing import (
+    Backends,
+    CSDConfiguration,
     CutOffDimensions,
     LearningRate,
     LearningSteps,
     MeasuringTypes,
-    CSDConfiguration,
-    Backends,
     OneProcessResultExecution,
     OptimizationBackends,
     ResultExecution,
     RunConfiguration,
 )
-import numpy as np
 from csd.utils.util import timing
-import os
 
 # from csd.config import logger
 
@@ -346,7 +347,7 @@ if __name__ == "__main__":
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [3]
+    list_number_input_modes = [2]
     # list_number_input_modes = [4]
     list_squeezing = [False]
     list_number_ancillas = [0]

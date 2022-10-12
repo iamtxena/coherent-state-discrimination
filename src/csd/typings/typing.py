@@ -1,14 +1,13 @@
-from typing import Dict, NamedTuple, TypedDict, Union, List
 import enum
-import numpy as np
 import json
 from dataclasses import dataclass
+from typing import Dict, List, NamedTuple, TypedDict, Union
 
-from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
-from tensorflow import Variable
+import numpy as np
 from csd.batch import Batch
-
 from csd.codeword import CodeWord
+from tensorflow import Variable
+from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
 
 
 class LearningSteps(NamedTuple):
@@ -53,6 +52,8 @@ class BackendOptions(TypedDict, total=False):
 
 
 class Architecture(TypedDict, total=False):
+    """CSD architecture"""
+
     number_modes: int
     number_ancillas: int
     number_layers: int
@@ -60,6 +61,8 @@ class Architecture(TypedDict, total=False):
 
 
 class CSDConfiguration(TypedDict, total=False):
+    """CSD configuration"""
+
     alphas: List[float]
     learning_steps: LearningSteps
     learning_rate: LearningRate
@@ -97,6 +100,8 @@ class OptimizationBackends(enum.Enum):
 
 
 class RunConfiguration(TypedDict, total=False):
+    """Run configuration"""
+
     run_backend: Backends
     optimization_backend: OptimizationBackends
     measuring_type: MeasuringTypes
@@ -129,6 +134,8 @@ class ResultExecution(TypedDict):
 
 
 class EngineRunOptions(TypedDict):
+    """Engine Run Options"""
+
     params: Union[List[Union[float, EagerTensor]], List[np.float32]]
     input_codeword: CodeWord
     output_codeword: CodeWord
@@ -137,6 +144,8 @@ class EngineRunOptions(TypedDict):
 
 
 class TFEngineRunOptions(TypedDict):
+    """Tensorflow Engine Run Options"""
+
     params: List[EagerTensor]
     input_batch: Batch
     output_batch: Batch
@@ -147,6 +156,8 @@ class TFEngineRunOptions(TypedDict):
 
 @dataclass
 class CodeWordSuccessProbability:
+    """CodeWord Success probability"""
+
     input_codeword: CodeWord
     guessed_codeword: CodeWord
     output_codeword: CodeWord
