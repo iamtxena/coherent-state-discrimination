@@ -1,7 +1,9 @@
+import copy
 from typing import List, Tuple, Union
 
 from csd.batch import Batch
 from csd.codeword import CodeWord
+from csd.config import logger
 from csd.typings.typing import CodeWordSuccessProbability
 
 
@@ -82,10 +84,66 @@ def compute_maximum_likelihood(
     return maximum_likelihood
 
 
+def _multiply_success_probabilities(
+    first_layer_success_probabilities: CodeWordSuccessProbability,
+    second_layer_success_probabilities: CodeWordSuccessProbability,
+) -> CodeWordSuccessProbability:
+    """Multiply success probabilities
+
+    Args:
+        first_layer_success_probabilities (CodeWordSuccessProbability): _description_
+        second_layer_success_probabilities (CodeWordSuccessProbability): _description_
+
+    Raises:
+        ValueError: _description_
+
+    Returns:
+        CodeWordSuccessProbability: _description_
+    """
+    if (
+        first_layer_success_probabilities.input_codeword != second_layer_success_probabilities.input_codeword
+        or first_layer_success_probabilities.guessed_codeword != second_layer_success_probabilities.guessed_codeword
+        or first_layer_success_probabilities.output_codeword != second_layer_success_probabilities.output_codeword
+    ):
+        raise ValueError("One layer CodeWordSuccessProbability does not match second_layer_success_probabilities one")
+    multiplied_maximum_likelihood = copy.deepcopy(first_layer_success_probabilities)
+    multiplied_maximum_likelihood.success_probability = (
+        first_layer_success_probabilities.success_probability * second_layer_success_probabilities.success_probability
+    )
+    return multiplied_maximum_likelihood
+
+
 def compute_multilayer_maximum_likelihood(
     batch_success_probabilities_first_layer: List[List[CodeWordSuccessProbability]],
     batch_success_probabilities_second_layer: List[List[CodeWordSuccessProbability]],
     output_batch: Batch,
 ) -> List[CodeWordSuccessProbability]:
+    """Compute multilayer maximum likelihood
 
-    raise NotImplementedError
+    Args:
+        batch_success_probabilities_first_layer (List[List[CodeWordSuccessProbability]]): _description_
+        batch_success_probabilities_second_layer (List[List[CodeWordSuccessProbability]]): _description_
+        output_batch (Batch): _description_
+
+    Returns:
+        List[CodeWordSuccessProbability]: _description_
+    """
+    max_likelihood_first_layer = compute_maximum_likelihood(
+        batch_success_probabilities=batch_success_probabilities_first_layer,
+        output_batch=output_batch,
+    )
+    max_likelihood_second_layer = compute_maximum_likelihood(
+        batch_success_probabilities=batch_success_probabilities_second_layer,
+        output_batch=output_batch,
+    )
+    maximum_likelihood_multiplied_probabilities = [
+        _multiply_success_probabilities(
+            first_layer_success_probabilities=first_layer_success_probabilities,
+            second_layer_success_probabilities=second_layer_success_probabilities,
+        )
+        for first_layer_success_probabilities, second_layer_success_probabilities in zip(
+            max_likelihood_first_layer, max_likelihood_second_layer
+        )
+    ]
+    logger.info(maximum_likelihood_multiplied_probabilities)
+    return maximum_likelihood_multiplied_probabilities

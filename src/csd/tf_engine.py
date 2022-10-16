@@ -40,6 +40,7 @@ class TFEngine(Engine):
     def _first_mode_result_is_zero(self, batch_success_probabilities: List[List[CodeWordSuccessProbability]]) -> bool:
         """returns if the first mode result is zero from the given probabilities"""
         # TODO: check the first mode result if it is zero or not
+        logger.info(batch_success_probabilities)
         return True
 
     def run_tf_multi_layer_circuit_checking_measuring_type(
@@ -64,6 +65,12 @@ class TFEngine(Engine):
         )
         if multi_layer_circuit.second_layer is None:
             raise ValueError("Second layer MUST be defined when number_layers == 2")
+
+        # take all codeword_success_probabilities that has a 0 in the first mode output -> and adapt the batch from the options
+        # do the same for the ones that has a 1 (the rest)
+        # run both sets
+        # join both set results and check that all possibilites are satisfied -> put them in the same order as the first list
+
         second_layer_circuit_to_run = (
             multi_layer_circuit.second_layer.circuit_zero_on_first_layer_mode
             if self._first_mode_result_is_zero(batch_success_probabilities=batch_success_probabilities_first_layer)
