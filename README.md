@@ -1,5 +1,9 @@
 # Coherent State Discrimination
 
+This repository contains the algorithm developed for the article "Optical decoder learning for fiber communication at the quantum limit". 
+It consists of: classical code construction, simulation of the quantum circuit, training and testing algorithm, data-collection. 
+The aim is to train an optical decoder to maximize the decoding success probability for bit transmission using quantum states of light.
+
 ## Objective
 
 Devise a program that can discover good parameter setups within the GPF decoder family for the communication problem at hand. The decoder is a GPF operation that takes as input a multi-mode sequence of coherent states with binary phase modulation, i.e., the quantum codeword, and outputs a guess of the codeword that was initially sent.
