@@ -1,29 +1,30 @@
 import itertools
-from multiprocessing import Pool  # , cpu_count
+import os
+from multiprocessing import Pool, cpu_count
 from time import time  # , sleep
 from typing import Iterator, List, NamedTuple
+
+import numpy as np
 from csd import CSD
 from csd.global_result_manager import GlobalResultManager
 from csd.plot import Plot
 from csd.typings.typing import (
+    Backends,
+    CSDConfiguration,
     CutOffDimensions,
     LearningRate,
     LearningSteps,
     MeasuringTypes,
-    CSDConfiguration,
-    Backends,
     OneProcessResultExecution,
     OptimizationBackends,
     ResultExecution,
     RunConfiguration,
 )
-import numpy as np
 from csd.utils.util import timing
-import os
 
 # from csd.config import logger
 
-TESTING = True
+TESTING = False
 PATH_RESULTS = GlobalResultManager(testing=TESTING)._base_dir_path
 
 
@@ -251,12 +252,15 @@ def _general_execution(
     measuring_type: MeasuringTypes,
 ):
     start_time = time()
-    pool = Pool(1)
-    # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
-    execution_results = pool.map_async(
-        func=uncurry_launch_execution,
-        iterable=_build_iterator(multiprocess_configuration, backend, measuring_type),
-    ).get()
+    # Use all available CPUs except one
+    num_cpus = max(1, cpu_count() - 1)
+
+    # Using 'with' statement to manage the pool lifecycle
+    with Pool(num_cpus) as pool:
+        execution_results = pool.map_async(
+            func=uncurry_launch_execution,
+            iterable=_build_iterator(multiprocess_configuration, backend, measuring_type),
+        ).get()
 
     result = create_full_execution_result(
         full_backend=backend,
@@ -264,8 +268,6 @@ def _general_execution(
         multiprocess_configuration=multiprocess_configuration,
         results=execution_results,
     )
-    pool.close()
-    pool.join()
 
     _update_result_with_total_time(result=result, start_time=start_time)
     plot_results(
@@ -341,12 +343,13 @@ if __name__ == "__main__":
     # alphas = [alphas[8]]
     # alphas = alphas[:-3]
     # alphas = [alphas[3], alphas[4], alphas[5]]
-    alphas = [alphas[3]]
+    # alphas = [alphas[3]]
     # alphas = [alphas[4], alphas[5]]
+    alphas = [0.50625]
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [3]
+    list_number_input_modes = [2, 3, 4]
     # list_number_input_modes = [4]
     list_squeezing = [False]
     list_number_ancillas = [0]
