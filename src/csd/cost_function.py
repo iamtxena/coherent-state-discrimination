@@ -75,46 +75,65 @@ class CostFunction(ABC):
         if self._options.backend_name == Backends.TENSORFLOW.value:
             if not isinstance(self._options.engine, TFEngine):
                 raise ValueError("TF Backend can only run on TFEngine.")
-            options = TFEngineRunOptions(
-                params=self._params,
-                input_batch=self._input_batch,
-                output_batch=self._output_batch,
-                shots=self._options.shots,
-                measuring_type=self._options.measuring_type,
-                running_type=RunningTypes.TRAINING,
-                metric_type=MetricTypes.SUCCESS_PROBABILITY,  # Explicitly for success probability
-            )
             return self._options.engine.run_tf_circuit_checking_measuring_type(
-                circuit=self._options.circuit, options=options
+                circuit=self._options.circuit,
+                options=TFEngineRunOptions(
+                    params=self._params,
+                    input_batch=self._input_batch,
+                    output_batch=self._output_batch,
+                    shots=self._options.shots,
+                    measuring_type=self._options.measuring_type,
+                    metric_type=MetricTypes.SUCCESS_PROBABILITY,
+                    running_type=RunningTypes.TRAINING,
+                ),
             )
-        else:
-            raise NotImplementedError("Other backends not implemented")
+        return [
+            self._options.engine.run_circuit_checking_measuring_type(
+                circuit=self._options.circuit,
+                options=EngineRunOptions(
+                    params=self._params,
+                    input_codeword=codeword,
+                    output_codeword=CodeWord(size=self._options.circuit.number_modes, alpha_value=codeword.alpha),
+                    shots=self._options.shots,
+                    measuring_type=self._options.measuring_type,
+                ),
+            )
+            for codeword in self._input_batch.codewords
+        ]
 
-    def _compute_success_probability(self, codeword_guesses):
+    def _compute_one_play_average_batch_success_probability(
+        self, codeword_guesses: List[CodeWordSuccessProbability]
+    ) -> Union[float, EagerTensor]:
         """
-        Computes the success probability from the codeword guesses.
+        Computes the one play average batch success probability.
 
         Args:
-            codeword_guesses (List[CodeWordSuccessProbability]): List of codeword success probabilities.
+            codeword_guesses (List[CodeWordSuccessProbability]): The list of codeword success probabilities.
 
         Raises:
-            ValueError: If the number of codeword guesses does not match the output batch size.
+            ValueError: If the length of codeword_guesses is not equal to the size of the output batch.
 
         Returns:
-            float: The average success probability.
+            Union[float, EagerTensor]: The one play average batch success probability.
         """
         self._codeword_guesses = codeword_guesses
         if len(codeword_guesses) != self._output_batch.size:
-            raise ValueError("Mismatch between codeword guesses and output batch size")
-        success_probability = sum(codeword.success_probability for codeword in codeword_guesses) / len(codeword_guesses)
-        return success_probability
+            raise ValueError(
+                f"Codeword guesses length: {len(codeword_guesses)}"
+                f" MUST be equal to output batch size: {self._output_batch.size}"
+            )
 
-    def _compute_mutual_information(self):
+        success_probability_from_guesses = [
+            codeword_success_prob.success_probability for codeword_success_prob in codeword_guesses
+        ]
+        return sum(success_probability_from_guesses) / self._input_batch.size
+
+    def _compute_mutual_information(self) -> Tuple[float, List[CodeWordSuccessProbability]]:
         """
         Computes the mutual information for the batch using the configured quantum circuit and engine.
 
         Returns:
-            Union[float, EagerTensor]: The computed mutual information.
+            Tuple[float, List[CodeWordSuccessProbability]]: The computed mutual information and the list of codeword success probabilities.
         """
         options = TFEngineRunOptions(
             params=self._params,
@@ -125,9 +144,10 @@ class CostFunction(ABC):
             running_type=RunningTypes.TRAINING,
             metric_type=MetricTypes.MUTUAL_INFORMATION,
         )
-        mutual_information = self._options.engine.run_tf_mutual_information(self._options.circuit, options)
-        logger.info("Computed mutual information: %s", mutual_information)
-        return mutual_information
+        mutual_information, codeword_guesses = self._options.engine.run_mutual_information(
+            self._options.circuit, options
+        )
+        return mutual_information, codeword_guesses
 
     def run_and_compute_average_batch_metric(self) -> Tuple[float, List[CodeWordSuccessProbability]]:
         """
@@ -138,11 +158,15 @@ class CostFunction(ABC):
             Tuple[float, List[CodeWordSuccessProbability]]: The minimized metric value and
                 the list of codeword success probabilities.
         """
-        if self._options.metric_type == MetricTypes.SUCCESS_PROBABILITY.value:
+        metric_type = self._options.metric_type
+        if isinstance(metric_type, MetricTypes):
+            metric_type = metric_type.value
+
+        if metric_type == MetricTypes.SUCCESS_PROBABILITY.value:
             codeword_guesses = self._run_and_get_codeword_guesses()
-            metric = self._compute_success_probability(codeword_guesses)
-        elif self._options.metric_type == MetricTypes.MUTUAL_INFORMATION.value:
-            metric = self._compute_mutual_information()
+            metric = self._compute_one_play_average_batch_success_probability(codeword_guesses=codeword_guesses)
+        elif metric_type == MetricTypes.MUTUAL_INFORMATION.value:
+            metric, self._codeword_guesses = self._compute_mutual_information()
         else:
             raise ValueError("Unsupported metric type")
         return 1 - metric, self.measurements

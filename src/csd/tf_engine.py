@@ -1,5 +1,8 @@
-# engine.py
-from typing import List, Union
+"""
+    TensorFlow Engine class for executing quantum circuits with specific measuring types.
+"""
+
+from typing import List, Tuple, Union
 
 import tensorflow as tf
 from csd.batch import Batch
@@ -43,18 +46,19 @@ class TFEngine(Engine):
         Raises:
             ValueError: If an unsupported measuring type is provided.
         """
-        if options.measuring_type == MeasuringTypes.PROBABILITIES:
-            batch_success_probabilities = self._run_tf_circuit_probabilities(circuit=circuit, options=options)
-        elif options.measuring_type == MeasuringTypes.SAMPLING:
-            batch_success_probabilities = self._run_tf_sampling(circuit=circuit, options=options)
-        else:
-            raise ValueError("Unsupported measuring type")
-
-        return compute_maximum_likelihood(
-            batch_success_probabilities=batch_success_probabilities, output_batch=options.output_batch
+        batch_success_probabilities = (
+            self._run_tf_circuit_probabilities(circuit=circuit, options=options)
+            if options["measuring_type"] is MeasuringTypes.PROBABILITIES
+            else self._run_tf_sampling(circuit=circuit, options=options)
         )
 
-    def _run_tf_mutual_information(self, circuit: Circuit, options: TFEngineRunOptions) -> float:
+        return compute_maximum_likelihood(
+            batch_success_probabilities=batch_success_probabilities, output_batch=options["output_batch"]
+        )
+
+    def run_mutual_information(
+        self, circuit: Circuit, options: TFEngineRunOptions
+    ) -> Tuple[EagerTensor, List[CodeWordSuccessProbability]]:
         """
         Computes the mutual information for a given circuit and options.
 
@@ -63,7 +67,7 @@ class TFEngine(Engine):
             options (TFEngineRunOptions): Configuration options for the engine run.
 
         Returns:
-            float: The mutual information metric.
+            Tuple[EagerTensor, List[CodeWordSuccessProbability]]: The mutual information metric and the list of codeword success probabilities.
         """
         # Run the circuit to get Fock state probabilities
         options["shots"] = 0
@@ -94,7 +98,20 @@ class TFEngine(Engine):
         # Mutual information is H(O) - H(O|C)
         mutual_information = h_o - h_o_c
 
-        return mutual_information.numpy()
+        # Create dummy codeword success probabilities with mutual information
+        codeword_guesses = [
+            CodeWordSuccessProbability(
+                input_codeword=codeword,
+                guessed_codeword=None,  # or some guessed codeword if applicable
+                output_codeword=codeword,
+                success_probability=None,  # or some success probability if applicable
+                mutual_information=mutual_information.numpy(),
+                counts=tf.Variable(0),
+            )
+            for codeword in options["input_batch"].codewords
+        ]
+
+        return mutual_information, codeword_guesses
 
     def _run_tf_circuit_probabilities(
         self, circuit: Circuit, options: TFEngineRunOptions
@@ -170,6 +187,7 @@ class TFEngine(Engine):
                 guessed_codeword=CodeWord(size=input_codeword.size, alpha_value=input_codeword.alpha),
                 output_codeword=output_codeword,
                 success_probability=success_probabilities_one_outcome,
+                mutual_information=None,
                 counts=tf.Variable(0),
             )
             for success_probabilities_one_outcome, output_codeword in zip(

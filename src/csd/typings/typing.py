@@ -157,6 +157,7 @@ class CodeWordSuccessProbability:
     guessed_codeword: CodeWord
     output_codeword: CodeWord
     success_probability: Union[float, EagerTensor]
+    mutual_information: Union[float, EagerTensor]
     counts: Variable
 
     def __str__(self) -> str:
@@ -166,9 +167,14 @@ class CodeWordSuccessProbability:
                 "guessed_codeword": self.guessed_codeword.word if self.guessed_codeword is not None else None,
                 "output_codeword": self.output_codeword.word,
                 "psucc": (
-                    self.success_probability
-                    if isinstance(self.success_probability, float)
-                    else float(self.success_probability.numpy())
+                    float(self.success_probability)
+                    if isinstance(self.success_probability, (float, np.float32))
+                    else 0 if self.success_probability is None else float(self.success_probability.numpy())
+                ),
+                "mutual_information": (
+                    float(self.mutual_information)
+                    if isinstance(self.mutual_information, (float, np.float32))
+                    else 0 if self.mutual_information is None else float(self.mutual_information.numpy())
                 ),
             }
         )
@@ -183,9 +189,14 @@ class CodeWordSuccessProbability:
             "guessed_codeword": self.guessed_codeword.binary_code if self.guessed_codeword is not None else None,
             "output_codeword": self.output_codeword.binary_code,
             "psucc": (
-                self.success_probability
-                if isinstance(self.success_probability, float)
-                else float(self.success_probability.numpy())
+                float(self.success_probability)
+                if isinstance(self.success_probability, (float, np.float32))
+                else 0 if self.success_probability is None else float(self.success_probability.numpy())
+            ),
+            "mutual_information": (
+                float(self.mutual_information)
+                if isinstance(self.mutual_information, (float, np.float32))
+                else 0 if self.mutual_information is None else float(self.mutual_information.numpy())
             ),
         }
 

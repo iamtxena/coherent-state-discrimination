@@ -143,27 +143,46 @@ def launch_execution(configuration: LaunchExecutionConfiguration) -> ResultExecu
                 "run_backend": configuration.launch_backend,
                 "optimization_backend": OptimizationBackends.TENSORFLOW,
                 "measuring_type": configuration.measuring_type,
+                "metric_type": configuration.metric_type,
             }
         )
     )
 
 
-def uncurry_launch_execution(t) -> ResultExecution:
+def uncurry_launch_execution(args):
+    (
+        backend,
+        measuring_type,
+        metric_type,
+        learning_steps,
+        learning_rate,
+        batch_size,
+        shots,
+        plays,
+        cutoff_dim,
+        number_input_modes,
+        number_layers,
+        squeezing,
+        number_ancillas,
+        alpha,
+        max_combinations,
+    ) = args
     one_execution_configuration = LaunchExecutionConfiguration(
-        launch_backend=t[0],
-        measuring_type=t[1],
-        learning_steps=t[2],
-        learning_rate=t[3],
-        batch_size=t[4],
-        shots=t[5],
-        plays=t[6],
-        cutoff_dim=t[7],
-        number_input_modes=t[8],
-        number_layers=t[9],
-        squeezing=t[10],
-        number_ancillas=t[11],
-        alpha=t[12],
-        max_combinations=t[13],
+        launch_backend=backend,
+        measuring_type=measuring_type,
+        metric_type=metric_type,
+        learning_steps=learning_steps,
+        learning_rate=learning_rate,
+        batch_size=batch_size,
+        shots=shots,
+        plays=plays,
+        cutoff_dim=cutoff_dim,
+        number_input_modes=number_input_modes,
+        number_layers=number_layers,
+        squeezing=squeezing,
+        number_ancillas=number_ancillas,
+        alpha=alpha,
+        max_combinations=max_combinations,
     )
     return launch_execution(configuration=one_execution_configuration)
 
@@ -252,7 +271,7 @@ def _general_execution(
     multiprocess_configuration: MultiProcessConfiguration,
     backend: Backends,
     measuring_type: MeasuringTypes,
-    metric_type: MetricTypes,  # Add this parameter
+    metric_type: MetricTypes,
 ):
     start_time = time()
     num_cpus = max(1, cpu_count() - 1)
@@ -265,7 +284,6 @@ def _general_execution(
     result = create_full_execution_result(
         full_backend=backend,
         measuring_type=measuring_type,
-        metric_type=metric_type,
         multiprocess_configuration=multiprocess_configuration,
         results=execution_results,
     )
@@ -343,7 +361,7 @@ def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration, metr
 
 
 if __name__ == "__main__":
-    metric_type = MetricTypes.MUTUAL_INFORMATION
+    metric_type = MetricTypes.MUTUAL_INFORMATION  # MUTUAL_INFORMATION, SUCCESS_PROBABILITY
     alpha_init = 0.1
     alpha_end = 1.4
     number_points_to_plot = 16
@@ -360,7 +378,7 @@ if __name__ == "__main__":
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [2, 3, 4]
+    list_number_input_modes = [2, 3]
     # list_number_input_modes = [4]
     list_squeezing = [False]
     list_number_ancillas = [0]
