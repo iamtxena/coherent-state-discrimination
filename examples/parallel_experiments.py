@@ -378,7 +378,7 @@ if __name__ == "__main__":
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [2, 3]
+    list_number_input_modes = [2, 3, 4, 5, 6]
     # list_number_input_modes = [4]
     list_squeezing = [False]
     list_number_ancillas = [0]
