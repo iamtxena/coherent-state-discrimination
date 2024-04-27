@@ -1,38 +1,110 @@
 # engine.py
 from typing import List, Union
-from csd.batch import Batch
-from csd.codeword import CodeWord
-from csd.utils.probability import compute_maximum_likelihood
-from .engine import Engine
-from strawberryfields.result import Result
+
 import tensorflow as tf
-from tensorflow.python.framework.ops import EagerTensor
-from csd.typings.typing import CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions
+from csd.batch import Batch
 from csd.circuit import Circuit
+from csd.codeword import CodeWord
 from csd.config import logger
+from csd.typings.typing import CodeWordSuccessProbability, MeasuringTypes, TFEngineRunOptions
+from csd.utils.probability import compute_maximum_likelihood
+from strawberryfields.result import Result
+from tensorflow.python.framework.ops import EagerTensor
+
+from .engine import Engine
 
 
 class TFEngine(Engine):
-    """EagerTensor Flow Engine class"""
+    """
+    TensorFlow Engine class for executing quantum circuits with specific measuring types.
+    """
 
     def run_tf_circuit_checking_measuring_type(
         self, circuit: Circuit, options: TFEngineRunOptions
     ) -> List[CodeWordSuccessProbability]:
+        """
+        Executes a TensorFlow circuit based on the specified measuring type.
 
-        batch_success_probabilities = (
-            self._run_tf_circuit_probabilities(circuit=circuit, options=options)
-            if options["measuring_type"] is MeasuringTypes.PROBABILITIES
-            else self._run_tf_sampling(circuit=circuit, options=options)
-        )
+        This method checks the measuring type (either PROBABILITIES or SAMPLING) and performs the corresponding operation.
+
+        Args:
+            circuit (Circuit): The quantum circuit to be executed.
+            options (TFEngineRunOptions): Configuration options for the engine run, which include:
+                - params (List[EagerTensor]): Parameters for the circuit.
+                - input_batch (Batch): The batch of input codewords.
+                - output_batch (Batch): The batch of output codewords.
+                - shots (int): The number of shots (repetitions) for the circuit execution.
+                - measuring_type (MeasuringTypes): The type of measurement to perform (PROBABILITIES or SAMPLING).
+
+        Returns:
+            List[CodeWordSuccessProbability]: A list of codeword success probabilities, each indicating the success
+            probability of guessing the output codeword from the input codeword.
+
+        Raises:
+            ValueError: If an unsupported measuring type is provided.
+        """
+        if options.measuring_type == MeasuringTypes.PROBABILITIES:
+            batch_success_probabilities = self._run_tf_circuit_probabilities(circuit=circuit, options=options)
+        elif options.measuring_type == MeasuringTypes.SAMPLING:
+            batch_success_probabilities = self._run_tf_sampling(circuit=circuit, options=options)
+        else:
+            raise ValueError("Unsupported measuring type")
 
         return compute_maximum_likelihood(
-            batch_success_probabilities=batch_success_probabilities, output_batch=options["output_batch"]
+            batch_success_probabilities=batch_success_probabilities, output_batch=options.output_batch
         )
+
+    def _run_tf_mutual_information(self, circuit: Circuit, options: TFEngineRunOptions) -> float:
+        """
+        Computes the mutual information for a given circuit and options.
+
+        Args:
+            circuit (Circuit): The quantum circuit for which mutual information is to be computed.
+            options (TFEngineRunOptions): Configuration options for the engine run.
+
+        Returns:
+            float: The mutual information metric.
+        """
+        # Run the circuit to get Fock state probabilities
+        options["shots"] = 0
+        result = self._run_tf_circuit(circuit=circuit, options=options)
+        self._all_fock_probs = (
+            [result.state.all_fock_probs()]
+            if self.only_one_codeword(input_batch=options["input_batch"])
+            else result.state.all_fock_probs()
+        )
+
+        # Compute P(O|C) for each codeword
+        p_o_c_all_codewords = [
+            self._compute_success_probabilities_all_outcomes(index)
+            for index in range(len(options["input_batch"].codewords))
+        ]
+
+        # Compute P(O) by averaging P(O|C) over all codewords
+        p_o = tf.reduce_mean(p_o_c_all_codewords, axis=0)
+
+        # Compute entropy H(O)
+        h_o = -tf.reduce_sum(p_o * tf.math.log(p_o))
+
+        # Compute conditional entropy H(O|C)
+        h_o_c = -tf.reduce_sum(tf.concat([tf.math.log(p_o_c) * p_o_c for p_o_c in p_o_c_all_codewords], axis=0)) / len(
+            options["input_batch"].codewords
+        )
+
+        # Mutual information is H(O) - H(O|C)
+        mutual_information = h_o - h_o_c
+
+        return mutual_information.numpy()
 
     def _run_tf_circuit_probabilities(
         self, circuit: Circuit, options: TFEngineRunOptions
     ) -> List[List[CodeWordSuccessProbability]]:
-        """Run a circuit experiment computing the fock probability"""
+        """
+        This method runs the quantum circuit to compute the Fock state probabilities
+        for each codeword in the input batch, and then calls another method to
+        compute these probabilities for all codewords
+
+        """
 
         options["shots"] = 0
         result = self._run_tf_circuit(circuit=circuit, options=options)
@@ -41,12 +113,6 @@ class TFEngine(Engine):
             if self.only_one_codeword(input_batch=options["input_batch"])
             else result.state.all_fock_probs()
         )
-        # for i in range(circuit.number_input_modes):
-        #     e, v = result.state.quad_expectation(mode=i)
-        #     print(f'Mode: {i}, Expectation: {e.numpy()}, Variance: {v.numpy()}')
-
-        # logger.debug(f'all_fock_probs: {self._all_fock_probs}')
-        # logger.debug(f'len all_fock_probs: {len(self._all_fock_probs)}')
 
         return self._compute_tf_fock_probabilities_for_all_codewords(
             input_batch=options["input_batch"], output_batch=options["output_batch"]
@@ -55,6 +121,11 @@ class TFEngine(Engine):
     def _compute_tf_fock_probabilities_for_all_codewords(
         self, input_batch: Batch, output_batch: Batch
     ) -> List[List[CodeWordSuccessProbability]]:
+        """
+        This method iterates over each codeword in the input batch and computes
+        the success probabilities for each codeword using the method
+        _compute_one_batch_codewords_success_probabilities.
+        """
         return [
             self._compute_one_batch_codewords_success_probabilities(
                 input_codeword=input_codeword, index_input_batch=index_input_batch, output_batch=output_batch
@@ -65,6 +136,23 @@ class TFEngine(Engine):
     def _compute_one_batch_codewords_success_probabilities(
         self, input_codeword: CodeWord, index_input_batch: int, output_batch: Batch
     ) -> List[CodeWordSuccessProbability]:
+        """
+        This method uses _compute_success_probabilities_all_outcomes to get
+        the success probabilities for all possible outcomes for a single codeword.
+
+        Args:
+            input_codeword (CodeWord): The input codeword for which the success probabilities are to be computed.
+            index_input_batch (int): The index of the input codeword in the input batch.
+            output_batch (Batch): The batch of output codewords to which the input codeword is compared for success.
+
+        Raises:
+            ValueError: If the number of success probabilities computed does not match the number of output codewords.
+
+        Returns:
+            List[CodeWordSuccessProbability]: A list of codeword success probabilities,
+            each tailored to reflect the success probabilities of guessing the output codeword
+            from the input codeword.
+        """
 
         success_probabilities_all_outcomes = self._compute_success_probabilities_all_outcomes(
             index_input_batch=index_input_batch
@@ -90,6 +178,17 @@ class TFEngine(Engine):
         ]
 
     def _compute_success_probabilities_all_outcomes(self, index_input_batch: int) -> List[EagerTensor]:
+        """
+        This method calculates the success probabilities for all outcomes for a given codeword
+        by applying measurement matrices to the Fock state probabilities.
+        This method computes P(O∣C) for a specific codeword C.
+
+        Args:
+            index_input_batch (int): The index of the input codeword in the input batch.
+
+        Returns:
+            List[EagerTensor]: A list of success probabilities for all outcomes for the input codeword.
+        """
         return [
             tf.reduce_sum(tf.math.multiply(measurement_matrix, self._all_fock_probs[index_input_batch]))
             for measurement_matrix in self._measurement_matrices

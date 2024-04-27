@@ -15,6 +15,7 @@ from csd.typings.typing import (
     LearningRate,
     LearningSteps,
     MeasuringTypes,
+    MetricTypes,
     OneProcessResultExecution,
     OptimizationBackends,
     ResultExecution,
@@ -46,6 +47,7 @@ class MultiProcessConfiguration(NamedTuple):
 class LaunchExecutionConfiguration(NamedTuple):
     launch_backend: Backends
     measuring_type: MeasuringTypes
+    metric_type: MetricTypes
     learning_steps: LearningSteps
     learning_rate: LearningRate
     batch_size: int
@@ -250,25 +252,23 @@ def _general_execution(
     multiprocess_configuration: MultiProcessConfiguration,
     backend: Backends,
     measuring_type: MeasuringTypes,
+    metric_type: MetricTypes,  # Add this parameter
 ):
     start_time = time()
-    # Use all available CPUs except one
     num_cpus = max(1, cpu_count() - 1)
-
-    # Using 'with' statement to manage the pool lifecycle
     with Pool(num_cpus) as pool:
         execution_results = pool.map_async(
             func=uncurry_launch_execution,
-            iterable=_build_iterator(multiprocess_configuration, backend, measuring_type),
+            iterable=_build_iterator(multiprocess_configuration, backend, measuring_type, metric_type),
         ).get()
 
     result = create_full_execution_result(
         full_backend=backend,
         measuring_type=measuring_type,
+        metric_type=metric_type,
         multiprocess_configuration=multiprocess_configuration,
         results=execution_results,
     )
-
     _update_result_with_total_time(result=result, start_time=start_time)
     plot_results(
         alphas=multiprocess_configuration.alphas,
@@ -286,10 +286,12 @@ def _build_iterator(
     multiprocess_configuration: MultiProcessConfiguration,
     backend: Backends,
     measuring_type: MeasuringTypes,
+    metric_type: MetricTypes,
 ) -> Iterator:
     return zip(
-        [backend] * number_alphas,
-        [measuring_type] * number_alphas,
+        [backend] * len(multiprocess_configuration.alphas),
+        [measuring_type] * len(multiprocess_configuration.alphas),
+        [metric_type] * len(multiprocess_configuration.alphas),
         multiprocess_configuration.learning_steps,
         multiprocess_configuration.learning_rate,
         multiprocess_configuration.batch_size,
@@ -305,34 +307,43 @@ def _build_iterator(
     )
 
 
-def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
+def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration, metric_type: MetricTypes) -> None:
+    """Executes the multiprocess execution for the Fock backend with the specified metric type.
 
-    backend = Backends.FOCK
-    measuring_type = MeasuringTypes.PROBABILITIES
+    Args:
+        multiprocess_configuration (MultiProcessConfiguration): Configuration for the multiprocess execution
+        metric_type (MetricTypes): Type of the metric to use for the execution
+    """
 
     _general_execution(
         multiprocess_configuration=multiprocess_configuration,
-        backend=backend,
-        measuring_type=measuring_type,
+        backend=Backends.FOCK,
+        measuring_type=MeasuringTypes.PROBABILITIES,
+        metric_type=metric_type,
     )
 
 
-def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
+def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration, metric_type: MetricTypes) -> None:
+    """Executes the multiprocess execution for the TensorFlow backend with the specified metric type.
+
+    Args:
+        multiprocess_configuration (MultiProcessConfiguration): Configuration for the multiprocess execution
+        metric_type (MetricTypes): Type of the metric to use for the execution
+    """
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
     os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-    backend = Backends.TENSORFLOW
-    measuring_type = MeasuringTypes.PROBABILITIES
-
     _general_execution(
         multiprocess_configuration=multiprocess_configuration,
-        backend=backend,
-        measuring_type=measuring_type,
+        backend=Backends.TENSORFLOW,
+        measuring_type=MeasuringTypes.PROBABILITIES,
+        metric_type=metric_type,
     )
 
 
 if __name__ == "__main__":
+    metric_type = MetricTypes.MUTUAL_INFORMATION
     alpha_init = 0.1
     alpha_end = 1.4
     number_points_to_plot = 16
@@ -390,5 +401,5 @@ if __name__ == "__main__":
             max_combinations=[max_combinations] * number_alphas,
         )
 
-        multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
-        # multi_fock_backend(multiprocess_configuration=multiprocess_configuration)
+        multi_tf_backend(multiprocess_configuration=multiprocess_configuration, metric_type=metric_type)
+        # multi_fock_backend(multiprocess_configuration=multiprocess_configuration, metric_type=metric_type)

@@ -1,52 +1,55 @@
 from abc import ABC
+from time import time
+from typing import List, Optional, Tuple, Union, cast
+
+import numpy as np
+from csd.batch import Batch
 from csd.best_codebook import BestCodeBook
 from csd.circuit import Circuit
 from csd.codebooks import CodeBooks
 from csd.codeword import CodeWord
+from csd.config import logger
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
 from csd.ideal_probabilities import IdealLinearCodesHelstromProbability, IdealLinearCodesHomodyneProbability
 from csd.optimization_testing import OptimizationTesting
+from csd.optimize import Optimize
+from csd.plot import Plot
 
 # from csd.optimization_testing import OptimizationTesting
 from csd.tf_engine import TFEngine
 from csd.top5_best_codebooks import Top5_BestCodeBooks
+from csd.typings.cost_function import CostFunctionOptions
 from csd.typings.global_result import GlobalResult
 from csd.typings.optimization_testing import OptimizationTestingOptions
 
 # from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (
+    Architecture,
     Backends,
-    CSDConfiguration,
     CodeWordSuccessProbability,
+    CSDConfiguration,
     CutOffDimensions,
     LearningRate,
     LearningSteps,
+    MeasuringTypes,
+    MetricTypes,
     OptimizationBackends,
     OptimizationResult,
-    RunConfiguration,
-    MeasuringTypes,
     ResultExecution,
-    Architecture,
+    RunConfiguration,
     RunningTypes,
 )
-from typing import Optional, Tuple, Union, cast, List
-import numpy as np
-from time import time
-from csd.config import logger
-from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
-from csd.optimize import Optimize
-from csd.plot import Plot
-from csd.typings.cost_function import CostFunctionOptions
 from csd.utils.codebook import create_codebook_from_binary
 from csd.utils.util import (
     CodeBookLogInformation,
     create_optimized_parameters_to_print,
     print_codebook_log,
-    timing,
     save_object_to_disk,
+    timing,
 )
-from csd.batch import Batch
+from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
+
 from .cost_function import CostFunction
 
 
@@ -167,6 +170,10 @@ class CSD(ABC):
         if self._engine is None:
             raise ValueError("Engine must be initialized")
 
+        metric_type = self._run_configuration.get(
+            "metric_type", MetricTypes.SUCCESS_PROBABILITY
+        )  # Default to SUCCESS_PROBABILITY if not specified
+
         return CostFunction(
             batch=Batch(
                 size=0, word_size=0, alpha_value=self._alpha_value, all_words=False, input_batch=self._current_codebook
@@ -179,8 +186,9 @@ class CSD(ABC):
                 measuring_type=self._run_configuration["measuring_type"],
                 shots=self._shots,
                 plays=self._plays,
+                metric_type=metric_type,
             ),
-        ).run_and_compute_average_batch_error_probability()
+        ).run_and_compute_average_batch_metric()
 
     @timing
     def execute_testing_circuit_one_codeword(
@@ -580,6 +588,10 @@ class CSD(ABC):
         self._testing_circuit = self._create_circuit(running_type=RunningTypes.TESTING)
         training_result = self._init_result()
         testing_result = self._init_result()
+
+        # Ensure metric_type is included in the configuration
+        if "metric_type" not in self._run_configuration:
+            self._run_configuration["metric_type"] = MetricTypes.SUCCESS_PROBABILITY  # Default or based on some logic
 
         logger.debug(
             f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
