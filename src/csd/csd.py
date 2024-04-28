@@ -689,6 +689,9 @@ class CSD(ABC):
                         codebook=self._current_codebook,
                         measurements=one_codebook_optimization_result.measurements,
                         success_probability=self._get_succ_prob(None, one_codebook_optimization_result),
+                        mutual_information=self._get_succ_prob(
+                            None, one_codebook_optimization_result
+                        ),  # for now the information it is stored in the same succ prob
                         helstrom_probability=training_helstrom_probability,
                         homodyne_probability=training_homodyne_probability,
                         optimized_parameters=one_codebook_optimization_result.optimized_parameters,
@@ -716,6 +719,7 @@ class CSD(ABC):
                         codebook=self._current_codebook,
                         measurements=measurements,
                         success_probability=one_alpha_success_probability.numpy(),
+                        mutual_information=one_alpha_success_probability.numpy(),  # for now the information it is stored in the same succ prob
                         helstrom_probability=testing_helstrom_probability,
                         homodyne_probability=testing_homodyne_probability,
                         optimized_parameters=one_codebook_optimization_result.optimized_parameters,
@@ -932,6 +936,7 @@ class CSD(ABC):
             GlobalResult(
                 alpha=alpha,
                 success_probability=success_probability,
+                mutual_information=success_probability,  # for now the information it is stored in the same succ prob
                 number_modes=circuit.number_input_modes,
                 time_in_seconds=time() - one_alpha_start_time,
                 squeezing=self._architecture["squeezing"],
@@ -1015,7 +1020,7 @@ class CSD(ABC):
         )
 
         self._optimization = self._create_optimization()
-        optimization_result = self._optimization.optimize(
+        optimization_result: OptimizationResult = self._optimization.optimize(
             cost_function=self._cost_function,
             current_alpha=self._alpha_value,
             codebook_log_info=self._current_codebook_log_info,
