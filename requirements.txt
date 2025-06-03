@@ -27,5 +27,5 @@ tensorflow==2.12.1
 thewalrus==0.19.0
 typeguard==2.13.3
 typing_extensions==4.2.0
-Werkzeug==2.2.3
+Werkzeug==3.0.6
 xanadu-cloud-client==0.2.1
