@@ -1,19 +1,22 @@
 # best_codebook.py
 
+import json
 from dataclasses import dataclass
 from typing import List
-from csd.codeword import CodeWord
-import json
-from csd.typings.typing import CodeWordSuccessProbability
+
 import strawberryfields as sf
+from csd.codeword import CodeWord
+from csd.typings.typing import CodeWordSuccessProbability
 
 
 @dataclass
-class BestCodeBook():
+class BestCodeBook:
     """Class for managing the best codebook."""
+
     codebook: List[CodeWord]
     measurements: List[CodeWordSuccessProbability]
     success_probability: float
+    mutual_information: float
     helstrom_probability: float
     homodyne_probability: float
     optimized_parameters: List[float]
@@ -48,14 +51,15 @@ class BestCodeBook():
 
     def to_dict(self) -> dict:
         return {
-            'alpha': float(self.alpha),
-            'modes': self.modes,
-            'best_success_probability': float(self.success_probability),
-            'helstrom_probability': self.helstrom_probability,
-            'homodyne_probability': self.homodyne_probability,
-            'best_codebook': [codeword.binary_code for codeword in self.codebook],
-            'measurements': [codeword.binary_code for codeword in self.measurements],
-            'optimized_parameters': self.parsed_optimized_parameters
+            "alpha": float(self.alpha),
+            "modes": self.modes,
+            "best_success_probability": float(self.success_probability),
+            "mutual_information": float(self.mutual_information),
+            "helstrom_probability": self.helstrom_probability,
+            "homodyne_probability": self.homodyne_probability,
+            "best_codebook": [codeword.binary_code for codeword in self.codebook],
+            "measurements": [codeword.binary_code for codeword in self.measurements],
+            "optimized_parameters": self.parsed_optimized_parameters,
         }
 
     def __str__(self) -> str:

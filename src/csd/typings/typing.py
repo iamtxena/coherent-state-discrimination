@@ -1,14 +1,13 @@
-from typing import Dict, NamedTuple, TypedDict, Union, List
 import enum
-import numpy as np
 import json
 from dataclasses import dataclass
+from typing import Dict, List, NamedTuple, TypedDict, Union
 
-from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
-from tensorflow import Variable
+import numpy as np
 from csd.batch import Batch
-
 from csd.codeword import CodeWord
+from tensorflow import Variable
+from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
 
 
 class LearningSteps(NamedTuple):
@@ -96,12 +95,18 @@ class OptimizationBackends(enum.Enum):
     TENSORFLOW = "tf"
 
 
+class MetricTypes(enum.Enum):
+    SUCCESS_PROBABILITY = "success_probability"
+    MUTUAL_INFORMATION = "mutual_information"
+
+
 class RunConfiguration(TypedDict, total=False):
     run_backend: Backends
     optimization_backend: OptimizationBackends
     measuring_type: MeasuringTypes
     running_type: RunningTypes
     binary_codebook: List[List[int]]
+    metric_type: MetricTypes
 
 
 class OneProcessResultExecution(TypedDict):
@@ -143,6 +148,7 @@ class TFEngineRunOptions(TypedDict):
     shots: int
     measuring_type: Union[MeasuringTypes, None]
     running_type: Union[RunningTypes, None]
+    metric_type: MetricTypes
 
 
 @dataclass
@@ -151,6 +157,7 @@ class CodeWordSuccessProbability:
     guessed_codeword: CodeWord
     output_codeword: CodeWord
     success_probability: Union[float, EagerTensor]
+    mutual_information: Union[float, EagerTensor]
     counts: Variable
 
     def __str__(self) -> str:
@@ -160,9 +167,14 @@ class CodeWordSuccessProbability:
                 "guessed_codeword": self.guessed_codeword.word if self.guessed_codeword is not None else None,
                 "output_codeword": self.output_codeword.word,
                 "psucc": (
-                    self.success_probability
-                    if isinstance(self.success_probability, float)
-                    else float(self.success_probability.numpy())
+                    float(self.success_probability)
+                    if isinstance(self.success_probability, (float, np.float32))
+                    else 0 if self.success_probability is None else float(self.success_probability.numpy())
+                ),
+                "mutual_information": (
+                    float(self.mutual_information)
+                    if isinstance(self.mutual_information, (float, np.float32))
+                    else 0 if self.mutual_information is None else float(self.mutual_information.numpy())
                 ),
             }
         )
@@ -177,9 +189,14 @@ class CodeWordSuccessProbability:
             "guessed_codeword": self.guessed_codeword.binary_code if self.guessed_codeword is not None else None,
             "output_codeword": self.output_codeword.binary_code,
             "psucc": (
-                self.success_probability
-                if isinstance(self.success_probability, float)
-                else float(self.success_probability.numpy())
+                float(self.success_probability)
+                if isinstance(self.success_probability, (float, np.float32))
+                else 0 if self.success_probability is None else float(self.success_probability.numpy())
+            ),
+            "mutual_information": (
+                float(self.mutual_information)
+                if isinstance(self.mutual_information, (float, np.float32))
+                else 0 if self.mutual_information is None else float(self.mutual_information.numpy())
             ),
         }
 

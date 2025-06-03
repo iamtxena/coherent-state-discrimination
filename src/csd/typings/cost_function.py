@@ -1,9 +1,9 @@
 from typing import NamedTuple, Union
-from csd.circuit import Circuit
 
-from csd.typings.typing import MeasuringTypes
+from csd.circuit import Circuit
 from csd.engine import Engine
 from csd.tf_engine import TFEngine
+from csd.typings.typing import MeasuringTypes, MetricTypes
 
 
 class CostFunctionOptions(NamedTuple):
@@ -13,3 +13,4 @@ class CostFunctionOptions(NamedTuple):
     measuring_type: MeasuringTypes
     shots: int
     plays: int
+    metric_type: MetricTypes

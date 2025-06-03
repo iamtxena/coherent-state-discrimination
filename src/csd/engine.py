@@ -1,25 +1,25 @@
 # engine.py
+import itertools
 from abc import ABC
+from typing import List, Optional, Tuple, Union
+
 import strawberryfields as sf
-from strawberryfields.result import Result
-from strawberryfields.backends import BaseState
-from typeguard import typechecked
+import tensorflow as tf
+from csd.circuit import Circuit
 from csd.codeword import CodeWord
 from csd.typings.typing import (
-    Backends,
     BackendOptions,
+    Backends,
     CodeWordIndices,
     CodeWordSuccessProbability,
     EngineRunOptions,
     MeasuringTypes,
 )
-from csd.circuit import Circuit
-from typing import List, Optional, Union
-import itertools
-from tensorflow.python.framework.ops import EagerTensor
-import tensorflow as tf
-
 from csd.utils.util import generate_all_codewords_from_codeword, generate_measurement_matrices
+from strawberryfields.backends import BaseState
+from strawberryfields.result import Result
+from tensorflow.python.framework.ops import EagerTensor
+from typeguard import typechecked
 
 # from csd.config import logger
 
@@ -148,6 +148,21 @@ class Engine(ABC):
             codewords_success_probabilities = self._run_circuit_probabilities(circuit=circuit, options=options)
 
         return self._max_probability_codeword(codewords_success_probabilities=codewords_success_probabilities)
+
+    def run_mutual_information(
+        self, circuit: Circuit, options: EngineRunOptions
+    ) -> Tuple[EagerTensor, List[CodeWordSuccessProbability]]:
+        """
+        Computes the mutual information for a given circuit and options.
+
+        Args:
+            circuit (Circuit): The quantum circuit for which mutual information is to be computed.
+            options (EngineRunOptions): Configuration options for the engine run.
+
+        Returns:
+            Tuple[EagerTensor, List[CodeWordSuccessProbability]]: The mutual information metric and the list of codeword success probabilities.
+        """
+        raise NotImplementedError("Mutual information is not implemented for the current engine")
 
     def _run_circuit_sampling(self, circuit: Circuit, options: EngineRunOptions) -> List[CodeWordSuccessProbability]:
         """Run a circuit experiment doing MeasureFock and performing samplint with nshots"""

@@ -2,13 +2,13 @@
 from abc import ABC
 from typing import List, Tuple, Union
 
-from tensorflow.python.framework.ops import EagerTensor
 import tensorflow as tf
 from csd.batch import Batch
+from csd.config import logger
 from csd.tf_engine import TFEngine
 from csd.typings.optimization_testing import OptimizationTestingOptions
-from csd.typings.typing import Backends, CodeWordSuccessProbability, RunningTypes, TFEngineRunOptions
-from csd.config import logger
+from csd.typings.typing import Backends, CodeWordSuccessProbability, MetricTypes, RunningTypes, TFEngineRunOptions
+from tensorflow.python.framework.ops import EagerTensor
 
 
 class OptimizationTesting(ABC):
@@ -32,6 +32,47 @@ class OptimizationTesting(ABC):
         if self._codeword_guesses is None:
             raise ValueError("codeword guesses still not computed")
         return self._codeword_guesses
+
+    def run_and_compute_average_batch_metric(self) -> Tuple[EagerTensor, List[CodeWordSuccessProbability]]:
+        """
+        Computes and returns the average batch metric based on the specified metric type.
+
+        Raises:
+            ValueError: If an unsupported metric type is specified.
+
+        Returns:
+            Tuple[EagerTensor, List[CodeWordSuccessProbability]]: The computed metric value and the list of codeword success probabilities.
+        """
+        metric_type = self._options.metric_type
+
+        if metric_type == MetricTypes.SUCCESS_PROBABILITY:
+            return self._compute_success_probability()
+        elif metric_type == MetricTypes.MUTUAL_INFORMATION:
+            return self._compute_mutual_information()
+        else:
+            raise ValueError(f"Unsupported metric type: {metric_type}")
+
+    def _compute_mutual_information(self) -> Tuple[EagerTensor, List[CodeWordSuccessProbability]]:
+        """
+        Compute the mutual information of the optimized parameters.
+
+        Returns:
+            Tuple[EagerTensor, List[CodeWordSuccessProbability]]: The mutual information and the list of codeword success probabilities.
+        """
+        options = TFEngineRunOptions(
+            params=self._params,
+            input_batch=self._input_batch,
+            output_batch=self._output_batch,
+            shots=self._options.shots,
+            measuring_type=self._options.measuring_type,
+            running_type=RunningTypes.TRAINING,
+            metric_type=MetricTypes.MUTUAL_INFORMATION,
+        )
+        mutual_information, codeword_guesses = self._options.engine.run_mutual_information(
+            self._options.circuit, options
+        )
+        logger.debug(f"TESTING Mutual information from trained parameters: {mutual_information}")
+        return mutual_information, codeword_guesses
 
     def _run_and_get_codeword_guesses(self) -> List[CodeWordSuccessProbability]:
         if self._options.backend_name != Backends.TENSORFLOW.value:
@@ -61,29 +102,18 @@ class OptimizationTesting(ABC):
                 f" MUST be equal to output batch size: {self._output_batch.size}"
             )
 
-        # max_success_probability = tf.Variable(0.0)
-        # for codeword_success_prob in codeword_guesses:
-        #     if max_success_probability < codeword_success_prob.success_probability:
-        #         max_success_probability = codeword_success_prob.success_probability
-        # return max_success_probability
-
-        # success_probability_from_guesses = [
-        #     codeword_success_prob.success_probability
-        #     if batch_codeword == codeword_success_prob.guessed_codeword
-        #     else 1 - codeword_success_prob.success_probability
-        #     for batch_codeword, codeword_success_prob in zip(self._input_batch.codewords, codeword_guesses)]
-        # return sum(success_probability_from_guesses) / self._input_batch.size
         success_probability_from_guesses = [
             codeword_success_prob.success_probability for codeword_success_prob in codeword_guesses
         ]
         return sum(success_probability_from_guesses) / self._input_batch.size
 
-    def run_and_compute_average_batch_success_probability(self) -> Tuple[EagerTensor, List[CodeWordSuccessProbability]]:
+    def _compute_success_probability(self) -> Tuple[EagerTensor, List[CodeWordSuccessProbability]]:
+        """
+        Compute the success probability of the optimized parameters.
 
-        # `        batch_success_probability = sum([self._compute_one_play_average_batch_success_probability(
-        #             codeword_guesses=self._run_and_get_codeword_guesses())
-        #             for _ in range(self._options.plays)]
-        #         ) / self._options.plays`
+        Returns:
+            Tuple[EagerTensor, List[CodeWordSuccessProbability]]: The success probability and the list of codeword success probabilities.
+        """
 
         batch_success_probability = self._compute_one_play_average_batch_success_probability(
             codeword_guesses=self._run_and_get_codeword_guesses()

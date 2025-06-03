@@ -1,29 +1,31 @@
 import itertools
-from multiprocessing import Pool  # , cpu_count
+import os
+from multiprocessing import Pool, cpu_count
 from time import time  # , sleep
 from typing import Iterator, List, NamedTuple
+
+import numpy as np
 from csd import CSD
 from csd.global_result_manager import GlobalResultManager
 from csd.plot import Plot
 from csd.typings.typing import (
+    Backends,
+    CSDConfiguration,
     CutOffDimensions,
     LearningRate,
     LearningSteps,
     MeasuringTypes,
-    CSDConfiguration,
-    Backends,
+    MetricTypes,
     OneProcessResultExecution,
     OptimizationBackends,
     ResultExecution,
     RunConfiguration,
 )
-import numpy as np
 from csd.utils.util import timing
-import os
 
 # from csd.config import logger
 
-TESTING = True
+TESTING = False
 PATH_RESULTS = GlobalResultManager(testing=TESTING)._base_dir_path
 
 
@@ -45,6 +47,7 @@ class MultiProcessConfiguration(NamedTuple):
 class LaunchExecutionConfiguration(NamedTuple):
     launch_backend: Backends
     measuring_type: MeasuringTypes
+    metric_type: MetricTypes
     learning_steps: LearningSteps
     learning_rate: LearningRate
     batch_size: int
@@ -140,27 +143,46 @@ def launch_execution(configuration: LaunchExecutionConfiguration) -> ResultExecu
                 "run_backend": configuration.launch_backend,
                 "optimization_backend": OptimizationBackends.TENSORFLOW,
                 "measuring_type": configuration.measuring_type,
+                "metric_type": configuration.metric_type,
             }
         )
     )
 
 
-def uncurry_launch_execution(t) -> ResultExecution:
+def uncurry_launch_execution(args):
+    (
+        backend,
+        measuring_type,
+        metric_type,
+        learning_steps,
+        learning_rate,
+        batch_size,
+        shots,
+        plays,
+        cutoff_dim,
+        number_input_modes,
+        number_layers,
+        squeezing,
+        number_ancillas,
+        alpha,
+        max_combinations,
+    ) = args
     one_execution_configuration = LaunchExecutionConfiguration(
-        launch_backend=t[0],
-        measuring_type=t[1],
-        learning_steps=t[2],
-        learning_rate=t[3],
-        batch_size=t[4],
-        shots=t[5],
-        plays=t[6],
-        cutoff_dim=t[7],
-        number_input_modes=t[8],
-        number_layers=t[9],
-        squeezing=t[10],
-        number_ancillas=t[11],
-        alpha=t[12],
-        max_combinations=t[13],
+        launch_backend=backend,
+        measuring_type=measuring_type,
+        metric_type=metric_type,
+        learning_steps=learning_steps,
+        learning_rate=learning_rate,
+        batch_size=batch_size,
+        shots=shots,
+        plays=plays,
+        cutoff_dim=cutoff_dim,
+        number_input_modes=number_input_modes,
+        number_layers=number_layers,
+        squeezing=squeezing,
+        number_ancillas=number_ancillas,
+        alpha=alpha,
+        max_combinations=max_combinations,
     )
     return launch_execution(configuration=one_execution_configuration)
 
@@ -249,14 +271,15 @@ def _general_execution(
     multiprocess_configuration: MultiProcessConfiguration,
     backend: Backends,
     measuring_type: MeasuringTypes,
+    metric_type: MetricTypes,
 ):
     start_time = time()
-    pool = Pool(1)
-    # pool = Pool(number_points_to_plot if number_points_to_plot <= cpu_count() else cpu_count())
-    execution_results = pool.map_async(
-        func=uncurry_launch_execution,
-        iterable=_build_iterator(multiprocess_configuration, backend, measuring_type),
-    ).get()
+    num_cpus = max(1, cpu_count() - 1)
+    with Pool(num_cpus) as pool:
+        execution_results = pool.map_async(
+            func=uncurry_launch_execution,
+            iterable=_build_iterator(multiprocess_configuration, backend, measuring_type, metric_type),
+        ).get()
 
     result = create_full_execution_result(
         full_backend=backend,
@@ -264,9 +287,6 @@ def _general_execution(
         multiprocess_configuration=multiprocess_configuration,
         results=execution_results,
     )
-    pool.close()
-    pool.join()
-
     _update_result_with_total_time(result=result, start_time=start_time)
     plot_results(
         alphas=multiprocess_configuration.alphas,
@@ -284,10 +304,12 @@ def _build_iterator(
     multiprocess_configuration: MultiProcessConfiguration,
     backend: Backends,
     measuring_type: MeasuringTypes,
+    metric_type: MetricTypes,
 ) -> Iterator:
     return zip(
-        [backend] * number_alphas,
-        [measuring_type] * number_alphas,
+        [backend] * len(multiprocess_configuration.alphas),
+        [measuring_type] * len(multiprocess_configuration.alphas),
+        [metric_type] * len(multiprocess_configuration.alphas),
         multiprocess_configuration.learning_steps,
         multiprocess_configuration.learning_rate,
         multiprocess_configuration.batch_size,
@@ -303,34 +325,43 @@ def _build_iterator(
     )
 
 
-def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
+def multi_fock_backend(multiprocess_configuration: MultiProcessConfiguration, metric_type: MetricTypes) -> None:
+    """Executes the multiprocess execution for the Fock backend with the specified metric type.
 
-    backend = Backends.FOCK
-    measuring_type = MeasuringTypes.PROBABILITIES
+    Args:
+        multiprocess_configuration (MultiProcessConfiguration): Configuration for the multiprocess execution
+        metric_type (MetricTypes): Type of the metric to use for the execution
+    """
 
     _general_execution(
         multiprocess_configuration=multiprocess_configuration,
-        backend=backend,
-        measuring_type=measuring_type,
+        backend=Backends.FOCK,
+        measuring_type=MeasuringTypes.PROBABILITIES,
+        metric_type=metric_type,
     )
 
 
-def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration) -> None:
+def multi_tf_backend(multiprocess_configuration: MultiProcessConfiguration, metric_type: MetricTypes) -> None:
+    """Executes the multiprocess execution for the TensorFlow backend with the specified metric type.
+
+    Args:
+        multiprocess_configuration (MultiProcessConfiguration): Configuration for the multiprocess execution
+        metric_type (MetricTypes): Type of the metric to use for the execution
+    """
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
     os.environ["TF_FORCE_GPU_ALLOW_GROWTH"] = "true"
     os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-    backend = Backends.TENSORFLOW
-    measuring_type = MeasuringTypes.PROBABILITIES
-
     _general_execution(
         multiprocess_configuration=multiprocess_configuration,
-        backend=backend,
-        measuring_type=measuring_type,
+        backend=Backends.TENSORFLOW,
+        measuring_type=MeasuringTypes.PROBABILITIES,
+        metric_type=metric_type,
     )
 
 
 if __name__ == "__main__":
+    metric_type = MetricTypes.MUTUAL_INFORMATION  # MUTUAL_INFORMATION, SUCCESS_PROBABILITY
     alpha_init = 0.1
     alpha_end = 1.4
     number_points_to_plot = 16
@@ -341,12 +372,13 @@ if __name__ == "__main__":
     # alphas = [alphas[8]]
     # alphas = alphas[:-3]
     # alphas = [alphas[3], alphas[4], alphas[5]]
-    alphas = [alphas[3]]
+    # alphas = [alphas[3]]
     # alphas = [alphas[4], alphas[5]]
+    alphas = [0.50625]
 
     # list_number_input_modes = list(range(6, 11))
 
-    list_number_input_modes = [3]
+    list_number_input_modes = [6]
     # list_number_input_modes = [4]
     list_squeezing = [False]
     list_number_ancillas = [0]
@@ -387,5 +419,5 @@ if __name__ == "__main__":
             max_combinations=[max_combinations] * number_alphas,
         )
 
-        multi_tf_backend(multiprocess_configuration=multiprocess_configuration)
-        # multi_fock_backend(multiprocess_configuration=multiprocess_configuration)
+        multi_tf_backend(multiprocess_configuration=multiprocess_configuration, metric_type=metric_type)
+        # multi_fock_backend(multiprocess_configuration=multiprocess_configuration, metric_type=metric_type)

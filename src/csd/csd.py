@@ -1,52 +1,55 @@
 from abc import ABC
+from time import time
+from typing import List, Optional, Tuple, Union, cast
+
+import numpy as np
+from csd.batch import Batch
 from csd.best_codebook import BestCodeBook
 from csd.circuit import Circuit
 from csd.codebooks import CodeBooks
 from csd.codeword import CodeWord
+from csd.config import logger
 from csd.engine import Engine
 from csd.global_result_manager import GlobalResultManager
 from csd.ideal_probabilities import IdealLinearCodesHelstromProbability, IdealLinearCodesHomodyneProbability
 from csd.optimization_testing import OptimizationTesting
+from csd.optimize import Optimize
+from csd.plot import Plot
 
 # from csd.optimization_testing import OptimizationTesting
 from csd.tf_engine import TFEngine
 from csd.top5_best_codebooks import Top5_BestCodeBooks
+from csd.typings.cost_function import CostFunctionOptions
 from csd.typings.global_result import GlobalResult
 from csd.typings.optimization_testing import OptimizationTestingOptions
 
 # from csd.typings.optimization_testing import OptimizationTestingOptions
 from csd.typings.typing import (
+    Architecture,
     Backends,
-    CSDConfiguration,
     CodeWordSuccessProbability,
+    CSDConfiguration,
     CutOffDimensions,
     LearningRate,
     LearningSteps,
+    MeasuringTypes,
+    MetricTypes,
     OptimizationBackends,
     OptimizationResult,
-    RunConfiguration,
-    MeasuringTypes,
     ResultExecution,
-    Architecture,
+    RunConfiguration,
     RunningTypes,
 )
-from typing import Optional, Tuple, Union, cast, List
-import numpy as np
-from time import time
-from csd.config import logger
-from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
-from csd.optimize import Optimize
-from csd.plot import Plot
-from csd.typings.cost_function import CostFunctionOptions
 from csd.utils.codebook import create_codebook_from_binary
 from csd.utils.util import (
     CodeBookLogInformation,
     create_optimized_parameters_to_print,
     print_codebook_log,
-    timing,
     save_object_to_disk,
+    timing,
 )
-from csd.batch import Batch
+from tensorflow.python.framework.ops import EagerTensor  # pylint: disable=no-name-in-module
+
 from .cost_function import CostFunction
 
 
@@ -167,6 +170,15 @@ class CSD(ABC):
         if self._engine is None:
             raise ValueError("Engine must be initialized")
 
+        # Check if 'metric_type' is present in the configuration
+        if "metric_type" not in self._run_configuration:
+            raise ValueError("Metric type must be defined in the run configuration")
+
+        # Retrieve 'metric_type' safely after ensuring it's present
+        metric_type = self._run_configuration["metric_type"]
+        if self._training_circuit is None and self._testing_circuit is None:
+            raise ValueError("Circuit must be initialized")
+
         return CostFunction(
             batch=Batch(
                 size=0, word_size=0, alpha_value=self._alpha_value, all_words=False, input_batch=self._current_codebook
@@ -179,8 +191,9 @@ class CSD(ABC):
                 measuring_type=self._run_configuration["measuring_type"],
                 shots=self._shots,
                 plays=self._plays,
+                metric_type=metric_type,
             ),
-        ).run_and_compute_average_batch_error_probability()
+        ).run_and_compute_average_batch_metric()
 
     @timing
     def execute_testing_circuit_one_codeword(
@@ -581,12 +594,17 @@ class CSD(ABC):
         training_result = self._init_result()
         testing_result = self._init_result()
 
+        # Check if 'metric_type' is present in the configuration
+        if "metric_type" not in self._run_configuration:
+            raise ValueError("Metric type must be defined in the run configuration")
+
         logger.debug(
             f"Executing One Layer circuit with Backend: {self._run_configuration['run_backend'].value}, "
             " with measuring_type: "
             f"{cast(MeasuringTypes, self._run_configuration['measuring_type']).value} \n"
             f"batch_size:{self._batch_size} plays:{self._plays}"
             f" modes:{self._training_circuit.number_input_modes}"
+            f" metric_type: {self._run_configuration['metric_type'].value}"
             f" ancillas: {self._training_circuit.number_ancillas} \n"
             f"steps: {self._learning_steps}, l_rate: {self._learning_rate}, cutoff_dim: {self._cutoff_dim} \n"
             f"layers:{self._architecture['number_layers']} squeezing: {self._architecture['squeezing']}"
@@ -671,6 +689,9 @@ class CSD(ABC):
                         codebook=self._current_codebook,
                         measurements=one_codebook_optimization_result.measurements,
                         success_probability=self._get_succ_prob(None, one_codebook_optimization_result),
+                        mutual_information=self._get_succ_prob(
+                            None, one_codebook_optimization_result
+                        ),  # for now the information it is stored in the same succ prob
                         helstrom_probability=training_helstrom_probability,
                         homodyne_probability=training_homodyne_probability,
                         optimized_parameters=one_codebook_optimization_result.optimized_parameters,
@@ -698,6 +719,7 @@ class CSD(ABC):
                         codebook=self._current_codebook,
                         measurements=measurements,
                         success_probability=one_alpha_success_probability.numpy(),
+                        mutual_information=one_alpha_success_probability.numpy(),  # for now the information it is stored in the same succ prob
                         helstrom_probability=testing_helstrom_probability,
                         homodyne_probability=testing_homodyne_probability,
                         optimized_parameters=one_codebook_optimization_result.optimized_parameters,
@@ -858,7 +880,12 @@ class CSD(ABC):
             raise ValueError("Current codebook must be initialized")
         # list_optimized_parameters = [one_parameter.numpy() for one_parameter in optimized_parameters]
         # optimized_parameters = [-self._alpha_value]
-        logger.debug(f"Going to test with the trained optimized parameters: {optimized_parameters}")
+        metric_type = self._run_configuration.get(
+            "metric_type", MetricTypes.SUCCESS_PROBABILITY
+        )  # Default to SUCCESS_PROBABILITY if not specified
+        logger.debug(
+            f"Going to test with the trained optimized parameters: {optimized_parameters} for metric: {metric_type}"
+        )
 
         return OptimizationTesting(
             batch=Batch(
@@ -870,10 +897,11 @@ class CSD(ABC):
                 circuit=self._testing_circuit,
                 backend_name=self._engine.backend_name,
                 measuring_type=self._run_configuration["measuring_type"],
+                metric_type=self._run_configuration["metric_type"],
                 shots=self._shots,
                 plays=self._plays,
             ),
-        ).run_and_compute_average_batch_success_probability()
+        ).run_and_compute_average_batch_metric()
 
     def _write_result(
         self,
@@ -888,6 +916,15 @@ class CSD(ABC):
         if self._training_circuit is None and self._testing_circuit is None:
             raise ValueError("Circuit must be initialized")
         circuit = self._training_circuit if self._training_circuit is not None else self._testing_circuit
+        metric_type = self._run_configuration.get(
+            "metric_type", MetricTypes.SUCCESS_PROBABILITY
+        )  # Ensure metric_type is retrieved
+
+        logger.info(
+            f"Writing results for alpha: {alpha}, metric_type: {metric_type.value}, "
+            f"success_probability: {success_probability}, helstrom_probability: {helstrom_probability}, "
+            f"homodyne_probability: {homodyne_probability}, testing: {testing}"
+        )
 
         optimized_parameters = create_optimized_parameters_to_print(
             modes=circuit.number_input_modes,
@@ -899,6 +936,7 @@ class CSD(ABC):
             GlobalResult(
                 alpha=alpha,
                 success_probability=success_probability,
+                mutual_information=success_probability,  # for now the information it is stored in the same succ prob
                 number_modes=circuit.number_input_modes,
                 time_in_seconds=time() - one_alpha_start_time,
                 squeezing=self._architecture["squeezing"],
@@ -929,6 +967,7 @@ class CSD(ABC):
                 f" modes:{ circuit.number_input_modes}"
                 f" ancillas: { circuit.number_ancillas} \n "
                 f" cutoff_dim: {self._cutoff_dim}"
+                f" metric_type: {metric_type.value},"
                 f" squeezing: {self._architecture['squeezing']}: \n"
             )
             best_codebook.program.print()
@@ -981,7 +1020,7 @@ class CSD(ABC):
         )
 
         self._optimization = self._create_optimization()
-        optimization_result = self._optimization.optimize(
+        optimization_result: OptimizationResult = self._optimization.optimize(
             cost_function=self._cost_function,
             current_alpha=self._alpha_value,
             codebook_log_info=self._current_codebook_log_info,
@@ -1004,8 +1043,7 @@ class CSD(ABC):
         homodyne_probability: float,
         number_mode: int,
     ):
-        if self._training_circuit is None and self._testing_circuit is None:
-            raise ValueError("Circuit must be initialized")
+
         circuit = self._training_circuit if self._training_circuit is not None else self._testing_circuit
         # logger.debug(f'Tested for alpha: {np.round(self._alpha_value, 2)}'
         #              f' parameters: {one_alpha_optimization_result.optimized_parameters}'
@@ -1038,6 +1076,7 @@ class CSD(ABC):
             "p_succ": [],
             "result_backend": self._run_configuration["run_backend"].value,
             "measuring_type": self._run_configuration["measuring_type"].value,
+            "metric_type": self._run_configuration["metric_type"].value,
             "plot_label": self._set_plot_label(
                 plot_label_backend=self._run_configuration["run_backend"],
                 measuring_type=self._run_configuration["measuring_type"],

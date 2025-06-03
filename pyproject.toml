@@ -13,3 +13,5 @@ exclude = '''
 | build
 )/
 '''
+[tool.pylint."FORMAT"]
+   max-line-length = 120
